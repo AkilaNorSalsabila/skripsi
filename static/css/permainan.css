@@ -1,0 +1,138 @@
+body {
+  background-color: #EAF7FF;
+  margin: 0;
+  font-family: 'Bakso Sapi', sans-serif;
+  overflow: hidden;
+}
+
+.decor {
+  position: absolute;
+  z-index: 1;  /* dekor selalu di belakang */
+  pointer-events: none; /* biar tidak ganggu klik tombol */
+}
+
+.decor-left {
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 250px;
+  z-index: 1;  /* dekor selalu di belakang */
+  pointer-events: none; /* biar tidak ganggu klik tombol */
+}
+
+.decor-right {
+  bottom: -15px;
+  right: 0;
+  width: 350px;
+  height: auto;
+  z-index: 1;  /* dekor selalu di belakang */
+  pointer-events: none; /* biar tidak ganggu klik tombol */
+}
+
+.content {
+  position: relative;
+  z-index: 5; /* pastikan konten di atas dekor */
+}
+
+.content h1 {
+  font-family: 'Mochiy Pop One', sans-serif; /* pakai Mochiy Pop One */
+  font-size: 50px;
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: normal;
+  z-index: 10;
+}
+
+.menu-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 80px; /* jarak antar tombol */
+}
+
+.menu-buttons button {
+  width: 20vw;
+  height: 45vh;
+  border: none;
+  border-radius: 20px;
+  padding-top: 30px; 
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; /* susun gambar + teks ke bawah */
+  align-items: center;
+  justify-content: center;
+  font-family: 'Quicksand', sans-serif; /* teks level pakai Quicksand */
+  font-size: 28px;
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+  background-color: #00B4E1;
+  z-index: 5;
+}
+
+
+.menu-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.menu-buttons button img {
+  width: 90%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  margin-left: 10px;
+  margin-top: -35px;
+  margin-bottom: -10px; /* jarak gambar dan teks */
+}
+.menu-buttons button span {
+  font-size: 32px;
+  font-weight: bold;
+
+}
+
+
+/* Warna spesifik */
+.menu-buttons .game-sayuran {
+  background-color: #00B4E1;
+}
+
+.menu-buttons .game-hewan {
+  background-color: #00B4E1;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.back-button {
+  position: fixed;
+  top: 60px;
+  left: 260px;   /* default: untuk layar besar */
+  z-index: 10;
+}
+
+.back-button img {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+
+/* Saat layar kecil (tablet/HP), geser biar ga nabrak judul */
+@media (max-width: 992px) {
+  .back-button {
+    left: 20px;
+    top: 20px;
+  }
+
+  .back-button img {
+    width: 40px;
+  }
+}
+

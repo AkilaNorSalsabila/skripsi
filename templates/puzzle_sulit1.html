@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Puzzle Drag Drop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bakso+Sapi&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/puzzle.css') }}">
+</head>
+<body>
+  <!-- Corner Sayuran -->
+  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" alt="Vegetables Corner" class="decor decor-right">
+  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" alt="Vegetables Corner" class="decor decor-left">
+
+  <!-- Tombol Back (timernya akan muncul di samping kiri tombol back) -->
+  <a href="/pilih_level" class="back-button">
+    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Back">
+  </a>
+
+  <audio id="id-player"></audio>
+
+  <!-- Timer (diletakkan di samping tombol back) -->
+  <div id="timer">Waktu 00:00</div>
+
+<!-- Judul + Tombol Sound -->
+<div id="title-wrapper">
+  <h1 id="game-title">Susun puzzle<br>sayuran ini</h1>
+  <button id="sound-btn" class="sound-button">
+    <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Sound">
+  </button>
+</div>
+
+
+  <!-- Progress Soal -->
+  <h2 id="progress">Soal 1/5</h2>
+
+  <!-- Container utama -->
+  <div id="game-container">
+    <!-- Board -->
+    <div id="board">
+      <img id="full-image" src="" alt="Gambar Full" class="hidden">
+      <div id="siluet" class="hidden">
+        <img src="" alt="Siluet" class="siluet-bg">
+        <div id="slots"></div>
+      </div>
+    </div>
+
+    <!-- Potongan puzzle -->
+    <div id="pieces-container"></div>
+  </div>
+
+  <!-- Pesan selesai -->
+  <div id="message" class="hidden">🎉 Puzzle Selesai! 🎉</div>
+
+  <!-- Audio Effects -->
+  <audio id="sound-correct" src="{{ url_for('static', filename='sounds/correct.mp3') }}"></audio>
+  <audio id="sound-wrong" src="{{ url_for('static', filename='sounds/wrong.mp3') }}"></audio>
+  <audio id="sound-congrats" src="{{ url_for('static', filename='sounds/congrats.mp3') }}"></audio>
+  <audio id="sound-vegetable"></audio>
+
+  <!-- Bank Soal -->
+  <script>
+    const bankSoal = [
+  {
+    width: 411, height: 264,
+    full: "{{ url_for('static', filename='img/jantung_full.png') }}",
+    siluet: "{{ url_for('static', filename='img/jantung_siluet.png') }}",
+    pieces: [
+      { id: 1, src: "{{ url_for('static', filename='img/jantung_piece1.png') }}", 
+        slot: { left: 206, top: 0, width: 205, height: 264.19 } },
+      { id: 2, src: "{{ url_for('static', filename='img/jantung_piece2.png') }}", 
+        slot: { left: 0, top: 0, width: 206, height: 264.19 } }
+    ],
+    name_id: "Jantung Pisang",
+    name_en: "Banana Blossom",
+    sound_id: "{{ url_for('static', filename='sounds/jantungpisang_id.OGG') }}",
+  },
+
+  {
+    width: 406, height: 345,
+    full: "{{ url_for('static', filename='img/bayam_full.png') }}",
+    siluet: "{{ url_for('static', filename='img/bayam_siluet.png') }}",
+    pieces: [
+      { id: 1, src: "{{ url_for('static', filename='img/bayam_piece1.png') }}", 
+        slot: { left: 203, top: 0, width: 203, height: 345 } },
+      { id: 2, src: "{{ url_for('static', filename='img/bayam_piece2.png') }}", 
+        slot: { left: 0, top: 0, width: 203, height: 345 } }
+    ],
+    name_id: "Bayam",
+    name_en: "Spinach",
+    sound_id: "{{ url_for('static', filename='sounds/bayam_id.OGG') }}",
+  },
+  {
+  width: 406, height: 261,
+  full: "{{ url_for('static', filename='img/kangkung_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/kangkung_siluet.png') }}",
+  pieces: [
+    // piece1 = kanan
+    { id: 1, src: "{{ url_for('static', filename='img/kangkung_piece1.png') }}", 
+      slot: { left: 203, top: 0, width: 203, height: 261 } },
+
+    // piece2 = kiri
+    { id: 2, src: "{{ url_for('static', filename='img/kangkung_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 203, height: 261 } }
+  ],
+  name_id: "Kangkung",
+  name_en: "Water Spinach",
+  sound_id: "{{ url_for('static', filename='sounds/kangkung_id.OGG') }}",
+},
+{
+  width: 407, height: 325,   // BUKAN 406
+  full: "{{ url_for('static', filename='img/selada_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/selada_siluet.png') }}",
+  pieces: [
+    { id: 1, src: "{{ url_for('static', filename='img/selada_piece1.png') }}", 
+      slot: { left: 203, top: 0, width: 204, height: 325 } },
+
+    { id: 2, src: "{{ url_for('static', filename='img/selada_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 203, height: 325 } }
+  ],
+  name_id: "Selada",
+  name_en: "Lettuce",
+  sound_id: "{{ url_for('static', filename='sounds/selada_id.OGG') }}",
+},
+
+{
+  width: 273, height: 350,   // 70% dari 390x501
+  full: "{{ url_for('static', filename='img/sawiputih_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/sawiputih_siluet.png') }}",
+  pieces: [
+    { id: 1, src: "{{ url_for('static', filename='img/sawiputih_piece1.png') }}", 
+      slot: { left: 137, top: 0, width: 136, height: 350 } }, // 70% dari 196 & 194
+    { id: 2, src: "{{ url_for('static', filename='img/sawiputih_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 137, height: 350 } }
+  ],
+  name_id: "Sawi Putih",
+  name_en: "Chinese Cabbage",
+  sound_id: "{{ url_for('static', filename='sounds/sawiputih_id.OGG') }}",
+},
+// === Sawi Hijau (perbaikan supaya tidak ada celah tengah) ===
+{
+  // set full = sum(widths) supaya pas (203 + 204 = 407)
+  width: 407, height: 378,
+  full: "{{ url_for('static', filename='img/sawihijau_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/sawihijau_siluet.png') }}",
+  pieces: [
+    // piece1 = KANAN (width 203) -> mulai di left = 204
+    { id: 1, src: "{{ url_for('static', filename='img/sawihijau_piece1.png') }}", 
+      slot: { left: 204, top: 0, width: 203, height: 378 } },
+
+    // piece2 = KIRI (width 204) -> mulai di left = 0
+    { id: 2, src: "{{ url_for('static', filename='img/sawihijau_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 204, height: 378 } }
+  ],
+  name_id: "Sawi Hijau",
+  name_en: "Green Mustard",
+  sound_id: "{{ url_for('static', filename='sounds/sawihijau_id.OGG') }}",
+},
+{
+  width: 394, height: 308,
+  full: "{{ url_for('static', filename='img/timun_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/timun_siluet.png') }}",
+  pieces: [
+    { id: 1, src: "{{ url_for('static', filename='img/timun_piece1.png') }}", 
+      slot: { left: 197, top: 0, width: 197, height: 154 } },
+
+    { id: 2, src: "{{ url_for('static', filename='img/timun_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 197, height: 154 } },
+
+    { id: 3, src: "{{ url_for('static', filename='img/timun_piece3.png') }}", 
+      slot: { left: 197, top: 154, width: 197, height: 154 } },
+
+    { id: 4, src: "{{ url_for('static', filename='img/timun_piece4.png') }}", 
+      slot: { left: 0, top: 154, width: 197, height: 154 } }
+  ],
+  name_id: "Timun",
+  name_en: "Cucumber",
+  sound_id: "{{ url_for('static', filename='sounds/timun_id.OGG') }}",
+},
+{
+  width: 408, height: 391.65,
+  full: "{{ url_for('static', filename='img/terong_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/terong_siluet.png') }}",
+  pieces: [
+    { id: 1, src: "{{ url_for('static', filename='img/terong_piece1.png') }}", 
+      slot: { left: 204, top: 0, width: 204, height: 196 } },   // kanan atas
+
+    { id: 2, src: "{{ url_for('static', filename='img/terong_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 204, height: 196 } },     // kiri atas
+
+    { id: 3, src: "{{ url_for('static', filename='img/terong_piece3.png') }}", 
+      slot: { left: 204, top: 196, width: 204, height: 195.65 } }, // kanan bawah
+
+    { id: 4, src: "{{ url_for('static', filename='img/terong_piece4.png') }}", 
+      slot: { left: 0, top: 196, width: 204, height: 195.65 } }   // kiri bawah
+  ],
+  name_id: "Terong",
+  name_en: "Eggplant",
+  sound_id: "{{ url_for('static', filename='sounds/terong_id.OGG') }}",
+},
+{
+  width: 406, height: 300,
+  full: "{{ url_for('static', filename='img/labusiam_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/labusiam_siluet.png') }}",
+  pieces: [
+    // kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/labusiam_piece1.png') }}", 
+      slot: { left: 203, top: 0, width: 203, height: 150 } },
+
+    // kiri atas
+    { id: 2, src: "{{ url_for('static', filename='img/labusiam_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 203, height: 150 } },
+
+    // kanan bawah
+    { id: 3, src: "{{ url_for('static', filename='img/labusiam_piece3.png') }}", 
+      slot: { left: 203, top: 150, width: 203, height: 150 } },
+
+    // kiri bawah
+    { id: 4, src: "{{ url_for('static', filename='img/labusiam_piece4.png') }}", 
+      slot: { left: 0, top: 150, width: 203, height: 150 } }
+  ],
+  name_id: "Labu Siam",
+  name_en: "Chayote",
+  sound_id: "{{ url_for('static', filename='sounds/labusiam_id.OGG') }}",
+},
+{
+  width: 331, height: 264,
+  full: "{{ url_for('static', filename='img/kentang_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/kentang_siluet.png') }}",
+  pieces: [
+    // kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/kentang_piece1.png') }}", 
+      slot: { left: 165, top: 0, width: 166, height: 132 } },
+
+    // kiri atas
+    { id: 2, src: "{{ url_for('static', filename='img/kentang_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 165, height: 132 } },
+
+    // kanan bawah
+    { id: 3, src: "{{ url_for('static', filename='img/kentang_piece3.png') }}", 
+      slot: { left: 165, top: 132, width: 166, height: 132 } },
+
+    // kiri bawah
+    { id: 4, src: "{{ url_for('static', filename='img/kentang_piece4.png') }}", 
+      slot: { left: 0, top: 132, width: 165, height: 132 } }
+  ],
+  name_id: "Kentang",
+  name_en: "Potato",
+  sound_id: "{{ url_for('static', filename='sounds/kentang_id.OGG') }}",
+},
+
+{
+  width: 373, height: 332,
+  full: "{{ url_for('static', filename='img/tomat_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/tomat_siluet.png') }}",
+  pieces: [
+    // kanan atas (186x166)
+    { id: 1, src: "{{ url_for('static', filename='img/tomat_piece1.png') }}", 
+      slot: { left: 187, top: 0, width: 186, height: 166 } },
+
+    // kiri atas (187x166)
+    { id: 2, src: "{{ url_for('static', filename='img/tomat_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 187, height: 166 } },
+
+    // kanan bawah (186x166)
+    { id: 3, src: "{{ url_for('static', filename='img/tomat_piece3.png') }}", 
+      slot: { left: 187, top: 166, width: 186, height: 166 } },
+
+    // kiri bawah (187x166)
+    { id: 4, src: "{{ url_for('static', filename='img/tomat_piece4.png') }}", 
+      slot: { left: 0, top: 166, width: 187, height: 166 } }
+  ],
+  name_id: "Tomat",
+  name_en: "Tomato",
+  sound_id: "{{ url_for('static', filename='sounds/tomat_id.OGG') }}",
+},
+{
+  width: 407, height: 287,
+  full: "{{ url_for('static', filename='img/lobak_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/lobak_siluet.png') }}",
+  pieces: [
+    // kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/lobak_piece1.png') }}", 
+      slot: { left: 204, top: 0, width: 203, height: 144 } },
+
+    // kiri atas
+    { id: 2, src: "{{ url_for('static', filename='img/lobak_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 204, height: 144 } },
+
+    // kanan bawah
+    { id: 3, src: "{{ url_for('static', filename='img/lobak_piece3.png') }}", 
+      slot: { left: 204, top: 144, width: 203, height: 143 } },
+
+    // kiri bawah
+    { id: 4, src: "{{ url_for('static', filename='img/lobak_piece4.png') }}", 
+      slot: { left: 0, top: 144, width: 204, height: 143 } }
+  ],
+  name_id: "Lobak",
+  name_en: "Radish",
+  sound_id: "{{ url_for('static', filename='sounds/lobak_id.OGG') }}",
+},
+{
+  width: 411, height: 260,
+  full: "{{ url_for('static', filename='img/wortel_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/wortel_siluet.png') }}",
+  pieces: [
+    // piece1: kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/wortel_piece1.png') }}", 
+      slot: { left: 274, top: 0, width: 137, height: 130 } },
+
+    // piece2: tengah atas
+    { id: 2, src: "{{ url_for('static', filename='img/wortel_piece2.png') }}", 
+      slot: { left: 137, top: 0, width: 137, height: 130 } },
+
+    // piece3: kiri atas
+    { id: 3, src: "{{ url_for('static', filename='img/wortel_piece3.png') }}", 
+      slot: { left: 0, top: 0, width: 137, height: 130 } },
+
+    // piece4: bawahnya piece1 (kanan bawah)
+    { id: 4, src: "{{ url_for('static', filename='img/wortel_piece4.png') }}", 
+      slot: { left: 274, top: 130, width: 137, height: 130 } },
+
+    // piece5: bawahnya piece2 (tengah bawah)
+    { id: 5, src: "{{ url_for('static', filename='img/wortel_piece5.png') }}", 
+      slot: { left: 137, top: 130, width: 137, height: 130 } },
+
+    // piece6: bawahnya piece3 (kiri bawah)
+    { id: 6, src: "{{ url_for('static', filename='img/wortel_piece6.png') }}", 
+      slot: { left: 0, top: 130, width: 137, height: 130 } }
+  ],
+  name_id: "Wortel",
+  name_en: "Carrot",
+  sound_id: "{{ url_for('static', filename='sounds/wortel_id.OGG') }}",
+},
+{
+  width: 393.43, height: 340,
+  full: "{{ url_for('static', filename='img/bitmerah_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/bitmerah_siluet.png') }}",
+  pieces: [
+    // piece1: kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/bitmerah_piece1.png') }}", 
+      slot: { left: 262.43, top: 0, width: 132, height: 170 } },
+
+    // piece2: tengah atas
+    { id: 2, src: "{{ url_for('static', filename='img/bitmerah_piece2.png') }}", 
+      slot: { left: 131.43, top: 0, width: 131, height: 170 } },
+
+    // piece3: kiri atas
+    { id: 3, src: "{{ url_for('static', filename='img/bitmerah_piece3.png') }}", 
+      slot: { left: 0, top: 0, width: 131.43, height: 170 } },
+
+    // piece4: kanan bawah (di bawah piece1)
+    { id: 4, src: "{{ url_for('static', filename='img/bitmerah_piece4.png') }}", 
+      slot: { left: 262.43, top: 170, width: 132, height: 170 } },
+
+    // piece5: tengah bawah (di bawah piece2)
+    { id: 5, src: "{{ url_for('static', filename='img/bitmerah_piece5.png') }}", 
+      slot: { left: 131.43, top: 170, width: 131, height: 170 } },
+
+    // piece6: kiri bawah (di bawah piece3)
+    { id: 6, src: "{{ url_for('static', filename='img/bitmerah_piece6.png') }}", 
+      slot: { left: 0, top: 170, width: 131.43, height: 170 } }
+  ],
+  name_id: "Bit Merah",
+  name_en: "Beetroot",
+  sound_id: "{{ url_for('static', filename='sounds/bitmerah_id.OGG') }}",
+},
+{
+  width: 411, height: 237,
+  full: "{{ url_for('static', filename='img/buncis_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/buncis_siluet.png') }}",
+  pieces: [
+    // piece1: kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/buncis_piece1.png') }}", 
+      slot: { left: 274, top: 0, width: 137, height: 119 } },
+
+    // piece2: tengah atas
+    { id: 2, src: "{{ url_for('static', filename='img/buncis_piece2.png') }}", 
+      slot: { left: 137, top: 0, width: 137, height: 119 } },
+
+    // piece3: kiri atas
+    { id: 3, src: "{{ url_for('static', filename='img/buncis_piece3.png') }}", 
+      slot: { left: 0, top: 0, width: 137, height: 119 } },
+
+    // piece4: kanan bawah (di bawah piece1)
+    { id: 4, src: "{{ url_for('static', filename='img/buncis_piece4.png') }}", 
+      slot: { left: 274, top: 119, width: 137, height: 118 } },
+
+    // piece5: tengah bawah (di bawah piece2)
+    { id: 5, src: "{{ url_for('static', filename='img/buncis_piece5.png') }}", 
+      slot: { left: 137, top: 119, width: 137, height: 118 } },
+
+    // piece6: kiri bawah (di bawah piece3)
+    { id: 6, src: "{{ url_for('static', filename='img/buncis_piece6.png') }}", 
+      slot: { left: 0, top: 119, width: 137, height: 118 } }
+  ],
+  name_id: "Buncis",
+  name_en: "Green Beans",
+  sound_id: "{{ url_for('static', filename='sounds/buncis_id.OGG') }}",
+},
+{
+  width: 411, height: 214,
+  full: "{{ url_for('static', filename='img/kacangpanjang_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/kacangpanjang_siluet.png') }}",
+  pieces: [
+    // piece1: kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/kacangpanjang_piece1.png') }}", 
+      slot: { left: 274, top: 0, width: 137, height: 107 } },
+
+    // piece2: tengah atas
+    { id: 2, src: "{{ url_for('static', filename='img/kacangpanjang_piece2.png') }}", 
+      slot: { left: 137, top: 0, width: 137, height: 107 } },
+
+    // piece3: kiri atas
+    { id: 3, src: "{{ url_for('static', filename='img/kacangpanjang_piece3.png') }}", 
+      slot: { left: 0, top: 0, width: 137, height: 107 } },
+
+    // piece4: kanan bawah (di bawah piece1)
+    { id: 4, src: "{{ url_for('static', filename='img/kacangpanjang_piece4.png') }}", 
+      slot: { left: 274, top: 107, width: 137, height: 107 } },
+
+    // piece5: tengah bawah (di bawah piece2)
+    { id: 5, src: "{{ url_for('static', filename='img/kacangpanjang_piece5.png') }}", 
+      slot: { left: 137, top: 107, width: 137, height: 107 } },
+
+    // piece6: kiri bawah (di bawah piece3)
+    { id: 6, src: "{{ url_for('static', filename='img/kacangpanjang_piece6.png') }}", 
+      slot: { left: 0, top: 107, width: 137, height: 107 } }
+  ],
+  name_id: "Kacang Panjang",
+  name_en: "Long Beans",
+  sound_id: "{{ url_for('static', filename='sounds/kacangpanjang_id.OGG') }}",
+},
+{
+  width: 411, height: 230,
+  full: "{{ url_for('static', filename='img/oyong_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/oyong_siluet.png') }}",
+  pieces: [
+    // piece1: kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/oyong_piece1.png') }}", 
+      slot: { left: 274, top: 0, width: 137, height: 115 } },
+
+    // piece2: tengah atas
+    { id: 2, src: "{{ url_for('static', filename='img/oyong_piece2.png') }}", 
+      slot: { left: 137, top: 0, width: 137, height: 115 } },
+
+    // piece3: kiri atas
+    { id: 3, src: "{{ url_for('static', filename='img/oyong_piece3.png') }}", 
+      slot: { left: 0, top: 0, width: 137, height: 115 } },
+
+    // piece4: kanan bawah (di bawah piece1)
+    { id: 4, src: "{{ url_for('static', filename='img/oyong_piece4.png') }}", 
+      slot: { left: 274, top: 115, width: 137, height: 115 } },
+
+    // piece5: tengah bawah (di bawah piece2)
+    { id: 5, src: "{{ url_for('static', filename='img/oyong_piece5.png') }}", 
+      slot: { left: 137, top: 115, width: 137, height: 115 } },
+
+    // piece6: kiri bawah (di bawah piece3)
+    { id: 6, src: "{{ url_for('static', filename='img/oyong_piece6.png') }}", 
+      slot: { left: 0, top: 115, width: 137, height: 115 } }
+  ],
+  name_id: "Oyong",
+  name_en: "Ridge Gourd",
+  sound_id: "{{ url_for('static', filename='sounds/oyong_id.OGG') }}",
+},
+{
+  width: 390, height: 340,
+  full: "{{ url_for('static', filename='img/rebung_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/rebung_siluet.png') }}",
+  pieces: [
+    // piece1: kanan atas
+    { id: 1, src: "{{ url_for('static', filename='img/rebung_piece1.png') }}",
+      slot: { left: 260, top: 0, width: 130, height: 170 } },
+
+    // piece2: tengah atas
+    { id: 2, src: "{{ url_for('static', filename='img/rebung_piece2.png') }}",
+      slot: { left: 130, top: 0, width: 130, height: 170 } },
+
+    // piece3: kiri atas
+    { id: 3, src: "{{ url_for('static', filename='img/rebung_piece3.png') }}",
+      slot: { left: 0, top: 0, width: 130, height: 170 } },
+
+    // piece4: kanan bawah (di bawah piece1)
+    { id: 4, src: "{{ url_for('static', filename='img/rebung_piece4.png') }}",
+      slot: { left: 260, top: 170, width: 130, height: 170 } },
+
+    // piece5: tengah bawah (di bawah piece2)
+    { id: 5, src: "{{ url_for('static', filename='img/rebung_piece5.png') }}",
+      slot: { left: 130, top: 170, width: 130, height: 170 } },
+
+    // piece6: kiri bawah (di bawah piece3)
+    { id: 6, src: "{{ url_for('static', filename='img/rebung_piece6.png') }}",
+      slot: { left: 0, top: 170, width: 130, height: 170 } }
+  ],
+  name_id: "Rebung",
+  name_en: "Bamboo Shoot",
+  sound_id: "{{ url_for('static', filename='sounds/rebung_id.OGG') }}",
+},
+{
+  width: 372, height: 321,
+  full: "{{ url_for('static', filename='img/brokoli_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/brokoli_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/brokoli_piece1.png') }}",
+      slot: { left: 248, top: 0, width: 124, height: 107 } },
+    { id: 2, src: "{{ url_for('static', filename='img/brokoli_piece2.png') }}",
+      slot: { left: 124, top: 0, width: 124, height: 107 } },
+    { id: 3, src: "{{ url_for('static', filename='img/brokoli_piece3.png') }}",
+      slot: { left: 0, top: 0, width: 124, height: 107 } },
+
+    // row 2
+    { id: 4, src: "{{ url_for('static', filename='img/brokoli_piece4.png') }}",
+      slot: { left: 248, top: 107, width: 124, height: 107 } },
+    { id: 5, src: "{{ url_for('static', filename='img/brokoli_piece5.png') }}",
+      slot: { left: 124, top: 107, width: 124, height: 107 } },
+    { id: 6, src: "{{ url_for('static', filename='img/brokoli_piece6.png') }}",
+      slot: { left: 0, top: 107, width: 124, height: 107 } },
+
+    // row 3
+    { id: 7, src: "{{ url_for('static', filename='img/brokoli_piece7.png') }}",
+      slot: { left: 248, top: 214, width: 124, height: 107 } },
+    { id: 8, src: "{{ url_for('static', filename='img/brokoli_piece8.png') }}",
+      slot: { left: 124, top: 214, width: 124, height: 107 } },
+    { id: 9, src: "{{ url_for('static', filename='img/brokoli_piece9.png') }}",
+      slot: { left: 0, top: 214, width: 124, height: 107 } }
+  ],
+  name_id: "Brokoli",
+  name_en: "Broccoli",
+  sound_id: "{{ url_for('static', filename='sounds/brokoli_id.OGG') }}",
+},
+
+{
+  width: 372, height: 367,
+  full: "{{ url_for('static', filename='img/kubis_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/kubis_siluet.png') }}",
+  pieces: [
+    // row 1 (tinggi 122)
+    { id: 1, src: "{{ url_for('static', filename='img/kubis_piece1.png') }}",
+      slot: { left: 248, top: 0, width: 124, height: 122 } },
+    { id: 2, src: "{{ url_for('static', filename='img/kubis_piece2.png') }}",
+      slot: { left: 124, top: 0, width: 124, height: 122 } },
+    { id: 3, src: "{{ url_for('static', filename='img/kubis_piece3.png') }}",
+      slot: { left: 0, top: 0, width: 124, height: 122 } },
+
+    // row 2 (tinggi 123)
+    { id: 4, src: "{{ url_for('static', filename='img/kubis_piece4.png') }}",
+      slot: { left: 248, top: 122, width: 124, height: 123 } },
+    { id: 5, src: "{{ url_for('static', filename='img/kubis_piece5.png') }}",
+      slot: { left: 124, top: 122, width: 124, height: 123 } },
+    { id: 6, src: "{{ url_for('static', filename='img/kubis_piece6.png') }}",
+      slot: { left: 0, top: 122, width: 124, height: 123 } },
+
+    // row 3 (tinggi 122)
+    { id: 7, src: "{{ url_for('static', filename='img/kubis_piece7.png') }}",
+      slot: { left: 248, top: 245, width: 124, height: 122 } },
+    { id: 8, src: "{{ url_for('static', filename='img/kubis_piece8.png') }}",
+      slot: { left: 124, top: 245, width: 124, height: 122 } },
+    { id: 9, src: "{{ url_for('static', filename='img/kubis_piece9.png') }}",
+      slot: { left: 0, top: 245, width: 124, height: 122 } }
+  ],
+  name_id: "Kubis",
+  name_en: "Cabbage",
+  sound_id: "{{ url_for('static', filename='sounds/kubis_id.OGG') }}",
+},
+{
+  width: 372, height: 332,
+  full: "{{ url_for('static', filename='img/paprika_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/paprika_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/paprika_piece1.png') }}",
+      slot: { left: 248, top: 0, width: 124, height: 111 } },
+    { id: 2, src: "{{ url_for('static', filename='img/paprika_piece2.png') }}",
+      slot: { left: 124, top: 0, width: 124, height: 111 } },
+    { id: 3, src: "{{ url_for('static', filename='img/paprika_piece3.png') }}",
+      slot: { left: 0, top: 0, width: 124, height: 111 } },
+
+    // row 2
+    { id: 4, src: "{{ url_for('static', filename='img/paprika_piece4.png') }}",
+      slot: { left: 248, top: 111, width: 124, height: 110 } },
+    { id: 5, src: "{{ url_for('static', filename='img/paprika_piece5.png') }}",
+      slot: { left: 124, top: 111, width: 124, height: 110 } },
+    { id: 6, src: "{{ url_for('static', filename='img/paprika_piece6.png') }}",
+      slot: { left: 0, top: 111, width: 124, height: 110 } },
+
+    // row 3
+    { id: 7, src: "{{ url_for('static', filename='img/paprika_piece7.png') }}",
+      slot: { left: 248, top: 221, width: 124, height: 111 } },
+    { id: 8, src: "{{ url_for('static', filename='img/paprika_piece8.png') }}",
+      slot: { left: 124, top: 221, width: 124, height: 111 } },
+    { id: 9, src: "{{ url_for('static', filename='img/paprika_piece9.png') }}",
+      slot: { left: 0, top: 221, width: 124, height: 111 } }
+  ],
+  name_id: "Paprika",
+  name_en: "Bell Pepper",
+  sound_id: "{{ url_for('static', filename='sounds/paprika_id.OGG') }}",
+},
+{
+  width: 372, height: 352,
+  full: "{{ url_for('static', filename='img/bawangbombay_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/bawangbombay_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/bawangbombay_piece1.png') }}",
+      slot: { left: 248, top: 0, width: 124, height: 117 } },
+    { id: 2, src: "{{ url_for('static', filename='img/bawangbombay_piece2.png') }}",
+      slot: { left: 124, top: 0, width: 124, height: 117 } },
+    { id: 3, src: "{{ url_for('static', filename='img/bawangbombay_piece3.png') }}",
+      slot: { left: 0, top: 0, width: 124, height: 117 } },
+
+    // row 2
+    { id: 4, src: "{{ url_for('static', filename='img/bawangbombay_piece4.png') }}",
+      slot: { left: 248, top: 117, width: 124, height: 118 } },
+    { id: 5, src: "{{ url_for('static', filename='img/bawangbombay_piece5.png') }}",
+      slot: { left: 124, top: 117, width: 124, height: 118 } },
+    { id: 6, src: "{{ url_for('static', filename='img/bawangbombay_piece6.png') }}",
+      slot: { left: 0, top: 117, width: 124, height: 118 } },
+
+    // row 3
+    { id: 7, src: "{{ url_for('static', filename='img/bawangbombay_piece7.png') }}",
+      slot: { left: 248, top: 235, width: 124, height: 117 } },
+    { id: 8, src: "{{ url_for('static', filename='img/bawangbombay_piece8.png') }}",
+      slot: { left: 124, top: 235, width: 124, height: 117 } },
+    { id: 9, src: "{{ url_for('static', filename='img/bawangbombay_piece9.png') }}",
+      slot: { left: 0, top: 235, width: 124, height: 117 } }
+  ],
+  name_id: "Bawang Bombay",
+  name_en: "Onion",
+  sound_id: "{{ url_for('static', filename='sounds/bawangbombay_id.OGG') }}",
+},
+{
+  width: 260, height: 349,
+  full: "{{ url_for('static', filename='img/asparagus_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/asparagus_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/asparagus_piece1.png') }}",
+      slot: { left: 173, top: 0, width: 87, height: 116 } },
+    { id: 2, src: "{{ url_for('static', filename='img/asparagus_piece2.png') }}",
+      slot: { left: 87, top: 0, width: 86, height: 116 } },
+    { id: 3, src: "{{ url_for('static', filename='img/asparagus_piece3.png') }}",
+      slot: { left: 0, top: 0, width: 87, height: 116 } },
+
+    // row 2
+    { id: 4, src: "{{ url_for('static', filename='img/asparagus_piece4.png') }}",
+      slot: { left: 173, top: 116, width: 87, height: 117 } },
+    { id: 5, src: "{{ url_for('static', filename='img/asparagus_piece5.png') }}",
+      slot: { left: 87, top: 116, width: 86, height: 117 } },
+    { id: 6, src: "{{ url_for('static', filename='img/asparagus_piece6.png') }}",
+      slot: { left: 0, top: 116, width: 87, height: 117 } },
+
+    // row 3
+    { id: 7, src: "{{ url_for('static', filename='img/asparagus_piece7.png') }}",
+      slot: { left: 173, top: 233, width: 87, height: 116 } },
+    { id: 8, src: "{{ url_for('static', filename='img/asparagus_piece8.png') }}",
+      slot: { left: 87, top: 233, width: 86, height: 116 } },
+    { id: 9, src: "{{ url_for('static', filename='img/asparagus_piece9.png') }}",
+      slot: { left: 0, top: 233, width: 87, height: 116 } }
+  ],
+  name_id: "Asparagus",
+  name_en: "Asparagus",
+  sound_id: "{{ url_for('static', filename='sounds/asparagus_id.OGG') }}",
+},
+{
+  width: 372, height: 267,
+  full: "{{ url_for('static', filename='img/daunpakis_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/daunpakis_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/daunpakis_piece1.png') }}",
+      slot: { left: 248, top: 0, width: 124, height: 89 } },
+    { id: 2, src: "{{ url_for('static', filename='img/daunpakis_piece2.png') }}",
+      slot: { left: 124, top: 0, width: 124, height: 89 } },
+    { id: 3, src: "{{ url_for('static', filename='img/daunpakis_piece3.png') }}",
+      slot: { left: 0, top: 0, width: 124, height: 89 } },
+
+    // row 2
+    { id: 4, src: "{{ url_for('static', filename='img/daunpakis_piece4.png') }}",
+      slot: { left: 248, top: 89, width: 124, height: 89 } },
+    { id: 5, src: "{{ url_for('static', filename='img/daunpakis_piece5.png') }}",
+      slot: { left: 124, top: 89, width: 124, height: 89 } },
+    { id: 6, src: "{{ url_for('static', filename='img/daunpakis_piece6.png') }}",
+      slot: { left: 0, top: 89, width: 124, height: 89 } },
+
+    // row 3
+    { id: 7, src: "{{ url_for('static', filename='img/daunpakis_piece7.png') }}",
+      slot: { left: 248, top: 178, width: 124, height: 89 } },
+    { id: 8, src: "{{ url_for('static', filename='img/daunpakis_piece8.png') }}",
+      slot: { left: 124, top: 178, width: 124, height: 89 } },
+    { id: 9, src: "{{ url_for('static', filename='img/daunpakis_piece9.png') }}",
+      slot: { left: 0, top: 178, width: 124, height: 89 } }
+  ],
+  name_id: "DaunPakis",
+  name_en: "Fern",
+  sound_id: "{{ url_for('static', filename='sounds/daunpakis_id.OGG') }}",
+},
+{
+  width: 372, height: 267,
+  full: "{{ url_for('static', filename='img/bawangdaun_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/bawangdaun_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/bawangdaun_piece1.png') }}",
+      slot: { left: 279, top: 0, width: 93, height: 89 } },   // kanan atas
+    { id: 2, src: "{{ url_for('static', filename='img/bawangdaun_piece2.png') }}",
+      slot: { left: 186, top: 0, width: 93, height: 89 } },  // tengah atas
+    { id: 3, src: "{{ url_for('static', filename='img/bawangdaun_piece3.png') }}",
+      slot: { left: 93, top: 0, width: 93, height: 89 } },   // kiri atas
+    { id: 4, src: "{{ url_for('static', filename='img/bawangdaun_piece4.png') }}",
+      slot: { left: 0, top: 0, width: 93, height: 89 } },    // paling kiri atas
+
+    // row 2
+    { id: 5, src: "{{ url_for('static', filename='img/bawangdaun_piece5.png') }}",
+      slot: { left: 279, top: 89, width: 93, height: 89 } }, 
+    { id: 6, src: "{{ url_for('static', filename='img/bawangdaun_piece6.png') }}",
+      slot: { left: 186, top: 89, width: 93, height: 89 } }, 
+    { id: 7, src: "{{ url_for('static', filename='img/bawangdaun_piece7.png') }}",
+      slot: { left: 93, top: 89, width: 93, height: 89 } },  
+    { id: 8, src: "{{ url_for('static', filename='img/bawangdaun_piece8.png') }}",
+      slot: { left: 0, top: 89, width: 93, height: 89 } },   
+
+    // row 3
+    { id: 9, src: "{{ url_for('static', filename='img/bawangdaun_piece9.png') }}",
+      slot: { left: 279, top: 178, width: 93, height: 89 } },
+    { id: 10, src: "{{ url_for('static', filename='img/bawangdaun_piece10.png') }}",
+      slot: { left: 186, top: 178, width: 93, height: 89 } },
+    { id: 11, src: "{{ url_for('static', filename='img/bawangdaun_piece11.png') }}",
+      slot: { left: 93, top: 178, width: 93, height: 89 } },
+    { id: 12, src: "{{ url_for('static', filename='img/bawangdaun_piece12.png') }}",
+      slot: { left: 0, top: 178, width: 93, height: 89 } }
+  ],
+  name_id: "Bawang Daun",
+  name_en: "Spring Onion",
+  sound_id: "{{ url_for('static', filename='sounds/bawangdaun_id.OGG') }}",
+},
+
+{
+  width: 372, height: 333,
+  full: "{{ url_for('static', filename='img/jamurkancing_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/jamurkancing_siluet.png') }}",
+  pieces: [
+    // row 1 (111 px tinggi)
+    { id: 1, src: "{{ url_for('static', filename='img/jamurkancing_piece1.png') }}",
+      slot: { left: 279, top: 0, width: 93, height: 111 } },
+    { id: 2, src: "{{ url_for('static', filename='img/jamurkancing_piece2.png') }}",
+      slot: { left: 186, top: 0, width: 93, height: 111 } },
+    { id: 3, src: "{{ url_for('static', filename='img/jamurkancing_piece3.png') }}",
+      slot: { left: 93, top: 0, width: 93, height: 111 } },
+    { id: 4, src: "{{ url_for('static', filename='img/jamurkancing_piece4.png') }}",
+      slot: { left: 0, top: 0, width: 93, height: 111 } },
+
+    // row 2 (110 px tinggi)
+    { id: 5, src: "{{ url_for('static', filename='img/jamurkancing_piece5.png') }}",
+      slot: { left: 279, top: 111, width: 93, height: 110 } },
+    { id: 6, src: "{{ url_for('static', filename='img/jamurkancing_piece6.png') }}",
+      slot: { left: 186, top: 111, width: 93, height: 110 } },
+    { id: 7, src: "{{ url_for('static', filename='img/jamurkancing_piece7.png') }}",
+      slot: { left: 93, top: 111, width: 93, height: 110 } },
+    { id: 8, src: "{{ url_for('static', filename='img/jamurkancing_piece8.png') }}",
+      slot: { left: 0, top: 111, width: 93, height: 110 } },
+
+    // row 3 (111 px tinggi)
+    { id: 9, src: "{{ url_for('static', filename='img/jamurkancing_piece9.png') }}",
+      slot: { left: 279, top: 221, width: 93, height: 111 } },
+    { id: 10, src: "{{ url_for('static', filename='img/jamurkancing_piece10.png') }}",
+      slot: { left: 186, top: 221, width: 93, height: 111 } },
+    { id: 11, src: "{{ url_for('static', filename='img/jamurkancing_piece11.png') }}",
+      slot: { left: 93, top: 221, width: 93, height: 111 } },
+    { id: 12, src: "{{ url_for('static', filename='img/jamurkancing_piece12.png') }}",
+      slot: { left: 0, top: 221, width: 93, height: 111 } }
+  ],
+  name_id: "Jamur Kancing",
+  name_en: "Button Mushroom",
+  sound_id: "{{ url_for('static', filename='sounds/jamurkancing_id.OGG') }}",
+},
+{
+  width: 372, height: 332,
+  full: "{{ url_for('static', filename='img/bawangputih_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/bawangputih_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/bawangputih_piece1.png') }}",
+      slot: { left: 279, top: 0, width: 93, height: 111 } },
+    { id: 2, src: "{{ url_for('static', filename='img/bawangputih_piece2.png') }}",
+      slot: { left: 186, top: 0, width: 93, height: 111 } },
+    { id: 3, src: "{{ url_for('static', filename='img/bawangputih_piece3.png') }}",
+      slot: { left: 93, top: 0, width: 93, height: 111 } },
+    { id: 4, src: "{{ url_for('static', filename='img/bawangputih_piece4.png') }}",
+      slot: { left: 0, top: 0, width: 93, height: 111 } },
+
+    // row 2
+    { id: 5, src: "{{ url_for('static', filename='img/bawangputih_piece5.png') }}",
+      slot: { left: 279, top: 111, width: 93, height: 110 } },
+    { id: 6, src: "{{ url_for('static', filename='img/bawangputih_piece6.png') }}",
+      slot: { left: 186, top: 111, width: 93, height: 110 } },
+    { id: 7, src: "{{ url_for('static', filename='img/bawangputih_piece7.png') }}",
+      slot: { left: 93, top: 111, width: 93, height: 110 } },
+    { id: 8, src: "{{ url_for('static', filename='img/bawangputih_piece8.png') }}",
+      slot: { left: 0, top: 111, width: 93, height: 110 } },
+
+    // row 3
+    { id: 9, src: "{{ url_for('static', filename='img/bawangputih_piece9.png') }}",
+      slot: { left: 279, top: 221, width: 93, height: 111 } },
+    { id: 10, src: "{{ url_for('static', filename='img/bawangputih_piece10.png') }}",
+      slot: { left: 186, top: 221, width: 93, height: 111 } },
+    { id: 11, src: "{{ url_for('static', filename='img/bawangputih_piece11.png') }}",
+      slot: { left: 93, top: 221, width: 93, height: 111 } },
+    { id: 12, src: "{{ url_for('static', filename='img/bawangputih_piece12.png') }}",
+      slot: { left: 0, top: 221, width: 93, height: 111 } }
+  ],
+  name_id: "Bawang Putih",
+  name_en: "Garlic",
+  sound_id: "{{ url_for('static', filename='sounds/bawangputih_id.OGG') }}",
+},
+{
+  width: 372, height: 267,
+  full: "{{ url_for('static', filename='img/bawangdaun_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/bawangdaun_siluet.png') }}",
+  pieces: [
+    // row 1
+    { id: 1, src: "{{ url_for('static', filename='img/bawangdaun_piece1.png') }}",
+      slot: { left: 279, top: 0, width: 93, height: 89 } },   // kanan atas
+    { id: 2, src: "{{ url_for('static', filename='img/bawangdaun_piece2.png') }}",
+      slot: { left: 186, top: 0, width: 93, height: 89 } },  // tengah atas
+    { id: 3, src: "{{ url_for('static', filename='img/bawangdaun_piece3.png') }}",
+      slot: { left: 93, top: 0, width: 93, height: 89 } },   // kiri atas
+    { id: 4, src: "{{ url_for('static', filename='img/bawangdaun_piece4.png') }}",
+      slot: { left: 0, top: 0, width: 93, height: 89 } },    // paling kiri atas
+
+    // row 2
+    { id: 5, src: "{{ url_for('static', filename='img/bawangdaun_piece5.png') }}",
+      slot: { left: 279, top: 89, width: 93, height: 89 } }, 
+    { id: 6, src: "{{ url_for('static', filename='img/bawangdaun_piece6.png') }}",
+      slot: { left: 186, top: 89, width: 93, height: 89 } }, 
+    { id: 7, src: "{{ url_for('static', filename='img/bawangdaun_piece7.png') }}",
+      slot: { left: 93, top: 89, width: 93, height: 89 } },  
+    { id: 8, src: "{{ url_for('static', filename='img/bawangdaun_piece8.png') }}",
+      slot: { left: 0, top: 89, width: 93, height: 89 } },   
+
+    // row 3
+    { id: 9, src: "{{ url_for('static', filename='img/bawangdaun_piece9.png') }}",
+      slot: { left: 279, top: 178, width: 93, height: 89 } },
+    { id: 10, src: "{{ url_for('static', filename='img/bawangdaun_piece10.png') }}",
+      slot: { left: 186, top: 178, width: 93, height: 89 } },
+    { id: 11, src: "{{ url_for('static', filename='img/bawangdaun_piece11.png') }}",
+      slot: { left: 93, top: 178, width: 93, height: 89 } },
+    { id: 12, src: "{{ url_for('static', filename='img/bawangdaun_piece12.png') }}",
+      slot: { left: 0, top: 178, width: 93, height: 89 } }
+  ],
+  name_id: "Bawang Daun",
+  name_en: "Spring Onion",
+  sound_id: "{{ url_for('static', filename='sounds/bawangdaun_id.OGG') }}",
+},
+
+
+
+  // puzzle lain (brokoli, tomat, dst.)
+];
+
+  
+   
+
+  </script>
+
+  <script src="{{ url_for('static', filename='js/puzzle.js') }}"></script>
+   <!-- Tombol Back -->
+
+  <script>
+  localStorage.setItem("puzzleScore", "0"); 
+  localStorage.removeItem("finalScore"); 
+</script>
+<canvas id="confetti"></canvas>
+
+</body>
+</html>

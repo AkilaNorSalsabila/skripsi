@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notif Level Mudah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mudah_notif.css') }}">
+</head>
+<body>
+  <!-- Dekor pojok -->
+  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
+  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
+
+  <!-- Judul -->
+  <header class="notif-header">
+  <h1>
+    <span id="notif-text"></span><br>
+    <span id="veg-name"></span>
+  </h1>
+  <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
+    <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
+  </button>
+</header>
+
+<main class="notif-main">
+  <img id="notif-veg" src="" alt="">
+</main>
+<div id="confetti-container">
+  <canvas id="confetti"></canvas>
+</div>
+
+<audio id="id-player"></audio>
+
+<script>
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const pieces = [];
+  const colors = ["#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"];
+  let timeUp = false; // 🔹 penanda waktu habis
+
+  for (let i = 0; i < 150; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: 8,
+      h: 14,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: 2 + Math.random() * 3,
+      rotate: Math.random() * 360,
+      dr: Math.random() * 10
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach((p) => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotate * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+
+      p.y += p.speed;
+      p.rotate += p.dr;
+
+      if (p.y > canvas.height) {
+        p.y = -10;
+        p.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  const lang = localStorage.getItem("gameLang") || "id";
+  const vegData = JSON.parse(localStorage.getItem("notifVeg"));
+  const player = document.getElementById("id-player");
+
+  const notifText = document.getElementById("notif-text");
+  const vegName = document.getElementById("veg-name");
+  const vegImage = document.getElementById("notif-veg");
+
+  if (vegData) {
+    if (lang === "en") {
+      notifText.textContent = "Correct";
+      vegName.textContent = vegData.en;
+    } else {
+      notifText.textContent = "Benar";
+      vegName.textContent = vegData.id;
+    }
+    vegImage.src = vegData.img;
+    vegImage.alt = vegData[lang];
+  }
+
+  // ✅ otomatis play saat halaman terbuka
+  window.addEventListener("load", () => {
+    if (timeUp) return; // jangan play kalau sudah time up
+    if (lang === "en") {
+      const utter = new SpeechSynthesisUtterance("Correct! This is " + vegData.en + ".");
+      utter.lang = "en-US";
+      speechSynthesis.speak(utter);
+    } else {
+      player.src = `/static/sounds/${vegData.id}_id.ogg`;
+      player.play();
+    }
+  });
+
+  // ✅ tombol speak manual
+  document.getElementById("btn-speak").addEventListener("click", () => {
+    if (timeUp) return; // jangan bisa dipencet kalau sudah habis waktu
+    if (lang === "en") {
+      const utter = new SpeechSynthesisUtterance("Correct! This is " + vegData.en + ".");
+      utter.lang = "en-US";
+      speechSynthesis.speak(utter);
+    } else {
+      player.src = `/static/sounds/${vegData.id}_id.ogg`;
+      player.play();
+    }
+  });
+
+  // ✅ timer 8 detik lalu ke soal berikutnya
+  setTimeout(() => {
+    timeUp = true; // 🔹 tandai waktu habis
+
+    // stop audio kalau masih jalan
+    if (!player.paused) {
+      player.pause();
+      player.currentTime = 0;
+    }
+    // stop speech synthesis kalau masih ngomong
+    speechSynthesis.cancel();
+
+    let currentIndex = parseInt(localStorage.getItem("currentIndex") || "0");
+    let totalQuestions = 5;
+
+    if (currentIndex < totalQuestions - 1) {
+      localStorage.setItem("currentIndex", currentIndex + 1);
+      window.location.href = "/level_mudah";
+    } else {
+      localStorage.removeItem("sessionQuestions");
+      localStorage.removeItem("currentIndex");
+      window.location.href = "/skor";
+    }
+  }, 8000);
+</script>

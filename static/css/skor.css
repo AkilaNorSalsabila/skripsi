@@ -1,0 +1,147 @@
+:root{
+  --bg:#EAF7FF;
+  --brand:#00B4E1;
+  --text:#000;
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:var(--bg);
+  font-family:'Mochiy Pop One', system-ui, sans-serif;
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* dekor (sama seperti mudah) */
+.decor{
+  position:fixed;
+  pointer-events:none;
+  z-index:-1;
+}
+.decor-right{ top:0; right:0; width:220px; }
+.decor-left{ bottom:0; left:0; width:300px; }
+
+/* back button */
+.back-button{
+  position:fixed;
+  top:60px;
+  left:20px;
+  z-index:2;
+}
+.back-button img{ width:50px; transition:transform .15s; }
+.back-button:hover img{ transform:scale(1.06); }
+
+/* header */
+.header{
+  margin-top:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+#title-text{
+  font-size:50px;
+  line-height:1.1;
+  text-align:center;
+  margin:0;
+}
+.speak-btn{
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  padding:8px;
+  border-radius:12px;
+  transition:transform .15s ease;
+  transform: translateX(40px);
+}
+.speak-btn img{ width:44px; height:44px; display:block; }
+
+/* main skor area */
+.score-main{
+  margin-top: 70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.score-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:28px;
+  
+}
+
+/* kotak skor */
+#score-box {
+  background: var(--brand);
+  color: #fff;
+  padding: 40px 50px; /* lebih panjang dan tinggi */
+  border-radius: 12px;
+  font-size: 70px;
+  font-weight: 100;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  border: 4px solid rgba(0,0,0,.18);
+  min-width: 0px;
+  text-align: center;
+  line-height: 2.0; /* biar tulisan turun agak ke bawah */
+}
+
+/* tombol icon besar */
+/* area skor */
+.score-main {
+  margin-top: 60px; /* turunin seluruh kontainer skor */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px; /* jarak lebih lega */
+}
+
+/* kotak skor */
+#score-box {
+  background: var(--brand);
+  color: #fff;
+  padding: 70px 50px; /* lebih panjang dan tinggi */
+  border-radius: 12px;
+  font-size: 56px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  border: 4px solid rgba(0,0,0,.18);
+  min-width: 290px;
+  text-align: center;
+  line-height: 1.5; /* biar tulisan turun agak ke bawah */
+}
+.icon-btn {
+  background:none;     /* ⬅️ hilangkan background abu2 */
+  border:none;         /* ⬅️ hilangkan border */
+  cursor:pointer;
+  padding:0;
+}
+/* tombol icon */
+.buttons {
+  display: flex;
+  gap: 76px;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn img {
+  width: 64px;   /* tombol lebih kecil */
+  height: 64px;
+  display: block;
+}
+
+.icon-btn:hover{ transform: scale(1.06); }
+
+/* responsive */
+@media (max-width: 992px){
+  #title-text{ font-size:42px; transform: translateX(0); }
+  #score-box{ font-size:36px; padding: 26px 44px; }
+  .icon-btn svg { width:56px; height:56px; }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Belajar Mengenal Sayur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+  
+  <!-- Font Mochiy Pop One -->
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <!-- Font Quicksand -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="home">
+  <!-- Dekorasi pojokan -->
+  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" 
+       alt="Monkey Corner" class="decor decor-left">
+  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" 
+       alt="Vegetables Corner" class="decor decor-right">
+
+  <!-- Konten utama -->
+  <div class="content">
+    <h1>Belajar Dan <br> Bermain</h1>
+    
+    <div class="menu-buttons">
+      <!-- Item Sayuran -->
+      <div class="menu-item">
+        <button class="sayuran" onclick="location.href='/sayuran'">
+          <img src="{{ url_for('static', filename='img/sayuran_button.png') }}" alt="Sayuran">
+        </button>
+        <p>Mengenal <br> Sayuran</p>
+      </div>
+
+      <!-- Item Hewan -->
+      <div class="menu-item">
+        <button class="hewan" onclick="location.href='/hewan'">
+          <img src="{{ url_for('static', filename='img/hewan_button.png') }}" alt="Hewan">
+        </button>
+        <p>Mengenal <br> Hewan</p>
+      </div>
+
+      <!-- Item Permainan -->
+      <div class="menu-item">
+        <button class="permainan" onclick="location.href='/permainan'">
+          <img src="{{ url_for('static', filename='img/permainan_button.png') }}" alt="Permainan">
+        </button>
+        <p>Permainan</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

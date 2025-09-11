@@ -1,0 +1,154 @@
+body {
+  background-color: #EAF7FF;
+  margin: 0;
+  font-family: 'Mochiy Pop One', sans-serif;
+  overflow: hidden;
+}
+
+.decor {
+  position: absolute;
+  z-index: 1;  /* dekor selalu di belakang */
+}
+
+.decor-left {
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 250px;
+  z-index: 1;  /* dekor selalu di belakang */
+}
+
+.decor-right {
+  bottom: -15px;
+  right: 0;
+  width: 350px;
+  height: auto;
+  z-index: 1;  /* dekor selalu di belakang */
+}
+
+.content {
+  position: relative;
+  z-index: 5; /* pastikan konten di atas dekor */
+}
+
+.content h1 {
+  font-family: 'Mochiy Pop One', sans-serif;
+  font-size: 50px;
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: normal;
+  z-index: 10;  /* dekor selalu di belakang */
+}
+
+.level-buttons {
+  display: flex;
+  flex-direction: column; /* susun tombol ke bawah */
+  align-items: center;
+  gap: 40px; /* jarak antar tombol */
+}
+
+.level-buttons button {
+  width: 250px;
+  height: 70px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+  background-color: #00B4E1;
+  z-index: 10;  /* dekor selalu di belakang */
+}
+
+.level-buttons button:hover {
+  transform: scale(1.05);
+}
+.back-button {
+  position: fixed;
+  top: 60px;
+  left: 260px;   /* default: untuk layar besar */
+  z-index: 10;
+}
+
+.back-button img {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+
+/* Saat layar kecil (tablet/HP), geser biar ga nabrak judul */
+@media (max-width: 992px) {
+  .back-button {
+    left: 20px;
+    top: 20px;
+  }
+
+  .back-button img {
+    width: 40px;
+  }
+}
+.lang-select {
+  position: absolute;
+  top: 20px;
+  right: 50px;   /* digeser biar gak terlalu pojok */
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+  user-select: none;
+  z-index: 20;
+}
+
+.lang-select .selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 2px solid #00B4E1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.lang-select .selected img {
+  width: 22px;
+  height: 15px;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+}
+
+.lang-select .options {
+  margin-top: 5px;
+  background: #fff;
+  border: 2px solid #00B4E1;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.lang-select .options div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.lang-select .options div:hover {
+  background: #EAF7FF;
+}
+
+.lang-select .options img {
+  width: 22px;
+  height: 15px;
+  border-radius: 2px;
+}
+
+.hidden {
+  display: none;
+}

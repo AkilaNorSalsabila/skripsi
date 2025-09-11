@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Mengenal Sayur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sayuran.css') }}">
+      <!-- Font Bakso Sapi -->
+   <link href="https://fonts.googleapis.com/css2?family=Bakso+Sapi:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Corner Sayuran -->
+    <img src="{{ url_for('static', filename='img/vegetables_corner_top.png') }}" alt="Sayuran Top" class="corner top-left">
+    <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" alt="Sayuran Bottom" class="corner bottom-right">
+
+    <!-- Kontainer Utama -->
+    <div class="content-row">
+    <!-- Kolom kiri: Kamera + Tombol -->
+    <div class="left-col">
+        <div class="image-box">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+        </div>
+
+        <!-- Tombol Kamera & Upload -->
+        <div class="button-box">
+            <button id="capture" class="btn camera">
+                Foto dengan Kamera 
+                <img src="{{ url_for('static', filename='img/Camera.svg.png') }}" alt="Camera" class="icon-btn">
+            </button>
+            <button id="upload" class="btn upload">
+                Unggah Gambar 
+                <img src="{{ url_for('static', filename='img/Vector.png') }}" alt="Upload" class="icon-btn">
+            </button>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;">
+        </div>
+    </div>
+
+    <!-- Kolom kanan: Translate -->
+    <div class="translate-box">
+        <div class="translate-item">
+            <img src="{{ url_for('static', filename='img/flag indo.png') }}" alt="Indonesia" class="flag">
+            <span class="text">Wortel</span>
+            <button class="audio-btn">
+                <img src="{{ url_for('static', filename='img/play.png') }}" alt="Play" class="play-icon">
+                <img src="{{ url_for('static', filename='img/audio_wave.png') }}" alt="Wave" class="wave-icon">
+            </button>
+        </div>
+        <div class="translate-item">
+            <img src="{{ url_for('static', filename='img/flag uk.png') }}" alt="English" class="flag">
+            <span class="text">Carrot</span>
+            <button class="audio-btn">
+                <img src="{{ url_for('static', filename='img/play.png') }}" alt="Play" class="play-icon">
+                <img src="{{ url_for('static', filename='img/audio_wave.png') }}" alt="Wave" class="wave-icon">
+            </button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Script Kamera & Upload -->
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture');
+        const uploadBtn = document.getElementById('upload');
+        const fileInput = document.getElementById('fileInput');
+
+        // Aktifkan kamera otomatis
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Tidak bisa akses kamera: ", err);
+            });
+
+        // Ambil foto ketika klik tombol
+        captureBtn.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Ambil frame dari video
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Tampilkan hasil foto, sembunyikan video
+            video.style.display = "none";
+            canvas.style.display = "block";
+        });
+
+        // Klik tombol upload -> buka file picker
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Ketika file dipilih
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const context = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    context.drawImage(img, 0, 0);
+
+                    // Sembunyikan video, tampilkan canvas
+                    video.style.display = "none";
+                    canvas.style.display = "block";
+                }
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>

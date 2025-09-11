@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Menengah – Cocokkan Siluet</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/menengah.css') }}">
+</head>
+<body>
+  <!-- Dekor pojok -->
+  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
+  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
+
+  <!-- Tombol Back -->
+  <a href="/pilih_level" class="back-button">
+    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Kembali">
+  </a>
+
+  <!-- Judul + tombol suara -->
+  <header class="header">
+    <h1 id="title-text">Cocokkan <br> sayuran ini</h1>
+    <button id="btn-speak" class="speak-btn" aria-label="Putar instruksi">
+      <img src="{{ url_for('static', filename='img/sound.png') }}" alt="speak">
+    </button>
+  </header>
+
+  <!-- Area Siluet -->
+  <main id="game">
+    <div id="siluet-container" class="siluet-container"></div>
+    <div id="pilihan-container" class="pilihan-container"></div>
+  </main>
+
+  <!-- Progress -->
+  <div id="progress" class="progress">Soal 1/5</div>
+
+  <!-- Audio -->
+  <audio id="sfx-correct" src="{{ url_for('static', filename='sounds/correct.mp3') }}"></audio>
+  <audio id="sfx-wrong" src="{{ url_for('static', filename='sounds/wrong.mp3') }}"></audio>
+  <audio id="id-player"></audio>
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/menengah.js') }}"></script>
+</body>
+</html>

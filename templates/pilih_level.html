@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pilihan Level Game</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pilih_level.css') }}">
+  
+  <!-- Font Mochiy Pop One -->
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <!-- Font Quicksand -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="pilih-level">
+  <!-- Dekorasi pojokan -->
+  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" 
+       alt="Monkey Corner" class="decor decor-left">
+  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" 
+       alt="Vegetables Corner" class="decor decor-right">
+
+  <!-- Dropdown Pilih Bahasa -->
+  <div class="lang-select">
+    <div id="selected-lang" class="selected" aria-haspopup="true" aria-expanded="false">
+      <!-- akan diisi oleh level.js saat load -->
+      <img src="/static/img/flag indo.png" alt="ID"><span>Indonesia</span>
+    </div>
+
+    <div id="lang-options" class="options hidden" role="menu">
+      <div role="menuitem" onclick="setLanguage('id', event)" class="lang-option">
+        <img src="/static/img/flag indo.png" alt="ID"><span>Indonesia</span>
+      </div>
+      <div role="menuitem" onclick="setLanguage('en', event)" class="lang-option">
+        <img src="/static/img/flag uk.png" alt="EN"><span>English</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Konten utama -->
+  <div class="content">
+    <h1 id="title">Pilih Level</h1>
+    
+    <div class="level-buttons">
+      <button id="btn-easy" onclick="
+        localStorage.removeItem('sessionQuestions');
+        localStorage.setItem('currentIndex', 0); 
+        location.href='/level_mudah';
+      ">mudah</button>
+
+      <button id="btn-medium" onclick="location.href='/level_menengah'">menengah</button>
+      <button id="btn-hard" onclick="location.href='/puzzle_sulit1'">sulit</button>
+    </div>
+  </div>
+
+  <!-- Tombol Back -->
+  <a href="/permainan" class="back-button">
+    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Back">
+  </a>
+
+  <!-- Script JS level -->
+  <script src="{{ url_for('static', filename='js/level.js') }}"></script>
+</body>
+</html>

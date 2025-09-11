@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pilihan Game</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/permainan.css') }}">
+  
+  <!-- Font Mochiy Pop One -->
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <!-- Font Quicksand -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body class="permainan">
+  <!-- Dekorasi pojokan -->
+  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" 
+       alt="Monkey Corner" class="decor decor-left">
+  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" 
+       alt="Vegetables Corner" class="decor decor-right">
+
+  <!-- Konten utama -->
+  <div class="content">
+    <h1>Pilih Game</h1>
+    
+    <div class="menu-buttons">
+        <!-- Game Sayuran -->
+        <div class="menu-item">
+            <button class="game-sayuran" onclick="location.href='/pilih_level'">
+            <img src="{{ url_for('static', filename='img/sayuran_button.png') }}" alt="Game Sayuran">
+            <span>Sayuran</span>
+            </button>
+        </div>
+
+        <!-- Game Hewan -->
+        <div class="menu-item">
+            <button class="game-hewan" onclick="location.href='/game_hewan'">
+            <img src="{{ url_for('static', filename='img/hewan_button.png') }}" alt="Game Hewan">
+            <span>Hewan</span>
+            </button>
+        </div>
+        </div>
+
+  </div>
+  <!-- Tombol Back -->
+  <a href="/" class="back-button">
+    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Back">
+  </a>
+
+</body>
+</html>

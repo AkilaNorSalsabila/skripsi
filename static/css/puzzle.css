@@ -1,0 +1,192 @@
+body {
+  font-family: 'Mochiy Pop One', sans-serif;
+  text-align: center;
+  background-color: #EAF7FF;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Progress Soal */
+#progress {
+  position: fixed;
+  top: 450px;
+  left: 1100px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* Corner sayuran */
+.decor {
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+}
+.decor-right { top: 0; right: 0; width: 220px; }
+.decor-left { bottom: 0; left: 0; width: 300px; }
+
+/* Bungkus judul dan tombol sound */
+#title-wrapper {
+  display: flex;
+  align-items: center;      /* vertikal rata tengah */
+  justify-content: center;  /* biar ke tengah halaman */
+  gap: 15px;                /* jarak antara teks dan icon */
+  margin-top: 25px;
+  margin-left: 90px;
+}
+
+#game-title {
+  font-size: 50px;
+  color: #000;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.sound-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: transform .15s ease;
+}
+
+.sound-button img {
+  width: 44px;
+  height: 44px;
+  display: block;
+  margin-left: 30px;
+}
+#game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;  /* biar benar-benar ke tengah */
+  gap: 20px;
+  margin-top: 40px;
+  /*transform: scale(0.8);   /* perkecil jadi 85% */
+  /*transform-origin: top center; /* biar mengecil ke arah tengah */
+}
+
+
+#board {
+  position: relative;
+  margin: 0; /* jangan auto, biar ngikut flexbox */
+}
+
+/* Siluet dan full image otomatis sesuai JS */
+#full-image, #siluet, .siluet-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+}
+
+.hidden { display: none; }
+
+.slot {
+  position: absolute;
+  border: 2px dashed rgba(0,0,0,0.15);
+}
+
+#pieces-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* default 2 kolom */
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+}
+#pieces-container.three-col {
+  grid-template-columns: repeat(3, 1fr); /* kalau >4 pieces */
+}
+#pieces-container img {
+  width: 120px;
+  border: 1px solid #ccc;
+  cursor: grab;
+  border-radius: 6px;
+}
+
+
+#message {
+  margin-top: 30px;
+  font-size: 28px;
+  font-weight: bold;
+  color: green;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 110px;   /* geser lebih kiri */
+  z-index: 10;
+}
+
+.back-button img {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+
+/* Saat layar kecil (tablet/HP), geser biar ga nabrak judul */
+@media (max-width: 992px) {
+  .back-button {
+    left: 20px;
+    top: 20px;
+  }
+
+  .back-button img {
+    width: 40px;
+  }
+}
+/* Efek shake */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.slot.shake {
+  animation: shake 0.5s;
+}
+/* Timer */
+/* Timer */
+#timer {
+  position: fixed;
+  top: 25px;        /* sejajar tombol back */
+  left: 190px;       /* kasih jarak dari tombol back */
+  font-family: 'Mochiy Pop One', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1565c0;        /* biru tua */
+  background: #e3f2fd;
+  padding: 6px 14px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+/* Bila mau berubah warna mendekati habis (opsional) */
+#timer.warn { color: #e65100; background: #fff3e0; }   /* kuning/oranye */
+#timer.danger { color: #b71c1c; background: #ffebee; }  /* merah lembut */
+
+
+#confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99;
+}

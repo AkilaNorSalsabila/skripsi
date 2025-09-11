@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <title>Skor</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/skor.css') }}">
+</head>
+<body>
+
+  <!-- dekor pojok (sama seperti level mudah) -->
+  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
+  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
+
+  <!-- back -->
+  <a href="/pilih_level" class="back-button">
+    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Kembali">
+  </a>
+
+  <!-- Header -->
+  <header class="header">
+    <h1 id="title-text">Skor</h1>
+    <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
+      <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
+    </button>
+  </header>
+
+  <!-- Konten utama -->
+  <main class="score-main">
+    <div class="score-container">
+      <div id="score-box">0/100</div>
+
+      <div class="buttons">
+        <button id="btn-retry" class="icon-btn" title="Ulang">
+            <img src="{{ url_for('static', filename='img/repeat.png') }}" alt="Ulang">
+        </button>
+
+        <button id="btn-next" class="icon-btn" title="Lanjut">
+            <img src="{{ url_for('static', filename='img/next.png') }}" alt="Lanjut">
+        </button>
+        </div>
+
+    </div>
+  </main>
+
+<script>
+  // Ambil bahasa
+  const lang = localStorage.getItem("gameLang") || "id";
+
+  // Ambil skor (harapkan sudah diset oleh mudah.js ketika selesai: localStorage.setItem('finalScore', '80'))
+  // Fallback: kalau finalScore tidak ada, coba hitung dari correctCount / totalQuestions
+  function getFinalScore() {
+    const fs = localStorage.getItem("finalScore");
+    if (fs !== null) return fs.toString();
+
+    const correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
+    const totalQuestions = parseInt(localStorage.getItem("totalQuestions") || "5", 10);
+    if (!isNaN(correctCount) && !isNaN(totalQuestions) && totalQuestions > 0) {
+      const pct = Math.round((correctCount / totalQuestions) * 100);
+      return String(pct);
+    }
+    return "0";
+  }
+
+  const finalScore = getFinalScore();
+  document.getElementById("score-box").textContent = `${finalScore}/100`;
+
+  document.getElementById("btn-retry").addEventListener("click", () => {
+    const lastLevel = localStorage.getItem("lastLevel") || "mudah";
+    localStorage.removeItem("sessionQuestions");
+    localStorage.removeItem("currentIndex");
+    localStorage.removeItem("finalScore");
+    localStorage.removeItem("correctCount");
+    localStorage.removeItem("totalQuestions");
+    localStorage.removeItem("puzzleScore");
+    
+    if (lastLevel === "sulit") {
+      window.location.href = "/puzzle_sulit1";
+    } else {
+      window.location.href = "/level_mudah";
+    }
+  });
+
+
+  // Tombol next: bersihkan dan kembali ke pilih level
+  document.getElementById("btn-next").addEventListener("click", () => {
+    localStorage.removeItem("sessionQuestions");
+    localStorage.removeItem("currentIndex");
+    localStorage.removeItem("finalScore");
+    localStorage.removeItem("correctCount");
+    localStorage.removeItem("totalQuestions");
+    window.location.href = "/pilih_level";
+  });
+
+  // Tombol suara
+  document.getElementById("btn-speak").addEventListener("click", () => {
+    const scoreText = (lang === "en")
+      ? `Your score is ${finalScore} out of 100`
+      : `Skormu ${finalScore} dari 100`;
+    const utter = new SpeechSynthesisUtterance(scoreText);
+    utter.lang = (lang === "en") ? "en-US" : "id-ID";
+    speechSynthesis.speak(utter);
+  });
+</script>
+
+</body>
+</html>
