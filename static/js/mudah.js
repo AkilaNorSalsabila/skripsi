@@ -13,61 +13,72 @@ const titleText = document.getElementById("title-text");
 
 // 🔹 teks instruksi
 const texts = {
-  id: "Pilih nama<br>sayuran ini",
-  en: "Choose the name<br>of this vegetable"
+  id: "pilih nama<br>sayuran ini",
+  en: "choose the name<br>of this vegetable"
 };
 
 // 🔹 jumlah soal per sesi
 const totalQuestions = 5;
 
-// 🔹 semua soal (30 data)
-const allQuestions = [ 
+// 🔹 semua soal (potongan, sudah sesuai)
+const bankSangatMudah = [
   {
-    image: "/static/img/broccoli.png",
-    correctAnswer: { id: "Brokoli", en: "Broccoli" },
+    image: "/static/img/tomat.png",
+    correctAnswer: { id: "Tomat", en: "Tomato" },
     answers: {
-      id: ["Brokoli", "Kubis", "Bayam"],
-      en: ["Broccoli", "Cabbage", "Spinach"]
-    }
-  },
-    {
-    image: "/static/img/jantung_pisang.png",
-    correctAnswer: { id: "Jantung Pisang", en: "Banana Blossom" },
-    answers: {
-      id: ["Jantung Pisang", "Lobak", "Rebung"],
-      en: ["Banana Blossom", "Radish", "Bamboo Shoot"]
+      id: ["Tomat", "Brokoli", "Wortel"],
+      en: ["Tomato", "Broccoli", "Carrot"]
     }
   },
   {
-    image: "/static/img/oyong.png",
-    correctAnswer: { id: "Oyong", en: "Luffa" },
+    image: "/static/img/wortel.png",
+    correctAnswer: { id: "Wortel", en: "Carrot" },
     answers: {
-      id: ["Oyong", "Labu Siam", "Mentimun"],
-      en: ["Luffa", "Chayote", "Cucumber"]
+      id: ["Wortel", "Terong", "Kubis"],
+      en: ["Carrot", "Eggplant", "Cabbage"]
+    }
+  },
+  {
+    image: "/static/img/paprika.png",
+    correctAnswer: { id: "Paprika", en: "Bell Pepper" },
+    answers: {
+      id: ["Paprika", "Bayam", "Kentang"],
+      en: ["Bell Pepper", "spinach", "potato"]
     }
   },
   {
     image: "/static/img/terong.png",
     correctAnswer: { id: "Terong", en: "Eggplant" },
     answers: {
-      id: ["Terong", "Paprika", "Mentimun"],
-      en: ["Eggplant", "Bell Pepper", "Cucumber"]
+      id: ["Terong", "Paprika", "Sawi Putih"],
+      en: ["Eggplant", "Bell Pepper", "Chinese Cabbage"]
+    }
+  },
+  {
+    image: "/static/img/broccoli.png",
+    correctAnswer: { id: "brokoli", en: "broccoli" },
+    answers: {
+      id: ["brokoli", "cabai rawit", "kentang"],
+      en: ["Broccoli", "Bird's Eye Chili", "Potato"]
     }
   },
   {
     image: "/static/img/mentimun.png",
     correctAnswer: { id: "Mentimun", en: "Cucumber" },
     answers: {
-      id: ["Mentimun", "Oyong", "Labu Siam"],
-      en: ["Cucumber", "Luffa", "Chayote"]
+      id: ["Mentimun", "Wortel", "Paprika"],
+      en: ["Cucumber", "Carrot", "Bell Pepper"]
     }
   },
+];
+
+const bankMudah = [
   {
-    image: "/static/img/tomat.png",
-    correctAnswer: { id: "Tomat", en: "Tomato" },
+    image: "/static/img/oyong.png",
+    correctAnswer: { id: "oyong", en: "luffa" },
     answers: {
-      id: ["Tomat", "Paprika", "Cabai Rawit"],
-      en: ["Tomato", "Bell Pepper", "Chili"]
+      id: ["oyong", "Mentimun", "Labu Siam"],
+      en: ["Luffa", "Cucumber", "Chayote"]
     }
   },
   {
@@ -80,20 +91,40 @@ const allQuestions = [
   },
   {
     image: "/static/img/buncis.png",
-    correctAnswer: { id: "Buncis", en: "Green Bean" },
+    correctAnswer: { id: "Buncis", en: "Green Beans" },
     answers: {
       id: ["Buncis", "Kacang Panjang", "Asparagus"],
-      en: ["Green Bean", "Yardlong Bean", "Asparagus"]
+      en: ["Green Beans", "Yardlong Beans", "Asparagus"]
     }
   },
   {
     image: "/static/img/kacang_panjang.png",
-    correctAnswer: { id: "Kacang Panjang", en: "Yardlong Bean" },
+    correctAnswer: { id: "Kacang Panjang", en: "Yardlong Beans" },
     answers: {
       id: ["Kacang Panjang", "Buncis", "Asparagus"],
-      en: ["Yardlong Bean", "Green Bean", "Asparagus"]
+      en: ["Yardlong Beans", "Green Bean", "Asparagus"]
     }
   },
+  {
+    image: "/static/img/cabai_rawit.png",
+    correctAnswer: { id: "Cabai Rawit", en: "Bird's Eye Chili" },
+    answers: {
+      id: ["Cabai Rawit", "Paprika", "Tomat"],
+      en: ["Bird's Eye Chili", "Bell Pepper", "Tomato"]
+    }
+  },
+  {
+    image: "/static/img/kentang.png",
+    correctAnswer: { id: "Kentang", en: "Potato" },
+    answers: {
+      id: ["Kentang", "Lobak", "Wortel"],
+      en: ["Potato", "Radish", "Carrot"]
+    }
+  },
+
+];
+
+const bankSedang = [
   {
     image: "/static/img/bayam.png",
     correctAnswer: { id: "Bayam", en: "Spinach" },
@@ -103,11 +134,19 @@ const allQuestions = [
     }
   },
   {
-    image: "/static/img/kubis.png",
-    correctAnswer: { id: "Kubis", en: "Cabbage" },
+    image: "/static/img/kangkung.png",
+    correctAnswer: { id: "Kangkung", en: "Water Spinach" },
     answers: {
-      id: ["Kubis", "Sawi Putih", "Selada"],
-      en: ["Cabbage", "Chinese Cabbage", "Lettuce"]
+      id: ["Kangkung", "Kubis", "Sawi Hijau"],
+      en: ["Water Spinach", "Cabbage", "Mustard Greens"]
+    }
+  },
+  {
+    image: "/static/img/sawi_hijau.png",
+    correctAnswer: { id: "Sawi Hijau", en: "Mustard Greens" },
+    answers: {
+      id: ["Sawi Hijau", "Selada", "Bayam"],
+      en: ["Mustard Greens", "Lettuce", "Spinach"]
     }
   },
   {
@@ -119,19 +158,11 @@ const allQuestions = [
     }
   },
   {
-    image: "/static/img/sawi_hijau.png",
-    correctAnswer: { id: "Sawi Hijau", en: "Mustard Greens" },
+    image: "/static/img/kubis.png",
+    correctAnswer: { id: "Kubis", en: "Cabbage" },
     answers: {
-      id: ["Sawi Hijau", "Kangkung", "Bayam"],
-      en: ["Mustard Greens", "Water Spinach", "Spinach"]
-    }
-  },
-  {
-    image: "/static/img/kangkung.png",
-    correctAnswer: { id: "Kangkung", en: "Water Spinach" },
-    answers: {
-      id: ["Kangkung", "Bayam", "Sawi Hijau"],
-      en: ["Water Spinach", "Spinach", "Mustard Greens"]
+      id: ["Kubis", "Sawi Putih", "Kangkung"],
+      en: ["Cabbage", "Chinese Cabbage", "Water Spinach"]
     }
   },
   {
@@ -141,45 +172,86 @@ const allQuestions = [
       id: ["Selada", "Kubis", "Sawi Putih"],
       en: ["Lettuce", "Cabbage", "Chinese Cabbage"]
     }
+  }
+
+
+];
+
+const bankSedangkeSulit = [
+  {
+    image: "/static/img/seledri.png",
+    correctAnswer: { id: "Seledri", en: "Celery" },
+    answers: {
+      id: ["Seledri", "Sawi Hijau", "Selada"],
+      en: ["Celery", "Mustard Greens", "Lettuce"]
+    }
   },
+   {
+    image: "/static/img/bawang_daun.png",
+    correctAnswer: { id: "Bawang Daun", en: "Leek" },
+    answers: {
+      id: ["Bawang Daun", "Bawang Merah", "Bawang Putih"],
+      en: ["Leek", "Shallot", "Garlic"]
+    }
+  },
+  {
+    image: "/static/img/daun_pakis.png",
+    correctAnswer: { id: "Daun Pakis", en: "Fiddlehead Fern" },
+    answers: {
+      id: ["Daun Pakis", "Daun Bawang", "Daun Selada"],
+      en: ["Fiddlehead Fern", "spring onion", "Spinach"]
+    }
+  },
+  {
+    image: "/static/img/asparagus.png",
+    correctAnswer: { id: "Asparagus", en: "Asparagus" },
+    answers: {
+      id: ["Asparagus", "Kacang Panjang", "Buncis"],
+      en: ["Asparagus", "Yardlong Bean", "Green Bean"]
+    }
+  },
+  {
+    image: "/static/img/rebung.png",
+    correctAnswer: { id: "Rebung", en: "Bamboo Shoot" },
+    answers: {
+      id: ["Rebung", "Wortel", "Lobak"],
+      en: ["Bamboo Shoot", "Carrot", "Radish"]
+    }
+  },
+   {
+    image: "/static/img/jantung_pisang.png",
+    correctAnswer: { id: "jantung pisang", en: "Banana Blossom" },
+    answers: {
+      id: ["jantung pisang", "Jamur Kancing", "Jamur Tiram"],
+      en: ["Banana Blossom", "Button Mushroom", "Oyster Mushroom"]
+    }
+  },
+
+];
+
+const bankSulit = [
   {
     image: "/static/img/lobak.png",
     correctAnswer: { id: "Lobak", en: "Radish" },
     answers: {
-      id: ["Lobak", "Kentang", "Bit Merah"],
-      en: ["Radish", "Potato", "Beetroot"]
-    }
-  },
-  {
-    image: "/static/img/wortel.png",
-    correctAnswer: { id: "Wortel", en: "Carrot" },
-    answers: {
-      id: ["Wortel", "Lobak", "Kentang"],
-      en: ["Carrot", "Radish", "Potato"]
-    }
-  },
-  {
-    image: "/static/img/kentang.png",
-    correctAnswer: { id: "Kentang", en: "Potato" },
-    answers: {
-      id: ["Kentang", "Lobak", "Wortel"],
-      en: ["Potato", "Radish", "Carrot"]
+      id: ["Lobak", "Kentang", "Wortel"],
+      en: ["Radish", "Potato", "Carrot"]
     }
   },
   {
     image: "/static/img/bit_merah.png",
     correctAnswer: { id: "Bit Merah", en: "Beetroot" },
     answers: {
-      id: ["Bit Merah", "Lobak", "Wortel"],
-      en: ["Beetroot", "Radish", "Carrot"]
+      id: ["Bit Merah", "Bawang Merah", "Bawang Bombay"],
+      en: ["Beetroot", "Shallot", "Onion"]
     }
   },
   {
     image: "/static/img/jamur_kancing.png",
     correctAnswer: { id: "Jamur Kancing", en: "Button Mushroom" },
     answers: {
-      id: ["Jamur Kancing", "Bawang Bombay", "Bawang Putih"],
-      en: ["Button Mushroom", "Onion", "Garlic"]
+      id: ["Jamur Kancing", "Jantung Pisang", "Jamur Tiram"],
+      en: ["Button Mushroom", "Banana Blossom", "Oyster mushroom"]
     }
   },
   {
@@ -205,64 +277,12 @@ const allQuestions = [
       id: ["Bawang Bombay", "Bawang Merah", "Bawang Putih"],
       en: ["Onion", "Shallot", "Garlic"]
     }
-  },
-  {
-    image: "/static/img/paprika.png",
-    correctAnswer: { id: "Paprika", en: "Bell Pepper" },
-    answers: {
-      id: ["Paprika", "Tomat", "Cabai Rawit"],
-      en: ["Bell Pepper", "Tomato", "Chili"]
-    }
-  },
-  {
-    image: "/static/img/cabai_rawit.png",
-    correctAnswer: { id: "Cabai Rawit", en: "Chili" },
-    answers: {
-      id: ["Cabai Rawit", "Paprika", "Tomat"],
-      en: ["Chili", "Bell Pepper", "Tomato"]
-    }
-  },
-  {
-    image: "/static/img/seledri.png",
-    correctAnswer: { id: "Seledri", en: "Celery" },
-    answers: {
-      id: ["Seledri", "Bawang Daun", "Asparagus"],
-      en: ["Celery", "Spring Onion", "Asparagus"]
-    }
-  },
-  {
-    image: "/static/img/bawang_daun.png",
-    correctAnswer: { id: "Bawang Daun", en: "Spring Onion" },
-    answers: {
-      id: ["Bawang Daun", "Seledri", "Asparagus"],
-      en: ["Spring Onion", "Celery", "Asparagus"]
-    }
-  },
-  {
-    image: "/static/img/asparagus.png",
-    correctAnswer: { id: "Asparagus", en: "Asparagus" },
-    answers: {
-      id: ["Asparagus", "Kacang Panjang", "Buncis"],
-      en: ["Asparagus", "Yardlong Bean", "Green Bean"]
-    }
-  },
-  {
-    image: "/static/img/rebung.png",
-    correctAnswer: { id: "Rebung", en: "Bamboo Shoot" },
-    answers: {
-      id: ["Rebung", "Jantung Pisang", "Lobak"],
-      en: ["Bamboo Shoot", "Banana Blossom", "Radish"]
-    }
-  },
-  {
-    image: "/static/img/daun_pakis.png",
-    correctAnswer: { id: "Daun Pakis", en: "Fern Shoot" },
-    answers: {
-      id: ["Daun Pakis", "Kangkung", "Bayam"],
-      en: ["Fern Shoot", "Water Spinach", "Spinach"]
-    }
   }
-];
+
+]
+
+
+
 
 // 🔹 ambil soal sesi dari localStorage
 let shuffledOpts = [];
@@ -272,110 +292,129 @@ let correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
 localStorage.setItem("totalQuestions", totalQuestions);
 
 // 🔹 kalau belum ada sesi → buat 5 soal random
+// 🔹 buat sesi baru
 if (sessionQuestions.length === 0) {
-  const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-  sessionQuestions = shuffled.slice(0, totalQuestions);
+  function getRandomFrom(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+if (sessionQuestions.length === 0) {
+  sessionQuestions = [
+    getRandomFrom(bankSangatMudah),   // soal 1
+    getRandomFrom(bankMudah),         // soal 2
+    getRandomFrom(bankSedang),        // soal 3
+    getRandomFrom(bankSedangkeSulit), // soal 4
+    getRandomFrom(bankSulit)          // soal 5
+  ];
+
   localStorage.setItem("sessionQuestions", JSON.stringify(sessionQuestions));
   localStorage.setItem("currentIndex", "0");
   localStorage.setItem("correctCount", "0");
+
   currentIndex = 0;
   correctCount = 0;
 }
 
-// 🔹 soal sekarang
+
+  localStorage.setItem("sessionQuestions", JSON.stringify(sessionQuestions));
+  localStorage.setItem("currentIndex", "0");
+  localStorage.setItem("correctCount", "0");
+
+  currentIndex = 0;
+  correctCount = 0;
+}
+
 let question = sessionQuestions[currentIndex];
 
-// 🔹 render soal
-// 🔹 render soal
+// ================= OVERLAY SALAH =================
+function showWrongOverlay(icon = "✖", text = "salah!") {
+  const overlay = document.getElementById("wrong-overlay");
+  document.getElementById("wrong-text").textContent = text;
+  overlay.querySelector("h1").textContent = icon;
+  overlay.classList.remove("hidden");
+}
+
+function hideWrongOverlay() {
+  document.getElementById("wrong-overlay").classList.add("hidden");
+}
+
+// ================= LOAD QUESTION =================
 function loadQuestion() {
+  question = sessionQuestions[currentIndex];
+
   vegImage.src = question.image;
-  vegImage.alt = question.correctAnswer[lang];
+  vegImage.alt = question.correctAnswer[lang].toLowerCase();
   titleText.innerHTML = texts[lang];
 
-  let opts = question.answers[lang];
   optionsContainer.innerHTML = "";
-
-  // 🔹 tampilkan tombol back hanya di soal pertama
-  const backBtn = document.querySelector(".back-button");
-  if (currentIndex === 0) {
-    backBtn.style.display = "block"; // tampil
-  } else {
-    backBtn.style.display = "none";  // sembunyikan
-  }
-  // 🔹 Hentikan semua suara saat tombol back ditekan
-  if (backBtn) {
-    backBtn.onclick = () => {
-      stopAllSounds();
-    };
-  }
-  
-
-  // 🔹 acak urutan jawaban
-  shuffledOpts = [...opts].sort(() => 0.5 - Math.random());
+  shuffledOpts = [...question.answers[lang]].sort(() => 0.5 - Math.random());
 
   shuffledOpts.forEach((opt) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
-    btn.textContent = opt;
-    btn.dataset.correct = (opt === question.correctAnswer[lang]).toString();
+    btn.textContent = opt.toLowerCase();
+
+    const isCorrect =
+      opt.toLowerCase() === question.correctAnswer[lang].toLowerCase();
 
     btn.addEventListener("click", () => {
-  stopAllSounds(); // 🔹 hentikan suara begitu user pilih jawaban
+      stopAllSounds();
 
-  if (btn.dataset.correct === "true") {
-    // ✅ jawaban benar
-    localStorage.setItem("notifVeg", JSON.stringify({
-      id: question.correctAnswer.id,
-      en: question.correctAnswer.en,
-      img: question.image
-    }));
+      if (isCorrect) {
+        // ✅ BENAR
+        localStorage.setItem("notifVeg", JSON.stringify({
+          id: question.correctAnswer.id,
+          en: question.correctAnswer.en,
+          img: question.image
+        }));
 
-    sfxCorrect.play();
-    correctCount++;
-    localStorage.setItem("correctCount", correctCount);
+        sfxCorrect.play();
+        correctCount++;
+        localStorage.setItem("correctCount", correctCount);
 
-    if (currentIndex + 1 < totalQuestions) {
-      setTimeout(() => {
-        window.location.href = "/mudah_notif";
-      }, 800);
-    } else {
-      finishGame();
-    }
-  } else {
-    // ❌ jawaban salah
-    sfxWrong.play();
+        setTimeout(() => {
+          window.location.href = "/mudah_notif";
+        }, 800);
 
-    const overlay = document.getElementById("wrong-overlay");
-    overlay.classList.remove("hidden");
-
-    setTimeout(() => {
-      overlay.classList.add("hidden");
-      if (currentIndex + 1 < totalQuestions) {
-        localStorage.setItem("currentIndex", currentIndex + 1);
-        window.location.href = "/level_mudah";
       } else {
-        finishGame();
-      }
-    }, 1200);
-  }
-});
+        // ❌ SALAH → TETAP NEXT SOAL
+        sfxWrong.play();
+        const msg = (lang === "id") ? "salah!" : "wrong!";
+        showWrongOverlay("✖", msg);
 
+        setTimeout(() => {
+          hideWrongOverlay();
+          nextQuestion();
+        }, 1200);
+      }
+    });
 
     optionsContainer.appendChild(btn);
   });
 
-  // 🔹 update progress soal
-  document.getElementById("progress").textContent = `Soal ${currentIndex + 1}/${totalQuestions}`;
+  document.getElementById("progress").textContent =
+    `Soal ${currentIndex + 1}/${totalQuestions}`;
 
-  // 🔹 auto play instruksi setelah soal muncul
   setTimeout(speakInstruksi, 500);
+}
+
+// ================= NEXT QUESTION =================
+function nextQuestion() {
+  currentIndex++;
+  localStorage.setItem("currentIndex", currentIndex);
+
+  if (currentIndex >= totalQuestions) {
+    finishGame();
+  } else {
+    loadQuestion();
+  }
 }
 
 window.addEventListener("load", loadQuestion);
 
-// 🔹 selesai game → hitung skor & redirect
+// ================= FINISH GAME =================
 function finishGame() {
-  const finalScore = Math.round((correctCount / totalQuestions) * 100);
+  const finalScore = correctCount * 20;
   localStorage.setItem("finalScore", finalScore);
 
   localStorage.removeItem("sessionQuestions");
@@ -386,34 +425,26 @@ function finishGame() {
   }, 800);
 }
 
-// 🔹 speak instruksi
+// ================= AUDIO =================
 function speakInstruksi() {
   if (lang === "en") {
     const utter = new SpeechSynthesisUtterance(
-      "Choose the name of this vegetable. Options are: " + shuffledOpts.join(", ")
+      "Choose the name of this vegetable. Options are " + shuffledOpts.join(", ")
     );
     utter.lang = "en-US";
     speechSynthesis.speak(utter);
   } else {
-    idPlayer.src = "/static/sounds/id/ui/pilih_nama.mp3";
+    idPlayer.src = "/static/sounds/id/ui/pilih_nama.m4a";
     idPlayer.play();
-
-    // setelah instruksi utama selesai, lanjut sebutkan opsi acak
-    idPlayer.onended = () => {
-      playOptionsSequentially(shuffledOpts, "id");
-    };
+    idPlayer.onended = () => playOptionsSequentially(shuffledOpts);
   }
 }
 
-// 🔹 mainkan opsi acak satu per satu (Indo)
-function playOptionsSequentially(options, lang) {
-  if (lang === "en") return; // English sudah ditangani di atas
-
+function playOptionsSequentially(options) {
   let index = 0;
   function playNext() {
     if (index < options.length) {
-      const opt = options[index];
-      idPlayer.src = `/static/sounds/id/options/${opt}.mp3`;
+      idPlayer.src = `/static/sounds/id/options/${options[index]}.m4a`;
       idPlayer.play();
       index++;
       idPlayer.onended = playNext;
@@ -423,11 +454,7 @@ function playOptionsSequentially(options, lang) {
 }
 
 function stopAllSounds() {
-  // stop TTS English
   speechSynthesis.cancel();
-
-  // stop audio Indonesia
   idPlayer.pause();
   idPlayer.currentTime = 0;
 }
-

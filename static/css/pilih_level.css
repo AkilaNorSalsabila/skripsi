@@ -5,30 +5,28 @@ body {
   overflow: hidden;
 }
 
+/* ================== DEKOR ================== */
 .decor {
   position: absolute;
-  z-index: 1;  /* dekor selalu di belakang */
+  z-index: 1;
 }
 
 .decor-left {
   top: 0;
   left: 0;
   width: 220px;
-  height: 250px;
-  z-index: 1;  /* dekor selalu di belakang */
 }
 
 .decor-right {
   bottom: -15px;
   right: 0;
   width: 350px;
-  height: auto;
-  z-index: 1;  /* dekor selalu di belakang */
 }
 
+/* ================== KONTEN ================== */
 .content {
   position: relative;
-  z-index: 5; /* pastikan konten di atas dekor */
+  z-index: 5;
 }
 
 .content h1 {
@@ -36,46 +34,85 @@ body {
   font-size: 50px;
   text-align: center;
   margin-bottom: 40px;
-  font-weight: normal;
-  z-index: 10;  /* dekor selalu di belakang */
+
+  color: #0288D1;
+
+  text-shadow:
+    1px 1px 0 #ffffff,   /* outline putih */
+    2px 2px 0 #81D4FA;   /* bayangan biru */
+
 }
 
+
+/* ================== MENU LEVEL ================== */
 .level-buttons {
   display: flex;
-  flex-direction: column; /* susun tombol ke bawah */
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+/* CARD LEVEL (GAMBAR + TEKS) */
+.level-card {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 40px; /* jarak antar tombol */
-}
-
-.level-buttons button {
-  width: 250px;
-  height: 70px;
-  border: none;
-  border-radius: 20px;
   cursor: pointer;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 32px;
-  font-weight: bold;
-  color: #FFFFFF;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
-  background-color: #00B4E1;
-  z-index: 10;  /* dekor selalu di belakang */
+  transition: transform 0.25s ease;
 }
 
-.level-buttons button:hover {
-  transform: scale(1.05);
+/* GAMBAR LEVEL */
+.level-img {
+  width: 260px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  z-index: 1;   
 }
+
+/* HOVER EFEK */
+.level-card:hover .level-img,
+.level-card:hover .level-text {
+  transform: scale(1.08);
+}
+
+
+/* TEKS LEVEL (PENGGANTI TEKS DI GAMBAR) */
+.level-text {
+  margin-top: 12px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #00B4E1;
+  text-align: center;
+  position: relative;   /* ⬅️ TAMBAHAN */
+  z-index: 5;
+  transition: transform 0.25s ease;  
+}
+#text-easy {
+  margin-top: -56px;     /* naik dikit */
+}
+#text-medium {
+  margin-top: -56px;     /* naik dikit */
+}
+#text-hard {
+  margin-top: -56px;     /* naik dikit */
+}
+#img-easy {
+  width: 300px;
+  margin-top: 10px;          /* lebih besar dari default 260px */
+}
+
+/* ================== TOMBOL BACK ================== */
 .back-button {
   position: fixed;
   top: 60px;
-  left: 260px;   /* default: untuk layar besar */
+  left: 260px;
   z-index: 10;
 }
 
 .back-button img {
   width: 50px;
-  height: auto;
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -84,24 +121,13 @@ body {
   transform: scale(1.1);
 }
 
-/* Saat layar kecil (tablet/HP), geser biar ga nabrak judul */
-@media (max-width: 992px) {
-  .back-button {
-    left: 20px;
-    top: 20px;
-  }
-
-  .back-button img {
-    width: 40px;
-  }
-}
+/* ================== PILIH BAHASA ================== */
 .lang-select {
   position: absolute;
   top: 20px;
-  right: 50px;   /* digeser biar gak terlalu pojok */
+  right: 50px;
   font-family: 'Quicksand', sans-serif;
   cursor: pointer;
-  user-select: none;
   z-index: 20;
 }
 
@@ -113,14 +139,12 @@ body {
   padding: 6px 12px;
   border-radius: 10px;
   border: 2px solid #00B4E1;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.lang-select .selected img {
+.lang-select img {
   width: 22px;
   height: 15px;
   border-radius: 2px;
-  border: 1px solid #ccc;
 }
 
 .lang-select .options {
@@ -128,7 +152,6 @@ body {
   background: #fff;
   border: 2px solid #00B4E1;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .lang-select .options div {
@@ -136,19 +159,36 @@ body {
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  cursor: pointer;
 }
 
 .lang-select .options div:hover {
   background: #EAF7FF;
 }
 
-.lang-select .options img {
-  width: 22px;
-  height: 15px;
-  border-radius: 2px;
-}
-
 .hidden {
   display: none;
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 992px) {
+  .back-button {
+    left: 20px;
+    top: 20px;
+  }
+
+  .back-button img {
+    width: 40px;
+  }
+
+  .level-img {
+    width: 220px;
+  }
+
+  .level-text {
+    font-size: 22px;
+  }
+
+  .level-buttons {
+    gap: 24px;
+  }
 }

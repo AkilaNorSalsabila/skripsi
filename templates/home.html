@@ -2,50 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Belajar Mengenal Sayur</title>
+  <title>Belajar dan Bermain</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-  
-  <!-- Font Mochiy Pop One -->
+
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
-  <!-- Font Quicksand -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body class="home">
-  <!-- Dekorasi pojokan -->
-  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" 
-       alt="Monkey Corner" class="decor decor-left">
-  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" 
-       alt="Vegetables Corner" class="decor decor-right">
 
-  <!-- Konten utama -->
-  <div class="content">
+  <!-- ================= AUDIO ================= -->
+  <audio id="voice-instruction" src="{{ url_for('static', filename='sounds/instruction.mp3') }}"></audio>
+  <audio id="voice-sayuran" src="{{ url_for('static', filename='sounds/mengenal_sayuran.mp3') }}"></audio>
+  <audio id="voice-hewan" src="{{ url_for('static', filename='sounds/mengenal_hewan.mp3') }}"></audio>
+  <audio id="voice-permainan" src="{{ url_for('static', filename='sounds/permainan.mp3') }}"></audio>
+  <audio id="background-music"
+         src="{{ url_for('static', filename='sounds/bensound-besttime.m4a') }}"
+         loop></audio>
+
+  <!-- ================= OVERLAY START ================= -->
+  <div id="start-overlay" style="
+    position: fixed;
+    inset: 0;
+    background: #EAF7FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  ">
+    <button id="start-btn" style="background:none;border:none;cursor:pointer;">
+      <img src="{{ url_for('static', filename='img/start_logo.png') }}"
+           alt="Mulai"
+           style="width:260px;transition:0.2s">
+    </button>
+  </div>
+
+  <!-- ================= DEKORASI (INI YANG HILANG) ================= -->
+  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}"
+       class="decor decor-left" alt="Monkey">
+
+  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}"
+       class="decor decor-right" alt="Vegetables">
+
+  <!-- ================= MENU ================= -->
+  <div class="content" style="display:none;">
     <h1>Belajar Dan <br> Bermain</h1>
-    
+
     <div class="menu-buttons">
-      <!-- Item Sayuran -->
-      <div class="menu-item">
-        <button class="sayuran" onclick="location.href='/sayuran'">
-          <img src="{{ url_for('static', filename='img/sayuran_button.png') }}" alt="Sayuran">
-        </button>
-        <p>Mengenal <br> Sayuran</p>
-      </div>
+      <button class="menu-card sayuran" onclick="goMenu('sayuran')">
+        <img src="{{ url_for('static', filename='img/sayuran_button.png') }}">
+        <span>Mengenal Sayuran</span>
+      </button>
 
-      <!-- Item Hewan -->
-      <div class="menu-item">
-        <button class="hewan" onclick="location.href='/hewan'">
-          <img src="{{ url_for('static', filename='img/hewan_button.png') }}" alt="Hewan">
-        </button>
-        <p>Mengenal <br> Hewan</p>
-      </div>
+      <button class="menu-card hewan" onclick="goMenu('hewan')">
+        <img src="{{ url_for('static', filename='img/hewan_button.png') }}">
+        <span>Mengenal Hewan</span>
+      </button>
 
-      <!-- Item Permainan -->
-      <div class="menu-item">
-        <button class="permainan" onclick="location.href='/permainan'">
-          <img src="{{ url_for('static', filename='img/permainan_button.png') }}" alt="Permainan">
-        </button>
-        <p>Permainan</p>
-      </div>
+      <button class="menu-card permainan" onclick="goMenu('permainan')">
+        <img src="{{ url_for('static', filename='img/permainan_button.png') }}">
+        <span>Permainan</span>
+      </button>
     </div>
   </div>
+
+  <!-- ================= SCRIPT ================= -->
+  <script>
+    const overlay = document.getElementById('start-overlay');
+    const content = document.querySelector('.content');
+    const bgMusic = document.getElementById('background-music');
+    const instruction = document.getElementById('voice-instruction');
+
+    const voiceMap = {
+      sayuran: { audio: document.getElementById('voice-sayuran'), url: '/sayuran' },
+      hewan: { audio: document.getElementById('voice-hewan'), url: '/hewan' },
+      permainan: { audio: document.getElementById('voice-permainan'), url: '/permainan' }
+    };
+
+    function stopAllVoices() {
+      instruction.pause(); instruction.currentTime = 0;
+      Object.values(voiceMap).forEach(v => {
+        v.audio.pause(); v.audio.currentTime = 0;
+      });
+    }
+
+    // balik dari halaman lain
+    window.addEventListener("pageshow", () => {
+      if (sessionStorage.getItem("hasStarted")) {
+        overlay.style.display = "none";
+        content.style.display = "block";
+        stopAllVoices();
+        bgMusic.volume = 0.05;
+        bgMusic.play().catch(()=>{});
+      }
+    });
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+      sessionStorage.setItem("hasStarted", "true");
+      overlay.style.display = "none";
+      content.style.display = "block";
+
+      bgMusic.volume = 0.05;
+      bgMusic.play();
+
+      instruction.onplay = () => bgMusic.volume = 0.02;
+      instruction.onended = () => bgMusic.volume = 0.05;
+      instruction.play();
+    });
+
+    function goMenu(type) {
+      stopAllVoices();
+      bgMusic.volume = 0.02;
+      const item = voiceMap[type];
+      item.audio.play();
+      item.audio.onended = () => window.location.href = item.url;
+    }
+  </script>
+
 </body>
 </html>

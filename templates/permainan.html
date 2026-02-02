@@ -4,47 +4,113 @@
   <meta charset="UTF-8">
   <title>Pilihan Game</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/permainan.css') }}">
-  
-  <!-- Font Mochiy Pop One -->
+
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
-  <!-- Font Quicksand -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-
 </head>
+
 <body class="permainan">
-  <!-- Dekorasi pojokan -->
-  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" 
-       alt="Monkey Corner" class="decor decor-left">
-  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" 
-       alt="Vegetables Corner" class="decor decor-right">
 
-  <!-- Konten utama -->
+  <!-- 🎧 AUDIO -->
+  <audio id="instruction-audio"
+         src="{{ url_for('static', filename='sounds/instruction_permainan.mp3') }}"></audio>
+
+  <audio id="voice-sayuran"
+         src="{{ url_for('static', filename='sounds/game_sayuran.mp3') }}"></audio>
+
+  <audio id="voice-hewan"
+         src="{{ url_for('static', filename='sounds/game_hewan.mp3') }}"></audio>
+
+  <audio id="bg-music"
+         src="{{ url_for('static', filename='sounds/bensound-besttime.m4a') }}"
+         loop></audio>
+
+  <!-- Dekorasi -->
+  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}"
+       class="decor decor-left">
+  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}"
+       class="decor decor-right">
+
+  <!-- Konten -->
   <div class="content">
-    <h1>Pilih Game</h1>
-    
+    <h1>Pilih Menu Permainan</h1>
+
     <div class="menu-buttons">
-        <!-- Game Sayuran -->
-        <div class="menu-item">
-            <button class="game-sayuran" onclick="location.href='/pilih_level'">
-            <img src="{{ url_for('static', filename='img/sayuran_button.png') }}" alt="Game Sayuran">
-            <span>Sayuran</span>
-            </button>
-        </div>
 
-        <!-- Game Hewan -->
-        <div class="menu-item">
-            <button class="game-hewan" onclick="location.href='/game_hewan'">
-            <img src="{{ url_for('static', filename='img/hewan_button.png') }}" alt="Game Hewan">
-            <span>Hewan</span>
-            </button>
-        </div>
-        </div>
+      <!-- Game Sayuran -->
+      <button class="game-sayuran" onclick="goGame('sayuran')">
+        <img src="{{ url_for('static', filename='img/sayuran_button2.png') }}">
+        <span>Sayuran</span>
+      </button>
 
+      <!-- Game Hewan -->
+      <button class="game-hewan" onclick="goGame('hewan')">
+        <img src="{{ url_for('static', filename='img/hewan_button2.png') }}">
+        <span>Hewan</span>
+      </button>
+
+    </div>
   </div>
+
   <!-- Tombol Back -->
   <a href="/" class="back-button">
-    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Back">
+    <img src="{{ url_for('static', filename='img/back.png') }}">
   </a>
+
+  <!-- 🧠 SCRIPT -->
+  <script>
+    const bgMusic = document.getElementById("bg-music");
+    const instruction = document.getElementById("instruction-audio");
+
+    const voiceMap = {
+      sayuran: {
+        audio: document.getElementById("voice-sayuran"),
+        url: "/pilih_level"
+      },
+      hewan: {
+        audio: document.getElementById("voice-hewan"),
+        url: "/game_hewan"
+      }
+    };
+
+    // tandai user sudah start
+    sessionStorage.setItem("hasStarted", "true");
+
+    // ===== STOP SEMUA SUARA =====
+    function stopAllAudio() {
+      instruction.pause();
+      instruction.currentTime = 0;
+
+      Object.values(voiceMap).forEach(item => {
+        item.audio.pause();
+        item.audio.currentTime = 0;
+      });
+    }
+
+    // ===== MUSIK BACKGROUND =====
+    bgMusic.volume = 0.03;
+    bgMusic.play().catch(()=>{});
+
+    instruction.onplay = () => bgMusic.volume = 0.015;
+    instruction.onended = () => bgMusic.volume = 0.03;
+
+    instruction.play().catch(()=>{});
+
+    // ===== KLIK GAME =====
+    function goGame(type) {
+      stopAllAudio();        // 🔴 stop instruksi
+      bgMusic.volume = 0.015;
+
+      const item = voiceMap[type];
+      item.audio.play();
+
+      item.audio.onended = () => {
+        bgMusic.volume = 0.03;
+        window.location.href = item.url;
+      };
+    }
+  </script>
 
 </body>
 </html>

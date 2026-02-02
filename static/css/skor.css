@@ -24,10 +24,10 @@ body{
 
 /* back button */
 .back-button{
-  position:fixed;
-  top:60px;
-  left:20px;
-  z-index:2;
+  position: fixed;
+  top: 60px;
+  left: 260px;   /* default: untuk layar besar */
+  z-index: 10;
 }
 .back-button img{ width:50px; transition:transform .15s; }
 .back-button:hover img{ transform:scale(1.06); }
@@ -144,4 +144,42 @@ body{
   #title-text{ font-size:42px; transform: translateX(0); }
   #score-box{ font-size:36px; padding: 26px 44px; }
   .icon-btn svg { width:56px; height:56px; }
+}
+/* overlay emoji */
+  #emoji-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.0); /* transparan */
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .emoji {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0;
+  }
+
+  /* dari kiri */
+  @keyframes slideLeft {
+    0%   { transform: translateX(-100vw); opacity: 0; }
+    30%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { transform: translateX(0); opacity: 0; }
+  }
+
+  /* dari kanan */
+  @keyframes slideRight {
+    0%   { transform: translateX(100vw); opacity: 0; }
+    30%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { transform: translateX(0); opacity: 0; }
+  }
+  @keyframes floatDown {
+  0%   { transform: translateY(-100px); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateY(100px); opacity: 0; }
 }

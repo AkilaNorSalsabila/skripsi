@@ -14,6 +14,8 @@ body {
   left: 0;
   width: 220px;
   height: 250px;
+  user-select: none;       /* teks/gambar tidak bisa dipilih */
+  pointer-events: none;
 }
 
 .decor-right {
@@ -21,6 +23,8 @@ body {
   right: 0;
   width: 245px; /* bisa sesuaikan dgn ukuran vegetables_corner */
   height: auto;
+  user-select: none;       /* teks/gambar tidak bisa dipilih */
+  pointer-events: none;
 }
 
 .content h1 {
@@ -31,6 +35,12 @@ body {
   font-weight: normal;
   position: relative;
   z-index: 10;  /* biar selalu di atas dekor */
+
+   /* WARNA DAN BAYANGAN */
+  color: #0288D1;  /* biru utama */
+  text-shadow:
+    1px 1px 0 #ffffff,   /* outline putih tipis */
+    2px 2px 0 #81D4FA;   /* bayangan biru lembut */
 }
 
 .menu-buttons {
@@ -39,9 +49,9 @@ body {
   gap: 60px; /* jarak antar tombol */
 }
 
-.menu-buttons button {
+.menu-card {
   width: 16.44vw;
-  height: 30.82vh;
+  height: 42vh;
   border: none;
   border-radius: 20px;
   padding: 20px;
@@ -49,39 +59,54 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-family: 'Bakso Sapi', cursive;
-  font-size: 28px;
-  color: #00334E;
+  justify-content: flex-start; /* isi dari atas ke bawah */
+  font-family: 'Quicksand', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.2s;
 }
 
-.menu-buttons button:hover {
+.menu-card:hover {
   transform: scale(1.05);
 }
 
-.menu-buttons button img {
-  width: 130%;
-  height: 130%;            /* gambar ambil 70% tinggi tombol */
-  object-fit: contain;    /* gambar tidak terpotong */
-  display: block;
-  margin: 0 auto 0 -22px; /* geser ke kiri 8px */      /* center horizontal */
+.menu-card img {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+  margin-top: 2px;   /* kasih jarak sedikit dari atas */
+  margin-bottom: auto; /* biar teks agak ke atas */
 }
 
+.menu-card span {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 8px; /* teks naik, lebih dekat ke gambar */
+}
 
-/* warna spesifik tiap tombol */
-.menu-buttons .sayuran {
+/* warna spesifik */
+.menu-card.sayuran {
   background-color: #00B4E1;
 }
 
-.menu-buttons .hewan {
+.menu-card.hewan {
   background-color: #008BAF;
 }
 
-.menu-buttons .permainan {
+.menu-card.permainan {
   background-color: #4FC3F7;
 }
+
+/* khusus gambar permainan dibesarkan */
+.menu-card.permainan img {
+  width: 110%;       /* lebih besar dari card */
+  max-height: 65%;   /* batasi biar tidak keluar kotak */
+  margin-top: 25px; /* dorong sedikit ke atas */
+  margin-bottom: 5px;
+}
+
 
 .menu-item {
   display: flex;

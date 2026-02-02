@@ -16,6 +16,8 @@ body {
     margin: 0;
     padding: 0;
     border: none;   /* pastikan tidak ada border */
+    user-select: none;       /* teks/gambar tidak bisa dipilih */
+    pointer-events: none;
 }
 
 .top-left {
@@ -29,13 +31,17 @@ body {
     width: 350px;
 }
 
-
 /* Layout utama: 2 kolom (kamera kiri, translate kanan) */
 .content-row {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* jangan center, biar ikut margin kiri */
     align-items: flex-start;
-    gap: 40px; /* jarak kamera dan translate */
+    gap: 40px;
+}
+
+/* Geser semua isi ke kanan */
+.shift-right {
+    margin-left: 200px; /* atur sesuai selera (misal 150–220px) */
 }
 
 /* Kolom kiri: kamera + tombol */
@@ -54,10 +60,15 @@ body {
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-    margin-top: 70px;
+    margin-top: 50px;
     margin-left: 30px;
 }
-.image-box video, 
+.image-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* cuma video yang mirror */
+}
 .image-box canvas {
     width: 100%;
     height: 100%;
@@ -69,7 +80,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 5px;
+    margin-top: 0px;
     margin-left: 130px;
 }
 
@@ -78,7 +89,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 160px;  /* turun lebih jauh */
+    margin-top: 100px;  /* turun lebih jauh */
 }
 
 .translate-item {
@@ -87,41 +98,54 @@ body {
     background: #00bfff;
     border-radius: 8px;
     padding: 10px 20px;
-    gap: 10px;
+    gap: 15px;
     color: white;
     font-size: 18px;
     min-height: 70px;
-    min-width: 300px;     /* lebar minimum box */ 
+    min-width: 300px;
+    justify-content: space-between;   
 }
 .translate-item .flag {
     width: 45px;
-    margin-top: -65px;
-    margin-left: -22px;
+    height: auto;
 }
+/* Teks sayuran */
 .translate-item .text {
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    font-size: 35px;
-    margin-top: 15px;
-    margin-left: -45px;
+    font-family: 'Quicksand', sans-serif; /* 🔹 Quicksand Bold */
+    font-weight: 700;                    /* bold */
+    font-size: 28px;
+    color: white;
+    white-space: nowrap;
 }
+
+
+/* 🔹 Biar teks + tombol audio sejajar */
+.translate-content {
+    display: flex;
+    align-items: center;   /* vertikal rata tengah */
+    gap: 12px;             /* jarak antara teks & tombol */
+    flex: 1;               /* isi ruang kosong biar fleksibel */
+}
+
+/* Tombol audio */
+/* Tombol audio */
 .audio-btn {
-    margin-left: auto;
     background: none;
     border: none;
     cursor: pointer;
+    display: inline-flex;             
+    align-items: center;
+    padding: 0;
+}
+
+.play-icon {
+    width: 28px;   
+    height: 28px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
 }
-.play-icon {
-    width: 40px;
-    height: 40px;
-    margin-top: 10px;
-    margin-left: -135px;
-}
-.wave-icon {
-    height: 20px;
-}
+
 
 
 .btn {
@@ -130,15 +154,17 @@ body {
     border-radius: 12px;
     background: #00bfff;
     color: white;
-    font-size: 25px;                 /* ukuran lebih besar */
-    font-family: 'Bakso Sapi', sans-serif; /* font bakso sapi */
+    font-size: 22px;
+    font-family: 'Mochiy Pop One', sans-serif; /* 🔹 ganti font */
     cursor: pointer;
     transition: 0.2s;
     display: flex;
     align-items: center;
     gap: 12px;
-    justify-content: center;         /* biar teks + icon rata tengah */
+    justify-content: center;
+    
 }
+
 .btn:hover {
     background: #009acd;
 }
@@ -147,3 +173,89 @@ body {
     width: 24px;
     height: 24px;
 }
+
+/* Tombol back */
+.back-button {
+  position: fixed;
+  top: 70px;
+  left: 159px;   /* lebih kiri biar POV laptop */
+  z-index: 10;
+}
+
+.back-button img {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+.audio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* jarak antara play dan wave */
+}
+
+.play-icon img {
+  width: 28px;
+  height: 28px;
+}
+
+/* Wave animasi */
+.wave-icon {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+}
+.wave-icon span {
+  display: block;
+  width: 3px;
+  height: 6px;
+  background: white;
+  border-radius: 2px;
+  animation: waveAnim 1s infinite;
+}
+.wave-icon span:nth-child(2) { animation-delay: 0.2s; }
+.wave-icon span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes waveAnim {
+  0%, 100% { height: 6px; }
+  50% { height: 18px; }
+}
+.btn.camera img {
+    margin-top: 8px; /* geser ikon ke bawah biar rata sama teks */
+}
+
+/* Tombol Reload */
+/* Tombol Reload khusus */
+.reload-box {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 20;   /* pastikan di atas elemen lain */
+}
+/* khusus ikon reload */
+/* khusus ikon reload */
+.btn.reload .icon-btn {
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;       /* sejajarkan vertikal dengan teks */
+    position: relative;
+    top: -3px;                     /* geser halus ke bawah tanpa bikin tombol melebar */
+}
+
+
+
+.btn.reload {
+    background: #ff9800;   /* beda warna biar kelihatan */
+    cursor: pointer; 
+}
+
+.btn.reload:hover {
+    background: #e68900;
+}
+

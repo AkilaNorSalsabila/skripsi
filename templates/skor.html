@@ -9,9 +9,10 @@
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/skor.css') }}">
 </head>
+
 <body>
 
-  <!-- dekor pojok (sama seperti level mudah) -->
+  <!-- dekor pojok -->
   <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
   <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
 
@@ -35,76 +36,137 @@
 
       <div class="buttons">
         <button id="btn-retry" class="icon-btn" title="Ulang">
-            <img src="{{ url_for('static', filename='img/repeat.png') }}" alt="Ulang">
+          <img src="{{ url_for('static', filename='img/repeat.png') }}" alt="Ulang">
         </button>
-
         <button id="btn-next" class="icon-btn" title="Lanjut">
-            <img src="{{ url_for('static', filename='img/next.png') }}" alt="Lanjut">
+          <img src="{{ url_for('static', filename='img/next.png') }}" alt="Lanjut">
         </button>
-        </div>
-
+      </div>
     </div>
   </main>
 
-<script>
-  // Ambil bahasa
-  const lang = localStorage.getItem("gameLang") || "id";
+  <!-- overlay emoji -->
+  <div id="emoji-overlay"></div>
 
-  // Ambil skor (harapkan sudah diset oleh mudah.js ketika selesai: localStorage.setItem('finalScore', '80'))
-  // Fallback: kalau finalScore tidak ada, coba hitung dari correctCount / totalQuestions
-  function getFinalScore() {
-    const fs = localStorage.getItem("finalScore");
-    if (fs !== null) return fs.toString();
+  <!-- suara hasil akhir -->
+  <audio id="good-sound" src="{{ url_for('static', filename='sounds/goodresult.mp3') }}"></audio>
+  <audio id="fail-sound" src="{{ url_for('static', filename='sounds/fail.mp3') }}"></audio>
 
-    const correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
-    const totalQuestions = parseInt(localStorage.getItem("totalQuestions") || "5", 10);
-    if (!isNaN(correctCount) && !isNaN(totalQuestions) && totalQuestions > 0) {
-      const pct = Math.round((correctCount / totalQuestions) * 100);
-      return String(pct);
+  <!-- ================= SCRIPT ================= -->
+  <script>
+    // ================== BAHASA ==================
+    const lang = localStorage.getItem("gameLang") || "id";
+
+    const titleText = document.getElementById("title-text");
+    titleText.textContent = (lang === "en") ? "Score" : "Skor";
+    document.title = (lang === "en") ? "Score" : "Skor";
+
+    // ================== SCORE ==================
+    function getFinalScore() {
+      let finalScore = parseInt(localStorage.getItem("finalScore"), 10);
+
+      if (isNaN(finalScore)) {
+        const correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
+        const totalQuestions = parseInt(localStorage.getItem("totalQuestions") || "5", 10);
+
+        finalScore = Math.round((correctCount / totalQuestions) * 100);
+        localStorage.setItem("finalScore", finalScore);
+      }
+
+      return finalScore;
     }
-    return "0";
-  }
 
-  const finalScore = getFinalScore();
-  document.getElementById("score-box").textContent = `${finalScore}/100`;
+    const finalScore = getFinalScore();
+    document.getElementById("score-box").textContent = `${finalScore}/100`;
 
-  document.getElementById("btn-retry").addEventListener("click", () => {
-    const lastLevel = localStorage.getItem("lastLevel") || "mudah";
-    localStorage.removeItem("sessionQuestions");
-    localStorage.removeItem("currentIndex");
-    localStorage.removeItem("finalScore");
-    localStorage.removeItem("correctCount");
-    localStorage.removeItem("totalQuestions");
-    localStorage.removeItem("puzzleScore");
-    
-    if (lastLevel === "sulit") {
-      window.location.href = "/puzzle_sulit1";
+    // ================== AUDIO ==================
+    const goodSound = document.getElementById("good-sound");
+    const failSound = document.getElementById("fail-sound");
+    goodSound.volume = 0.5;
+    failSound.volume = 0.5;
+
+    // ================== EMOJI ==================
+    function showEmojiOverlay(type) {
+      const overlay = document.getElementById("emoji-overlay");
+      overlay.innerHTML = "";
+      overlay.style.display = "block";
+
+      const emojiChar = (type === "good") ? "👍" : "😢";
+
+      for (let i = 0; i < 25; i++) {
+        const span = document.createElement("span");
+        span.classList.add("emoji");
+        span.textContent = emojiChar;
+        span.style.top = Math.random() * 90 + "vh";
+        span.style.left = Math.random() * 90 + "vw";
+        span.style.animation = `floatDown ${3 + Math.random() * 3}s ease forwards`;
+        overlay.appendChild(span);
+      }
+
+      setTimeout(() => overlay.style.display = "none", 6000);
+    }
+
+    // ================== PLAY RESULT ==================
+    if (finalScore >= 60) {
+      goodSound.play();
+      showEmojiOverlay("good");
     } else {
-      window.location.href = "/level_mudah";
+      failSound.play();
+      showEmojiOverlay("bad");
     }
-  });
 
+    // ================== AUTO TTS ==================
+    window.addEventListener("load", () => {
+      const scoreText = (lang === "en")
+        ? `Your score is ${finalScore} out of 100`
+        : `Skor kamu ${finalScore} dari 100`;
 
-  // Tombol next: bersihkan dan kembali ke pilih level
-  document.getElementById("btn-next").addEventListener("click", () => {
-    localStorage.removeItem("sessionQuestions");
-    localStorage.removeItem("currentIndex");
-    localStorage.removeItem("finalScore");
-    localStorage.removeItem("correctCount");
-    localStorage.removeItem("totalQuestions");
-    window.location.href = "/pilih_level";
-  });
+      const utter = new SpeechSynthesisUtterance(scoreText);
+      utter.lang = (lang === "en") ? "en-US" : "id-ID";
+      speechSynthesis.speak(utter);
+    });
 
-  // Tombol suara
-  document.getElementById("btn-speak").addEventListener("click", () => {
-    const scoreText = (lang === "en")
-      ? `Your score is ${finalScore} out of 100`
-      : `Skormu ${finalScore} dari 100`;
-    const utter = new SpeechSynthesisUtterance(scoreText);
-    utter.lang = (lang === "en") ? "en-US" : "id-ID";
-    speechSynthesis.speak(utter);
-  });
-</script>
+    // ================== HELPER RESET ==================
+    function resetGameDataButKeepLang() {
+      const savedLang = localStorage.getItem("gameLang");
+      const lastLevel = localStorage.getItem("lastLevel");
+
+      localStorage.removeItem("finalScore");
+      localStorage.removeItem("correctCount");
+      localStorage.removeItem("totalQuestions");
+
+      if (savedLang) localStorage.setItem("gameLang", savedLang);
+      if (lastLevel) localStorage.setItem("lastLevel", lastLevel);
+    }
+
+    // ================== RETRY ==================
+    document.getElementById("btn-retry").addEventListener("click", () => {
+      const lastLevel = localStorage.getItem("lastLevel") || "mudah";
+      resetGameDataButKeepLang();
+
+      if (lastLevel === "mudah") window.location.href = "/level_mudah";
+      else if (lastLevel === "menengah") window.location.href = "/level_menengah";
+      else if (lastLevel === "sulit") window.location.href = "/puzzle_sulit1";
+      else window.location.href = "/pilih_level";
+    });
+
+    // ================== NEXT ==================
+    document.getElementById("btn-next").addEventListener("click", () => {
+      resetGameDataButKeepLang();
+      window.location.href = "/pilih_level";
+    });
+
+    // ================== MANUAL TTS ==================
+    document.getElementById("btn-speak").addEventListener("click", () => {
+      const scoreText = (lang === "en")
+        ? `Your score is ${finalScore} out of 100`
+        : `Skor kamu ${finalScore} dari 100`;
+
+      const utter = new SpeechSynthesisUtterance(scoreText);
+      utter.lang = (lang === "en") ? "en-US" : "id-ID";
+      speechSynthesis.speak(utter);
+    });
+  </script>
 
 </body>
 </html>

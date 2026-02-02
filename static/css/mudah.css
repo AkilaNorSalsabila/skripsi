@@ -11,6 +11,11 @@ body{
   font-family:'Mochiy Pop One', system-ui, sans-serif;
   color:var(--text);
   overflow-x:hidden;
+   /* WARNA DAN BAYANGAN */
+  color: #0288D1;  /* biru utama */
+  text-shadow:
+    1px 1px 0 #ffffff,   /* outline putih tipis */
+    2px 2px 0 #81D4FA;   /* bayangan biru lembut */
 }
 
 /* dekor → disamakan dengan level sulit */

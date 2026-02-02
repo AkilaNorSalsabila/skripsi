@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notif Level Menengah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/menengah_notif.css') }}">
+</head>
+<body>
+  <!-- Dekor pojok -->
+  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
+  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
+
+  <!-- Judul -->
+  <header class="notif-header">
+    <h1>
+      <span id="notif-text"></span><br>
+      <span id="veg-name"></span>
+    </h1>
+    <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
+      <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
+    </button>
+  </header>
+
+  <main class="notif-main">
+  <div class="veg-frame">
+    <img id="notif-veg" src="" alt="">
+  </div>
+</main>
+
+  <!-- Efek star -->
+<div id="stars-container">
+  <canvas id="stars"></canvas>
+</div>
+
+  <!-- Efek tambahan: lingkaran berdenyut -->
+  <div class="pulse-bg"></div>
+
+  <audio id="id-player"></audio>
+
+  <script src="{{ url_for('static', filename='js/menengah_notif.js') }}"></script>
+</body>
+</html>

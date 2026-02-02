@@ -29,13 +29,14 @@ body {
 
 /* Judul */
 .notif-header {
-  margin-top: 30px;
+  margin-top: 20px;              /* sebelumnya 30px */
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 14px;
-  transform: translateX(40px);
+  transform: translate(40px, -20px);   /* geser ke atas */
 }
+
 
 .notif-header h1 {
   font-size: 52px;
@@ -62,14 +63,35 @@ body {
 }
 
 
-/* Gambar sayuran */
 .notif-main {
-  margin-top: 20px;
+  margin-top: -40px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+/* kotak tetap untuk semua sayuran */
+.veg-frame {
+  width: 420px;
+  height: 320px;
+  max-width: 85vw;
+  max-height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* gambar dipaksa memenuhi frame */
 #notif-veg {
-  width: min(300px, 70vw);
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.25);   /* ini yang bikin gambar kecil jadi besar */
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
 }
+
+
 
 /* Confetti */
 #confetti {
@@ -84,4 +106,8 @@ body {
 
 @keyframes fall {
   to { transform: translateY(100vh) rotate(360deg); }
+}
+#notif-text,
+#veg-name {
+  text-transform: lowercase;
 }

@@ -24,8 +24,11 @@
 </header>
 
 <main class="notif-main">
-  <img id="notif-veg" src="" alt="">
+  <div class="veg-frame">
+    <img id="notif-veg" src="" alt="">
+  </div>
 </main>
+
 <div id="confetti-container">
   <canvas id="confetti"></canvas>
 </div>
@@ -110,7 +113,7 @@
       utter.lang = "en-US";
       speechSynthesis.speak(utter);
     } else {
-      player.src = `/static/sounds/${vegData.id}_id.ogg`;
+      player.src = `/static/sounds/id/notif/${vegData.id}_id.m4a`;
       player.play();
     }
   });
@@ -123,7 +126,7 @@
       utter.lang = "en-US";
       speechSynthesis.speak(utter);
     } else {
-      player.src = `/static/sounds/${vegData.id}_id.ogg`;
+      player.src = `/static/sounds/id/notif/${vegData.id}_id.m4a`;
       player.play();
     }
   });

@@ -1,0 +1,45 @@
+# ======================
+# ENV & IDE
+# ======================
+.vscode/
+__pycache__/
+*.pyc
+
+# ======================
+# DATASET & TRAINING
+# ======================
+dataset/
+dataset_split/
+vegetable_classifier/
+static/data/
+data/
+train/
+val/
+test/
+
+# ======================
+# TRAINING OUTPUT
+# ======================
+history/
+logs/
+evaluation/
+results/
+checkpoints/
+tensorboard/
+
+# ======================
+# MODEL TRAINING (ignore semua model lain)
+# ======================
+models/*.h5
+models/*.keras
+
+# ======================
+# MODEL FINAL (ALLOW)
+# ======================
+!models/best_model_Efficiennetb0_C70finalfix2.keras
+!models/final_model_Efficiennetb0_C70finalfix2.keras
+# ======================
+# LABEL MAP (KEEP FINAL ONLY)
+# ======================
+models/label_map_*.json
+!models/label_map_Efficiennetb0_C70finalfix2.json

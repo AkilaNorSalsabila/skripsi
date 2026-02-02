@@ -1,62 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>Pilihan Level Game</title>
+
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pilih_level.css') }}">
-  
-  <!-- Font Mochiy Pop One -->
+
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
-  <!-- Font Quicksand -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body class="pilih-level">
-  <!-- Dekorasi pojokan -->
-  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" 
-       alt="Monkey Corner" class="decor decor-left">
-  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" 
-       alt="Vegetables Corner" class="decor decor-right">
 
-  <!-- Dropdown Pilih Bahasa -->
+  <!-- 🔊 AUDIO -->
+  <audio id="bg-music"
+         src="{{ url_for('static', filename='sounds/bensound-besttime.m4a') }}"
+         loop></audio>
+
+  <audio id="instruction-id"
+         src="{{ url_for('static', filename='sounds/instruction_level_id.mp3') }}"></audio>
+
+  <audio id="instruction-en"
+         src="{{ url_for('static', filename='sounds/instruction_level_en.mp3') }}"></audio>
+
+  <!-- Dekor -->
+  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" class="decor decor-left">
+  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" class="decor decor-right">
+
+  <!-- Pilih Bahasa -->
   <div class="lang-select">
-    <div id="selected-lang" class="selected" aria-haspopup="true" aria-expanded="false">
-      <!-- akan diisi oleh level.js saat load -->
-      <img src="/static/img/flag indo.png" alt="ID"><span>Indonesia</span>
+    <div id="selected-lang" class="selected">
+      <img src="/static/img/flag indo.png">
+      <span>Indonesia</span>
     </div>
 
-    <div id="lang-options" class="options hidden" role="menu">
-      <div role="menuitem" onclick="setLanguage('id', event)" class="lang-option">
-        <img src="/static/img/flag indo.png" alt="ID"><span>Indonesia</span>
+    <div id="lang-options" class="options hidden">
+      <div onclick="setLanguage('id', event)">
+        <img src="/static/img/flag indo.png"><span>Indonesia</span>
       </div>
-      <div role="menuitem" onclick="setLanguage('en', event)" class="lang-option">
-        <img src="/static/img/flag uk.png" alt="EN"><span>English</span>
+      <div onclick="setLanguage('en', event)">
+        <img src="/static/img/flag uk.png"><span>English</span>
       </div>
     </div>
   </div>
 
-
-  <!-- Konten utama -->
+  <!-- Konten -->
   <div class="content">
-    <h1 id="title">Pilih Level</h1>
-    
-    <div class="level-buttons">
-      <button id="btn-easy" onclick="
-        localStorage.removeItem('sessionQuestions');
-        localStorage.setItem('currentIndex', 0); 
-        location.href='/level_mudah';
-      ">mudah</button>
+    <h1 id="title">Ayo Bermain!</h1>
 
-      <button id="btn-medium" onclick="location.href='/level_menengah'">menengah</button>
-      <button id="btn-hard" onclick="location.href='/puzzle_sulit1'">sulit</button>
+    <div class="level-buttons">
+
+      <!-- TEBAK NAMA -->
+      <div class="level-card"
+           onclick="
+             localStorage.removeItem('sessionQuestions');
+             localStorage.setItem('currentIndex', 0);
+             goLevel('easy');
+           ">
+        <img id="img-easy" class="level-img"
+             src="/static/img/Permaiann/Tebak.png">
+        <p id="text-easy" class="level-text">Tebak Nama</p>
+      </div>
+
+      <!-- MENCOCOKKAN -->
+      <div class="level-card"
+           onclick="goLevel('medium')">
+        <img id="img-medium" class="level-img"
+             src="/static/img/Permaiann/Mencocokkan.png">
+        <p id="text-medium" class="level-text">Mencocokkan</p>
+      </div>
+
+      <!-- PUZZLE -->
+      <div class="level-card"
+           onclick="goLevel('hard')">
+        <img id="img-hard" class="level-img"
+             src="/static/img/Permaiann/puzzle.png">
+        <p id="text-hard" class="level-text">Puzzle</p>
+      </div>
+
     </div>
   </div>
 
-  <!-- Tombol Back -->
+  <!-- Back -->
   <a href="/permainan" class="back-button">
-    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Back">
+    <img src="{{ url_for('static', filename='img/back.png') }}">
   </a>
 
-  <!-- Script JS level -->
+  <!-- 🔊 VOICE LEVEL -->
+  <audio id="voice-tebak-id" src="/static/sounds/tebak_id.mp3"></audio>
+  <audio id="voice-tebak-en" src="/static/sounds/tebak_en.mp3"></audio>
+
+  <audio id="voice-match-id" src="/static/sounds/mencocokkan_id.mp3"></audio>
+  <audio id="voice-match-en" src="/static/sounds/mencocokkan_en.mp3"></audio>
+
+  <audio id="voice-puzzle-id" src="/static/sounds/puzzle_id.mp3"></audio>
+  <audio id="voice-puzzle-en" src="/static/sounds/puzzle_en.mp3"></audio>
+
+  <!-- JS ASLI -->
   <script src="{{ url_for('static', filename='js/level.js') }}"></script>
+
+  <!-- 🔊 SCRIPT SOUND -->
+  <script>
+    /* ===== PERBAIKAN WAJIB ===== */
+    let isTransitioning = false; // ✅ FIX: sebelumnya belum ada
+
+    const bgMusic = document.getElementById("bg-music");
+    const instrID = document.getElementById("instruction-id");
+    const instrEN = document.getElementById("instruction-en");
+
+    // ===== BACKGROUND =====
+    bgMusic.volume = 0.03;
+    bgMusic.play().catch(()=>{});
+
+    // ===== MAP VOICE LEVEL =====
+    const levelVoice = {
+      easy: {
+        id: document.getElementById("voice-tebak-id"),
+        en: document.getElementById("voice-tebak-en"),
+        url: "/level_mudah"
+      },
+      medium: {
+        id: document.getElementById("voice-match-id"),
+        en: document.getElementById("voice-match-en"),
+        url: "/level_menengah"
+      },
+      hard: {
+        id: document.getElementById("voice-puzzle-id"),
+        en: document.getElementById("voice-puzzle-en"),
+        url: "/puzzle_sulit1"
+      }
+    };
+
+    // ===== STOP SEMUA AUDIO =====
+    function stopAllAudio() {
+      [instrID, instrEN, ...Object.values(levelVoice).flatMap(v => [v.id, v.en])]
+        .forEach(a => {
+          a.pause();
+          a.currentTime = 0;
+        });
+    }
+
+    // ===== INSTRUCTION =====
+    function playInstruction() {
+      const lang = localStorage.getItem("gameLang") || "id";
+      stopAllAudio();
+
+      const audio = (lang === "en") ? instrEN : instrID;
+
+      audio.onplay = () => bgMusic.volume = 0.015;
+      audio.onended = () => bgMusic.volume = 0.03;
+
+      audio.play().catch(()=>{});
+    }
+
+    window.addEventListener("pageshow", playInstruction);
+
+    // ===== KLIK LEVEL =====
+    function goLevel(level) {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      stopAllAudio();
+      bgMusic.volume = 0.015;
+
+      const lang = localStorage.getItem("gameLang") || "id";
+      const audio = levelVoice[level][lang];
+
+      audio.play();
+
+      audio.onended = () => {
+        bgMusic.volume = 0.03;
+        window.location.href = levelVoice[level].url;
+      };
+    }
+  </script>
+
 </body>
 </html>
