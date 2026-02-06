@@ -1,8 +1,7 @@
 // ==========================
 // FORCE RESET BANK SOAL (DEV MODE)
-
 // ==========================
-const MENENGAH_QUESTION_VERSION = "v7"; // ganti kalau kamu ubah bank soal
+const MENENGAH_QUESTION_VERSION = "v7"; 
 
 if (localStorage.getItem("MENENGAH_Q_VERSION") !== MENENGAH_QUESTION_VERSION) {
   localStorage.removeItem("menengahQuestions");
@@ -10,11 +9,10 @@ if (localStorage.getItem("MENENGAH_Q_VERSION") !== MENENGAH_QUESTION_VERSION) {
   localStorage.removeItem("menengahScore");
   localStorage.setItem("MENENGAH_Q_VERSION", MENENGAH_QUESTION_VERSION);
 }
+
 // ==================
 // MENENGAH GAME JS
 // ==================
-
-// Simpan level saat ini
 localStorage.setItem("lastLevel", "menengah");
 if (!localStorage.getItem("menengahStarted")) {
   localStorage.setItem("menengahStarted", "true");
@@ -22,21 +20,17 @@ if (!localStorage.getItem("menengahStarted")) {
   localStorage.setItem("menengahCurrent", "0");
 }
 
-
-// Ambil skor & progress
 let score = parseInt(localStorage.getItem("menengahScore") || "0", 10);
 let currentQuestion = parseInt(localStorage.getItem("menengahCurrent") || "0", 10);
-
-// Ambil bahasa (default "id")
 const language = localStorage.getItem("gameLang") || "id";
 
-// Timer
+// Timer Variables
 let timerInterval;
 let timeLeft = 20;
 let timeExpired = false;
 
 // ==================
-// ELEMENT
+// ELEMENT & AUDIO
 // ==================
 const siluetContainer = document.getElementById("siluet-container");
 const pilihanContainer = document.getElementById("pilihan-container");
@@ -46,6 +40,9 @@ const sfxWrong = document.getElementById("sfx-wrong");
 const instructionEl = document.getElementById("title-text");
 const sayurAudio = document.getElementById("sayurAudio") || new Audio();
 
+// Tambahan Audio Danger
+const sfxDanger = new Audio("/static/sounds/Timer.mp3");
+sfxDanger.loop = true;
 // ==================
 // TRANSLATION
 // ==================
@@ -310,36 +307,30 @@ localStorage.removeItem("menengahQuestions");
 localStorage.removeItem("menengahCurrent");
 localStorage.removeItem("menengahScore");
 
+// Cek apakah harus reset
 let allQuestions = JSON.parse(localStorage.getItem("menengahQuestions"));
 
 if (!allQuestions) {
-  // 🔥 FORCE RANDOM SETIAP MASUK GAME
-const sm  = shuffle(SangatMudah);
-const m   = shuffle(Mudah);
-const mid = shuffle(Menengah);
-const ms  = shuffle(MenengahKeSulit);
-const h   = shuffle(sulit);
+    const sm = shuffle(SangatMudah);
+    const m = shuffle(Mudah);
+    const mid = shuffle(Menengah);
+    const ms = shuffle(MenengahKeSulit);
+    const h = shuffle(sulit);
 
-allQuestions = [
-  sm[0],   // soal 1 → sangat mudah
-  m[0],    // soal 2 → mudah
-  mid[0],  // soal 3 → menengah
-  ms[0],   // soal 4 → menengah ke sulit
-  h[0]     // soal 5 → sulit
-];
-
-localStorage.setItem("menengahQuestions", JSON.stringify(allQuestions));
-localStorage.setItem("menengahCurrent", "0");
-localStorage.setItem("menengahScore", "0");
-
+    allQuestions = [sm[0], m[0], mid[0], ms[0], h[0]];
+    localStorage.setItem("menengahQuestions", JSON.stringify(allQuestions));
+    
+    // Pastikan variabel lokal disetel ulang
+    currentQuestion = 0;
+    score = 0;
+    localStorage.setItem("menengahCurrent", "0");
+    localStorage.setItem("menengahScore", "0");
 }
 
 const totalQuestions = allQuestions.length;
-localStorage.setItem("menengahTotal", totalQuestions);
-
 
 // ==================
-// TIMER
+// TIMER LOGIC (DANGER FEATURE)
 // ==================
 function startTimer() {
   stopTimer();
@@ -356,50 +347,73 @@ function startTimer() {
     }
   }, 1000);
 }
+
 function stopTimer() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval=null; }
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  resetDangerEffects();
 }
+
+function resetDangerEffects() {
+  const el = document.getElementById("timer");
+  if (el) el.classList.remove("timer-danger");
+  document.body.classList.remove("screen-danger-active");
+  sfxDanger.pause();
+  sfxDanger.currentTime = 0;
+}
+
 function renderTimer() {
   const el = document.getElementById("timer");
-  if(el) el.textContent = `${translations[language].time} 00:${String(timeLeft).padStart(2,"0")}`;
+  if (!el) return;
+  el.textContent = `${translations[language].time} 00:${String(timeLeft).padStart(2, "0")}`;
+
+  // Cek 5 Detik Terakhir
+  if (timeLeft <= 5 && timeLeft > 0) {
+    el.classList.add("timer-danger");
+    document.body.classList.add("screen-danger-active");
+    if (sfxDanger.paused) sfxDanger.play().catch(() => {});
+  } else {
+    el.classList.remove("timer-danger");
+    document.body.classList.remove("screen-danger-active");
+  }
 }
+
 function onTimeUp() {
-  score = Math.max(0, score-20);
+  score = Math.max(0, score - 20);
   localStorage.setItem("menengahScore", score);
-  if(sfxWrong) { sfxWrong.currentTime=0; sfxWrong.play(); }
+  resetDangerEffects();
   
-  const msg = (language==="id") ? "Waktu Habis!" : "Time's Up!";
-  showWrongOverlay("⏱️",msg);
-  setTimeout(()=>{ hideWrongOverlay(); nextQuestion(); },1500);
+  // Efek Gempa saat Waktu Habis
+  const gameEl = document.getElementById("game");
+  if (gameEl) {
+    gameEl.classList.add("shake");
+    setTimeout(() => gameEl.classList.remove("shake"), 400);
+  }
+
+  if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
+  const msg = (language === "id") ? "Waktu Habis!" : "Time's Up!";
+  showWrongOverlay("⏱️", msg);
+  setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1500);
 }
 
 // ==================
-// AUDIO
+// AUDIO & SPEECH
 // ==================
 function playInstructionAudio() {
   if (language === "id") {
-    // Audio Bahasa Indonesia
     sayurAudio.src = "/static/sounds/id/ui/cocokkan_sayuran.mp4";
-    sayurAudio.play().catch(() => {});
   } else {
-    // Audio Bahasa Inggris dari folder static/sounds/En/
-    // Nama file: Mencocokkan.mp3
     sayurAudio.src = "/static/sounds/En/Mencocokkan.mp3";
-    sayurAudio.play().catch((err) => {
-      console.error("Gagal memutar audio instruksi Inggris:", err);
-    });
   }
+  sayurAudio.play().catch(() => {});
 }
 
 function playSayurAudio(name){
   const cleanName = normalizeName(name);
-
-  if(language==="id"){
+  if(language === "id"){
     let filename = cleanName.toLowerCase().replace(/ /g,"_");
     sayurAudio.src = `/static/audio/${filename}_id.mp3`;
     sayurAudio.play().catch(()=>{});
-  } 
-  else if("speechSynthesis" in window){
+  } else if("speechSynthesis" in window){
     const english = engMap[cleanName] || cleanName;
     const utter = new SpeechSynthesisUtterance(english);
     utter.lang = "en-US";
@@ -408,244 +422,146 @@ function playSayurAudio(name){
   }
 }
 
-
 // ==================
-// OVERLAY
+// UI OVERLAYS
 // ==================
-function showWrongOverlay(icon="✖",text="Salah!"){
+function showWrongOverlay(icon="✖", text="Salah!"){
   hideWrongOverlay();
-  let overlay=document.createElement("div");
-  overlay.className="wrong-overlay";
-  overlay.innerHTML=`<div class="wrong-content"><h1>${icon}</h1><p>${text}</p></div>`;
+  let overlay = document.createElement("div");
+  overlay.className = "wrong-overlay";
+  overlay.innerHTML = `<div class="wrong-content"><h1>${icon}</h1><p>${text}</p></div>`;
   document.body.appendChild(overlay);
 }
+
 function hideWrongOverlay(){
-  const overlay=document.querySelector(".wrong-overlay");
+  const overlay = document.querySelector(".wrong-overlay");
   if(overlay) overlay.remove();
 }
+
 // ==================
-// BACK BUTTON
+// GAME FLOW
 // ==================
-const btnBack = document.getElementById("btn-back");
-if (btnBack) {
-  btnBack.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  // Reset semua data
-  localStorage.removeItem("menengahQuestions"); // 🧩 tambahkan ini
-  localStorage.removeItem("menengahCurrent");
-  localStorage.removeItem("menengahScore");
-  localStorage.removeItem("menengahStarted");
-  localStorage.removeItem("lastLevel");
-
-  window.location.href = "/pilih_level";
-});
-
-}
-
-
-// tampilkan/hidden back button sesuai soal
 function updateBackButton() {
+  const btnBack = document.getElementById("btn-back");
   if (!btnBack) return;
   btnBack.style.display = (currentQuestion === 0) ? "block" : "none";
 }
-// GAME FLOW (loadQuestion)
-// ==================
+
 function loadQuestion() {
   if (currentQuestion >= totalQuestions) { finishGame(); return; }
-
   timeExpired = false;
   timeLeft = 20;
   renderTimer();
+  resetDangerEffects();
 
-  if (progressText) 
-    progressText.textContent = `${language==="id"?"Soal":"Question"} ${currentQuestion+1}/${totalQuestions}`;
-
-  // 🔹 tampilkan back button hanya di soal pertama
+  if (progressText) progressText.textContent = `${language === "id" ? "Soal" : "Question"} ${currentQuestion + 1}/${totalQuestions}`;
   updateBackButton();
 
-siluetContainer.innerHTML = "";
-pilihanContainer.innerHTML = "";
+  siluetContainer.innerHTML = "";
+  pilihanContainer.innerHTML = "";
 
-// ✅ soal HARUS duluan
-const soal = allQuestions[currentQuestion];
-const isImageMode = !!soal.answer;
+  const soal = allQuestions[currentQuestion];
+  const isImageMode = !!soal.answer;
 
-// ✅ reset semua layout class
-pilihanContainer.classList.remove(
-  "row",
-  "grid-2x2",
-  "grid-2-top-1-center"
-);
+  pilihanContainer.classList.remove("row", "grid-2x2", "grid-2-top-1-center");
+  const optionCount = soal.options.length;
+  if (optionCount === 2) pilihanContainer.classList.add("row");
+  else if (optionCount === 3) pilihanContainer.classList.add("grid-2-top-1-center");
+  else if (optionCount === 4) pilihanContainer.classList.add("grid-2x2");
 
-const optionCount = soal.options.length;
-
-if (optionCount === 2) {
-  pilihanContainer.classList.add("row");
-} else if (optionCount === 3) {
-  pilihanContainer.classList.add("grid-2-top-1-center");
-} else if (optionCount === 4) {
-  pilihanContainer.classList.add("grid-2x2");
-}
-
-
-  // Play instruksi
   playInstructionAudio();
 
-  // Siluet
   soal.questionImages.forEach((imgSrc, idx) => {
     let dropZone = document.createElement("div");
     dropZone.classList.add("siluet");
-    
-
     dropZone.dataset.answer = isImageMode ? soal.answer : soal.answers[idx];
-
 
     let siluetImg = document.createElement("img");
     siluetImg.src = imgSrc;
-    siluetImg.alt = "siluet";
     siluetImg.classList.add("siluet-img");
     dropZone.appendChild(siluetImg);
 
     dropZone.addEventListener("dragover", e => e.preventDefault());
     dropZone.addEventListener("drop", e => {
-  e.preventDefault();
-  if (timeExpired) return;
-  const dragged = e.dataTransfer.getData("text");
+      e.preventDefault();
+      if (timeExpired) return;
+      const dragged = e.dataTransfer.getData("text");
 
-  if (dragged === dropZone.dataset.answer) {
-  score += 20;
-  localStorage.setItem("menengahScore", score);
+      if (dragged === dropZone.dataset.answer) {
+        score += 20;
+        localStorage.setItem("menengahScore", score);
+        if (sfxCorrect) { sfxCorrect.currentTime = 0; sfxCorrect.play(); }
 
-  if (sfxCorrect) {
-    sfxCorrect.currentTime = 0;
-    sfxCorrect.play();
-  }
+        localStorage.setItem("lastAnswer", dragged);
+        localStorage.setItem("lastIsImage", isImageMode ? "1" : "0");
+        let finalName = dragged.includes("/") ? normalizeName(dragged.split("/").pop()) : dragged;
+        localStorage.setItem("lastAnswerName", finalName);
 
-  // 🔹 SIMPAN UNTUK NOTIF
-  // 🔹 SIMPAN UNTUK NOTIF
-// 🔹 SIMPAN UNTUK NOTIF
-localStorage.setItem("lastAnswer", dragged);
-localStorage.setItem("lastIsImage", isImageMode ? "1" : "0");
+        dropZone.innerHTML = "";
+        const droppedImg = document.createElement("img");
+        droppedImg.src = isImageMode ? dragged : `/static/img/${dragged.toLowerCase().replace(/ /g,"_")}_m.png`;
+        droppedImg.classList.add("sayur-dropped");
+        droppedImg.draggable = false;
+        dropZone.appendChild(droppedImg);
+        dropZone.classList.add("correct");
 
-// ================================
-// 🔥 FIX NOTIF SEMUA MODE (FINAL)
-// ================================
+        const usedOption = pilihanContainer.querySelector(`img[data-name="${dragged}"]`);
+        if (usedOption) usedOption.remove();
 
-// ✅ TEXT MODE (Sangat Mudah & Mudah)
-let finalName = dragged;
+        const targetCount = isImageMode ? 1 : soal.answers.length;
+        if (siluetContainer.querySelectorAll(".correct").length === targetCount) {
+          stopTimer();
+          currentQuestion++;
+          localStorage.setItem("menengahCurrent", currentQuestion);
+          setTimeout(() => { window.location.href = "/menengah_notif"; }, 1200);
+        }
+      } else {
+        // ❌ LOGIKA JAWABAN SALAH (EFEK GEMPA)
+        if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
+        
+        // Tambahkan class shake ke kontainer game
+        const gameEl = document.getElementById("game");
+        if (gameEl) {
+          gameEl.classList.remove("shake"); // Reset jika sebelumnya sudah ada
+          void gameEl.offsetWidth;          // Trigger reflow agar animasi bisa jalan ulang
+          gameEl.classList.add("shake");
+          
+          // Hapus class setelah animasi selesai (0.4 detik)
+          setTimeout(() => {
+            gameEl.classList.remove("shake");
+          }, 400);
+        }
 
-if (dragged.includes("/")) {
-  finalName = normalizeName(dragged.split("/").pop());
-}
-
-localStorage.setItem("lastAnswerName", finalName);
-
-
-
-  // bersihkan siluet
-dropZone.innerHTML = "";
-
-// buat gambar baru khusus hasil drop
-const droppedImg = document.createElement("img");
-
-if (isImageMode) {
-  droppedImg.src = dragged;
-} else {
-  droppedImg.src = `/static/img/${dragged.toLowerCase().replace(/ /g,"_")}_m.png`;
-}
-
-// 🔥 CLASS KHUSUS (INI YANG BIKIN BESAR)
-droppedImg.classList.add("sayur-dropped");
-
-// ❗ PENTING: matikan drag ulang
-droppedImg.draggable = false;
-
-// masukkan ke siluet
-dropZone.appendChild(droppedImg);
-
-// tandai benar
-dropZone.classList.add("correct");
-
-
-  const usedOption = pilihanContainer.querySelector(`img[data-name="${dragged}"]`);
-  if (usedOption) usedOption.remove();
-
-   const targetCount = isImageMode ? 1 : soal.answers.length;
-
-if (siluetContainer.querySelectorAll(".correct").length === targetCount) {
-
-  stopTimer();
-  clearInterval(timerInterval); // tambah ini
-  timeExpired = false; // pastikan tidak trigger onTimeUp
-  localStorage.setItem("lastLang", language);
-  currentQuestion++;
-  localStorage.setItem("menengahCurrent", currentQuestion);
-
-  setTimeout(() => { 
-    window.location.href = "/menengah_notif"; 
-  }, 1200);
-}
-
-
-  } else {
-    // ❌ Jawaban salah
-    if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
-    
-    const msg = (language === "id") ? "Salah!" : "Wrong!";
-    showWrongOverlay("✖", msg);
-
-    stopTimer();
-    setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 800);
-  }
-});
-
-
+        showWrongOverlay("✖", language === "id" ? "Salah!" : "Wrong!");
+        stopTimer();
+        
+        // Beri jeda sedikit lebih lama agar getarannya terasa sebelum pindah soal
+        setTimeout(() => { 
+          hideWrongOverlay(); 
+          nextQuestion(); 
+        }, 1000);
+      }
+    });
     siluetContainer.appendChild(dropZone);
   });
 
-  // Pilihan jawaban
-  // Pilihan jawaban (acak posisi jawaban benar)
-let optionsShuffled = [...soal.options];
-
-// Fungsi shuffle
-for (let i = optionsShuffled.length - 1; i > 0; i--) {
-  let j = Math.floor(Math.random() * (i + 1));
-  [optionsShuffled[i], optionsShuffled[j]] = [optionsShuffled[j], optionsShuffled[i]];
-}
-
-// Tampilkan pilihan
-optionsShuffled.forEach(opt => {
-  let img = document.createElement("img");
-
-  if (isImageMode) {
-    img.src = opt;        // ⬅️ path gambar
+  let optionsShuffled = shuffle(soal.options);
+  optionsShuffled.forEach(opt => {
+    let img = document.createElement("img");
+    img.src = isImageMode ? opt : `/static/img/${opt.toLowerCase().replace(/ /g, "_")}_m.png`;
     img.dataset.name = opt;
-  } else {
-    img.src = `/static/img/${opt.toLowerCase().replace(/ /g, "_")}_m.png`;
-    img.dataset.name = opt;
-  }
-
-  img.classList.add("sayur");
-  img.draggable = true;
-
-  img.addEventListener("dragstart", e => {
-    e.dataTransfer.setData("text", img.dataset.name);
+    img.classList.add("sayur");
+    img.draggable = true;
+    img.addEventListener("dragstart", e => { e.dataTransfer.setData("text", img.dataset.name); });
+    pilihanContainer.appendChild(img);
   });
-
-  pilihanContainer.appendChild(img);
-});
-
-
-  
-
 
   startTimer();
 }
 
-function nextQuestion(){
+function nextQuestion() {
   currentQuestion++;
-  localStorage.setItem("menengahCurrent",currentQuestion);
+  localStorage.setItem("menengahCurrent", currentQuestion);
   loadQuestion();
 }
 
@@ -654,46 +570,42 @@ function finishGame() {
   localStorage.setItem("correctCount", Math.floor(score / 20));
   localStorage.setItem("totalQuestions", totalQuestions);
   localStorage.removeItem("menengahStarted");
-
-
-  // ❌ jangan hapus menengahScore dulu, biarkan untuk debugging / retry
-  // localStorage.removeItem("menengahQuestions");
-  // localStorage.removeItem("menengahCurrent");
-  // localStorage.removeItem("menengahScore");
-
-  // Tambahkan sedikit delay untuk memastikan localStorage tersimpan
-  setTimeout(() => {
-    window.location.href = "/skor";
-  }, 300);
+  setTimeout(() => { window.location.href = "/skor"; }, 300);
 }
 
+// ==================
+// INITIALIZATION
+// ==================
+window.onload = () => { loadQuestion(); };
 
-// ==================
-// START GAME
-// ==================
-window.onload=()=>{
-  loadQuestion();
-};
-
-// ==================
 window.addEventListener('pageshow', (event) => {
-  if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-    // Reset progress saat kembali ke halaman ini dari back button browser
+    // Cek apakah halaman dimuat dari cache (tombol back/forward)
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // Hapus semua jejak progres
+        localStorage.removeItem("menengahQuestions");
+        localStorage.removeItem("menengahCurrent");
+        localStorage.removeItem("menengahScore");
+        localStorage.removeItem("menengahStarted");
+        
+        // PAKSA reload halaman agar script mulai dari awal (soal 1)
+        window.location.reload();
+    }
+});
+
+const btnBack = document.getElementById("btn-back");
+if (btnBack) {
+  btnBack.addEventListener("click", (e) => {
+    e.preventDefault();
     localStorage.removeItem("menengahQuestions");
     localStorage.removeItem("menengahCurrent");
     localStorage.removeItem("menengahScore");
+    localStorage.removeItem("menengahStarted");
     localStorage.removeItem("lastLevel");
+    window.location.href = "/pilih_level";
+  });
+}
 
-    currentQuestion = 0;
-    score = 0;
-  }
-});
-
-
-// ==================
-// AUDIO BUTTON
-// ==================
-const btnSpeak=document.getElementById("btn-speak");
-if(btnSpeak){
-  btnSpeak.addEventListener("click",()=>{ playInstructionAudio(); });
+const btnSpeak = document.getElementById("btn-speak");
+if (btnSpeak) {
+  btnSpeak.addEventListener("click", () => { playInstructionAudio(); });
 }

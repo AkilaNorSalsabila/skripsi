@@ -1,5 +1,6 @@
 // puzzle.js (Final Version - Fixed Audio & Logic)
-
+const sfxDanger = new Audio("/static/sounds/Timer.mp3");
+sfxDanger.loop = true;
 // Core variables
 let currentQuestion = 1;
 let placedCount = 0;
@@ -85,12 +86,13 @@ function startTimer(seconds) {
     timeLeft = seconds;
     timeExpired = false;
     renderTimer();
+    resetDangerEffects(); // Bersihkan efek setiap ganti soal
+
     timerInterval = setInterval(() => {
         timeLeft--;
         renderTimer();
         if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            timerInterval = null;
+            stopTimer();
             timeExpired = true;
             onTimeUp();
         }
@@ -102,22 +104,64 @@ function stopTimer() {
         clearInterval(timerInterval);
         timerInterval = null;
     }
+    resetDangerEffects();
+}
+
+function resetDangerEffects() {
+    const el = document.getElementById("timer");
+    if (el) el.classList.remove("timer-danger");
+    document.body.classList.remove("screen-danger-active");
+    
+    // Bersihkan animasi dari semua kepingan
+    const allPieces = document.querySelectorAll("#pieces-container img, #board img");
+    allPieces.forEach(p => p.classList.remove("piece-danger-anim"));
+
+    sfxDanger.pause();
+    sfxDanger.currentTime = 0;
 }
 
 function renderTimer() {
     const el = document.getElementById("timer");
+    const lang = localStorage.getItem("gameLang") || "id";
     const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
     const ss = String(timeLeft % 60).padStart(2, "0");
-    el.textContent = `Waktu ${mm}:${ss}`;
+    
+    el.textContent = (lang === "en" ? "Time " : "Waktu ") + `${mm}:${ss}`;
+
+    // Ambil semua kepingan yang belum dipasang (masih di container)
+    const remainingPieces = document.querySelectorAll("#pieces-container img");
+
+    if (timeLeft <= 5 && timeLeft > 0) {
+        el.classList.add("timer-danger");
+        document.body.classList.add("screen-danger-active");
+        
+        // Aktifkan gerakan yang sinkron dengan layar
+        remainingPieces.forEach(p => p.classList.add("piece-danger-anim"));
+
+        if (sfxDanger.paused) sfxDanger.play().catch(() => {});
+    } else {
+        el.classList.remove("timer-danger");
+        document.body.classList.remove("screen-danger-active");
+        
+        // Matikan gerakan jika waktu aman
+        remainingPieces.forEach(p => p.classList.remove("piece-danger-anim"));
+    }
 }
 
+// Update fungsi onTimeUp agar ada efek getar
 function onTimeUp() {
-    const soundVegetable = document.getElementById("sound-vegetable");
-    const soundCongrats = document.getElementById("sound-congrats");
     const soundWrong = document.getElementById("sound-wrong");
+    
+    // Kurangi skor jika waktu habis (opsional, ikuti menengah)
+    totalScore = Math.max(0, totalScore - 10);
+    localStorage.setItem("puzzleScore", totalScore);
 
-    if (soundVegetable) { soundVegetable.pause(); soundVegetable.currentTime = 0; }
-    if (soundCongrats) { soundCongrats.pause(); soundCongrats.currentTime = 0; }
+    // Efek Getar Board
+    const board = document.getElementById("board");
+    if (board) {
+        board.classList.add("shake");
+        setTimeout(() => board.classList.remove("shake"), 400);
+    }
 
     if (soundWrong) {
         soundWrong.currentTime = 0;
@@ -138,10 +182,12 @@ function showTimeUpOverlay(icon, text) {
     hideTimeUpOverlay();
     const overlay = document.createElement("div");
     overlay.id = "timeup-overlay";
+    // Gunakan class 'wrong-overlay' agar ukurannya raksasa seperti di Menengah
+    overlay.className = "wrong-overlay"; 
     overlay.innerHTML = `
-        <div class="timeup-content">
-            <div class="timeup-icon">${icon}</div>
-            <div class="timeup-text">${text}</div>
+        <div class="wrong-content">
+            <h1>${icon}</h1>
+            <p>${text}</p>
         </div>
     `;
     document.body.appendChild(overlay);

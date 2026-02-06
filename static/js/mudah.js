@@ -321,7 +321,9 @@ function loadQuestion() {
     btn.addEventListener("click", () => {
       stopAllSounds();
       const isCorrect = opt.toLowerCase() === question.correctAnswer[lang].toLowerCase();
+      
       if (isCorrect) {
+        // ... (kode benar tetap sama)
         localStorage.setItem("notifVeg", JSON.stringify({
           id: question.correctAnswer.id,
           en: question.correctAnswer.en,
@@ -332,7 +334,19 @@ function loadQuestion() {
         localStorage.setItem("correctCount", correctCount);
         setTimeout(() => { window.location.href = "/mudah_notif"; }, 800);
       } else {
+        // ❌ LOGIKA SALAH DENGAN EFEK GEMPA
         sfxWrong.play();
+        
+        // Pemicu Getaran pada elemen #game
+        const gameEl = document.getElementById("game");
+        if (gameEl) {
+          gameEl.classList.remove("shake"); // Reset class
+          void gameEl.offsetWidth;          // Trigger Reflow
+          gameEl.classList.add("shake");
+          
+          setTimeout(() => gameEl.classList.remove("shake"), 400);
+        }
+
         showWrongOverlay("✖", (lang === "id" ? "salah!" : "wrong!"));
         setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1200);
       }
