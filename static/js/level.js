@@ -1,4 +1,4 @@
-// level.js
+// Mengambil elemen dengan proteksi (null check nantinya)
 const selectedLangEl = document.getElementById("selected-lang");
 const langOptionsEl  = document.getElementById("lang-options");
 const titleEl        = document.getElementById("title");
@@ -7,62 +7,99 @@ const textEasy   = document.getElementById("text-easy");
 const textMedium = document.getElementById("text-medium");
 const textHard   = document.getElementById("text-hard");
 
-// toggle menu bahasa
+/**
+ * 🔹 TOGGLE MENU BAHASA
+ * Menggunakan preventDefault agar tidak terjadi ghost-click di mobile
+ */
 function toggleLangMenu(e) {
-  e && e.stopPropagation();
-  langOptionsEl.classList.toggle("hidden");
-}
-
-// 🔹 SET BAHASA (UI ONLY)
-function applyLanguageUI(lang) {
-  if (lang === "en") {
-    selectedLangEl.innerHTML = `
-      <img src="/static/img/flag uk.png">
-      <span>English</span>
-    `;
-    titleEl.textContent = "Let's Play!";
-    textEasy.textContent   = "Guess the Name";
-    textMedium.textContent = "Match the Shape";
-    textHard.textContent   = "Puzzle";
-  } else {
-    selectedLangEl.innerHTML = `
-      <img src="/static/img/flag indo.png">
-      <span>Indonesia</span>
-    `;
-    titleEl.textContent = "Ayo Bermain!";
-    textEasy.textContent   = "Tebak Nama";
-    textMedium.textContent = "Mencocokkan";
-    textHard.textContent   = "Puzzle";
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  if (langOptionsEl) {
+    langOptionsEl.classList.toggle("hidden");
   }
 }
 
-// 🔹 SAAT USER GANTI BAHASA
+/**
+ * 🔹 SET BAHASA (UI ONLY)
+ * Memastikan elemen ada sebelum diisi untuk menghindari error JS
+ */
+function applyLanguageUI(lang) {
+  if (!selectedLangEl || !titleEl) return;
+
+  if (lang === "en") {
+    selectedLangEl.innerHTML = `
+      <img src="/static/img/flag uk.png" alt="UK Flag">
+      <span>English</span>
+    `;
+    titleEl.textContent = "Let's Play!";
+    if (textEasy) textEasy.textContent = "Guess the Name";
+    if (textMedium) textMedium.textContent = "Match the Shape";
+    if (textHard) textHard.textContent = "Puzzle";
+  } else {
+    selectedLangEl.innerHTML = `
+      <img src="/static/img/flag indo.png" alt="Indo Flag">
+      <span>Indonesia</span>
+    `;
+    titleEl.textContent = "Ayo Bermain!";
+    if (textEasy) textEasy.textContent = "Tebak Nama";
+    if (textMedium) textMedium.textContent = "Mencocokkan";
+    if (textHard) textHard.textContent = "Puzzle";
+  }
+}
+
+/**
+ * 🔹 SAAT USER GANTI BAHASA
+ */
 function setLanguage(lang, e) {
-  if (e) e.stopPropagation();
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
 
   localStorage.setItem("gameLang", lang);
   applyLanguageUI(lang);
-  langOptionsEl.classList.add("hidden");
+  
+  if (langOptionsEl) {
+    langOptionsEl.classList.add("hidden");
+  }
 
-  // 🔊 baru play audio saat user interaksi
+  // 🔊 Jalankan instruksi suara jika fungsi tersedia
   if (typeof window.playInstruction === "function") {
     window.playInstruction();
   }
 }
 
-// close dropdown
-function handleDocumentClick() {
-  langOptionsEl.classList.add("hidden");
+/**
+ * 🔹 CLOSE DROPDOWN
+ * Menutup menu jika klik di luar area menu bahasa
+ */
+function handleDocumentClick(e) {
+  if (langOptionsEl && !langOptionsEl.contains(e.target) && !selectedLangEl.contains(e.target)) {
+    langOptionsEl.classList.add("hidden");
+  }
 }
 
-// INIT
-window.addEventListener("load", () => {
+/**
+ * 🔹 INIT (DOM CONTENT LOADED)
+ * Lebih cepat dan stabil daripada window.onload
+ */
+document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("gameLang") || "id";
 
-  // ⚠️ PENTING: hanya restore UI, TANPA suara
+  // Restore UI berdasarkan pilihan bahasa terakhir
   applyLanguageUI(savedLang);
 
-  selectedLangEl.addEventListener("click", toggleLangMenu);
-  langOptionsEl.addEventListener("click", e => e.stopPropagation());
+  // Pasang listener hanya jika elemen ditemukan
+  if (selectedLangEl) {
+    // Gunakan click agar kompatibel dengan mouse dan touch
+    selectedLangEl.addEventListener("click", toggleLangMenu);
+  }
+
+  if (langOptionsEl) {
+    langOptionsEl.addEventListener("click", (e) => e.stopPropagation());
+  }
+
   document.addEventListener("click", handleDocumentClick);
 });

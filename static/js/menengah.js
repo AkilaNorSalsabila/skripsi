@@ -90,9 +90,20 @@ const engMap = {
   "Kacang Panjang": "Yardlong Beans",
   "Terong": "Eggplant"
 };
+function normalizeName(raw) {
+  return raw
+    .toLowerCase()
+    .replace(/_full/g, "")        // ⬅️ FIX UTAMA
+    .replace(/full/g, "")         // ⬅️ JAGA-JAGA
+    .replace(/_/g, " ")
+    .replace(/\d+/g, "")
+    .replace(/\.(png|jpg|jpeg)/g, "")
+    .trim()
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
 
 const SangatMudah = [
-  { id: "q9",  questionImages: ["/static/img/kacang_panjang_siluet_m.png"], answers: ["Kacang Panjang"], options: ["Kacang Panjang", "Terong"] },
+  { id: "q1",  questionImages: ["/static/img/kacang_panjang_siluet_m.png"], answers: ["Kacang Panjang"], options: ["Kacang Panjang", "Terong"] },
   { id: "q2",  questionImages: ["/static/img/brokoli_siluet_m.png"], answers: ["Brokoli"], options: ["Brokoli", "Mentimun"] },
   { id: "q3", questionImages: ["/static/img/jamur_kancing_siluet_m.png"], answers: ["Jamur Kancing"], options: ["Jamur Kancing", "Wortel"] },
   { id: "q4", questionImages: ["/static/img/seledri_siluet_m.png"], answers: ["Seledri"], options: ["Seledri", "Tomat"] },
@@ -117,7 +128,7 @@ const Menengah = [
       "/static/img_full/Oyong_full.png",
       "/static/img_full/Mentimun_2.png",
       "/static/img_full/Labu_full.png",
-      "/static/img_full/Terong_full.png" ]
+      "/static/img_full/Terong2.png" ]
   },
 
   { id: "q14",  questionImages: ["/static/img_full/Oyong_s.png"],
@@ -215,13 +226,13 @@ const MenengahKeSulit = [
 
 const sulit = [
 
-  { id: "q25",  questionImages: ["/static/img_full/Daun_Pakis_m.png"],
-    answer: "/static/img_full/Daun_Pakis_6.png",
+  { id: "q25",  questionImages: ["/static/img_full/Daun_Pakis_6.png"],
+    answer: "/static/img_full/Daun_Pakis_full2.png",
     options: [
       "/static/img_full/Seledri_3.png",
       "/static/img_full/Daun_Bawang_1.png",
       "/static/img_full/Kangkung_full.png",
-      "/static/img_full/Daun_Pakis_6.png" ]
+      "/static/img_full/Daun_Pakis_full2.png" ]
   },
   { id: "q26",  questionImages: ["/static/img_full/Bit_s.png"],
     answer: "/static/img_full/Bit_merah_3.png",
@@ -255,7 +266,7 @@ const sulit = [
       "/static/img_full/Jantung_pisang.png",
       "/static/img_full/Mentimun_7.png" ]
   },
-  { id: "q29",  questionImages: ["/static/img_full/Labu_s.png"],
+  { id: "q30",  questionImages: ["/static/img_full/Labu_s.png"],
     answer: "/static/img_full/Labu_siam_3.png",
     options: [
       "/static/img_full/Labu_siam_3.png",
@@ -294,17 +305,22 @@ function shuffle(arr){
 // ==========================
 // LEVEL FLOW RANDOM SYSTEM (FINAL)
 // ==========================
+// 🔥 FORCE RANDOM SETIAP MASUK GAME
+localStorage.removeItem("menengahQuestions");
+localStorage.removeItem("menengahCurrent");
+localStorage.removeItem("menengahScore");
 
 let allQuestions = JSON.parse(localStorage.getItem("menengahQuestions"));
 
 if (!allQuestions) {
-  const sm  = shuffle(SangatMudah);
-  const m   = shuffle(Mudah);
-  const mid = shuffle(Menengah);
-  const ms  = shuffle(MenengahKeSulit);
-  const h   = shuffle(sulit);
+  // 🔥 FORCE RANDOM SETIAP MASUK GAME
+const sm  = shuffle(SangatMudah);
+const m   = shuffle(Mudah);
+const mid = shuffle(Menengah);
+const ms  = shuffle(MenengahKeSulit);
+const h   = shuffle(sulit);
 
-  allQuestions = [
+allQuestions = [
   sm[0],   // soal 1 → sangat mudah
   m[0],    // soal 2 → mudah
   mid[0],  // soal 3 → menengah
@@ -312,8 +328,10 @@ if (!allQuestions) {
   h[0]     // soal 5 → sulit
 ];
 
+localStorage.setItem("menengahQuestions", JSON.stringify(allQuestions));
+localStorage.setItem("menengahCurrent", "0");
+localStorage.setItem("menengahScore", "0");
 
-  localStorage.setItem("menengahQuestions", JSON.stringify(allQuestions));
 }
 
 const totalQuestions = allQuestions.length;
@@ -359,29 +377,37 @@ function onTimeUp() {
 // AUDIO
 // ==================
 function playInstructionAudio() {
-  if(language === "id"){
+  if (language === "id") {
+    // Audio Bahasa Indonesia
     sayurAudio.src = "/static/sounds/id/ui/cocokkan_sayuran.mp4";
+    sayurAudio.play().catch(() => {});
+  } else {
+    // Audio Bahasa Inggris dari folder static/sounds/En/
+    // Nama file: Mencocokkan.mp3
+    sayurAudio.src = "/static/sounds/En/Mencocokkan.mp3";
+    sayurAudio.play().catch((err) => {
+      console.error("Gagal memutar audio instruksi Inggris:", err);
+    });
+  }
+}
+
+function playSayurAudio(name){
+  const cleanName = normalizeName(name);
+
+  if(language==="id"){
+    let filename = cleanName.toLowerCase().replace(/ /g,"_");
+    sayurAudio.src = `/static/audio/${filename}_id.mp3`;
     sayurAudio.play().catch(()=>{});
-  } else if("speechSynthesis" in window){
-    const utter = new SpeechSynthesisUtterance("Match the vegetables");
+  } 
+  else if("speechSynthesis" in window){
+    const english = engMap[cleanName] || cleanName;
+    const utter = new SpeechSynthesisUtterance(english);
     utter.lang = "en-US";
     speechSynthesis.cancel();
     speechSynthesis.speak(utter);
   }
 }
 
-function playSayurAudio(name){
-  if(language==="id"){
-    let filename=name.toLowerCase().replace(/ /g,"_");
-    sayurAudio.src=`/static/audio/${filename}_id.mp3`;
-    sayurAudio.play().catch(()=>{});
-  } else if("speechSynthesis" in window){
-    const utter=new SpeechSynthesisUtterance(engMap[name]||name);
-    utter.lang="en-US";
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utter);
-  }
-}
 
 // ==================
 // OVERLAY
@@ -438,11 +464,29 @@ function loadQuestion() {
   // 🔹 tampilkan back button hanya di soal pertama
   updateBackButton();
 
-  siluetContainer.innerHTML = "";
-  pilihanContainer.innerHTML = "";
+siluetContainer.innerHTML = "";
+pilihanContainer.innerHTML = "";
 
-  const soal = allQuestions[currentQuestion];
-  const isImageMode = !!soal.answer;   // true kalau pakai gambar
+// ✅ soal HARUS duluan
+const soal = allQuestions[currentQuestion];
+const isImageMode = !!soal.answer;
+
+// ✅ reset semua layout class
+pilihanContainer.classList.remove(
+  "row",
+  "grid-2x2",
+  "grid-2-top-1-center"
+);
+
+const optionCount = soal.options.length;
+
+if (optionCount === 2) {
+  pilihanContainer.classList.add("row");
+} else if (optionCount === 3) {
+  pilihanContainer.classList.add("grid-2-top-1-center");
+} else if (optionCount === 4) {
+  pilihanContainer.classList.add("grid-2x2");
+}
 
 
   // Play instruksi
@@ -480,27 +524,49 @@ function loadQuestion() {
 
   // 🔹 SIMPAN UNTUK NOTIF
   // 🔹 SIMPAN UNTUK NOTIF
-  localStorage.setItem("lastAnswer", dragged);
-  localStorage.setItem("lastIsImage", isImageMode ? "1" : "0");
+// 🔹 SIMPAN UNTUK NOTIF
+localStorage.setItem("lastAnswer", dragged);
+localStorage.setItem("lastIsImage", isImageMode ? "1" : "0");
 
-  // 🔥 SIMPAN NAMA SAYUR (KHUSUS IMAGE MODE)
-  if (isImageMode) {
-    const cleanName = dragged
-      .split("/").pop()
-      .replace(/(_full|_Full)?\.(png|jpg|jpeg)/i, "")
-      .replace(/[_0-9]+/g, " ")
-      .trim();
+// ================================
+// 🔥 FIX NOTIF SEMUA MODE (FINAL)
+// ================================
 
-    localStorage.setItem("lastAnswerName", cleanName);
-  }
+// ✅ TEXT MODE (Sangat Mudah & Mudah)
+let finalName = dragged;
+
+if (dragged.includes("/")) {
+  finalName = normalizeName(dragged.split("/").pop());
+}
+
+localStorage.setItem("lastAnswerName", finalName);
 
 
 
-  dropZone.innerHTML = isImageMode
-    ? `<img src="${dragged}" class="sayur-dropped">`
-    : `<img src="/static/img/${dragged.toLowerCase().replace(/ /g,"_")}_m.png" class="sayur-dropped">`;
+  // bersihkan siluet
+dropZone.innerHTML = "";
 
-  dropZone.classList.add("correct");
+// buat gambar baru khusus hasil drop
+const droppedImg = document.createElement("img");
+
+if (isImageMode) {
+  droppedImg.src = dragged;
+} else {
+  droppedImg.src = `/static/img/${dragged.toLowerCase().replace(/ /g,"_")}_m.png`;
+}
+
+// 🔥 CLASS KHUSUS (INI YANG BIKIN BESAR)
+droppedImg.classList.add("sayur-dropped");
+
+// ❗ PENTING: matikan drag ulang
+droppedImg.draggable = false;
+
+// masukkan ke siluet
+dropZone.appendChild(droppedImg);
+
+// tandai benar
+dropZone.classList.add("correct");
+
 
   const usedOption = pilihanContainer.querySelector(`img[data-name="${dragged}"]`);
   if (usedOption) usedOption.remove();

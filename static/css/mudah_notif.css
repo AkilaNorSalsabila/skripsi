@@ -18,31 +18,33 @@ body {
   align-items: center;
 }
 
-/* Dekor pojok → samain dengan level_mudah */
+/* Dekor pojok */
 .decor {
   position: fixed;
   pointer-events: none;
   z-index: -1;
+  transition: all 0.3s ease;
 }
 .decor-right { top: 0; right: 0; width: 220px; }
 .decor-left  { bottom: 0; left: 0; width: 300px; }
 
 /* Judul */
 .notif-header {
-  margin-top: 20px;              /* sebelumnya 30px */
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 14px;
-  transform: translate(40px, -20px);   /* geser ke atas */
+  transform: translate(40px, -20px);
+  transition: all 0.3s ease;
 }
-
 
 .notif-header h1 {
   font-size: 52px;
   line-height: 1.2;
   color: var(--success);
   text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  transition: font-size 0.3s ease;
 }
 
 .notif-header #veg-name {
@@ -57,11 +59,16 @@ body {
   transition: transform 0.15s ease;
   transform: translateX(20px);
 }
+
 .speak-btn img {
   width: 50px;
   height: 50px;
+  transition: all 0.3s ease;
 }
 
+.speak-btn:hover {
+  transform: translateX(20px) scale(1.1);
+}
 
 .notif-main {
   margin-top: -40px;
@@ -69,6 +76,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: margin-top 0.3s ease;
 }
 
 /* kotak tetap untuk semua sayuran */
@@ -80,6 +88,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 /* gambar dipaksa memenuhi frame */
@@ -87,14 +96,13 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform: scale(1.25);   /* ini yang bikin gambar kecil jadi besar */
+  transform: scale(1.25);
   filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+  transition: transform 0.3s ease;
 }
 
-
-
-/* Confetti */
-#confetti {
+/* Confetti Container - FIX RESPONSIVE */
+#confetti-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -102,12 +110,273 @@ body {
   height: 100vh;
   pointer-events: none;
   z-index: 1;
+  overflow: hidden;
+}
+
+/* Confetti Canvas - FIX RESPONSIVE */
+#confetti {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  display: block;
 }
 
 @keyframes fall {
   to { transform: translateY(100vh) rotate(360deg); }
 }
+
 #notif-text,
 #veg-name {
   text-transform: lowercase;
+}
+
+/* ================== RESPONSIVE ================== */
+
+/* ===== TABLET (768px - 992px) ===== */
+@media (max-width: 992px) {
+  .notif-header {
+    margin-top: 15px;
+    gap: 12px;
+    transform: translate(0, 0);
+  }
+
+  .notif-header h1 {
+    font-size: 40px; /* dikecilkan */
+  }
+
+  .speak-btn {
+    transform: translateX(0);
+  }
+
+  .speak-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .speak-btn img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .notif-main {
+    margin-top: -20px;
+  }
+
+  .veg-frame {
+    width: 380px;
+    height: 290px;
+  }
+
+  #notif-veg {
+    transform: scale(1.2);
+  }
+
+  .decor-right { width: 180px; }
+  .decor-left { width: 240px; }
+}
+
+/* ===== TABLET KECIL / MOBILE LANDSCAPE (576px - 768px) ===== */
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+  }
+
+  .notif-header {
+    margin-top: 20px;
+    gap: 10px;
+    transform: none;
+    flex-direction: row; /* tetap horizontal */
+  }
+
+  .notif-header h1 {
+    font-size: 32px; /* dikecilkan lebih */
+  }
+
+  .speak-btn img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .notif-main {
+    margin-top: 10px;
+  }
+
+  .veg-frame {
+    width: 320px;
+    height: 240px;
+  }
+
+  #notif-veg {
+    transform: scale(1.15);
+  }
+
+  .decor-right { width: 140px; }
+  .decor-left { width: 190px; }
+}
+
+/* ===== MOBILE (max 576px) ===== */
+@media (max-width: 576px) {
+  .notif-header {
+    margin-top: 15px;
+    gap: 8px;
+    flex-direction: row; /* tetap horizontal */
+  }
+
+  .notif-header h1 {
+    font-size: 26px; /* lebih kecil lagi */
+  }
+
+  .speak-btn img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .notif-main {
+    margin-top: 5px;
+  }
+
+  .veg-frame {
+    width: 280px;
+    height: 210px;
+    max-width: 90vw;
+  }
+
+  #notif-veg {
+    transform: scale(1.1);
+  }
+
+  .decor-right { width: 110px; }
+  .decor-left { width: 150px; }
+}
+
+/* ===== SIDEBAR / LAYAR SEMPIT (max 450px) ===== */
+@media (max-width: 450px) {
+  body {
+    overflow: hidden;
+  }
+
+  .notif-header {
+    margin-top: 12px;
+    gap: 6px;
+    flex-direction: row; /* tetap horizontal */
+    padding: 0 5px;
+  }
+
+  .notif-header h1 {
+    font-size: 22px; /* sangat kecil */
+    line-height: 1.1;
+  }
+
+  .speak-btn {
+    transform: none;
+    flex-shrink: 0; /* jangan mengecil */
+  }
+
+  .speak-btn img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .notif-main {
+    margin-top: 0;
+  }
+
+  .veg-frame {
+    width: 240px;
+    height: 180px;
+    max-width: 92vw;
+  }
+
+  #notif-veg {
+    transform: scale(1.05);
+  }
+
+  .decor-right { width: 85px; }
+  .decor-left { width: 115px; }
+}
+
+/* ===== MOBILE SANGAT KECIL (max 380px) ===== */
+@media (max-width: 380px) {
+  .notif-header {
+    margin-top: 10px;
+    gap: 5px;
+    flex-direction: row; /* tetap horizontal */
+  }
+
+  .notif-header h1 {
+    font-size: 19px; /* ultra kecil */
+    line-height: 1.1;
+  }
+
+  .speak-btn img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .veg-frame {
+    width: 210px;
+    height: 160px;
+  }
+
+  #notif-veg {
+    transform: scale(1);
+  }
+
+  .decor-right { width: 70px; }
+  .decor-left { width: 95px; }
+}
+
+/* ===== MOBILE EKSTRA KECIL (max 320px) ===== */
+@media (max-width: 320px) {
+  .notif-header {
+    margin-top: 8px;
+    gap: 4px;
+    flex-direction: row; /* tetap horizontal */
+    padding: 0 3px;
+  }
+
+  .notif-header h1 {
+    font-size: 17px; /* super kecil */
+    line-height: 1;
+  }
+
+  .speak-btn img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .veg-frame {
+    width: 190px;
+    height: 145px;
+  }
+
+  #notif-veg {
+    transform: scale(0.95);
+  }
+
+  .decor-right { width: 60px; }
+  .decor-left { width: 80px; }
+}
+
+/* ===== FIX untuk Landscape Mobile ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .notif-header {
+    margin-top: 8px;
+    gap: 8px;
+  }
+
+  .notif-header h1 {
+    font-size: 24px;
+  }
+
+  .notif-main {
+    margin-top: 5px;
+  }
+
+  .veg-frame {
+    max-height: 60vh;
+    height: auto;
+  }
 }

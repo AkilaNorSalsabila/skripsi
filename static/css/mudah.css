@@ -1,234 +1,173 @@
-:root{
-  --bg:#EAF7FF;
-  --brand:#00B4E1;
-  --text:#000;
+:root {
+  --bg: #EAF7FF;
+  --brand: #00B4E1;
+  --text: #000;
 }
 
-*{ box-sizing:border-box; }
-body{
-  margin:0;
-  background:var(--bg);
-  font-family:'Mochiy Pop One', system-ui, sans-serif;
-  color:var(--text);
-  overflow-x:hidden;
-   /* WARNA DAN BAYANGAN */
-  color: #0288D1;  /* biru utama */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Mochiy Pop One', system-ui, sans-serif;
+  color: #0288D1; /* Biru utama */
   text-shadow:
-    1px 1px 0 #ffffff,   /* outline putih tipis */
-    2px 2px 0 #81D4FA;   /* bayangan biru lembut */
+    1px 1px 0 #ffffff,
+    2px 2px 0 #81D4FA;
+  overflow-x: hidden;
 }
 
-/* dekor → disamakan dengan level sulit */
-.decor{
-  position:fixed;
-  pointer-events:none;
-  z-index:-1;
+/* --- KONTROL TOMBOL BACK (DISAMAKAN DENGAN MENENGAH) --- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  left: 110px; /* Diubah dari 20px ke 110px agar sama dengan level menengah */
+  z-index: 100;
 }
-.decor-right{ top:0; right:0; width:220px; }
-.decor-left{ bottom:0; left:0; width:300px; }
 
-/* header */
-.header{
-  margin-top:32px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:18px;
-  
+.back-button {
+  display: none; /* Muncul via JS di soal No.1 */
 }
-#title-text{
-  font-size:50px;
-  line-height:1.1;
-  text-align:center;
-  margin:0;
+
+.back-button img {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-button:hover img {
+  transform: scale(1.1);
+}
+
+/* --- DEKORASI --- */
+.decor {
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+}
+.decor-right { top: 0; right: 0; width: 220px; }
+.decor-left { bottom: 0; left: 0; width: 300px; }
+
+/* --- HEADER & JUDUL --- */
+.header {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+#title-text {
+  font-size: 50px;
+  line-height: 1.1;
+  text-align: center;
+  margin: 0;
   transform: translateX(30px);
 }
-.speak-btn{
-  border:0;
-  background:#fff0;
-  cursor:pointer;
-  padding:8px;
-  border-radius:12px;
-  transition:transform .15s ease;
-  transform: translateX(40px); 
-}
-.speak-btn img{ width:44px; height:44px; display:block; }
 
-
-/* game */
-#game{
-  margin-top:-10px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:28px;
+.speak-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px;
+  transform: translateX(40px);
+  transition: transform .15s ease;
 }
-.image-wrap{
-  width:min(420px, 80vw);
+
+.speak-btn img { width: 44px; height: 44px; display: block; }
+
+/* --- GAME AREA --- */
+#game {
+  margin-top: -10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.image-wrap {
+  width: min(420px, 80vw);
   margin-top: -20px;
-  aspect-ratio:1.05/1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  aspect-ratio: 1.05/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-#veg-image{
-  width:100%;
-  height:auto;
-  display:block;
-  object-fit:contain;
-}
-
-.options{
-  display:grid;
-  grid-template-columns: repeat(3, minmax(140px, 1fr));
-  gap:28px;
-  width:min(920px, 92vw);
-  margin-inline:auto;
-  margin-top: -50px;
-}
-.option-btn{
-  background:var(--brand);
-  color:#fff;
-  border:0;
-  border-radius:18px;
-  padding:18px 22px;
-  font-family:'Quicksand', sans-serif;
-  font-size:28px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow:0 6px 16px rgba(0,0,0,.15);
-  transition:transform .12s ease, filter .12s ease;
-}
-.option-btn:active{ transform:translateY(1px); }
-.option-btn.wrong{ animation:shake .35s; filter:saturate(.6) brightness(.9); }
-.option-btn.correct{ filter:saturate(1.2) brightness(1.1); }
-
-/* progress */
-.progress{
-  position:fixed;
-  right:24px;
-  bottom:24px;
-  font:700 22px "Comic Sans MS", cursive;
-  background:rgba(255,255,255,.65);
-  padding:8px 14px;
-  border-radius:10px;
-}
-
-/* back button (responsive) */
-.back-button{
-  position:fixed;
-  top:60px;
-  left:260px;
-  z-index:2;
-}
-.back-button img{ width:50px; transition:transform .15s; }
-.back-button:hover img{ transform:scale(1.06); }
-
-/* toast */
-.toast{
-  position:fixed;
-  left:50%;
-  top:20px;
-  transform:translateX(-50%);
-  background:#fff;
-  padding:10px 16px;
-  border-radius:12px;
-  font:700 18px "Quicksand", sans-serif;
-  box-shadow:0 8px 24px rgba(0,0,0,.15);
-}
-.hidden{ display:none; }
 
 #veg-image {
-  width: 90%;     /* tadinya 100% */
+  width: 90%;
   height: auto;
   display: block;
   object-fit: contain;
 }
 
-/* kecilin di tablet/HP */
-@media (max-width: 992px){
-  .back-button{ left:20px; top:20px; }
-  .back-button img{ width:42px; }
-  #title-text{ font-size:42px; }
-  .options{ grid-template-columns:1fr; gap:16px; }
-  .option-btn{ font-size:24px; }
+/* --- PILIHAN JAWABAN --- */
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 28px;
+  width: min(920px, 92vw);
+  margin-inline: auto;
+  margin-top: -50px;
 }
 
-/* shake efek */
-@keyframes shake{
-  0%{ transform:translateX(0); }
-  25%{ transform:translateX(-6px); }
-  50%{ transform:translateX(6px); }
-  75%{ transform:translateX(-4px); }
-  100%{ transform:translateX(0); }
+.option-btn {
+  background: var(--brand);
+  color: #fff;
+  border: 0;
+  border-radius: 18px;
+  padding: 18px 22px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,.15);
+  transition: transform .12s ease, filter .12s ease;
 }
-.notif-overlay {
+
+.option-btn:active { transform: translateY(1px); }
+
+/* --- PROGRESS --- */
+.progress {
   position: fixed;
-  inset: 0;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  animation: fadeIn .3s ease;
+  right: 24px;
+  bottom: 24px;
+  font: 700 22px "Comic Sans MS", cursive;
+  background: rgba(255,255,255,.65);
+  padding: 8px 14px;
+  border-radius: 10px;
 }
 
-.notif-content {
-  text-align: center;
-  font-family: 'Mochiy Pop One', sans-serif;
-  font-size: 48px;
-  color: #000;
-}
-
-.notif-content img {
-  width: 260px;
-  margin-top: 20px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-/* Overlay salah full screen */
+/* --- OVERLAY SALAH --- */
 .wrong-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(220, 0, 0, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
-  animation: fadeIn 0.2s ease-in;
-}
-
-.wrong-overlay.hidden {
-  display: none;
 }
 
 .wrong-content {
   text-align: center;
   color: #fff;
-  font-family: 'Mochiy Pop One', sans-serif;
   animation: pop 0.5s ease-out;
 }
 
-.wrong-content h1 {
-  font-size: 8rem;
-  margin: 0;
-}
+.wrong-content h1 { font-size: 8rem; margin: 0; }
+.wrong-content p { font-size: 2rem; margin-top: 10px; }
 
-.wrong-content p {
-  font-size: 2rem;
-  margin-top: 10px;
+/* --- ANIMASI --- */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
 }
 
 @keyframes pop {
@@ -236,8 +175,28 @@ body{
   100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.zoom-active {
+  animation: zoomInOut 1.0s ease-in-out;
+  z-index: 10;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
 }
 
+@keyframes zoomInOut {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); filter: brightness(1.2); }
+  100% { transform: scale(1); }
+}
+
+.hidden { display: none; }
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 992px) {
+  .top-bar { 
+    top: 15px; 
+    left: 20px; /* Kembali ke kiri pada layar kecil agar tidak terpotong */
+  }
+  .back-button img { width: 40px; }
+  #title-text { font-size: 42px; }
+  .options { grid-template-columns: 1fr; gap: 16px; }
+  .option-btn { font-size: 24px; }
+}

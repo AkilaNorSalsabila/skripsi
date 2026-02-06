@@ -75,7 +75,6 @@ body {
   z-index: 5;
 }
 
-
 .menu-buttons button:hover {
   transform: scale(1.05);
 }
@@ -90,13 +89,12 @@ body {
   margin-top: -20px;    /* geser gambar ke atas */
   margin-bottom: -5px;  /* beri jarak agar teks lebih naik */
 }
+
 .menu-buttons button span {
   font-size: 32px;
   font-weight: bold;
   margin-top: -25px;
-
 }
-
 
 /* Warna spesifik */
 .menu-buttons .game-sayuran {
@@ -111,6 +109,25 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+/* --- ANIMASI ZOOM IN ZOOM OUT --- */
+@keyframes pulse-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Class ini akan dipicu oleh JavaScript */
+.btn-pulse {
+  animation: pulse-animation 1.2s infinite ease-in-out !important;
+  z-index: 99 !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Pastikan transisi card tetap smooth */
+.menu-buttons button {
+  transition: transform 0.2s;
+  will-change: transform;
 }
 
 .back-button {
@@ -131,7 +148,7 @@ body {
   transform: scale(1.1);
 }
 
-/* Saat layar kecil (tablet/HP), geser biar ga nabrak judul */
+/* ===== TABLET (768px - 992px) ===== */
 @media (max-width: 992px) {
   .back-button {
     left: 20px;
@@ -141,5 +158,229 @@ body {
   .back-button img {
     width: 40px;
   }
+
+  .content h1 {
+    font-size: 42px;
+    margin-bottom: 30px;
+  }
+
+  .menu-buttons {
+    gap: 50px;
+  }
+
+  .menu-buttons button {
+    width: 35vw;
+    height: 42vh;
+  }
+
+  .menu-buttons button span {
+    font-size: 28px;
+  }
+
+  .decor-left {
+    width: 180px;
+    height: 200px;
+  }
+
+  .decor-right {
+    width: 280px;
+  }
 }
 
+/* ===== TABLET KECIL / MOBILE LANDSCAPE (576px - 768px) ===== */
+@media (max-width: 768px) {
+  body {
+    overflow: hidden; /* tetap tidak scroll */
+  }
+
+  .content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .content h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    margin-top: 0;
+  }
+
+  .menu-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .menu-buttons button {
+    width: 80vw;
+    max-width: 400px;
+    height: 32vh;
+    max-height: 300px;
+  }
+
+  .menu-buttons button span {
+    font-size: 26px;
+  }
+
+  .decor-left {
+    width: 120px;
+    height: 140px;
+  }
+
+  .decor-right {
+    width: 180px;
+  }
+}
+
+/* ===== MOBILE (max 576px) ===== */
+@media (max-width: 576px) {
+  .content {
+    padding: 8px;
+  }
+
+  .content h1 {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .menu-buttons {
+    gap: 12px;
+  }
+
+  .menu-buttons button {
+    width: 85vw;
+    max-width: 350px;
+    height: 30vh;
+    max-height: 280px;
+    font-size: 22px;
+    padding-top: 20px;
+  }
+
+  .menu-buttons button span {
+    font-size: 24px;
+    margin-top: -20px;
+  }
+
+  .menu-buttons button img {
+    margin-top: -15px;
+  }
+
+  .back-button {
+    left: 15px;
+    top: 15px;
+  }
+
+  .back-button img {
+    width: 35px;
+  }
+
+  .decor-left {
+    width: 90px;
+    height: 105px;
+  }
+
+  .decor-right {
+    width: 140px;
+  }
+}
+
+/* ===== SIDEBAR / LAYAR SEMPIT (max 450px) ===== */
+@media (max-width: 450px) {
+  body {
+    overflow: hidden;
+  }
+
+  .content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+  }
+
+  .content h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-top: 0;
+  }
+
+  .menu-buttons {
+    gap: 10px;
+  }
+
+  .menu-buttons button {
+    width: 88vw;
+    height: 30vh;
+    max-height: 260px;
+    font-size: 20px;
+    padding-top: 15px;
+  }
+
+  .menu-buttons button span {
+    font-size: 22px;
+    margin-top: -18px;
+  }
+
+  .menu-buttons button img {
+    margin-top: -12px;
+    width: 90%;
+  }
+
+  .back-button {
+    left: 10px;
+    top: 10px;
+  }
+
+  .back-button img {
+    width: 32px;
+  }
+
+  .decor-left {
+    width: 70px;
+    height: 80px;
+  }
+
+  .decor-right {
+    width: 110px;
+  }
+}
+
+/* ===== SIDEBAR SANGAT SEMPIT (max 380px) ===== */
+@media (max-width: 380px) {
+  .content h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .menu-buttons {
+    gap: 8px;
+  }
+
+  .menu-buttons button {
+    height: 28vh;
+    max-height: 240px;
+    font-size: 18px;
+  }
+
+  .menu-buttons button span {
+    font-size: 20px;
+  }
+
+  .decor-left {
+    width: 60px;
+    height: 70px;
+  }
+
+  .decor-right {
+    width: 90px;
+  }
+}
+
+/* ===== SIDEBAR SUPPORT (ketika ada sidebar ~250px) ===== */
+@media (min-width: 1200px) {
+  body.with-sidebar .back-button {
+    left: 280px;
+  }
+}

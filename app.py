@@ -13,7 +13,7 @@ app = Flask(__name__, static_folder='static', template_folder='templates')
 CORS(app)
 
 # === Load model ===
-model = tf.keras.models.load_model('models/best_model_Effiiennetb0_C70finalfix2.keras')
+model = tf.keras.models.load_model('models/final_model_Efficiennetb0_C70finalfix2.keras')
 
 # Warm-up (biar prediksi pertama tidak lambat)
 dummy = np.zeros((1, 224, 224, 3), dtype=np.float32)

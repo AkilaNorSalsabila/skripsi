@@ -1,12 +1,14 @@
+/* ========== KODE DASAR ========== */
 body {
-  background-color: #EAF7FF; /* warna biru muda background */
+  background-color: #EAF7FF;
   margin: 0;
   font-family: 'Mochiy Pop One', sans-serif;
+  overflow: hidden;
 }
 
 .decor {
   position: absolute;
-  z-index: 1; /* lebih rendah dari teks */
+  z-index: 1;
 }
 
 .decor-left {
@@ -14,17 +16,42 @@ body {
   left: 0;
   width: 220px;
   height: 250px;
-  user-select: none;       /* teks/gambar tidak bisa dipilih */
+  user-select: none;
   pointer-events: none;
 }
 
 .decor-right {
   bottom: 0;
   right: 0;
-  width: 245px; /* bisa sesuaikan dgn ukuran vegetables_corner */
+  width: 245px;
   height: auto;
-  user-select: none;       /* teks/gambar tidak bisa dipilih */
+  user-select: none;
   pointer-events: none;
+}
+
+/* Animasi Zoom In Zoom Out (Pulsing) */
+@keyframes pulse-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1); /* Membesar sedikit */
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Diperbaiki agar animasi selalu menang saat dipicu JavaScript */
+.btn-pulse {
+  animation: pulse-animation 1.5s infinite ease-in-out !important; 
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) !important;
+  z-index: 99 !important; /* Supaya tombol yang bergerak naik ke depan */
+}
+
+/* Tambahan: Efek saat tombol ditekan (biar terasa nyata) */
+#start-btn:active img {
+  transform: scale(0.9) !important;
 }
 
 .content h1 {
@@ -34,19 +61,15 @@ body {
   margin-bottom: 40px;
   font-weight: normal;
   position: relative;
-  z-index: 10;  /* biar selalu di atas dekor */
-
-   /* WARNA DAN BAYANGAN */
-  color: #0288D1;  /* biru utama */
-  text-shadow:
-    1px 1px 0 #ffffff,   /* outline putih tipis */
-    2px 2px 0 #81D4FA;   /* bayangan biru lembut */
+  z-index: 10;
+  color: #0288D1;
+  text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #81D4FA;
 }
 
 .menu-buttons {
   display: flex;
   justify-content: center;
-  gap: 60px; /* jarak antar tombol */
+  gap: 60px;
 }
 
 .menu-card {
@@ -59,13 +82,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* isi dari atas ke bawah */
+  justify-content: flex-start;
   font-family: 'Quicksand', sans-serif;
   font-size: 24px;
   font-weight: bold;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.2s;
+  will-change: transform;
 }
 
 .menu-card:hover {
@@ -76,42 +100,31 @@ body {
   width: 80%;
   height: auto;
   object-fit: contain;
-  margin-top: 2px;   /* kasih jarak sedikit dari atas */
-  margin-bottom: auto; /* biar teks agak ke atas */
+  margin-top: 2px;
+  margin-bottom: auto;
 }
 
 .menu-card span {
   text-align: center;
   font-size: 26px;
-  margin-bottom: 8px; /* teks naik, lebih dekat ke gambar */
+  margin-bottom: 8px;
 }
 
-/* warna spesifik */
-.menu-card.sayuran {
-  background-color: #00B4E1;
-}
+.menu-card.sayuran { background-color: #00B4E1; }
+.menu-card.hewan { background-color: #008BAF; }
+.menu-card.permainan { background-color: #4FC3F7; }
 
-.menu-card.hewan {
-  background-color: #008BAF;
-}
-
-.menu-card.permainan {
-  background-color: #4FC3F7;
-}
-
-/* khusus gambar permainan dibesarkan */
 .menu-card.permainan img {
-  width: 110%;       /* lebih besar dari card */
-  max-height: 65%;   /* batasi biar tidak keluar kotak */
-  margin-top: 25px; /* dorong sedikit ke atas */
+  width: 110%;
+  max-height: 65%;
+  margin-top: 25px;
   margin-bottom: 5px;
 }
-
 
 .menu-item {
   display: flex;
   flex-direction: column;
-  align-items: center; /* biar button & text center horizontal */
+  align-items: center;
 }
 
 .menu-item p {
@@ -119,7 +132,396 @@ body {
   font-size: 30px;
   font-weight: bold;
   color: #004154;
-  margin-top: 10px; /* jarak dari button ke tulisan */
+  margin-top: 10px;
   text-align: center;
   z-index: 10;
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+/* Desktop Large (1200px+) */
+@media (min-width: 1200px) {
+  .menu-buttons {
+    gap: 70px;
+  }
+  
+  .decor-left { width: 240px; height: 270px; }
+  .decor-right { width: 265px; }
+}
+
+/* Laptop & Desktop Medium (1025px - 1199px) */
+@media (max-width: 1199px) and (min-width: 1025px) {
+  .menu-buttons {
+    gap: 50px;
+    padding: 0 20px;
+  }
+  
+  .content h1 {
+    font-size: 46px;
+    margin-bottom: 35px;
+  }
+
+  .menu-card {
+    width: 18vw; 
+    height: 40vh;
+  }
+
+  .menu-card span {
+    font-size: 24px;
+  }
+
+  .menu-item p {
+    font-size: 28px;
+  }
+
+  .decor-left { width: 200px; height: 230px; }
+  .decor-right { width: 220px; }
+}
+
+/* Tablet Landscape (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .menu-buttons {
+    gap: 30px;
+    padding: 0 15px;
+  }
+  
+  .content h1 {
+    font-size: 38px;
+    margin-bottom: 30px;
+  }
+
+  .menu-card {
+    width: 26vw; 
+    height: 38vh;
+  }
+
+  .menu-card span {
+    font-size: 20px;
+  }
+
+  .menu-item p {
+    font-size: 24px;
+  }
+
+  .decor-left { width: 150px; height: auto; }
+  .decor-right { width: 160px; }
+}
+
+/* Tablet Portrait (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .menu-card {
+    width: 28vw;
+    height: 36vh;
+  }
+  
+  .menu-buttons {
+    gap: 25px;
+  }
+}
+
+/* Tablet Kecil (600px - 767px) */
+@media (max-width: 767px) and (min-width: 600px) {
+  .menu-buttons {
+    gap: 20px;
+    padding: 0 15px;
+  }
+  
+  .content h1 {
+    font-size: 32px;
+    margin-bottom: 25px;
+  }
+
+  .menu-card {
+    width: 28vw; 
+    height: 36vh;
+    padding: 15px;
+  }
+
+  .menu-card span {
+    font-size: 18px;
+  }
+
+  .menu-item p {
+    font-size: 20px;
+  }
+
+  .decor-left { width: 120px; height: auto; }
+  .decor-right { width: 130px; }
+}
+
+/* HP Portrait Besar (600px - 767px) */
+@media (max-width: 767px) and (min-width: 600px) and (orientation: portrait) {
+  .menu-buttons {
+    gap: 18px;
+    padding: 0 12px;
+  }
+  
+  .menu-card {
+    width: 30vw;
+    height: 35vh;
+  }
+}
+
+/* HP Sedang (480px - 599px) */
+@media (max-width: 599px) and (min-width: 480px) {
+  .menu-buttons {
+    gap: 15px;
+    padding: 0 12px;
+  }
+  
+  .content h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .menu-card {
+    width: 29vw;
+    height: 34vh;
+    padding: 12px;
+    border-radius: 15px;
+  }
+
+  .menu-card span {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .menu-card img {
+    width: 75%;
+  }
+
+  .menu-item p {
+    font-size: 18px;
+  }
+
+  .decor-left { width: 100px; height: auto; }
+  .decor-right { width: 110px; }
+}
+
+/* MODE SIDEBAR - HP Standard (360px - 479px) */
+@media (max-width: 479px) and (min-width: 360px) {
+  body {
+    overflow: hidden;
+  }
+
+  .content h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    padding: 0 5px;
+    line-height: 1.1;
+  }
+
+  .menu-buttons {
+    gap: 8px;
+    padding: 0 8px;
+    flex-wrap: nowrap;
+  }
+
+  .menu-card {
+    width: calc((100vw - 32px) / 3);
+    max-width: 130px;
+    min-width: 100px;
+    height: 32vh;
+    min-height: 180px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .menu-card span {
+    font-size: 13px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .menu-card img {
+    width: 70%;
+    margin-top: 0;
+  }
+
+  .menu-card.permainan img {
+    width: 80%;
+    margin-top: 5px;
+  }
+
+  .menu-item p {
+    font-size: 15px;
+    margin-top: 5px;
+  }
+
+  .decor {
+    display: none;
+  }
+}
+
+/* MODE SIDEBAR - HP Sangat Kecil (320px - 359px) */
+@media (max-width: 359px) and (min-width: 320px) {
+  body {
+    overflow: hidden;
+  }
+
+  .content h1 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    margin-top: 8px;
+    padding: 0 5px;
+    line-height: 1.1;
+  }
+
+  .menu-buttons {
+    gap: 7px;
+    padding: 0 7px;
+    flex-wrap: nowrap;
+  }
+
+  .menu-card {
+    width: calc((100vw - 28px) / 3);
+    max-width: 115px;
+    min-width: 90px;
+    height: 30vh;
+    min-height: 170px;
+    padding: 7px;
+    border-radius: 11px;
+  }
+
+  .menu-card span {
+    font-size: 12px;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .menu-card img {
+    width: 68%;
+  }
+
+  .menu-card.permainan img {
+    width: 75%;
+  }
+
+  .menu-item p {
+    font-size: 14px;
+  }
+
+  .decor {
+    display: none;
+  }
+}
+
+/* MODE SIDEBAR EKSTRA KECIL (< 320px) */
+@media (max-width: 319px) {
+  body {
+    overflow: hidden;
+  }
+
+  .content h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-top: 8px;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  .menu-buttons {
+    gap: 6px;
+    padding: 0 6px;
+    flex-wrap: nowrap;
+  }
+
+  .menu-card {
+    width: calc((100vw - 24px) / 3);
+    max-width: 100px;
+    min-width: 80px;
+    height: 28vh;
+    min-height: 160px;
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .menu-card span {
+    font-size: 11px;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .menu-card img {
+    width: 65%;
+  }
+
+  .menu-card.permainan img {
+    width: 70%;
+  }
+
+  .menu-item p {
+    font-size: 13px;
+  }
+
+  .decor {
+    display: none;
+  }
+}
+
+/* LANDSCAPE MODE - Tablet & HP */
+@media (max-height: 500px) and (orientation: landscape) and (min-width: 600px) {
+  .content h1 {
+    font-size: 26px;
+    margin-bottom: 12px;
+    margin-top: 5px;
+  }
+
+  .menu-buttons {
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .menu-card {
+    width: 28vw;
+    max-width: 160px;
+    height: 60vh;
+    min-height: 180px;
+    padding: 12px;
+  }
+
+  .menu-card span {
+    font-size: 16px;
+  }
+
+  .menu-item p {
+    font-size: 18px;
+  }
+
+  .decor-left { width: 90px; }
+  .decor-right { width: 100px; }
+}
+
+/* LANDSCAPE MODE - HP Kecil */
+@media (max-height: 500px) and (orientation: landscape) and (max-width: 599px) {
+  .content h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+  }
+
+  .menu-buttons {
+    gap: 12px;
+    padding: 0 10px;
+  }
+
+  .menu-card {
+    width: 30vw;
+    max-width: 150px;
+    height: 55vh;
+    min-height: 150px;
+    padding: 10px;
+  }
+
+  .menu-card span {
+    font-size: 14px;
+  }
+
+  .menu-item p {
+    font-size: 16px;
+  }
+
+  .decor-left { width: 70px; }
+  .decor-right { width: 80px; }
 }

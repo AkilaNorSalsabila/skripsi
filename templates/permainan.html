@@ -62,6 +62,10 @@
   <script>
     const bgMusic = document.getElementById("bg-music");
     const instruction = document.getElementById("instruction-audio");
+    
+    // Ambil elemen tombol untuk dianimasikan
+    const btnSayuran = document.querySelector('.game-sayuran');
+    const btnHewan = document.querySelector('.game-hewan');
 
     const voiceMap = {
       sayuran: {
@@ -74,13 +78,14 @@
       }
     };
 
-    // tandai user sudah start
     sessionStorage.setItem("hasStarted", "true");
 
-    // ===== STOP SEMUA SUARA =====
     function stopAllAudio() {
       instruction.pause();
       instruction.currentTime = 0;
+      // Hilangkan animasi jika ada yang masih jalan
+      btnSayuran.classList.remove('btn-pulse');
+      btnHewan.classList.remove('btn-pulse');
 
       Object.values(voiceMap).forEach(item => {
         item.audio.pause();
@@ -92,15 +97,42 @@
     bgMusic.volume = 0.03;
     bgMusic.play().catch(()=>{});
 
-    instruction.onplay = () => bgMusic.volume = 0.015;
-    instruction.onended = () => bgMusic.volume = 0.03;
-
+    // ===== LOGIKA ANIMASI SAAT INSTRUKSI BERJALAN =====
     instruction.play().catch(()=>{});
+
+    instruction.onplay = () => bgMusic.volume = 0.015;
+    
+    instruction.ontimeupdate = () => {
+      let time = instruction.currentTime;
+
+      // Contoh: Suara bilang "Sayuran" di detik 2 sampai 4
+      if (time >= 1.5 && time <= 2.5) { 
+        btnSayuran.classList.add('btn-pulse');
+      } else {
+        btnSayuran.classList.remove('btn-pulse');
+      }
+
+      // Contoh: Suara bilang "Hewan" di detik 5 sampai 7
+      if (time >= 2.6 && time <= 3.7) { 
+        btnHewan.classList.add('btn-pulse');
+      } else {
+        btnHewan.classList.remove('btn-pulse');
+      }
+    };
+
+    instruction.onended = () => {
+      bgMusic.volume = 0.03;
+      btnSayuran.classList.remove('btn-pulse');
+      btnHewan.classList.remove('btn-pulse');
+    };
 
     // ===== KLIK GAME =====
     function goGame(type) {
-      stopAllAudio();        // 🔴 stop instruksi
+      stopAllAudio(); 
       bgMusic.volume = 0.015;
+
+      const activeBtn = document.querySelector(`.game-${type}`);
+      if (activeBtn) activeBtn.classList.add('btn-pulse');
 
       const item = voiceMap[type];
       item.audio.play();

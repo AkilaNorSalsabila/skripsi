@@ -444,7 +444,7 @@ os.makedirs("models", exist_ok=True)
 os.makedirs("vegetable_classifier/evaluation", exist_ok=True)
 
 # ====== Callbacks ======
-checkpoint = ModelCheckpoint("models/best_model_Effiiennetb0_C70finalfix3.keras", monitor='val_accuracy', save_best_only=True)
+checkpoint = ModelCheckpoint("models/best_model_Effiiennetb0_C70finalfix6fix.keras", monitor='val_accuracy', save_best_only=True)
 early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 reduce_lr = ReduceLROnPlateau(
     monitor='val_loss',
@@ -463,10 +463,10 @@ history = model.fit(
 )
 
 # ====== Save Model ======
-model.save("models/final_model_Efficiennetb0_C70finalfix3.keras")
+model.save("models/final_model_Efficiennetb0_C70finalfix6fix.keras")
 
 label_map = {str(v): k for k, v in train_data.class_indices.items()}
-with open("models/label_map_Efficiennetb0_C70finalfix3.json", 'w') as f:
+with open("models/label_map_Efficiennetb0_C70finalfix6fix.json", 'w') as f:
     json.dump(label_map, f)
 
 # ====== Grafik Akurasi & Loss ======
@@ -487,7 +487,7 @@ plt.plot(loss, label='Train Loss')
 plt.plot(val_loss, label='Val Loss')
 plt.title('Loss')
 plt.legend()
-plt.savefig("vegetable_classifier/evaluation/grafik_akurasi_loss_Efficiennetb0_C70finalfix3.png")
+plt.savefig("vegetable_classifier/evaluation/grafik_akurasi_loss_Efficiennetb0_C70finalfix6fix.png")
 
 
 
@@ -523,13 +523,13 @@ df = pd.DataFrame(
 )
 
 df.to_csv(
-    "vegetable_classifier/evaluation/misclassified_images_Efficiennetb0_C70finalfix3.csv",
+    "vegetable_classifier/evaluation/misclassified_images_Efficiennetb0_C70finalfix6fix.csv",
     index=False
 )
 
 # ====== Simpan contoh gambar yang salah ======
 import shutil
-sample_dir = "vegetable_classifier/evaluation/misclassified_samples_C70finalfix3"
+sample_dir = "vegetable_classifier/evaluation/misclassified_samples_C70finalfix6fix"
 os.makedirs(sample_dir, exist_ok=True)
 
 for path, actual, pred, conf in misclassified[:30]:
@@ -559,7 +559,7 @@ plt.yticks(rotation=0)
 
 plt.tight_layout()
 plt.savefig(
-    "vegetable_classifier/evaluation/confusion_matrix_Efficiennetb0_C70finalfix3.png",
+    "vegetable_classifier/evaluation/confusion_matrix_Efficiennetb0_C70finalfix6fix.png",
     dpi=300,
     bbox_inches='tight'
 )
@@ -567,7 +567,7 @@ plt.close()
 
 
 report = classification_report(y_true, y_pred, target_names=class_labels, zero_division=0)
-with open("vegetable_classifier/evaluation/classification_report_Efficiennetb0_C70finalfix3.txt", "w") as f:
+with open("vegetable_classifier/evaluation/classification_report_Efficiennetb0_C70finalfix6fix.txt", "w") as f:
     f.write(report)
 
 # ====== Confusion Matrix Full Dataset ======
@@ -606,7 +606,7 @@ plt.yticks(rotation=0)
 
 plt.tight_layout()
 plt.savefig(
-    "vegetable_classifier/evaluation/confusion_matrix_full_Efficiennetb0_C70finalfix3.png",
+    "vegetable_classifier/evaluation/confusion_matrix_full_Efficiennetb0_C70finalfix6fix.png",
     dpi=300,
     bbox_inches='tight'
 )
@@ -614,5 +614,5 @@ plt.close()
 
 
 final_val_acc = val_acc[-1] * 100
-print(f"\nAkurasi Validasi Terakhir (Efficiennetb0_C70finalfix3): {final_val_acc:.2f}%")
+print(f"\nAkurasi Validasi Terakhir (Efficiennetb0_C70finalfix6fix): {final_val_acc:.2f}%")
 print("Training & evaluasi selesai.")

@@ -1,113 +1,80 @@
-:root{
-  --bg:#EAF7FF;
-  --brand:#00B4E1;
-  --text:#000;
+:root {
+  --bg: #EAF7FF;
+  --brand: #00B4E1;
+  --text: #000;
 }
 
-*{ box-sizing:border-box; }
-body{
-  margin:0;
-  background:var(--bg);
-  font-family:'Mochiy Pop One', system-ui, sans-serif;
-  color:var(--text);
-  overflow-x:hidden;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Mochiy Pop One', system-ui, sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
 }
 
-/* dekor (sama seperti mudah) */
-.decor{
-  position:fixed;
-  pointer-events:none;
-  z-index:-1;
+/* ========== DEKORASI (Tetap) ========== */
+.decor {
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
 }
-.decor-right{ top:0; right:0; width:220px; }
-.decor-left{ bottom:0; left:0; width:300px; }
+.decor-right { top: 0; right: 0; width: 220px; }
+.decor-left { bottom: 0; left: 0; width: 300px; }
 
-/* back button */
-.back-button{
+/* ========== BACK BUTTON (Tetap di Desktop) ========== */
+.back-button {
   position: fixed;
   top: 60px;
-  left: 260px;   /* default: untuk layar besar */
+  left: 260px;
   z-index: 10;
 }
-.back-button img{ width:50px; transition:transform .15s; }
-.back-button:hover img{ transform:scale(1.06); }
+.back-button img { width: 64px; transition: transform .15s; }
+.back-button:hover img { transform: scale(1.06); }
 
-/* header */
-.header{
-  margin-top:52px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
+/* ========== HEADER (Tetap di Desktop) ========== */
+.header {
+  margin-top: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
-#title-text{
-  font-size:50px;
-  line-height:1.1;
-  text-align:center;
-  margin:0;
+#title-text {
+  font-size: 50px;
+  line-height: 1.1;
+  text-align: center;
+  margin: 0;
 }
-.speak-btn{
-  border:0;
-  background:transparent;
-  cursor:pointer;
-  padding:8px;
-  border-radius:12px;
-  transition:transform .15s ease;
+.speak-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 12px;
+  transition: transform .15s ease;
   transform: translateX(40px);
 }
-.speak-btn img{ width:44px; height:44px; display:block; }
+.speak-btn img { width: 44px; height: 44px; display: block; }
 
-/* main skor area */
-.score-main{
-  margin-top: 70px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.score-container{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:28px;
-  
-}
-
-/* kotak skor */
-#score-box {
-  background: var(--brand);
-  color: #fff;
-  padding: 40px 50px; /* lebih panjang dan tinggi */
-  border-radius: 12px;
-  font-size: 70px;
-  font-weight: 100;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
-  border: 4px solid rgba(0,0,0,.18);
-  min-width: 0px;
-  text-align: center;
-  line-height: 2.0; /* biar tulisan turun agak ke bawah */
-}
-
-/* tombol icon besar */
-/* area skor */
+/* ========== SKOR AREA (Tetap di Desktop) ========== */
 .score-main {
-  margin-top: 60px; /* turunin seluruh kontainer skor */
+  margin-top: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .score-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px; /* jarak lebih lega */
+  gap: 30px;
 }
-
-/* kotak skor */
 #score-box {
   background: var(--brand);
   color: #fff;
-  padding: 70px 50px; /* lebih panjang dan tinggi */
+  padding: 70px 50px;
   border-radius: 12px;
   font-size: 56px;
   font-weight: 700;
@@ -115,71 +82,80 @@ body{
   border: 4px solid rgba(0,0,0,.18);
   min-width: 290px;
   text-align: center;
-  line-height: 1.5; /* biar tulisan turun agak ke bawah */
+  line-height: 1.5;
 }
-.icon-btn {
-  background:none;     /* ⬅️ hilangkan background abu2 */
-  border:none;         /* ⬅️ hilangkan border */
-  cursor:pointer;
-  padding:0;
-}
-/* tombol icon */
+
+/* ========== BUTTONS (Tetap di Desktop) ========== */
 .buttons {
   display: flex;
   gap: 76px;
   align-items: center;
   justify-content: center;
 }
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform .15s;
+}
+.icon-btn img { width: 64px; height: 64px; display: block; }
+.icon-btn:hover { transform: scale(1.06); }
 
-.icon-btn img {
-  width: 64px;   /* tombol lebih kecil */
-  height: 64px;
-  display: block;
+/* =========================================
+   RESPONSIVE: KHUSUS TABLET & HP
+   ========================================= */
+
+/* Tablet & Laptop Kecil */
+@media (max-width: 1024px) {
+  .back-button { left: 40px; top: 40px; }
+  .back-button img { width: 50px; }
 }
 
-.icon-btn:hover{ transform: scale(1.06); }
+/* Mobile / HP (Portrait) */
+@media (max-width: 768px) {
+  .header { margin-top: 80px; }
+  #title-text { font-size: 36px; }
+  .speak-btn { transform: translateX(0); } /* Hilangkan geser agar center */
+  
+  .score-main { margin-top: 40px; }
+  #score-box { 
+    font-size: 40px; 
+    padding: 40px 30px; 
+    min-width: 240px; 
+  }
+  
+  .buttons { gap: 40px; }
+  .icon-btn img { width: 56px; height: 56px; }
 
-/* responsive */
-@media (max-width: 992px){
-  #title-text{ font-size:42px; transform: translateX(0); }
-  #score-box{ font-size:36px; padding: 26px 44px; }
-  .icon-btn svg { width:56px; height:56px; }
+  .decor-left { width: 180px; }
+  .decor-right { width: 130px; }
 }
-/* overlay emoji */
-  #emoji-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255,255,255,0.0); /* transparan */
-    z-index: 9999;
-    display: none;
-    pointer-events: none;
-    overflow: hidden;
-  }
 
-  .emoji {
-    position: absolute;
-    font-size: 3rem;
-    opacity: 0;
+/* Sidebar Mode / HP Sangat Kecil */
+@media (max-width: 480px) {
+  #title-text { font-size: 28px; }
+  #score-box { 
+    font-size: 32px; 
+    padding: 30px 20px; 
+    min-width: 200px; 
   }
-
-  /* dari kiri */
-  @keyframes slideLeft {
-    0%   { transform: translateX(-100vw); opacity: 0; }
-    30%  { opacity: 1; }
-    70%  { opacity: 1; }
-    100% { transform: translateX(0); opacity: 0; }
-  }
-
-  /* dari kanan */
-  @keyframes slideRight {
-    0%   { transform: translateX(100vw); opacity: 0; }
-    30%  { opacity: 1; }
-    70%  { opacity: 1; }
-    100% { transform: translateX(0); opacity: 0; }
-  }
-  @keyframes floatDown {
-  0%   { transform: translateY(-100px); opacity: 0; }
-  30%  { opacity: 1; }
-  70%  { opacity: 1; }
-  100% { transform: translateY(100px); opacity: 0; }
+  .buttons { gap: 20px; }
+  .back-button { top: 20px; left: 20px; }
+  .back-button img { width: 40px; }
+  .decor { display: none; } /* Biar tidak sesak */
 }
+
+/* Animasi Emoji (Tetap Sama) */
+#emoji-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 9999;
+  display: none;
+  pointer-events: none;
+  overflow: hidden;
+}
+.emoji { position: absolute; font-size: 3rem; opacity: 0; }
+@keyframes slideLeft { 0% { transform: translateX(-100vw); opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateX(0); opacity: 0; } }
+@keyframes slideRight { 0% { transform: translateX(100vw); opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateX(0); opacity: 0; } }
+@keyframes floatDown { 0% { transform: translateY(-100px); opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateY(100px); opacity: 0; } }

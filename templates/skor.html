@@ -1,172 +1,225 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <title>Skor</title>
+    <meta charset="utf-8" />
+    <title>Skor</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/skor.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/skor.css') }}">
+    
+    <style>
+        @keyframes winner-jump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+        .perfect-score {
+            animation: winner-jump 0.8s infinite ease-in-out;
+            border: 6px solid #FFD700 !important;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6) !important;
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- dekor pojok -->
-  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
-  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
+    <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
+    <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
 
-  <!-- back -->
-  <a href="/pilih_level" class="back-button">
-    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Kembali">
-  </a>
+    <a href="/pilih_level" class="back-button">
+        <img src="{{ url_for('static', filename='img/back.png') }}" alt="Kembali">
+    </a>
 
-  <!-- Header -->
-  <header class="header">
-    <h1 id="title-text">Skor</h1>
-    <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
-      <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
-    </button>
-  </header>
-
-  <!-- Konten utama -->
-  <main class="score-main">
-    <div class="score-container">
-      <div id="score-box">0/100</div>
-
-      <div class="buttons">
-        <button id="btn-retry" class="icon-btn" title="Ulang">
-          <img src="{{ url_for('static', filename='img/repeat.png') }}" alt="Ulang">
+    <header class="header">
+        <h1 id="title-text">Skor</h1>
+        <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
+            <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
         </button>
-        <button id="btn-next" class="icon-btn" title="Lanjut">
-          <img src="{{ url_for('static', filename='img/next.png') }}" alt="Lanjut">
-        </button>
-      </div>
-    </div>
-  </main>
+    </header>
 
-  <!-- overlay emoji -->
-  <div id="emoji-overlay"></div>
+    <main class="score-main">
+        <div class="score-container">
+            <div id="score-box">0/100</div>
 
-  <!-- suara hasil akhir -->
-  <audio id="good-sound" src="{{ url_for('static', filename='sounds/goodresult.mp3') }}"></audio>
-  <audio id="fail-sound" src="{{ url_for('static', filename='sounds/fail.mp3') }}"></audio>
+            <div class="buttons">
+                <button id="btn-retry" class="icon-btn" title="Ulang">
+                    <img src="{{ url_for('static', filename='img/repeat.png') }}" alt="Ulang">
+                </button>
+                <button id="btn-next" class="icon-btn" title="Lanjut">
+                    <img src="{{ url_for('static', filename='img/next.png') }}" alt="Lanjut">
+                </button>
+            </div>
+        </div>
+    </main>
 
-  <!-- ================= SCRIPT ================= -->
-  <script>
-    // ================== BAHASA ==================
-    const lang = localStorage.getItem("gameLang") || "id";
+    <div id="emoji-overlay"></div>
+    <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;"></canvas>
 
-    const titleText = document.getElementById("title-text");
-    titleText.textContent = (lang === "en") ? "Score" : "Skor";
-    document.title = (lang === "en") ? "Score" : "Skor";
+    <audio id="good-sound" src="{{ url_for('static', filename='sounds/goodresult.mp3') }}"></audio>
+    <audio id="fail-sound" src="{{ url_for('static', filename='sounds/fail.mp3') }}"></audio>
+    
+    <audio id="score-voice"></audio>
 
-    // ================== SCORE ==================
-    function getFinalScore() {
-      let finalScore = parseInt(localStorage.getItem("finalScore"), 10);
+    <script>
+        // ================== INITIAL SETTINGS ==================
+        const lang = localStorage.getItem("gameLang") || "id";
+        const titleText = document.getElementById("title-text");
+        titleText.textContent = (lang === "en") ? "Score" : "Skor";
+        document.title = (lang === "en") ? "Score" : "Skor";
 
-      if (isNaN(finalScore)) {
-        const correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
-        const totalQuestions = parseInt(localStorage.getItem("totalQuestions") || "5", 10);
+        // ================== LOGIKA SCORE ==================
+        function getFinalScore() {
+            let finalScore = parseInt(localStorage.getItem("finalScore"), 10);
+            if (isNaN(finalScore)) {
+                const correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
+                const totalQuestions = parseInt(localStorage.getItem("totalQuestions") || "5", 10);
+                finalScore = Math.round((correctCount / totalQuestions) * 100);
+                localStorage.setItem("finalScore", finalScore);
+            }
+            return finalScore;
+        }
 
-        finalScore = Math.round((correctCount / totalQuestions) * 100);
-        localStorage.setItem("finalScore", finalScore);
-      }
+        const finalScore = getFinalScore();
+        const scoreBox = document.getElementById("score-box");
+        scoreBox.textContent = `${finalScore}/100`;
 
-      return finalScore;
-    }
+        // ================== MAPPING SUARA REKAMAN ==================
+        const audioMap = {
+            "id": {
+                0: "Nol.mp4",
+                20: "Dua Puluh.mp4",
+                40: "Empat Puluh.mp4",
+                60: "Enam Puluh.mp4",
+                80: "Delapan pulih.mp4",
+                100: "Seratus.mp4"
+            },
+            "en": {
+                0: "Zero.mp3",
+                20: "Twenty.mp3",
+                40: "Forty.mp3",
+                60: "Sixty.mp3",
+                80: "Eighty.mp3",
+                100: "One Hundred.mp3"
+            }
+        };
 
-    const finalScore = getFinalScore();
-    document.getElementById("score-box").textContent = `${finalScore}/100`;
+        const scoreVoice = document.getElementById("score-voice");
+        
+        function playScoreVoice() {
+            // Tentukan folder berdasarkan bahasa
+            const folder = (lang === "en") ? "Score En" : "Score Id";
+            const fileName = audioMap[lang][finalScore] || audioMap[lang][0];
+            
+            // Set source audio secara dinamis
+            scoreVoice.src = `/static/sounds/${folder}/${fileName}`;
+            scoreVoice.play().catch(e => console.log("Audio play error:", e));
+        }
 
-    // ================== AUDIO ==================
-    const goodSound = document.getElementById("good-sound");
-    const failSound = document.getElementById("fail-sound");
-    goodSound.volume = 0.5;
-    failSound.volume = 0.5;
+        // ================== AUDIO EFEK ==================
+        const goodSound = document.getElementById("good-sound");
+        const failSound = document.getElementById("fail-sound");
 
-    // ================== EMOJI ==================
-    function showEmojiOverlay(type) {
-      const overlay = document.getElementById("emoji-overlay");
-      overlay.innerHTML = "";
-      overlay.style.display = "block";
+        // ================== EMOJI & CONFETTI (Tetap Sama) ==================
+        function showEmojiOverlay(type) {
+            const overlay = document.getElementById("emoji-overlay");
+            overlay.innerHTML = "";
+            overlay.style.display = "block";
+            const emojiChar = (type === "good") ? "👍" : "😢";
+            for (let i = 0; i < 25; i++) {
+                const span = document.createElement("span");
+                span.classList.add("emoji");
+                span.textContent = emojiChar;
+                span.style.top = Math.random() * 90 + "vh";
+                span.style.left = Math.random() * 90 + "vw";
+                span.style.animation = `floatDown ${3 + Math.random() * 3}s ease forwards`;
+                overlay.appendChild(span);
+            }
+            setTimeout(() => overlay.style.display = "none", 6000);
+        }
 
-      const emojiChar = (type === "good") ? "👍" : "😢";
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particles = [];
+            const colors = ['#eb6383', '#fa9191', '#ffe9c5', '#b4f2e1', '#00B4E1', '#FFD700'];
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 10 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    angle: Math.random() * 6.28,
+                    rotation: Math.random() * 0.2 - 0.1
+                });
+            }
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    p.y += p.speed;
+                    p.angle += p.rotation;
+                    ctx.fillStyle = p.color;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.angle);
+                    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                    ctx.restore();
+                    if (p.y > canvas.height) particles[i].y = -20;
+                });
+                if(particles.length > 0) requestAnimationFrame(draw);
+            }
+            draw();
+        }
 
-      for (let i = 0; i < 25; i++) {
-        const span = document.createElement("span");
-        span.classList.add("emoji");
-        span.textContent = emojiChar;
-        span.style.top = Math.random() * 90 + "vh";
-        span.style.left = Math.random() * 90 + "vw";
-        span.style.animation = `floatDown ${3 + Math.random() * 3}s ease forwards`;
-        overlay.appendChild(span);
-      }
+        // ================== EKSEKUSI HASIL ==================
+        window.addEventListener("load", () => {
+            // 1. Mainkan suara efek (hore/gagal)
+            if (finalScore >= 60) {
+                goodSound.play().catch(()=>{});
+                showEmojiOverlay("good");
+                if (finalScore === 100) {
+                    startConfetti();
+                    scoreBox.classList.add("perfect-score");
+                }
+            } else {
+                failSound.play().catch(()=>{});
+                showEmojiOverlay("bad");
+            }
 
-      setTimeout(() => overlay.style.display = "none", 6000);
-    }
+            // 2. Mainkan suara rekaman skor setelah jeda singkat (menggantikan TTS)
+            setTimeout(() => {
+                playScoreVoice();
+            }, 1000);
+        });
 
-    // ================== PLAY RESULT ==================
-    if (finalScore >= 60) {
-      goodSound.play();
-      showEmojiOverlay("good");
-    } else {
-      failSound.play();
-      showEmojiOverlay("bad");
-    }
+        // ================== TOMBOL SUARA ==================
+        document.getElementById("btn-speak").addEventListener("click", () => {
+            playScoreVoice();
+        });
 
-    // ================== AUTO TTS ==================
-    window.addEventListener("load", () => {
-      const scoreText = (lang === "en")
-        ? `Your score is ${finalScore} out of 100`
-        : `Skor kamu ${finalScore} dari 100`;
+        // ================== NAVIGASI ==================
+        function resetGameData() {
+            const savedLang = localStorage.getItem("gameLang");
+            const lastLevel = localStorage.getItem("lastLevel");
+            const keysToRemove = ["finalScore", "correctCount", "totalQuestions", "menengahQuestions", "menengahCurrent", "menengahScore", "menengahStarted", "sessionQuestions", "currentIndex"];
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            if (savedLang) localStorage.setItem("gameLang", savedLang);
+            if (lastLevel) localStorage.setItem("lastLevel", lastLevel);
+        }
 
-      const utter = new SpeechSynthesisUtterance(scoreText);
-      utter.lang = (lang === "en") ? "en-US" : "id-ID";
-      speechSynthesis.speak(utter);
-    });
+        document.getElementById("btn-retry").addEventListener("click", () => {
+            const lastLevel = localStorage.getItem("lastLevel") || "mudah";
+            resetGameData();
+            const routes = { "mudah": "/level_mudah", "menengah": "/level_menengah", "sulit": "/puzzle_sulit1" };
+            window.location.href = routes[lastLevel] || "/pilih_level";
+        });
 
-    // ================== HELPER RESET ==================
-    function resetGameDataButKeepLang() {
-      const savedLang = localStorage.getItem("gameLang");
-      const lastLevel = localStorage.getItem("lastLevel");
-
-      localStorage.removeItem("finalScore");
-      localStorage.removeItem("correctCount");
-      localStorage.removeItem("totalQuestions");
-
-      if (savedLang) localStorage.setItem("gameLang", savedLang);
-      if (lastLevel) localStorage.setItem("lastLevel", lastLevel);
-    }
-
-    // ================== RETRY ==================
-    document.getElementById("btn-retry").addEventListener("click", () => {
-      const lastLevel = localStorage.getItem("lastLevel") || "mudah";
-      resetGameDataButKeepLang();
-
-      if (lastLevel === "mudah") window.location.href = "/level_mudah";
-      else if (lastLevel === "menengah") window.location.href = "/level_menengah";
-      else if (lastLevel === "sulit") window.location.href = "/puzzle_sulit1";
-      else window.location.href = "/pilih_level";
-    });
-
-    // ================== NEXT ==================
-    document.getElementById("btn-next").addEventListener("click", () => {
-      resetGameDataButKeepLang();
-      window.location.href = "/pilih_level";
-    });
-
-    // ================== MANUAL TTS ==================
-    document.getElementById("btn-speak").addEventListener("click", () => {
-      const scoreText = (lang === "en")
-        ? `Your score is ${finalScore} out of 100`
-        : `Skor kamu ${finalScore} dari 100`;
-
-      const utter = new SpeechSynthesisUtterance(scoreText);
-      utter.lang = (lang === "en") ? "en-US" : "id-ID";
-      speechSynthesis.speak(utter);
-    });
-  </script>
-
+        document.getElementById("btn-next").addEventListener("click", () => {
+            resetGameData();
+            window.location.href = "/pilih_level";
+        });
+    </script>
 </body>
 </html>

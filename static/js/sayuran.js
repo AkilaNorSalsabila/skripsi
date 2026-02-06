@@ -209,12 +209,25 @@ async function classifyImage(blob) {
         };
 
         // --- Tombol Play English ---
+        // --- Tombol Play English (Hanya pakai file Manfaat) ---
         btnAudioEN.onclick = () => {
             stopAllAudio();
             let audioList = [];
-            if (result.audio_nama_en) audioList.push(result.audio_nama_en);
-            if (result.audio_manfaat_en) audioList.push(result.audio_manfaat_en);
-            if (audioList.length > 0) playAudioSequence(audioList, btnAudioEN);
+
+            // 1. KITA HAPUS result.audio_nama_en agar TTS lama tidak bunyi lagi
+            
+            // 2. Langsung masukkan suara Manfaat dari folder static/sounds/Manfaat/
+            if (result.nama_id && result.nama_id !== "-") {
+                // Pastikan path benar. Kita pakai nama_id (Tomat, Kangkung)
+                const audioManfaatPath = `/static/sounds/Manfaat/${result.nama_id}.mp3`;
+                audioList.push(audioManfaatPath);
+            }
+
+            if (audioList.length > 0) {
+                playAudioSequence(audioList, btnAudioEN);
+            } else {
+                console.warn("File audio di folder Manfaat tidak ditemukan untuk: " + result.nama_id);
+            }
         };
 
     } catch (err) {

@@ -8,151 +8,199 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/mudah_notif.css') }}">
 </head>
 <body>
-  <!-- Dekor pojok -->
   <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
   <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
 
-  <!-- Judul -->
   <header class="notif-header">
-  <h1>
-    <span id="notif-text"></span><br>
-    <span id="veg-name"></span>
-  </h1>
-  <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
-    <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
-  </button>
-</header>
+    <h1>
+      <span id="notif-text"></span><br>
+      <span id="veg-name"></span>
+    </h1>
+    <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
+      <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
+    </button>
+  </header>
 
-<main class="notif-main">
-  <div class="veg-frame">
-    <img id="notif-veg" src="" alt="">
+  <main class="notif-main">
+    <div class="veg-frame">
+      <img id="notif-veg" src="" alt="">
+    </div>
+  </main>
+
+  <div id="confetti-container">
+    <canvas id="confetti"></canvas>
   </div>
-</main>
 
-<div id="confetti-container">
-  <canvas id="confetti"></canvas>
-</div>
+  <audio id="id-player"></audio>
 
-<audio id="id-player"></audio>
+  <script>
+    // --- LOGIKA CONFETTI (DIPERBAIKI RESPONSIVE) ---
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    
+    // Function untuk resize canvas
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    
+    // Set ukuran awal
+    resizeCanvas();
+    
+    const pieces = [];
+    const colors = ["#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"];
+    let timeUp = false;
 
-<script>
-  const canvas = document.getElementById("confetti");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const pieces = [];
-  const colors = ["#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"];
-  let timeUp = false; // 🔹 penanda waktu habis
-
-  for (let i = 0; i < 150; i++) {
-    pieces.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      w: 8,
-      h: 14,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      speed: 2 + Math.random() * 3,
-      rotate: Math.random() * 360,
-      dr: Math.random() * 10
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pieces.forEach((p) => {
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate((p.rotate * Math.PI) / 180);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-      ctx.restore();
-
-      p.y += p.speed;
-      p.rotate += p.dr;
-
-      if (p.y > canvas.height) {
-        p.y = -10;
-        p.x = Math.random() * canvas.width;
+    // Initialize confetti pieces
+    function initPieces() {
+      pieces.length = 0; // Clear existing pieces
+      for (let i = 0; i < 150; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          w: 8, h: 14,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speed: 2 + Math.random() * 3,
+          rotate: Math.random() * 360, 
+          dr: Math.random() * 10
+        });
       }
+    }
+    
+    initPieces();
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach((p) => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotate * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+        p.y += p.speed;
+        p.rotate += p.dr;
+        if (p.y > canvas.height) { 
+          p.y = -10; 
+          p.x = Math.random() * canvas.width; 
+        }
+      });
+      if (!timeUp) {
+        requestAnimationFrame(draw);
+      }
+    }
+    draw();
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      resizeCanvas();
+      // Reinitialize pieces dengan posisi baru
+      pieces.forEach(p => {
+        if (p.x > canvas.width) p.x = Math.random() * canvas.width;
+      });
     });
-    requestAnimationFrame(draw);
-  }
-  draw();
 
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
+    // Handle orientation change (mobile)
+    window.addEventListener('orientationchange', function() {
+      setTimeout(() => {
+        resizeCanvas();
+      }, 100);
+    });
 
-  const lang = localStorage.getItem("gameLang") || "id";
-  const vegData = JSON.parse(localStorage.getItem("notifVeg"));
-  const player = document.getElementById("id-player");
+    // --- LOGIKA DATA & DISPLAY ---
+    const lang = localStorage.getItem("gameLang") || "id";
+    const vegData = JSON.parse(localStorage.getItem("notifVeg"));
+    const player = document.getElementById("id-player");
 
-  const notifText = document.getElementById("notif-text");
-  const vegName = document.getElementById("veg-name");
-  const vegImage = document.getElementById("notif-veg");
+    const notifText = document.getElementById("notif-text");
+    const vegNameDisplay = document.getElementById("veg-name");
+    const vegImage = document.getElementById("notif-veg");
 
-  if (vegData) {
-    if (lang === "en") {
-      notifText.textContent = "Correct";
-      vegName.textContent = vegData.en;
-    } else {
-      notifText.textContent = "Benar";
-      vegName.textContent = vegData.id;
+    if (vegData) {
+      if (lang === "en") {
+        notifText.textContent = "Correct";
+        vegNameDisplay.textContent = vegData.en;
+      } else {
+        notifText.textContent = "Benar";
+        vegNameDisplay.textContent = vegData.id;
+      }
+      vegImage.src = vegData.img;
+      vegImage.alt = vegData.id;
     }
-    vegImage.src = vegData.img;
-    vegImage.alt = vegData[lang];
-  }
 
-  // ✅ otomatis play saat halaman terbuka
-  window.addEventListener("load", () => {
-    if (timeUp) return; // jangan play kalau sudah time up
-    if (lang === "en") {
-      const utter = new SpeechSynthesisUtterance("Correct! This is " + vegData.en + ".");
-      utter.lang = "en-US";
-      speechSynthesis.speak(utter);
-    } else {
-      player.src = `/static/sounds/id/notif/${vegData.id}_id.m4a`;
-      player.play();
+    // --- LOGIKA AUDIO (PERBAIKAN TOTAL) ---
+
+    // 1. Suara Sayur Saja (Tombol Speaker)
+    function playOnlyVegetable() {
+      if (timeUp || !vegData) return;
+      
+      let path = "";
+      if (lang === "en") {
+        path = `/static/sounds/En/${vegData.id}.mp3`;
+      } else {
+        path = `/static/sounds/id/options/${vegData.id}.m4a`;
+      }
+
+      player.src = path;
+      player.play().catch(e => {
+        let altPath = path.endsWith(".m4a") ? path.replace(".m4a", ".mp3") : path.replace(".mp3", ".m4a");
+        player.src = altPath;
+        player.play().catch(err => console.log("Audio tidak ditemukan: " + path));
+      });
     }
-  });
 
-  // ✅ tombol speak manual
-  document.getElementById("btn-speak").addEventListener("click", () => {
-    if (timeUp) return; // jangan bisa dipencet kalau sudah habis waktu
-    if (lang === "en") {
-      const utter = new SpeechSynthesisUtterance("Correct! This is " + vegData.en + ".");
-      utter.lang = "en-US";
-      speechSynthesis.speak(utter);
-    } else {
-      player.src = `/static/sounds/id/notif/${vegData.id}_id.m4a`;
-      player.play();
+    // 2. Suara Lengkap (Otomatis saat muncul)
+    function playFullNotification() {
+      if (timeUp || !vegData) return;
+
+      if (lang === "en") {
+        player.src = "/static/sounds/En/Benar.mp3"; 
+        player.play().then(() => {
+          player.onended = () => {
+            playOnlyVegetable();
+            player.onended = null;
+          };
+        }).catch(() => playOnlyVegetable());
+      } else {
+        let fileNameId = `${vegData.id}_id`; 
+        player.src = `/static/sounds/id/notif/${fileNameId}.m4a`;
+        player.play().catch(e => {
+            player.src = `/static/sounds/id/notif/${fileNameId}.mp3`;
+            player.play().catch(err => console.log("Notif Indo tidak ditemukan"));
+        });
+      }
     }
-  });
 
-  // ✅ timer 8 detik lalu ke soal berikutnya
-  setTimeout(() => {
-    timeUp = true; // 🔹 tandai waktu habis
+    // Jalankan otomatis saat load
+    window.addEventListener("load", () => {
+      setTimeout(playFullNotification, 600);
+    });
 
-    // stop audio kalau masih jalan
-    if (!player.paused) {
-      player.pause();
-      player.currentTime = 0;
-    }
-    // stop speech synthesis kalau masih ngomong
-    speechSynthesis.cancel();
+    // Jalankan saat tombol ditekan
+    document.getElementById("btn-speak").addEventListener("click", () => {
+      playOnlyVegetable();
+    });
 
-    let currentIndex = parseInt(localStorage.getItem("currentIndex") || "0");
-    let totalQuestions = 5;
+    // --- REDIRECT (8 DETIK) ---
+    setTimeout(() => {
+      timeUp = true; 
+      if (!player.paused) {
+        player.pause();
+        player.currentTime = 0;
+      }
 
-    if (currentIndex < totalQuestions - 1) {
-      localStorage.setItem("currentIndex", currentIndex + 1);
-      window.location.href = "/level_mudah";
-    } else {
-      localStorage.removeItem("sessionQuestions");
-      localStorage.removeItem("currentIndex");
-      window.location.href = "/skor";
-    }
-  }, 8000);
-</script>
+      let currentIndex = parseInt(localStorage.getItem("currentIndex") || "0");
+      let totalQuestions = 5;
+
+      if (currentIndex < totalQuestions - 1) {
+        localStorage.setItem("currentIndex", currentIndex + 1);
+        window.location.href = "/level_mudah";
+      } else {
+        localStorage.removeItem("sessionQuestions");
+        localStorage.removeItem("currentIndex");
+        window.location.href = "/skor";
+      }
+    }, 8000);
+  </script>
+</body>
+</html>

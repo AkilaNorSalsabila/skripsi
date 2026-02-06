@@ -4,62 +4,38 @@
   <meta charset="UTF-8">
   <title>Belajar dan Bermain</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-
-  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="home">
 
-  <!-- ================= AUDIO ================= -->
   <audio id="voice-instruction" src="{{ url_for('static', filename='sounds/instruction.mp3') }}"></audio>
   <audio id="voice-sayuran" src="{{ url_for('static', filename='sounds/mengenal_sayuran.mp3') }}"></audio>
   <audio id="voice-hewan" src="{{ url_for('static', filename='sounds/mengenal_hewan.mp3') }}"></audio>
   <audio id="voice-permainan" src="{{ url_for('static', filename='sounds/permainan.mp3') }}"></audio>
-  <audio id="background-music"
-         src="{{ url_for('static', filename='sounds/bensound-besttime.m4a') }}"
-         loop></audio>
+  <audio id="background-music" src="{{ url_for('static', filename='sounds/bensound-besttime.m4a') }}" loop></audio>
 
-  <!-- ================= OVERLAY START ================= -->
-  <div id="start-overlay" style="
-    position: fixed;
-    inset: 0;
-    background: #EAF7FF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  ">
+  <div id="start-overlay" style="position: fixed; inset: 0; background: #EAF7FF; display: flex; justify-content: center; align-items: center; z-index: 9999;">
     <button id="start-btn" style="background:none;border:none;cursor:pointer;">
-      <img src="{{ url_for('static', filename='img/start_logo.png') }}"
-           alt="Mulai"
-           style="width:260px;transition:0.2s">
+      <img src="{{ url_for('static', filename='img/start_logo.png') }}" alt="Mulai" class="btn-pulse" style="width:260px;">
     </button>
   </div>
 
-  <!-- ================= DEKORASI (INI YANG HILANG) ================= -->
-  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}"
-       class="decor decor-left" alt="Monkey">
+  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" class="decor decor-left" alt="Monkey">
+  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" class="decor decor-right" alt="Vegetables">
 
-  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}"
-       class="decor decor-right" alt="Vegetables">
-
-  <!-- ================= MENU ================= -->
   <div class="content" style="display:none;">
     <h1>Belajar Dan <br> Bermain</h1>
-
     <div class="menu-buttons">
       <button class="menu-card sayuran" onclick="goMenu('sayuran')">
         <img src="{{ url_for('static', filename='img/sayuran_button.png') }}">
         <span>Mengenal Sayuran</span>
       </button>
-
       <button class="menu-card hewan" onclick="goMenu('hewan')">
         <img src="{{ url_for('static', filename='img/hewan_button.png') }}">
         <span>Mengenal Hewan</span>
       </button>
-
       <button class="menu-card permainan" onclick="goMenu('permainan')">
         <img src="{{ url_for('static', filename='img/permainan_button.png') }}">
         <span>Permainan</span>
@@ -67,12 +43,15 @@
     </div>
   </div>
 
-  <!-- ================= SCRIPT ================= -->
   <script>
     const overlay = document.getElementById('start-overlay');
     const content = document.querySelector('.content');
     const bgMusic = document.getElementById('background-music');
     const instruction = document.getElementById('voice-instruction');
+
+    const cardSayuran = document.querySelector('.menu-card.sayuran');
+    const cardHewan = document.querySelector('.menu-card.hewan');
+    const cardPermainan = document.querySelector('.menu-card.permainan');
 
     const voiceMap = {
       sayuran: { audio: document.getElementById('voice-sayuran'), url: '/sayuran' },
@@ -82,21 +61,21 @@
 
     function stopAllVoices() {
       instruction.pause(); instruction.currentTime = 0;
-      Object.values(voiceMap).forEach(v => {
-        v.audio.pause(); v.audio.currentTime = 0;
-      });
+      Object.values(voiceMap).forEach(v => { v.audio.pause(); v.audio.currentTime = 0; });
+      [cardSayuran, cardHewan, cardPermainan].forEach(c => c.classList.remove('btn-pulse'));
     }
 
-    // balik dari halaman lain
-    window.addEventListener("pageshow", () => {
-      if (sessionStorage.getItem("hasStarted")) {
-        overlay.style.display = "none";
-        content.style.display = "block";
-        stopAllVoices();
-        bgMusic.volume = 0.05;
-        bgMusic.play().catch(()=>{});
-      }
-    });
+    // Navigasi saat klik manual
+    function goMenu(type) {
+      stopAllVoices();
+      bgMusic.volume = 0.02;
+      const activeBtn = document.querySelector(`.menu-card.${type}`);
+      if (activeBtn) activeBtn.classList.add('btn-pulse');
+
+      const item = voiceMap[type];
+      item.audio.play();
+      item.audio.onended = () => window.location.href = item.url;
+    }
 
     document.getElementById('start-btn').addEventListener('click', () => {
       sessionStorage.setItem("hasStarted", "true");
@@ -106,19 +85,48 @@
       bgMusic.volume = 0.05;
       bgMusic.play();
 
-      instruction.onplay = () => bgMusic.volume = 0.02;
-      instruction.onended = () => bgMusic.volume = 0.05;
       instruction.play();
+
+      // LOGIKA ANIMASI BERDASARKAN WAKTU SUARA
+      instruction.ontimeupdate = () => {
+        let time = instruction.currentTime;
+
+        // 1. Sinkronisasi Sayuran (Contoh: Detik 2 sampai 4)
+        if (time >= 4 && time <= 5.5) { /* GANTI DETIK DI SINI */
+          cardSayuran.classList.add('btn-pulse');
+        } else {
+          cardSayuran.classList.remove('btn-pulse');
+        }
+
+        // 2. Sinkronisasi Hewan (Contoh: Detik 5 sampai 7)
+        if (time >= 6 && time <= 7.5) { /* GANTI DETIK DI SINI */
+          cardHewan.classList.add('btn-pulse');
+        } else {
+          cardHewan.classList.remove('btn-pulse');
+        }
+
+        // 3. Sinkronisasi Permainan (Contoh: Detik 8 sampai 10)
+        if (time >= 8 && time <= 10) { /* GANTI DETIK DI SINI */
+          cardPermainan.classList.add('btn-pulse');
+        } else {
+          cardPermainan.classList.remove('btn-pulse');
+        }
+      };
+
+      instruction.onended = () => {
+        bgMusic.volume = 0.05;
+        [cardSayuran, cardHewan, cardPermainan].forEach(c => c.classList.remove('btn-pulse'));
+      };
     });
 
-    function goMenu(type) {
-      stopAllVoices();
-      bgMusic.volume = 0.02;
-      const item = voiceMap[type];
-      item.audio.play();
-      item.audio.onended = () => window.location.href = item.url;
-    }
+    window.addEventListener("pageshow", () => {
+      if (sessionStorage.getItem("hasStarted")) {
+        overlay.style.display = "none";
+        content.style.display = "block";
+        bgMusic.volume = 0.05;
+        bgMusic.play().catch(()=>{});
+      }
+    });
   </script>
-
 </body>
 </html>

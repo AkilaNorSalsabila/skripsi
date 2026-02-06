@@ -10,8 +10,8 @@ const idPlayer = document.getElementById("id-player");
 const optionsContainer = document.getElementById("options");
 const vegImage = document.getElementById("veg-image");
 const titleText = document.getElementById("title-text");
+const btnBack = document.getElementById("btn-back");
 
-// 🔹 teks instruksi
 const texts = {
   id: "pilih nama<br>sayuran ini",
   en: "choose the name<br>of this vegetable"
@@ -279,71 +279,35 @@ const bankSulit = [
     }
   }
 
-]
+];
 
 
-
-
-// 🔹 ambil soal sesi dari localStorage
-let shuffledOpts = [];
+// --- LOGIKA SESI ---
 let sessionQuestions = JSON.parse(localStorage.getItem("sessionQuestions")) || [];
 let currentIndex = parseInt(localStorage.getItem("currentIndex") || "0");
 let correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
-localStorage.setItem("totalQuestions", totalQuestions);
-
-// 🔹 kalau belum ada sesi → buat 5 soal random
-// 🔹 buat sesi baru
-if (sessionQuestions.length === 0) {
-  function getRandomFrom(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
+let shuffledOpts = [];
 
 if (sessionQuestions.length === 0) {
+  function getRandomFrom(array) { return array[Math.floor(Math.random() * array.length)]; }
   sessionQuestions = [
-    getRandomFrom(bankSangatMudah),   // soal 1
-    getRandomFrom(bankMudah),         // soal 2
-    getRandomFrom(bankSedang),        // soal 3
-    getRandomFrom(bankSedangkeSulit), // soal 4
-    getRandomFrom(bankSulit)          // soal 5
+    getRandomFrom(bankSangatMudah),
+    getRandomFrom(bankMudah),
+    getRandomFrom(bankSedang),
+    getRandomFrom(bankSedangkeSulit),
+    getRandomFrom(bankSulit)
   ];
-
   localStorage.setItem("sessionQuestions", JSON.stringify(sessionQuestions));
-  localStorage.setItem("currentIndex", "0");
-  localStorage.setItem("correctCount", "0");
-
   currentIndex = 0;
   correctCount = 0;
 }
 
-
-  localStorage.setItem("sessionQuestions", JSON.stringify(sessionQuestions));
-  localStorage.setItem("currentIndex", "0");
-  localStorage.setItem("correctCount", "0");
-
-  currentIndex = 0;
-  correctCount = 0;
-}
-
-let question = sessionQuestions[currentIndex];
-
-// ================= OVERLAY SALAH =================
-function showWrongOverlay(icon = "✖", text = "salah!") {
-  const overlay = document.getElementById("wrong-overlay");
-  document.getElementById("wrong-text").textContent = text;
-  overlay.querySelector("h1").textContent = icon;
-  overlay.classList.remove("hidden");
-}
-
-function hideWrongOverlay() {
-  document.getElementById("wrong-overlay").classList.add("hidden");
-}
-
-// ================= LOAD QUESTION =================
+// --- FUNGSI LOAD SOAL ---
 function loadQuestion() {
-  question = sessionQuestions[currentIndex];
-
+  if (btnBack) btnBack.style.display = (currentIndex === 0) ? "block" : "none";
+  
+  let question = sessionQuestions[currentIndex];
   vegImage.src = question.image;
-  vegImage.alt = question.correctAnswer[lang].toLowerCase();
   titleText.innerHTML = texts[lang];
 
   optionsContainer.innerHTML = "";
@@ -354,107 +318,133 @@ function loadQuestion() {
     btn.className = "option-btn";
     btn.textContent = opt.toLowerCase();
 
-    const isCorrect =
-      opt.toLowerCase() === question.correctAnswer[lang].toLowerCase();
-
     btn.addEventListener("click", () => {
       stopAllSounds();
-
+      const isCorrect = opt.toLowerCase() === question.correctAnswer[lang].toLowerCase();
       if (isCorrect) {
-        // ✅ BENAR
         localStorage.setItem("notifVeg", JSON.stringify({
           id: question.correctAnswer.id,
           en: question.correctAnswer.en,
           img: question.image
         }));
-
         sfxCorrect.play();
         correctCount++;
         localStorage.setItem("correctCount", correctCount);
-
-        setTimeout(() => {
-          window.location.href = "/mudah_notif";
-        }, 800);
-
+        setTimeout(() => { window.location.href = "/mudah_notif"; }, 800);
       } else {
-        // ❌ SALAH → TETAP NEXT SOAL
         sfxWrong.play();
-        const msg = (lang === "id") ? "salah!" : "wrong!";
-        showWrongOverlay("✖", msg);
-
-        setTimeout(() => {
-          hideWrongOverlay();
-          nextQuestion();
-        }, 1200);
+        showWrongOverlay("✖", (lang === "id" ? "salah!" : "wrong!"));
+        setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1200);
       }
     });
-
     optionsContainer.appendChild(btn);
   });
 
-  document.getElementById("progress").textContent =
-    `Soal ${currentIndex + 1}/${totalQuestions}`;
-
-  setTimeout(speakInstruksi, 500);
+  document.getElementById("progress").textContent = `Soal ${currentIndex + 1}/${totalQuestions}`;
+  setTimeout(speakInstruksi, 600);
 }
 
-// ================= NEXT QUESTION =================
+// --- AUDIO LOGIC (DIREVISI TOTAL) ---
+function speakInstruksi() {
+  stopAllSounds();
+  
+  let path = (lang === "en") 
+    ? "/static/sounds/En/Tebak nama.mp3" 
+    : "/static/sounds/id/ui/pilih_nama.mp3";
+
+  idPlayer.src = path;
+  
+  idPlayer.play().then(() => {
+    idPlayer.onended = () => {
+      // Jeda sebentar setelah instruksi agar telinga siap mendengar opsi 1
+      setTimeout(() => {
+        playOptionsSequentially(0);
+      }, 400);
+    };
+  }).catch(e => {
+    // Jika file .mp3 instruksi ID tidak ketemu, coba .m4a
+    if (lang === "id") {
+      idPlayer.src = "/static/sounds/id/ui/pilih_nama.m4a";
+      idPlayer.play().then(() => {
+        idPlayer.onended = () => playOptionsSequentially(0);
+      }).catch(() => playOptionsSequentially(0));
+    } else {
+      playOptionsSequentially(0);
+    }
+  });
+}
+
+function playOptionsSequentially(idx) {
+  if (idx >= shuffledOpts.length) return;
+
+  const currentOption = shuffledOpts[idx];
+  const buttons = document.querySelectorAll(".option-btn");
+  
+  // Efek visual zoom pada tombol yang sedang dibacakan
+  buttons.forEach(btn => {
+    if (btn.textContent.toLowerCase() === currentOption.toLowerCase()) {
+      btn.classList.add("zoom-active");
+      setTimeout(() => btn.classList.remove("zoom-active"), 1000);
+    }
+  });
+
+  let folder = (lang === "en") ? "En" : "id/options";
+  let fileName = "";
+
+  if (lang === "en") {
+    let question = sessionQuestions[currentIndex];
+    let pos = question.answers.en.indexOf(currentOption);
+    fileName = question.answers.id[pos]; // Tetap panggil file Indo di folder En
+  } else {
+    fileName = currentOption;
+  }
+
+  idPlayer.src = `/static/sounds/${folder}/${fileName}.mp3`;
+  
+  idPlayer.play().then(() => {
+    idPlayer.onended = () => playOptionsSequentially(idx + 1);
+  }).catch(err => {
+    // Fallback .m4a jika .mp3 tidak ada
+    if (lang === "id") {
+      idPlayer.src = `/static/sounds/${folder}/${fileName}.m4a`;
+      idPlayer.play()
+        .then(() => { idPlayer.onended = () => playOptionsSequentially(idx + 1); })
+        .catch(() => playOptionsSequentially(idx + 1));
+    } else {
+      playOptionsSequentially(idx + 1);
+    }
+  });
+}
+
+function stopAllSounds() {
+  idPlayer.pause();
+  idPlayer.currentTime = 0;
+  idPlayer.onended = null;
+}
+
 function nextQuestion() {
   currentIndex++;
   localStorage.setItem("currentIndex", currentIndex);
-
   if (currentIndex >= totalQuestions) {
-    finishGame();
+    const finalScore = correctCount * 20;
+    localStorage.setItem("finalScore", finalScore);
+    localStorage.removeItem("sessionQuestions");
+    localStorage.removeItem("currentIndex");
+    setTimeout(() => { window.location.href = "/skor"; }, 800);
   } else {
     loadQuestion();
   }
 }
 
+function showWrongOverlay(icon, text) {
+  const overlay = document.getElementById("wrong-overlay");
+  document.getElementById("wrong-text").textContent = text;
+  overlay.querySelector("h1").textContent = icon;
+  overlay.classList.remove("hidden");
+}
+
+function hideWrongOverlay() {
+  document.getElementById("wrong-overlay").classList.add("hidden");
+}
+
 window.addEventListener("load", loadQuestion);
-
-// ================= FINISH GAME =================
-function finishGame() {
-  const finalScore = correctCount * 20;
-  localStorage.setItem("finalScore", finalScore);
-
-  localStorage.removeItem("sessionQuestions");
-  localStorage.removeItem("currentIndex");
-
-  setTimeout(() => {
-    window.location.href = "/skor";
-  }, 800);
-}
-
-// ================= AUDIO =================
-function speakInstruksi() {
-  if (lang === "en") {
-    const utter = new SpeechSynthesisUtterance(
-      "Choose the name of this vegetable. Options are " + shuffledOpts.join(", ")
-    );
-    utter.lang = "en-US";
-    speechSynthesis.speak(utter);
-  } else {
-    idPlayer.src = "/static/sounds/id/ui/pilih_nama.m4a";
-    idPlayer.play();
-    idPlayer.onended = () => playOptionsSequentially(shuffledOpts);
-  }
-}
-
-function playOptionsSequentially(options) {
-  let index = 0;
-  function playNext() {
-    if (index < options.length) {
-      idPlayer.src = `/static/sounds/id/options/${options[index]}.m4a`;
-      idPlayer.play();
-      index++;
-      idPlayer.onended = playNext;
-    }
-  }
-  playNext();
-}
-
-function stopAllSounds() {
-  speechSynthesis.cancel();
-  idPlayer.pause();
-  idPlayer.currentTime = 0;
-}
