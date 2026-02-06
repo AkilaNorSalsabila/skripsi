@@ -73,8 +73,23 @@
       if (activeBtn) activeBtn.classList.add('btn-pulse');
 
       const item = voiceMap[type];
-      item.audio.play();
-      item.audio.onended = () => window.location.href = item.url;
+      const targetUrl = item.url;
+
+      // Fungsi pindah halaman
+      const navigate = () => { window.location.href = targetUrl; };
+
+      // Safety Timeout: Jika 1.5 detik suara macet, tetep pindah!
+      const safetyTimer = setTimeout(navigate, 1500);
+
+      item.audio.play().then(() => {
+        item.audio.onended = () => {
+          clearTimeout(safetyTimer);
+          navigate();
+        };
+      }).catch(() => {
+        clearTimeout(safetyTimer);
+        navigate();
+      });
     }
 
     document.getElementById('start-btn').addEventListener('click', () => {
