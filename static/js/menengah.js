@@ -302,14 +302,11 @@ function shuffle(arr){
 // ==========================
 // LEVEL FLOW RANDOM SYSTEM (FINAL)
 // ==========================
-// 🔥 FORCE RANDOM SETIAP MASUK GAME
-localStorage.removeItem("menengahQuestions");
-localStorage.removeItem("menengahCurrent");
-localStorage.removeItem("menengahScore");
 
-// Cek apakah harus reset
+// AMBIL data yang sudah ada
 let allQuestions = JSON.parse(localStorage.getItem("menengahQuestions"));
 
+// JIKA tidak ada (berarti baru masuk game pertama kali), BARU buat soal baru
 if (!allQuestions) {
     const sm = shuffle(SangatMudah);
     const m = shuffle(Mudah);
@@ -317,18 +314,24 @@ if (!allQuestions) {
     const ms = shuffle(MenengahKeSulit);
     const h = shuffle(sulit);
 
+    // Ambil masing-masing 1 soal dari tiap tingkat kesulitan
     allQuestions = [sm[0], m[0], mid[0], ms[0], h[0]];
+    
+    // Simpan ke localStorage agar tidak berubah saat refresh/pindah soal
     localStorage.setItem("menengahQuestions", JSON.stringify(allQuestions));
     
-    // Pastikan variabel lokal disetel ulang
+    // Setel ulang progres ke 0
     currentQuestion = 0;
     score = 0;
     localStorage.setItem("menengahCurrent", "0");
     localStorage.setItem("menengahScore", "0");
+} else {
+    // JIKA data sudah ada, ambil progres terakhir agar tidak balik ke soal 1
+    currentQuestion = parseInt(localStorage.getItem("menengahCurrent") || "0", 10);
+    score = parseInt(localStorage.getItem("menengahScore") || "0", 10);
 }
 
 const totalQuestions = allQuestions.length;
-
 // ==================
 // TIMER LOGIC (DANGER FEATURE)
 // ==================

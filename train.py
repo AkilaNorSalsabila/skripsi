@@ -416,7 +416,7 @@ model.compile(
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
-model.build((None, 224, 224, 3))
+
 model.summary()
 
 
