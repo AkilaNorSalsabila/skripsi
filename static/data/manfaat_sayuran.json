@@ -1,0 +1,217 @@
+{
+  "Brokoli": {
+    "nama_id": "Brokoli",
+    "nama_en": "Broccoli",
+    "id": "Brokoli baik untuk pencernaan dan membuat tubuh kuat.",
+    "en": "Broccoli is good for digestion and makes the body strong.",
+    "audio_en": "/static/audio/en/brokoli.mp3"
+  },
+
+  "Jantung Pisang": {
+    "nama_id": "Jantung Pisang",
+    "nama_en": "Banana Blossom",
+    "id": "Jantung pisang membantu melawan sakit, dan menjaga gula darah",
+    "en": "Banana blossom helps fight illness, and control blood sugar",
+    "audio_en": "/static/audio/en/jantung_pisang.mp3"
+    },
+  "Oyong": {
+    "nama_id": "Oyong",
+    "nama_en": "Luffa",
+    "id": "Oyong baik untuk kesehatan mata karena kaya vitamin A.",
+    "en": "Luffa is good for eye health because it is rich in vitamin A.",
+    "audio_en": "/static/audio/en/Oyong.mp3"
+    },
+  "Terong": {
+    "nama_id": "Terong",
+    "nama_en": "Eggplant",
+    "id": "Terong membantu melancarkan pencernaan dan kaya antioksidan.",
+    "en": "Eggplant helps improve digestion and is rich in antioxidants.",
+    "audio_en": "/static/audio/en/terong.mp3"
+    },
+  "Mentimun": {
+    "nama_id": "Mentimun",
+    "nama_en": "Cucumber",
+    "id": "Mentimun membantu menjaga berat badan, menyehatkan jantung, dan baik untuk kulit.",
+    "en": "Cucumber helps maintain weight, supports heart health, and is good for the skin.",
+    "audio_en": "/static/audio/en/mentimun.mp3"
+    },
+    "Tomat": {
+      "nama_id": "Tomat",
+      "nama_en": "Tomato",
+      "id": "Tomat baik untuk mata dan jantung.",
+      "en": "Tomatoes are good for the eyes and heart.",
+      "audio_en": "/static/audio/en/tomat.mp3"
+    },
+
+  "Labu Siam": {
+    "nama_id": "Labu Siam",
+    "nama_en": "Chayote",
+    "id": "Labu siam rendah kalori, baik untuk pencernaan dan membantu menjaga daya tahan tubuh.",
+    "en": "Chayote is low in calories, good for digestion, and helps keep the body strong.",
+    "audio_en": "/static/audio/en/labu_siam.mp3"
+    },
+  "Buncis": {
+    "nama_id": "Buncis",
+    "nama_en": "Green Beans",
+    "id": "Buncis kaya serat, vitamin C, dan K. Baik untuk pencernaan, jantung, dan tulang.",
+    "en": "Green beans are rich in fiber, vitamins C and K. Good for digestion, heart, and bones.",
+    "audio_en": "/static/audio/en/buncis.mp3"
+    },
+  "Kacang Panjang": {
+    "nama_id": "Kacang Panjang",
+    "nama_en": "Yardlong Beans",
+    "id": "Kacang panjang mengandung vitamin C dan folat, baik untuk jantung dan kulit.",
+    "en": "Yardlong bean contains vitamin C and folate, good for the heart and skin.",
+    "audio_en": "/static/audio/en/kacang_panjang.mp3"
+  },
+  "Bayam": {
+    "nama_id": "Bayam",
+    "nama_en": "Spinach",
+    "id": "Bayam kaya vitamin dan antioksidan, baik untuk tulang dan mencegah penyakit.",
+    "en": "Spinach is rich in vitamins and antioxidants, good for bones and preventing illness.",
+    "audio_en": "/static/audio/en/bayam.mp3"
+    },
+    "Kubis": {
+      "nama_id": "Kubis",
+      "nama_en": "Cabbage",
+      "id": "Kubis baik untuk jantung dan tubuh.",
+      "en": "Cabbage is good for the heart and body.",
+      "audio_en": "/static/audio/en/kubis.mp3"
+    },
+
+  "Sawi Putih": {
+    "nama_id": "Sawi Putih",
+    "nama_en": "Chinese Cabbage",
+    "id": "Sawi putih rendah kalori dan kaya vitamin B6 yang baik untuk kesehatan otak.",
+    "en": "Chinese cabbage is low in calories and rich in vitamin B6, which is good for brain health.",
+    "audio_en": "/static/audio/en/sawi_putih.mp3"
+    },
+  "Sawi Hijau": {
+    "nama_id": "Sawi Hijau",
+    "nama_en": "Mustard Greens",
+    "id": "Sawi hijau baik untuk jantung dan pernapasan.",
+    "en": "Mustard greens good for the heart and respiratory health.",
+    "audio_en": "/static/audio/en/sawi_hijau.mp3"
+  },
+  "Kangkung": {
+    "nama_id": "Kangkung",
+    "nama_en": "Water Spinach",
+    "id": "Kangkung mengandung zat besi dan serat. Baik untuk mencegah anemia dan sembelit.",
+    "en": "Water spinach has iron and fiber. Good to prevent anemia and constipation.",
+    "audio_en": "/static/audio/en/kangkung.mp3"
+    },
+  "Selada": {
+    "nama_id": "Selada",
+    "nama_en": "Lettuce",
+    "id": "Selada mengandung vitamin A, C, dan K. Baik untuk mata, kulit, dan tulang.",
+    "en": "Lettuce has vitamins A, C, and K, Good for eyes, skin, and bones.",
+    "audio_en": "/static/audio/en/selada.mp3"
+    },
+  "Lobak": {
+    "nama_id": "Lobak",
+    "nama_en": "Radish",
+    "id": "Lobak mengandung antioksidan, daya tahan tubuh, dan mencegah diabetes.",
+    "en": "Radish has antioxidants, immunity, and helps prevent diabetes.",
+    "audio_en": "/static/audio/en/lobak.mp3"
+    },
+  "Wortel": {
+    "nama_id": "Wortel",
+    "nama_en": "Carrot",
+    "id": "Wortel kaya vitamin A, dan serat. Baik untuk kesehatan mata dan pencernaan.",
+    "en": "Carrot is rich in vitamin A, and fiber. Good for eye and digestive health.",
+    "audio_en": "/static/audio/en/wortel.mp3"
+    },
+  "Kentang": {
+    "nama_id": "Kentang",
+    "nama_en": "Potato",
+    "id": "Kentang memberi energi, baik untuk otak, dan menjaga gula darah.",
+    "en": "Potatoes give energy, are good for the brain, and help control blood sugar.",
+    "audio_en": "/static/audio/en/kentang.mp3"
+  },
+  "Bit Merah": {
+    "nama_id": "Bit Merah",
+    "nama_en": "Beetroot",
+    "id": "Bit merah membantu menjaga gula darah dan mencegah anemia.",
+    "en": "Beetroot helps control blood sugar and prevent anemia.",
+    "audio_en": "/static/audio/en/bit_merah.mp3"
+  },
+  "Jamur Kancing": {
+    "nama_id": "Jamur Kancing",
+    "nama_en": "Button Mushroom",
+    "id": "Jamur kancing baik untuk daya tahan tubuh, jantung, tulang, dan pencernaan.",
+    "en": "Button mushrooms are good for immunity, heart, bones, and digestion.",
+    "audio_en": "/static/audio/en/jamur_kancing.mp3"
+  },
+  "Bawang Merah": {
+    "nama_id": "Bawang Merah",
+    "nama_en": "Shallot",
+    "id": "Bawang merah baik untuk jantung dan menjaga kesehatan mulut.",
+    "en": "Shallots are good for the heart and keep the mouth healthy.",
+    "audio_en": "/static/audio/en/bawang_merah.mp3"
+  },
+  "Bawang Putih": {
+    "nama_id": "Bawang Putih",
+    "nama_en": "Garlic",
+    "id": "Bawang putih kaya antioksidan, membantu melawan flu, dan melindungi tubuh dari radikal bebas.",
+    "en": "Garlic is rich in antioxidants, helps fight flu, and protects the body from free radicals.",
+    "audio_en": "/static/audio/en/bawang_putih.mp3"
+  },
+  "Bawang Bombay": {
+    "nama_id": "Bawang Bombay",
+    "nama_en": "Onion",
+    "id": "Bawang bombay kaya antioksidan, baik untuk pencernaan, dan membantu menjaga gula darah.",
+    "en": "Onions are rich in antioxidants, good for digestion, and help control blood sugar.",
+    "audio_en": "/static/audio/en/bawang_bombay.mp3"
+  },
+  "Paprika": {
+    "nama_id": "Paprika",
+    "nama_en": "Bell Pepper",
+    "id": "Paprika baik untuk mata dan mencegah anemia.",
+    "en": "Bell peppers are good for the eyes and prevent anemia.",
+    "audio_en": "/static/audio/en/paprika.mp3"
+  },
+  "Cabai Rawit": {
+    "nama_id": "Cabai Rawit",
+    "nama_en": "Bird's Eye Chili",
+    "id": "Cabai rawit mengandung capsaicin yang baik untuk metabolisme.",
+    "en": "Bird's eye chili contains capsaicin, which boosts metabolism.",
+    "audio_en": "/static/audio/en/cabai_rawit.mp3"
+  },
+  "Seledri": {
+    "nama_id": "Seledri",
+    "nama_en": "Celery",
+    "id": "Seledri baik untuk jantung, tekanan darah, dan pencernaan.",
+    "en": "Celery is good for the heart, blood pressure, and digestion.",
+    "audio_en": "/static/audio/en/seledri.mp3"
+  },
+  "Bawang Daun": {
+    "nama_id": "Bawang Daun",
+    "nama_en": "Leek",
+    "id": "Bawang daun baik untuk jantung dan mencegah kanker.",
+    "en": "Leeks are good for the heart and help prevent cancer.",
+    "audio_en": "/static/audio/en/bawang_daun.mp3"
+  },
+  "Asparagus": {
+    "nama_id": "Asparagus",
+    "nama_en": "Asparagus",
+    "id": "Asparagus baik untuk pencernaan, mencegah radang, dan menjaga tekanan darah.",
+    "en": "Asparagus is good for digestion, prevents inflammation, and keeps blood pressure stable.",
+    "audio_en": "/static/audio/en/asparagus.mp3"
+  },
+  "Rebung": {
+    "nama_id": "Rebung",
+    "nama_en": "Bamboo Shoot",
+    "id": "Rebung membantu menurunkan kolesterol dan menyehatkan tubuh.",
+    "en": "Bamboo shoots help lower cholesterol and keep the body healthy.",
+    "audio_en": "/static/audio/en/rebung.mp3"
+  },
+  "Daun Pakis": {
+    "nama_id": "Daun Pakis",
+    "nama_en": "Fiddlehead Fern",
+    "id": "Daun pakis baik untuk daya tahan tubuh dan kesehatan tulang.",
+    "en": "Fiddlehead fern is good for immunity and bone health.",
+    "audio_en": "/static/audio/en/daun_pakis.mp3"
+}
+
+
+}

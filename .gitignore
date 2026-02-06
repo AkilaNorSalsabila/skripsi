@@ -12,6 +12,8 @@ dataset/
 dataset_split/
 vegetable_classifier/
 static/data/
+
+!static/data/manfaat_sayuran.json
 data/
 train/
 val/
@@ -38,6 +40,7 @@ models/*.keras
 # ======================
 !models/best_model_Efficiennetb0_C70finalfix2.keras
 !models/final_model_Efficiennetb0_C70finalfix2.keras
+!models/best_model_mobilenetv2.keras
 # ======================
 # LABEL MAP (KEEP FINAL ONLY)
 # ======================
