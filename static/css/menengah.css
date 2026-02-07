@@ -534,9 +534,14 @@ body {
 
 /* Mobile Large (Dibawah 600px) */
 @media (max-width: 599px) {
-  .decor { display: none; }
+  .decor { 
+    display: block; 
+    opacity: 0.5; /* Agak transparan supaya tidak mengganggu pandangan */
+  }
+  .decor-right { width: 100px; } /* Ukuran diperkecil */
+  .decor-left  { width: 130px; } /* Ukuran diperkecil */
   
-  .header { margin-top: 10px; gap: 8px; padding: 0 10px; }
+  .header { margin-top: 50px; gap: 8px; padding: 0 10px; } /* Beri jarak atas agar tidak kena tombol back */
   #title-text { 
     font-size: 26px; 
     transform: translateX(0);

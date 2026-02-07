@@ -552,11 +552,13 @@ function loadQuestion() {
     // ==================
     // MOBILE TOUCH START
     // ==================
+    // Di dalam loop optionsShuffled.forEach(opt => { ...
     img.addEventListener("touchstart", (e) => {
-      if (timeExpired) return;
-      e.preventDefault();
-      
-      draggedElement = img;
+        if (timeExpired) return;
+        // e.preventDefault(); // <-- COBA COMMENT BAGIAN INI DULU
+        
+        draggedElement = img;
+        // Sisa kodenya tetap sama...
       
       touchClone = img.cloneNode(true);
       touchClone.classList.add("touch-dragging");
