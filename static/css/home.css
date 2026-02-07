@@ -6,7 +6,7 @@ body {
   font-family: 'Mochiy Pop One', sans-serif;
   width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
 }
 
@@ -121,7 +121,7 @@ body {
 
   .content h1 {
     font-size: 28px !important;
-    margin-top: 60px !important;
+    margin-top: 30px !important;
     margin-bottom: 30px !important;
   }
 
