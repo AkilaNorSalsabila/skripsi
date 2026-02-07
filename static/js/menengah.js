@@ -142,7 +142,7 @@ const Menengah = [
       "/static/img_full/Labu_full.png",
       "/static/img_full/Terong2.png" ]
   },
-  { id: "q15",  questionImages: ["/static/img_full/Buncis_s.png"],
+  { id: "q15",  questionImages: ["/static/img_full/Buncis_S.png"],
     answer: "/static/img_full/Buncis_full.png",
     options: [
       "/static/img_full/Buncis_full.png",
@@ -181,7 +181,7 @@ const MenengahKeSulit = [
     answer: "/static/img_full/Kentang2.png",
     options: [
       "/static/img_full/Kentang2.png",
-      "/static/img_full/Bit_Full.png",
+      "/static/img_full/Bit_full.png",
       "/static/img_full/Tomat_full.png",
       "/static/img_full/Bawang_Merah_7.png" ]
   },
