@@ -300,6 +300,7 @@ body {
 
 /* MODE SIDEBAR - HP Standard (360px - 479px) */
 /* HP Standard (360px - 479px) */
+/* HP Standard (360px - 479px) */
 @media (max-width: 479px) {
   body {
     overflow: hidden; 
@@ -307,48 +308,51 @@ body {
 
   .content h1 {
     font-size: 24px;
-    margin: 20px 0;
+    margin: 20px 0 10px 0;
   }
 
   .menu-buttons {
-    flex-direction: column; /* Susun vertikal agar tidak gepeng */
-    gap: 15px;
-    padding: 0 20px;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important; /* PAKSA 3 KOLOM KE SAMPING */
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 0 10px;
+    align-items: stretch; /* Biar tinggi kotak sama semua */
   }
 
   .menu-card {
-    width: 90%;
-    height: 100px; /* Kunci tinggi yang sama untuk semua kartu */
-    flex-direction: row; /* Gambar sampingan dengan teks */
-    align-items: center; /* Teks dan gambar sejajar secara vertikal di tengah */
-    justify-content: flex-start;
-    padding: 0 20px;
-    gap: 15px;
+    width: 30vw !important;
+    height: 180px !important; /* Kunci tinggi kotak agar seragam */
+    display: flex !important;
+    flex-direction: column !important; /* Gambar di atas, teks di bawah */
+    justify-content: space-between !important; /* Dorong isi ke ujung atas & bawah */
+    padding: 15px 5px !important;
+    border-radius: 15px;
   }
 
-  /* Reset semua margin gambar agar seragam */
+  /* Reset Gambar: Hilangkan semua margin bawaan yang bikin beda */
   .menu-card img, 
   .menu-card.permainan img { 
-    width: 60px !important; 
-    height: 60px !important;
-    margin: 0 !important; /* Hapus margin yang bikin tidak sejajar */
-    order: 2; /* Gambar di kanan */
+    width: 80% !important; 
+    height: 70px !important;
+    margin: 0 auto !important; /* Pusatkan gambar tanpa margin atas */
+    object-fit: contain;
   }
 
+  /* Ratakan Tulisan: Paksa semua span berada di paling bawah kotak */
   .menu-card span {
-    font-size: 18px;
-    text-align: left;
-    margin: 0;
-    order: 1; /* Teks di kiri */
-    flex: 1;
+    font-size: 13px !important;
+    text-align: center !important;
+    margin-top: auto !important; /* Ini kunci agar teks turun ke bawah */
     line-height: 1.2;
+    display: block;
+    width: 100%;
+    min-height: 32px; /* Jaga ruang untuk teks 2 baris */
   }
 
-  /* Hilangkan teks p di luar agar tidak double */
-  .menu-item p { display: none; }
+  /* Pastikan elemen dekorasi tidak ganggu klik di HP */
+  .decor { display: none; }
 }
-
 
 /* MODE SIDEBAR - HP Sangat Kecil (320px - 359px) */
 @media (max-width: 359px) and (min-width: 320px) {
