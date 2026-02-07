@@ -161,21 +161,25 @@
   sound_id: "{{ url_for('static', filename='sounds/sawihijau_id.OGG') }}",
 },
 {
-  width: 394, height: 308,
+  width: 401, height: 275,
   full: "{{ url_for('static', filename='img/timun_full.png') }}",
   siluet: "{{ url_for('static', filename='img/timun_siluet.png') }}",
   pieces: [
+    // kanan atas
     { id: 1, src: "{{ url_for('static', filename='img/timun_piece1.png') }}", 
-      slot: { left: 197, top: 0, width: 197, height: 154 } },
+      slot: { left: 200, top: 0, width: 201, height: 138 } },
 
+    // kiri atas
     { id: 2, src: "{{ url_for('static', filename='img/timun_piece2.png') }}", 
-      slot: { left: 0, top: 0, width: 197, height: 154 } },
+      slot: { left: 0, top: 0, width: 200, height: 138 } },
 
+    // kanan bawah
     { id: 3, src: "{{ url_for('static', filename='img/timun_piece3.png') }}", 
-      slot: { left: 197, top: 154, width: 197, height: 154 } },
+      slot: { left: 200, top: 138, width: 201, height: 137 } },
 
+    // kiri bawah
     { id: 4, src: "{{ url_for('static', filename='img/timun_piece4.png') }}", 
-      slot: { left: 0, top: 154, width: 197, height: 154 } }
+      slot: { left: 0, top: 138, width: 200, height: 137 } }
   ],
   name_id: "Timun",
   name_en: "Cucumber",
