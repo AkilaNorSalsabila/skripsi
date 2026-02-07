@@ -406,3 +406,12 @@ body {
     width: 110px;
   }
 }
+@media (max-width: 768px) {
+  .level-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+}
