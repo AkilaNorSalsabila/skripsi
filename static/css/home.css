@@ -1,19 +1,18 @@
-/* ========== 1. KODE DASAR & DESKTOP (DIKUNCI LAGI) ========== */
+/* ========== 1. KODE DASAR & DESKTOP ========== */
 body {
   background-color: #EAF7FF;
   margin: 0;
   padding: 0;
   font-family: 'Mochiy Pop One', sans-serif;
-  /* Kunci tinggi agar satu layar penuh di desktop */
   width: 100%;
-  height: 100vh; 
-  overflow: hidden; 
+  min-height: 100vh; /* ✅ Ganti dari height: 100vh */
+  overflow-x: hidden; /* ✅ Cuma horizontal yang dikunci */
   position: relative;
 }
 
-/* Dekorasi - Pastikan nempel ke layar, bukan ke konten */
+/* Dekorasi - Fixed agar nempel di layar */
 .decor {
-  position: fixed; /* Ubah dari absolute ke fixed agar nempel terus di layar */
+  position: fixed;
   z-index: 1;
   user-select: none;
   pointer-events: none;
@@ -51,6 +50,7 @@ body {
   padding: 0 20px;
   position: relative;
   z-index: 10;
+  flex-wrap: wrap; /* ✅ Tambahkan ini agar otomatis wrap */
 }
 
 .menu-card {
@@ -79,53 +79,103 @@ body {
   margin-top: 15px;
 }
 
+.menu-card:hover {
+  transform: scale(1.05);
+}
+
 /* Warna Kartu */
 .menu-card.sayuran { background-color: #00B4E1; }
 .menu-card.hewan { background-color: #008BAF; }
 .menu-card.permainan { background-color: #4FC3F7; }
 
-/* ========== 2. RESPONSIVE HP (SANGAT TEGAS) ========== */
-@media screen and (max-width: 768px) {
+/* Animasi Pulse untuk tombol */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.btn-pulse {
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+/* ========== 2. RESPONSIVE TABLET (768px - 991px) ========== */
+@media screen and (max-width: 991px) and (min-width: 768px) {
+  .content h1 {
+    font-size: 40px;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+  }
+
+  .menu-buttons {
+    gap: 30px;
+  }
+
+  .menu-card {
+    width: 200px;
+    height: 280px;
+    font-size: 20px;
+  }
+
+  .decor-left { width: 150px; }
+  .decor-right { width: 180px; }
+}
+
+/* ========== 3. RESPONSIVE HP (MAX 767px) ========== */
+@media screen and (max-width: 767px) {
   body {
-    height: auto !important; /* Lepas kunci tinggi desktop */
+    overflow-y: auto !important; /* ✅ PAKSA scroll vertikal */
     min-height: 100vh;
-    overflow-y: auto !important; /* Paksa muncul scroll */
-    overflow-x: hidden;
   }
 
   .content {
     display: block !important;
-    padding-bottom: 50px;
+    padding-bottom: 80px; /* ✅ Beri ruang di bawah */
   }
 
   .content h1 {
-    font-size: 28px !important;
-    margin: 30px 0 !important;
+    font-size: 32px !important;
+    margin: 40px 20px 30px 20px !important;
+    line-height: 1.3;
   }
 
   .menu-buttons {
-    flex-direction: column !important; /* PAKSA KE BAWAH */
+    flex-direction: column !important; /* ✅ PAKSA VERTIKAL */
     align-items: center !important;
-    gap: 15px !important;
-    display: flex !important;
+    gap: 20px !important;
+    padding: 0 20px !important;
   }
 
   .menu-card {
-    /* Jangan pakai VW/VH di HP agar tidak gepeng */
-    width: 280px !important;
-    height: 150px !important;
-    flex-direction: row !important; /* Gambar di kiri, Teks di kanan */
+    width: 90% !important; /* ✅ Pakai persen biar responsif */
+    max-width: 350px !important;
+    height: auto !important; /* ✅ Tinggi otomatis */
+    min-height: 140px !important;
+    flex-direction: row !important; /* ✅ Gambar kiri, teks kanan */
     justify-content: flex-start !important;
-    padding: 10px 20px !important;
+    padding: 15px 20px !important;
     font-size: 18px !important;
   }
 
   .menu-card img {
-    width: 70px !important;
-    height: 70px !important;
-    margin: 0 15px 0 0 !important;
+    width: 80px !important;
+    height: 80px !important;
+    margin: 0 20px 0 0 !important;
   }
 
-  .decor-left { width: 80px !important; }
-  .decor-right { width: 90px !important; }
+  .menu-card span {
+    text-align: left;
+    flex: 1;
+  }
+
+  .decor-left { 
+    width: 100px !important; 
+    top: 0;
+  }
+  
+  .decor-right { 
+    width: 110px !important; 
+    bottom: 0;
+  }
 }
+
+/* ========
