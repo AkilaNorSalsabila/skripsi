@@ -1,13 +1,13 @@
-/* ========== KODE DASAR ========== */
+/* ========== KODE DASAR & DESKTOP ========== */
 body {
   background-color: #EAF7FF;
   margin: 0;
   padding: 0;
   font-family: 'Mochiy Pop One', sans-serif;
-  /* Desktop murni satu halaman, tanpa scroll */
-  overflow: hidden; 
+  /* Desktop murni satu halaman */
+  overflow-x: hidden; 
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 }
 
@@ -18,42 +18,14 @@ body {
   pointer-events: none;
 }
 
-.decor-left {
-  top: 0;
-  left: 0;
-  width: 220px;
-  height: auto;
-}
-
-.decor-right {
-  bottom: 0;
-  right: 0;
-  width: 245px;
-  height: auto;
-}
+.decor-left { top: 0; left: 0; width: 220px; height: auto; }
+.decor-right { bottom: 0; right: 0; width: 245px; height: auto; }
 
 /* Judul Utama */
-/* Animasi Zoom In Zoom Out (Pulsing) */
-@keyframes pulse-animation {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-.btn-pulse {
-  animation: pulse-animation 1.5s infinite ease-in-out !important; 
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) !important;
-  z-index: 99 !important;
-}
-
-#start-btn:active img {
-  transform: scale(0.9) !important;
-}
 .content h1 {
- 
   font-size: 50px;
   text-align: center;
-  margin-top: 5vh; /* Menggunakan vh agar proporsional */
+  margin-top: 5vh;
   margin-bottom: 5vh;
   color: #0288D1;
   text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #81D4FA;
@@ -61,13 +33,17 @@ body {
   z-index: 10;
 }
 
+/* Container Tombol */
 .menu-buttons {
   display: flex;
   justify-content: center;
   gap: 60px;
   padding: 0 20px;
+  position: relative;
+  z-index: 10;
 }
 
+/* Kartu Menu (Desktop) */
 .menu-card {
   width: 16.44vw;
   height: 42vh;
@@ -78,140 +54,90 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* Sebar konten atas bawah */
+  justify-content: center; /* Dipusatkan agar rapi */
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.2s;
-  background-color: #fff;
-}
-
-.menu-card:hover {
-  transform: scale(1.05);
-}
-
-.menu-card img {
-  width: 85%;
-  height: 70%; /* Kunci tinggi gambar agar seragam */
-  object-fit: contain;
-  margin-top: 15px;
-}
-
-/* Khusus Permainan di Desktop agar tetap lurus */
-.menu-card.permainan img {
-  transform: scale(1.1);
-  width: 95%;
-  height: 70%
-}
-
-.menu-card {
-  width: 16.44vw;
-  height: 42vh;
-  border: none;
-  border-radius: 20px;
-  padding: 20px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   font-family: 'Quicksand', sans-serif;
   font-size: 24px;
   font-weight: bold;
   color: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
-  will-change: transform;
 }
 
+.menu-card:hover { transform: scale(1.05); }
+
+.menu-card img {
+  width: 85%;
+  height: 60%;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+/* Warna Kartu */
 .menu-card.sayuran { background-color: #00B4E1; }
 .menu-card.hewan { background-color: #008BAF; }
 .menu-card.permainan { background-color: #4FC3F7; }
-.menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+/* Animasi Pulse */
+@keyframes pulse-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.btn-pulse {
+  animation: pulse-animation 1.5s infinite ease-in-out !important; 
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) !important;
+  z-index: 99 !important;
 }
 
-.menu-item p {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 30px;
-  font-weight: bold;
-  color: #004154;
-  margin-top: 10px;
-  text-align: center;
-  z-index: 10;
-}
-
-/* ========== RESPONSIVE SIDEBAR & HP ========== */
-/* ========== RESPONSIVE SIDEBAR & HP ========== */
-
+/* ========== RESPONSIVE HP (SIDEBAR LOOK) ========== */
 @media (max-width: 767px) {
   body { 
-    /* Izinkan scroll vertikal di HP */
-    overflow-y: auto; 
-    height: auto; 
+    overflow-y: auto !important; 
+    height: auto !important; 
+  }
+
+  .content h1 { 
+    font-size: 32px !important; 
+    margin: 40px 0 20px 0 !important; 
+  }
+
+  .menu-buttons {
+    flex-direction: column !important; /* Tombol berbaris ke bawah */
+    align-items: center !important;
+    gap: 20px !important;
+    padding-bottom: 60px !important;
+    width: 100% !important;
+  }
+
+  .menu-card {
+    width: 280px !important; 
+    height: 180px !important; 
+    flex-direction: column !important; 
+    justify-content: center !important;
+    border-radius: 25px !important;
+  }
+
+  .menu-card img {
+    height: 80px !important; 
+    width: auto !important;
+    margin: 0 0 10px 0 !important;
+  }
+
+  .menu-card span {
+    font-size: 20px !important;
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
   }
 
   .decor-left { width: 80px !important; }
   .decor-right { width: 90px !important; }
-
-  .content h1 { 
-    font-size: 32px; 
-    margin: 40px 0 20px 0; 
-    padding: 0 20px;
-  }
-
-  .menu-buttons {
-    flex-direction: column; /* Tombol berderet ke bawah */
-    align-items: center;
-    gap: 20px; /* Jarak antar kartu */
-    padding-bottom: 60px;
-  }
-
-  .menu-card {
-    /* Buat ukuran kartu lebih proporsional (kotak persegi panjang lembut) */
-    width: 280px !important; 
-    height: 180px !important; 
-    flex-direction: column !important; /* Kembalikan ke susunan atas-bawah */
-    justify-content: center !important;
-    gap: 10px;
-    border-radius: 25px !important;
-  }
-
-  .menu-card img, 
-  .menu-card.permainan img {
-    height: 80px !important; /* Ukuran gambar lebih besar agar jelas */
-    width: auto !important;
-    margin: 0 !important;
-    transform: none !important;
-  }
-
-  /* Jika kamu menggunakan tag <span> atau teks di dalam menu-card */
-  .menu-card span, .menu-card p {
-    font-size: 20px !important;
-    margin: 0 !important;
-    text-align: center !important;
-    width: 100%;
-    display: block;
-  }
 }
 
-/* Optimasi tambahan untuk layar yang sangat kecil */
+/* HP Sangat Kecil */
 @media (max-width: 350px) {
   .menu-card {
     width: 240px !important;
     height: 160px !important;
   }
-}
-/* Kunci Landscape HP agar tidak hancur */
-@media (max-height: 450px) and (orientation: landscape) {
-  .menu-buttons {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-  }
-  .menu-card {
-    width: 140px !important;
-    height: 140px !important;
-    flex-direction: column !important;
-  }
-  .menu-card span { text-align: center !important; font-size: 12px !important; }
 }

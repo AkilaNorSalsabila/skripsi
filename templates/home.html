@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
   <title>Belajar dan Bermain</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
@@ -29,15 +31,17 @@
     <h1>Belajar Dan <br> Bermain</h1>
     <div class="menu-buttons">
       <button class="menu-card sayuran" onclick="goMenu('sayuran')">
-        <img src="{{ url_for('static', filename='img/sayuran_button.png') }}">
+        <img src="{{ url_for('static', filename='img/sayuran_button.png') }}" alt="Sayuran">
         <span>Mengenal Sayuran</span>
       </button>
+
       <button class="menu-card hewan" onclick="goMenu('hewan')">
-        <img src="{{ url_for('static', filename='img/hewan_button.png') }}">
+        <img src="{{ url_for('static', filename='img/hewan_button.png') }}" alt="Hewan">
         <span>Mengenal Hewan</span>
       </button>
+
       <button class="menu-card permainan" onclick="goMenu('permainan')">
-        <img src="{{ url_for('static', filename='img/permainan_button.png') }}">
+        <img src="{{ url_for('static', filename='img/permainan_button.png') }}" alt="Permainan">
         <span>Permainan</span>
       </button>
     </div>
@@ -65,7 +69,6 @@
       [cardSayuran, cardHewan, cardPermainan].forEach(c => c.classList.remove('btn-pulse'));
     }
 
-    // Navigasi saat klik manual
     function goMenu(type) {
       stopAllVoices();
       bgMusic.volume = 0.02;
@@ -74,11 +77,7 @@
 
       const item = voiceMap[type];
       const targetUrl = item.url;
-
-      // Fungsi pindah halaman
       const navigate = () => { window.location.href = targetUrl; };
-
-      // Safety Timeout: Jika 1.5 detik suara macet, tetep pindah!
       const safetyTimer = setTimeout(navigate, 1500);
 
       item.audio.play().then(() => {
@@ -96,36 +95,20 @@
       sessionStorage.setItem("hasStarted", "true");
       overlay.style.display = "none";
       content.style.display = "block";
-
       bgMusic.volume = 0.05;
       bgMusic.play();
-
       instruction.play();
 
-      // LOGIKA ANIMASI BERDASARKAN WAKTU SUARA
       instruction.ontimeupdate = () => {
         let time = instruction.currentTime;
+        if (time >= 4 && time <= 5.5) cardSayuran.classList.add('btn-pulse');
+        else cardSayuran.classList.remove('btn-pulse');
 
-        // 1. Sinkronisasi Sayuran (Contoh: Detik 2 sampai 4)
-        if (time >= 4 && time <= 5.5) { /* GANTI DETIK DI SINI */
-          cardSayuran.classList.add('btn-pulse');
-        } else {
-          cardSayuran.classList.remove('btn-pulse');
-        }
+        if (time >= 6 && time <= 7.5) cardHewan.classList.add('btn-pulse');
+        else cardHewan.classList.remove('btn-pulse');
 
-        // 2. Sinkronisasi Hewan (Contoh: Detik 5 sampai 7)
-        if (time >= 6 && time <= 7.5) { /* GANTI DETIK DI SINI */
-          cardHewan.classList.add('btn-pulse');
-        } else {
-          cardHewan.classList.remove('btn-pulse');
-        }
-
-        // 3. Sinkronisasi Permainan (Contoh: Detik 8 sampai 10)
-        if (time >= 8 && time <= 10) { /* GANTI DETIK DI SINI */
-          cardPermainan.classList.add('btn-pulse');
-        } else {
-          cardPermainan.classList.remove('btn-pulse');
-        }
+        if (time >= 8 && time <= 10) cardPermainan.classList.add('btn-pulse');
+        else cardPermainan.classList.remove('btn-pulse');
       };
 
       instruction.onended = () => {
