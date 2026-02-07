@@ -331,24 +331,30 @@ body {
   }
 
   /* Reset Gambar: Hilangkan semua margin bawaan yang bikin beda */
-  .menu-card img, 
-  .menu-card.permainan img { 
-    width: 80% !important; 
-    height: 70px !important;
-    margin: 0 auto !important; /* Pusatkan gambar tanpa margin atas */
-    object-fit: contain;
-  }
+.menu-card img {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+  margin-top: 2px;
+  margin-bottom: auto; /* biar teks selalu di bawah */
+}
+
+.menu-card.permainan img {
+  width: 80%; /* ubah dari 110% */
+  height: auto; /* jangan max-height 65% */
+  margin-top: 2px; /* samakan dengan tombol lain */
+  margin-bottom: auto;
+}
 
   /* Ratakan Tulisan: Paksa semua span berada di paling bawah kotak */
   .menu-card span {
-    font-size: 13px !important;
-    text-align: center !important;
-    margin-top: auto !important; /* Ini kunci agar teks turun ke bawah */
-    line-height: 1.2;
-    display: block;
-    width: 100%;
-    min-height: 32px; /* Jaga ruang untuk teks 2 baris */
-  }
+  text-align: center;
+  font-size: 26px;
+  margin-top: auto; /* kunci agar selalu turun ke bawah */
+  display: block;
+  width: 100%;
+}
+
 
   /* Pastikan elemen dekorasi tidak ganggu klik di HP */
   .decor { display: none; }
