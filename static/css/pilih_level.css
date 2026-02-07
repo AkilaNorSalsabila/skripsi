@@ -50,6 +50,7 @@ body {
   gap: 13px;
   margin-top: -10px;
 }
+
 /* --- ANIMASI ZOOM --- */
 @keyframes pulse-animation {
   0% { transform: scale(1); }
@@ -57,11 +58,11 @@ body {
   100% { transform: scale(1); }
 }
 
-/* Class ini akan dipicu JS */
 .btn-pulse {
   animation: pulse-animation 1.2s infinite ease-in-out !important;
   z-index: 99 !important;
 }
+
 /* CARD LEVEL */
 .level-card {
   position: relative; 
@@ -69,10 +70,9 @@ body {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  z-index: 10; /* Pastikan lebih tinggi dari dekor */
+  z-index: 10;
   transition: transform 0.25s ease;
   will-change: transform;
-  /* TAMBAHKAN INI: Pastikan area klik solid */
   background: transparent;
 }
 
@@ -226,10 +226,16 @@ body {
   }
 }
 
-/* ===== TABLET KECIL (576px - 768px) ===== */
+/* ===== HP & TABLET KECIL (max 768px) - VERTIKAL ===== */
 @media (max-width: 768px) {
   body {
-    overflow-x: auto;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .content {
+    padding-bottom: 60px;
+    padding-top: 60px;
   }
 
   .content h1 {
@@ -237,25 +243,48 @@ body {
     margin-bottom: 25px;
   }
 
+  /* ✅ PAKSA VERTIKAL */
   .level-buttons {
-    gap: 10px;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+  }
+
+  .level-card {
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 90% !important;
+    max-width: 350px !important;
+    padding: 15px !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
   }
 
   #img-easy, #img-medium, #img-hard {
-    width: 190px;
+    width: 100px !important;
+    height: 100px !important;
+    margin-right: 20px !important;
   }
 
   .level-text {
-    font-size: 20px;
+    font-size: 20px !important;
+    margin: 0 !important;
+    text-align: left !important;
   }
 
   #text-easy, #text-medium, #text-hard {
-    margin-top: -48px;
+    margin-top: 0 !important;
   }
 
   .back-button {
     left: 15px;
     top: 15px;
+  }
+
+  .back-button img {
+    width: 40px;
   }
 
   .lang-select {
@@ -277,31 +306,32 @@ body {
   }
 }
 
-/* ===== MOBILE (max 576px) ===== */
+/* ===== MOBILE KECIL (max 576px) ===== */
 @media (max-width: 576px) {
-  body {
-    overflow-x: auto;
-  }
-
   .content h1 {
-    font-size: 26px;
+    font-size: 28px;
     margin-bottom: 20px;
   }
 
   .level-buttons {
-    gap: 8px;
+    gap: 15px !important;
+    padding: 0 15px;
+  }
+
+  .level-card {
+    width: 95% !important;
+    max-width: 320px !important;
+    padding: 12px !important;
   }
 
   #img-easy, #img-medium, #img-hard {
-    width: 160px;
+    width: 85px !important;
+    height: 85px !important;
+    margin-right: 15px !important;
   }
 
   .level-text {
-    font-size: 18px;
-  }
-
-  #text-easy, #text-medium, #text-hard {
-    margin-top: -40px;
+    font-size: 18px !important;
   }
 
   .back-button img {
@@ -327,33 +357,25 @@ body {
   }
 }
 
-/* ===== SIDEBAR / LAYAR SEMPIT (max 450px) ===== */
+/* ===== MOBILE SANGAT KECIL (max 450px) ===== */
 @media (max-width: 450px) {
-  body {
-    overflow: hidden; /* tidak perlu scroll */
-  }
-
   .content h1 {
-    font-size: 22px;
-    margin-bottom: 15px;
+    font-size: 24px;
+    margin-bottom: 18px;
   }
 
-  .level-buttons {
-    gap: 5px;
-    padding: 0 5px;
+  .level-card {
+    padding: 10px !important;
   }
 
   #img-easy, #img-medium, #img-hard {
-    width: 120px;
+    width: 75px !important;
+    height: 75px !important;
+    margin-right: 12px !important;
   }
 
   .level-text {
-    font-size: 15px;
-    margin-bottom: 12px;
-  }
-
-  #text-easy, #text-medium, #text-hard {
-    margin-top: -30px;
+    font-size: 16px !important;
   }
 
   .back-button {
@@ -375,108 +397,11 @@ body {
     font-size: 11px;
   }
 
-  .lang-select img {
-    width: 15px;
-    height: 10px;
-  }
-
   .decor-left {
     width: 70px;
   }
 
   .decor-right {
     width: 110px;
-  }
-}
-
-/* ===== MOBILE SANGAT KECIL (max 380px) ===== */
-@media (max-width: 380px) {
-  body {
-    overflow: hidden;
-  }
-
-  .content h1 {
-    font-size: 20px;
-    margin-bottom: 12px;
-  }
-
-  .level-buttons {
-    gap: 4px;
-    padding: 0 4px;
-  }
-
-  #img-easy, #img-medium, #img-hard {
-    width: 105px;
-  }
-
-  .level-text {
-    font-size: 13px;
-  }
-
-  #text-easy, #text-medium, #text-hard {
-    margin-top: -26px;
-  }
-
-  .back-button img {
-    width: 28px;
-  }
-
-  .lang-select .selected {
-    padding: 3px 5px;
-    font-size: 10px;
-  }
-
-  .decor-left {
-    width: 60px;
-  }
-
-  .decor-right {
-    width: 95px;
-  }
-}
-
-/* ===== MOBILE EKSTRA KECIL (max 320px) ===== */
-@media (max-width: 320px) {
-  body {
-    overflow: hidden;
-  }
-
-  .content h1 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .level-buttons {
-    gap: 3px;
-    padding: 0 3px;
-  }
-
-  #img-easy, #img-medium, #img-hard {
-    width: 90px;
-  }
-
-  .level-text {
-    font-size: 12px;
-  }
-
-  #text-easy, #text-medium, #text-hard {
-    margin-top: -22px;
-  }
-
-  .back-button img {
-    width: 26px;
-  }
-
-  .lang-select .selected {
-    padding: 2px 4px;
-    font-size: 9px;
-  }
-
-  .decor-left {
-    width: 50px;
-  }
-
-  .decor-right {
-    width: 80px;
   }
 }
