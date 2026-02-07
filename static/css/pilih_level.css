@@ -2,8 +2,9 @@ body {
   background-color: #EAF7FF;
   margin: 0;
   font-family: 'Mochiy Pop One', sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
 }
+
 
 /* ================== DEKOR ================== */
 .decor {
