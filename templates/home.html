@@ -101,14 +101,20 @@
 
       instruction.ontimeupdate = () => {
         let time = instruction.currentTime;
-        if (time >= 4 && time <= 5.5) cardSayuran.classList.add('btn-pulse');
-        else cardSayuran.classList.remove('btn-pulse');
 
-        if (time >= 6 && time <= 7.5) cardHewan.classList.add('btn-pulse');
-        else cardHewan.classList.remove('btn-pulse');
+        // Reset semua dulu agar tidak ada tombol yang "ketinggalan" menyala
+        cardSayuran.classList.remove('btn-pulse');
+        cardHewan.classList.remove('btn-pulse');
+        cardPermainan.classList.remove('btn-pulse');
 
-        if (time >= 8 && time <= 10) cardPermainan.classList.add('btn-pulse');
-        else cardPermainan.classList.remove('btn-pulse');
+        // Nyalakan sesuai detik suara
+        if (time >= 4 && time <= 5.5) { 
+          cardSayuran.classList.add('btn-pulse');
+        } else if (time >= 6 && time <= 7.5) { 
+          cardHewan.classList.add('btn-pulse');
+        } else if (time >= 8 && time <= 10) { 
+          cardPermainan.classList.add('btn-pulse');
+        }
       };
 
       instruction.onended = () => {
