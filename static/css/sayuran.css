@@ -5,28 +5,30 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
-    overflow: hidden; /* biar ga ada scroll horizontal */
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
-/* Corner Sayuran */
+/* Corner Sayuran - DIPERBAIKI RESPONSIF */
 .corner {
-    position: absolute;
+    position: fixed;
     display: block;
-    width: 210px;   /* kecilkan sedikit biar proporsional */
     margin: 0;
     padding: 0;
-    border: none;   /* pastikan tidak ada border */
-    user-select: none;       /* teks/gambar tidak bisa dipilih */
+    border: none;
+    user-select: none;
     pointer-events: none;
+    z-index: 1;
 }
 
 .top-left {
     top: 0;
     left: 0;
+    width: 210px;
 }
 
 .bottom-right {
-    bottom: -50px;
+    bottom: 0;
     right: 0;
     width: 350px;
 }
@@ -34,14 +36,16 @@ body {
 /* Layout utama: 2 kolom (kamera kiri, translate kanan) */
 .content-row {
     display: flex;
-    justify-content: flex-start; /* jangan center, biar ikut margin kiri */
+    justify-content: flex-start;
     align-items: flex-start;
     gap: 40px;
+    position: relative;
+    z-index: 2;
 }
 
 /* Geser semua isi ke kanan */
 .shift-right {
-    margin-left: 200px; /* atur sesuai selera (misal 150–220px) */
+    margin-left: 200px;
 }
 
 /* Kolom kiri: kamera + tombol */
@@ -67,7 +71,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scaleX(-1); /* cuma video yang mirror */
+    transform: scaleX(-1);
 }
 .image-box canvas {
     width: 100%;
@@ -89,7 +93,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 100px;  /* turun lebih jauh */
+    margin-top: 100px;
 }
 
 .translate-item {
@@ -103,8 +107,8 @@ body {
     font-size: 18px;
     min-height: 70px;
     min-width: 300px;
-    max-width: 400px; /* batasi lebar maksimal */
-    justify-content: center; /* center saat belum ada teks */   
+    max-width: 400px;
+    justify-content: center;
 }
 
 /* Saat sudah ada teks, justify jadi space-between */
@@ -115,23 +119,24 @@ body {
 .translate-item .flag {
     width: 45px;
     height: auto;
-    flex-shrink: 0; /* bendera tidak mengecil */
+    flex-shrink: 0;
 }
+
 /* Teks sayuran */
 .translate-item .text {
-    font-family: 'Quicksand', sans-serif; /* 🔹 Quicksand Bold */
-    font-weight: 700;                    /* bold */
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
     font-size: 28px;
     color: white;
     white-space: nowrap;
 }
 
-/* 🔹 Biar teks + tombol audio sejajar */
+/* Biar teks + tombol audio sejajar */
 .translate-content {
     display: flex;
-    align-items: center;   /* vertikal rata tengah */
-    gap: 12px;             /* jarak antara teks & tombol */
-    flex: 1;               /* isi ruang kosong biar fleksibel */
+    align-items: center;
+    gap: 12px;
+    flex: 1;
 }
 
 /* Tombol audio */
@@ -139,14 +144,14 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    display: inline-flex;             
+    display: inline-flex;
     align-items: center;
     padding: 0;
-    flex-shrink: 0; /* tombol tidak mengecil */
+    flex-shrink: 0;
 }
 
 .play-icon {
-    width: 28px;   
+    width: 28px;
     height: 28px;
     display: flex;
     align-items: center;
@@ -160,7 +165,7 @@ body {
     background: #00bfff;
     color: white;
     font-size: 22px;
-    font-family: 'Mochiy Pop One', sans-serif; /* 🔹 ganti font */
+    font-family: 'Mochiy Pop One', sans-serif;
     cursor: pointer;
     transition: 0.2s;
     display: flex;
@@ -180,59 +185,59 @@ body {
 
 /* Tombol back */
 .back-button {
-  position: fixed;
-  top: 70px;
-  left: 159px;   /* lebih kiri biar POV laptop */
-  z-index: 10;
+    position: fixed;
+    top: 70px;
+    left: 159px;
+    z-index: 10;
 }
 
 .back-button img {
-  width: 50px;
-  height: auto;
-  cursor: pointer;
-  transition: transform 0.2s;
+    width: 50px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
 .back-button img:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .audio-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 6px; /* jarak antara play dan wave */
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .play-icon img {
-  width: 28px;
-  height: 28px;
+    width: 28px;
+    height: 28px;
 }
 
 /* Wave animasi */
 .wave-icon {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 20px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 20px;
 }
 .wave-icon span {
-  display: block;
-  width: 3px;
-  height: 6px;
-  background: white;
-  border-radius: 2px;
-  animation: waveAnim 1s infinite;
+    display: block;
+    width: 3px;
+    height: 6px;
+    background: white;
+    border-radius: 2px;
+    animation: waveAnim 1s infinite;
 }
 .wave-icon span:nth-child(2) { animation-delay: 0.2s; }
 .wave-icon span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes waveAnim {
-  0%, 100% { height: 6px; }
-  50% { height: 18px; }
+    0%, 100% { height: 6px; }
+    50% { height: 18px; }
 }
 
 .btn.camera img {
-    margin-top: 8px; /* geser ikon ke bawah biar rata sama teks */
+    margin-top: 8px;
 }
 
 /* Tombol Reload */
@@ -241,25 +246,62 @@ body {
     display: flex;
     justify-content: center;
     position: relative;
-    z-index: 20;   /* pastikan di atas elemen lain */
+    z-index: 20;
 }
 
 /* khusus ikon reload */
 .btn.reload .icon-btn {
     width: 28px;
     height: 28px;
-    vertical-align: middle;       /* sejajarkan vertikal dengan teks */
+    vertical-align: middle;
     position: relative;
-    top: -3px;                     /* geser halus ke bawah tanpa bikin tombol melebar */
+    top: -3px;
 }
 
 .btn.reload {
-    background: #ff9800;   /* beda warna biar kelihatan */
-    cursor: pointer; 
+    background: #ff9800;
+    cursor: pointer;
 }
 
 .btn.reload:hover {
     background: #e68900;
+}
+
+/* ===== DESKTOP BESAR (1440px keatas) ===== */
+@media (min-width: 1440px) {
+    .top-left {
+        width: 250px;
+    }
+    
+    .bottom-right {
+        width: 400px;
+    }
+}
+
+/* ===== DESKTOP SEDANG (1200px - 1440px) ===== */
+@media (max-width: 1440px) {
+    .top-left {
+        width: 210px;
+    }
+    
+    .bottom-right {
+        width: 350px;
+    }
+}
+
+/* ===== LAPTOP KECIL (1024px - 1200px) ===== */
+@media (max-width: 1200px) {
+    .shift-right {
+        margin-left: 120px;
+    }
+
+    .top-left {
+        width: 180px;
+    }
+    
+    .bottom-right {
+        width: 300px;
+    }
 }
 
 /* ===== TABLET (768px - 1024px) ===== */
@@ -289,23 +331,23 @@ body {
     }
 
     .translate-item {
-        min-width: 200px; /* tetap agak besar */
-        max-width: 320px;
+        min-width: 180px; /* DIKECILKAN dari 200px */
+        max-width: 280px; /* DIKECILKAN dari 320px */
         min-height: 60px;
         padding: 8px 15px;
     }
 
     .translate-item .text {
-        font-size: 22px;
+        font-size: 20px; /* DIKECILKAN dari 22px */
     }
 
     .translate-item .flag {
-        width: 35px;
+        width: 32px; /* DIKECILKAN dari 35px */
     }
 
     .btn {
-        font-size: 20px;
-        padding: 12px 20px;
+        font-size: 18px; /* DIKECILKAN dari 20px */
+        padding: 11px 18px; /* DIKECILKAN dari 12px 20px */
     }
 
     .back-button {
@@ -317,11 +359,11 @@ body {
         width: 45px;
     }
 
-    .corner.top-left {
+    .top-left {
         width: 160px;
     }
 
-    .corner.bottom-right {
+    .bottom-right {
         width: 280px;
     }
 }
@@ -371,13 +413,17 @@ body {
     }
 
     .translate-item {
-        min-width: 180px; /* tetap cukup besar */
-        max-width: 400px;
-        padding: 10px 18px;
+        min-width: 170px; /* DIKECILKAN dari 180px */
+        max-width: 340px; /* DIKECILKAN dari 400px */
+        padding: 9px 16px; /* DIKECILKAN dari 10px 18px */
     }
 
     .translate-item .text {
-        font-size: 20px;
+        font-size: 19px; /* DIKECILKAN dari 20px */
+    }
+
+    .translate-item .flag {
+        width: 30px; /* DIKECILKAN dari default */
     }
 
     .reload-box {
@@ -394,13 +440,12 @@ body {
         width: 40px;
     }
 
-    .corner.top-left {
+    .top-left {
         width: 130px;
     }
 
-    .corner.bottom-right {
+    .bottom-right {
         width: 220px;
-        bottom: -30px;
     }
 }
 
@@ -417,7 +462,7 @@ body {
     }
 
     .translate-item {
-        min-width: 160px; /* tetap proporsional */
+        min-width: 160px;
         max-width: 350px;
         min-height: 55px;
         padding: 8px 15px;
@@ -461,11 +506,11 @@ body {
         width: 35px;
     }
 
-    .corner.top-left {
+    .top-left {
         width: 100px;
     }
 
-    .corner.bottom-right {
+    .bottom-right {
         width: 170px;
     }
 }
@@ -497,8 +542,8 @@ body {
     }
 
     .translate-item {
-        min-width: 140px; /* tetap ada ukuran minimal */
-        max-width: 280px; /* lebih kecil di sidebar */
+        min-width: 140px;
+        max-width: 280px;
         min-height: 50px;
         padding: 8px 12px;
         gap: 10px;
@@ -506,7 +551,7 @@ body {
 
     .translate-item .text {
         font-size: 16px;
-        white-space: normal; /* izinkan wrap kalau kepanjangan */
+        white-space: normal;
     }
 
     .translate-item .flag {
@@ -543,13 +588,12 @@ body {
         width: 32px;
     }
 
-    .corner.top-left {
+    .top-left {
         width: 80px;
     }
 
-    .corner.bottom-right {
+    .bottom-right {
         width: 140px;
-        bottom: -20px;
     }
 }
 
@@ -578,11 +622,11 @@ body {
         padding: 9px 14px;
     }
 
-    .corner.top-left {
+    .top-left {
         width: 70px;
     }
 
-    .corner.bottom-right {
+    .bottom-right {
         width: 120px;
     }
 }
