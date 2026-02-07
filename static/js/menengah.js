@@ -170,7 +170,7 @@ const Menengah = [
     answer: "/static/img_full/Wortel_full.png",
     options: [
       "/static/img_full/Oyong2.png",
-      "/static/img_full/Mentimun_Full.png",
+      "/static/img_full/Mentimun_full.png",
       "/static/img_full/Lobak_full.png",
       "/static/img_full/Wortel_full.png" ]
   },
