@@ -142,51 +142,66 @@ body {
 }
 
 /* ========== RESPONSIVE SIDEBAR & HP ========== */
+/* ========== RESPONSIVE SIDEBAR & HP ========== */
 
-@media (max-width: 767px) or (max-height: 550px) {
+@media (max-width: 767px) {
   body { 
-    /* Scroll HANYA muncul jika layar sempit/pendek */
+    /* Izinkan scroll vertikal di HP */
     overflow-y: auto; 
+    height: auto; 
   }
 
-  .decor-left { width: 100px !important; display: block !important; }
-  .decor-right { width: 110px !important; display: block !important; }
+  .decor-left { width: 80px !important; }
+  .decor-right { width: 90px !important; }
 
-  .content h1 { font-size: 26px; margin: 20px 0; }
+  .content h1 { 
+    font-size: 32px; 
+    margin: 40px 0 20px 0; 
+    padding: 0 20px;
+  }
 
   .menu-buttons {
-    flex-direction: column;
+    flex-direction: column; /* Tombol berderet ke bawah */
     align-items: center;
-    gap: 15px;
-    padding-bottom: 50px; /* Ruang scroll di bawah */
+    gap: 20px; /* Jarak antar kartu */
+    padding-bottom: 60px;
   }
 
   .menu-card {
-    width: 220px !important;
-    height: 120px !important;
-    flex-direction: row !important; /* Row di sidebar agar hemat tempat */
-    justify-content: space-around !important;
-    padding: 10px !important;
+    /* Buat ukuran kartu lebih proporsional (kotak persegi panjang lembut) */
+    width: 280px !important; 
+    height: 180px !important; 
+    flex-direction: column !important; /* Kembalikan ke susunan atas-bawah */
+    justify-content: center !important;
+    gap: 10px;
+    border-radius: 25px !important;
   }
 
   .menu-card img, 
   .menu-card.permainan img {
-    height: 60px !important;
-    width: 70px !important;
+    height: 80px !important; /* Ukuran gambar lebih besar agar jelas */
+    width: auto !important;
     margin: 0 !important;
     transform: none !important;
   }
 
-  .menu-card span {
-    font-size: 16px !important;
-    min-height: unset !important;
+  /* Jika kamu menggunakan tag <span> atau teks di dalam menu-card */
+  .menu-card span, .menu-card p {
+    font-size: 20px !important;
     margin: 0 !important;
-    text-align: left !important;
-    flex: 1;
-    padding-left: 10px;
+    text-align: center !important;
+    width: 100%;
+    display: block;
   }
 }
 
+/* Optimasi tambahan untuk layar yang sangat kecil */
+@media (max-width: 350px) {
+  .menu-card {
+    width: 240px !important;
+    height: 160px !important;
+  }
+}
 /* Kunci Landscape HP agar tidak hancur */
 @media (max-height: 450px) and (orientation: landscape) {
   .menu-buttons {
