@@ -1,6 +1,7 @@
-// puzzle.js (Final Version - Fixed Audio & Logic)
+// puzzle.js (Final Version - Fixed Audio & Logic + Mobile Touch Support)
 const sfxDanger = new Audio("/static/sounds/Timer.mp3");
 sfxDanger.loop = true;
+
 // Core variables
 let currentQuestion = 1;
 let placedCount = 0;
@@ -12,6 +13,13 @@ let timerInterval = null;
 let timeLeft = 0;
 let timeExpired = false;
 localStorage.setItem("lastLevel", "sulit");
+
+// ==================
+// TOUCH SUPPORT VARIABLES (TAMBAHAN BARU!)
+// ==================
+let touchClone = null;
+let touchStartX = 0;
+let touchStartY = 0;
 
 // MAP waktu per jumlah pieces (detik)
 const timeByPieces = {
@@ -65,7 +73,7 @@ function playInstructionStart() {
     
     soundVegetable.pause();
     soundVegetable.currentTime = 0;
-    soundVegetable.onended = null; // Clear previous events
+    soundVegetable.onended = null;
 
     if (lang === "en") {
         soundVegetable.src = "/static/sounds/Puzzle.mp3";
@@ -86,7 +94,7 @@ function startTimer(seconds) {
     timeLeft = seconds;
     timeExpired = false;
     renderTimer();
-    resetDangerEffects(); // Bersihkan efek setiap ganti soal
+    resetDangerEffects();
 
     timerInterval = setInterval(() => {
         timeLeft--;
@@ -112,7 +120,6 @@ function resetDangerEffects() {
     if (el) el.classList.remove("timer-danger");
     document.body.classList.remove("screen-danger-active");
     
-    // Bersihkan animasi dari semua kepingan
     const allPieces = document.querySelectorAll("#pieces-container img, #board img");
     allPieces.forEach(p => p.classList.remove("piece-danger-anim"));
 
@@ -128,35 +135,26 @@ function renderTimer() {
     
     el.textContent = (lang === "en" ? "Time " : "Waktu ") + `${mm}:${ss}`;
 
-    // Ambil semua kepingan yang belum dipasang (masih di container)
     const remainingPieces = document.querySelectorAll("#pieces-container img");
 
     if (timeLeft <= 5 && timeLeft > 0) {
         el.classList.add("timer-danger");
         document.body.classList.add("screen-danger-active");
-        
-        // Aktifkan gerakan yang sinkron dengan layar
         remainingPieces.forEach(p => p.classList.add("piece-danger-anim"));
-
         if (sfxDanger.paused) sfxDanger.play().catch(() => {});
     } else {
         el.classList.remove("timer-danger");
         document.body.classList.remove("screen-danger-active");
-        
-        // Matikan gerakan jika waktu aman
         remainingPieces.forEach(p => p.classList.remove("piece-danger-anim"));
     }
 }
 
-// Update fungsi onTimeUp agar ada efek getar
 function onTimeUp() {
     const soundWrong = document.getElementById("sound-wrong");
     
-    // Kurangi skor jika waktu habis (opsional, ikuti menengah)
     totalScore = Math.max(0, totalScore - 10);
     localStorage.setItem("puzzleScore", totalScore);
 
-    // Efek Getar Board
     const board = document.getElementById("board");
     if (board) {
         board.classList.add("shake");
@@ -182,7 +180,6 @@ function showTimeUpOverlay(icon, text) {
     hideTimeUpOverlay();
     const overlay = document.createElement("div");
     overlay.id = "timeup-overlay";
-    // Gunakan class 'wrong-overlay' agar ukurannya raksasa seperti di Menengah
     overlay.className = "wrong-overlay"; 
     overlay.innerHTML = `
         <div class="wrong-content">
@@ -313,7 +310,9 @@ function shufflePieces() {
     arr.forEach(p => container.appendChild(p));
 }
 
-// --- DRAG & DROP ---
+// ==================
+// DRAG & DROP WITH MOBILE SUPPORT
+// ==================
 function initDragDrop() {
     const pieces = document.querySelectorAll("#pieces-container img");
     const slots = document.querySelectorAll(".slot");
@@ -321,13 +320,131 @@ function initDragDrop() {
     const soundWrong = document.getElementById("sound-wrong");
 
     pieces.forEach(piece => {
+        // ==================
+        // DESKTOP DRAG START
+        // ==================
         piece.addEventListener("dragstart", e => {
             if (timeExpired) { e.preventDefault(); return; }
             draggedPiece = e.target;
             e.dataTransfer.setData("text", draggedPiece.dataset.id);
         });
+
+        // ==================
+        // MOBILE TOUCH START
+        // ==================
+        piece.addEventListener("touchstart", (e) => {
+            if (timeExpired) return;
+            e.preventDefault();
+            
+            draggedPiece = piece;
+            
+            const touch = e.touches[0];
+            const rect = piece.getBoundingClientRect();
+            touchStartX = touch.clientX - rect.left;
+            touchStartY = touch.clientY - rect.top;
+            
+            touchClone = piece.cloneNode(true);
+            touchClone.classList.add("touch-dragging-puzzle");
+            touchClone.style.position = "fixed";
+            touchClone.style.pointerEvents = "none";
+            touchClone.style.zIndex = "9999";
+            touchClone.style.opacity = "0.8";
+            touchClone.style.width = piece.offsetWidth + "px";
+            touchClone.style.height = piece.offsetHeight + "px";
+            touchClone.style.left = (touch.clientX - touchStartX) + "px";
+            touchClone.style.top = (touch.clientY - touchStartY) + "px";
+            
+            document.body.appendChild(touchClone);
+            piece.style.opacity = "0.3";
+        }, { passive: false });
+
+        // ==================
+        // MOBILE TOUCH MOVE
+        // ==================
+        piece.addEventListener("touchmove", (e) => {
+            if (!draggedPiece || timeExpired) return;
+            e.preventDefault();
+            
+            const touch = e.touches[0];
+            if (touchClone) {
+                touchClone.style.left = (touch.clientX - touchStartX) + "px";
+                touchClone.style.top = (touch.clientY - touchStartY) + "px";
+            }
+            
+            if (touchClone) touchClone.style.display = 'none';
+            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (touchClone) touchClone.style.display = '';
+            
+            const targetSlot = elementBelow?.closest('.slot');
+            
+            slots.forEach(slot => {
+                slot.classList.remove('slot-hover-target');
+            });
+            
+            if (targetSlot && targetSlot.dataset.filled !== "true") {
+                targetSlot.classList.add('slot-hover-target');
+            }
+        }, { passive: false });
+
+        // ==================
+        // MOBILE TOUCH END
+        // ==================
+        piece.addEventListener("touchend", (e) => {
+            if (!draggedPiece || timeExpired) return;
+            e.preventDefault();
+            
+            const touch = e.changedTouches[0];
+            if (touchClone) touchClone.style.display = 'none';
+            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (touchClone) touchClone.style.display = '';
+            
+            const targetSlot = elementBelow?.closest('.slot');
+            
+            if (touchClone) {
+                touchClone.remove();
+                touchClone = null;
+            }
+            piece.style.opacity = "1";
+            
+            slots.forEach(slot => {
+                slot.classList.remove('slot-hover-target');
+            });
+            
+            if (targetSlot && targetSlot.dataset.filled !== "true") {
+                const pieceId = draggedPiece.dataset.id;
+                const correctId = targetSlot.dataset.piece;
+
+                if (pieceId === correctId) {
+                    draggedPiece.style.position = "absolute";
+                    draggedPiece.style.left = targetSlot.style.left;
+                    draggedPiece.style.top = targetSlot.style.top;
+                    draggedPiece.style.width = targetSlot.style.width;
+                    draggedPiece.style.height = targetSlot.style.height;
+                    draggedPiece.draggable = false;
+
+                    document.getElementById("board").appendChild(draggedPiece);
+                    targetSlot.dataset.filled = "true";
+
+                    soundCorrect.currentTime = 0;
+                    soundCorrect.play();
+
+                    placedCount++;
+                    if (placedCount === slots.length) puzzleSolved();
+                } else {
+                    if (soundWrong) { 
+                        soundWrong.currentTime = 0; 
+                        soundWrong.play(); 
+                    }
+                }
+            }
+            
+            draggedPiece = null;
+        }, { passive: false });
     });
 
+    // ==================
+    // DESKTOP DROP ZONES
+    // ==================
     slots.forEach(slot => {
         slot.addEventListener("dragover", e => e.preventDefault());
         slot.addEventListener("drop", e => {
@@ -377,43 +494,35 @@ function puzzleSolved() {
 
     renderConfetti();
 
-    // --- LOGIKA SUARA (DISESUAIKAN DENGAN NAMA FILE KAMU) ---
-  const soundCongrats = document.getElementById("sound-congrats");
-  const soundVegetable = document.getElementById("sound-vegetable");
+    const soundCongrats = document.getElementById("sound-congrats");
+    const soundVegetable = document.getElementById("sound-vegetable");
 
-  soundVegetable.pause();
-  soundVegetable.onended = null;
+    soundVegetable.pause();
+    soundVegetable.onended = null;
 
-  // 1. Putar Suara Tepuk Tangan
-  soundCongrats.currentTime = 0;
-  soundCongrats.play();
+    soundCongrats.currentTime = 0;
+    soundCongrats.play();
 
-  soundCongrats.onended = () => {
-    if (lang === "en") {
-      // 2. Putar "Success Puzzle.mp3"
-      soundVegetable.src = "/static/sounds/" + encodeURIComponent("Success Puzzle") + ".mp3";
-      
-      soundVegetable.play().then(() => {
-        // 3. Setelah itu, panggil nama file (Gunakan name_id karena filemu namanya Jantung Pisang.mp3)
-        soundVegetable.onended = () => {
-          const fileName = soal.name_id; // Pakai name_id sesuai nama file di folder En
-          soundVegetable.src = "/static/sounds/En/" + encodeURIComponent(fileName) + ".mp3";
-          
-          console.log("Memutar audio EN (Nama file ID):", soundVegetable.src);
-          
-          soundVegetable.play().catch(e => console.error("File audio EN tidak ditemukan:", e));
-          soundVegetable.onended = null;
-        };
-      });
-
-    } else {
-      // Bahasa Indonesia (Tetap seperti biasa)
-      const formattedName = soal.name_id; 
-      soundVegetable.src = `/static/sounds/id/notif_puzzle/${formattedName}.m4a`;
-      soundVegetable.onended = null;
-      soundVegetable.play().catch(e => console.error("File audio ID tidak ditemukan:", e));
-    }
-  };
+    soundCongrats.onended = () => {
+        if (lang === "en") {
+            soundVegetable.src = "/static/sounds/" + encodeURIComponent("Success Puzzle") + ".mp3";
+            
+            soundVegetable.play().then(() => {
+                soundVegetable.onended = () => {
+                    const fileName = soal.name_id;
+                    soundVegetable.src = "/static/sounds/En/" + encodeURIComponent(fileName) + ".mp3";
+                    console.log("Memutar audio EN (Nama file ID):", soundVegetable.src);
+                    soundVegetable.play().catch(e => console.error("File audio EN tidak ditemukan:", e));
+                    soundVegetable.onended = null;
+                };
+            });
+        } else {
+            const formattedName = soal.name_id; 
+            soundVegetable.src = `/static/sounds/id/notif_puzzle/${formattedName}.m4a`;
+            soundVegetable.onended = null;
+            soundVegetable.play().catch(e => console.error("File audio ID tidak ditemukan:", e));
+        }
+    };
 
     setTimeout(() => {
         message.classList.add('hidden');
@@ -424,7 +533,6 @@ function puzzleSolved() {
 }
 
 // --- CONFETTI HELPER ---
-// --- CONFETTI HELPER (FIXED RESPONSIVE) ---
 function renderConfetti() {
     let canvas = document.getElementById("confetti");
     if (!canvas) {
@@ -434,13 +542,11 @@ function renderConfetti() {
     }
     const ctx = canvas.getContext("2d");
 
-    // Fungsi untuk menyesuaikan ukuran canvas tanpa membuat gepeng
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
 
-    // Jalankan saat awal dan saat layar berubah
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
@@ -462,7 +568,6 @@ function renderConfetti() {
     function draw() {
         const currentCanvas = document.getElementById("confetti");
         if (!currentCanvas) {
-            // Hapus event listener jika canvas sudah hilang (saat ganti soal)
             window.removeEventListener('resize', resizeCanvas);
             return;
         }
@@ -479,7 +584,6 @@ function renderConfetti() {
             p.y += p.speed;
             p.rotate += p.dr;
             
-            // Jika jatuh ke bawah, muncul lagi dari atas layar yang baru
             if (p.y > canvas.height) {
                 p.y = -20;
                 p.x = Math.random() * canvas.width;
