@@ -262,6 +262,7 @@ body {
   align-items: center;
   z-index: 999;
   animation: fadeIn 0.2s ease-in;
+  pointer-events: none;
 }
 
 .wrong-content {
@@ -291,20 +292,130 @@ body {
   to { opacity: 1; }
 }
 
-/* ========== RESPONSIVE DESIGN (Hanya merubah bagian decor) ========== */
+/* Latar Timer jadi Merah */
+#timer.timer-danger {
+  background: #ff5252 !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+  border: 2px solid #b71c1c;
+  box-shadow: 0 0 20px rgba(255, 82, 82, 0.8);
+  animation: pulseDanger 0.5s infinite alternate;
+  font-weight: 900;
+}
+
+/* Animasi Kedip Merah Tipis di Layar */
+.screen-danger-active {
+    animation: flashRed 1s infinite;
+}
+
+@keyframes flashRed {
+    0% { background-color: var(--bg); }
+    50% { background-color: rgba(255, 0, 0, 0.15); }
+    100% { background-color: var(--bg); }
+}
+
+/* Efek Gempa (Shake) */
+.shake {
+  animation: shakeEffect 0.4s ease-in-out;
+}
+
+@keyframes shakeEffect {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-15px); }
+  40% { transform: translateX(15px); }
+  60% { transform: translateX(-15px); }
+  80% { transform: translateX(15px); }
+  100% { transform: translateX(0); }
+}
+
+/* ==========================================
+   MOBILE TOUCH SUPPORT STYLES (TAMBAHAN BARU!)
+   ========================================== */
+
+/* Mencegah selection text saat drag di mobile */
+.sayur {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+
+/* Style untuk gambar yang sedang di-drag di mobile */
+.touch-dragging {
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+/* Highlight drop zone saat gambar di-hover (mobile) */
+.siluet.hover-target {
+  background-color: rgba(76, 175, 80, 0.3);
+  border: 3px dashed #4CAF50;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Animasi untuk feedback visual */
+.siluet {
+  transition: all 0.2s ease;
+}
+
+/* Pastikan gambar bisa di-tap di mobile */
+.sayur {
+  cursor: pointer;
+  position: relative;
+}
+
+/* Feedback saat touch */
+.sayur:active {
+  transform: scale(0.95);
+}
+
+/* Optimasi untuk perangkat touch */
+@media (hover: none) and (pointer: coarse) {
+  .sayur {
+    /* Perbesar sedikit area touch untuk lebih mudah di-tap */
+    padding: 5px;
+    margin: -5px;
+  }
+  
+  .siluet {
+    /* Perbesar drop zone untuk lebih mudah drop */
+    min-height: 100px;
+  }
+}
+
+/* Prevent default browser behaviors on touch */
+body {
+  overscroll-behavior: none;
+}
+
+/* Allow text selection for specific elements if needed */
+#title-text,
+#progress,
+#timer {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
 
 /* Desktop Large (1200px+) */
 @media (min-width: 1200px) {
-  .decor-right { width: 220px; } /* Samakan dengan notif */
-  .decor-left { width: 300px; }  /* Samakan dengan notif */
+  .decor-right { width: 220px; }
+  .decor-left { width: 300px; }
   #game { gap: 100px; }
   .siluet-container { gap: 25px; }
 }
 
 /* Desktop Medium & Laptop (992px - 1199px) */
 @media (max-width: 1199px) and (min-width: 992px) {
-  .decor-right { width: 220px; } /* Tetap konsisten */
-  .decor-left { width: 300px; }  /* Tetap konsisten */
+  .decor-right { width: 220px; }
+  .decor-left { width: 300px; }
   #title-text { font-size: 45px; }
   #game { gap: 60px; }
   .siluet { width: 220px; height: 220px; }
@@ -314,8 +425,8 @@ body {
 
 /* Tablet Landscape & Small Desktop (768px - 991px) */
 @media (max-width: 991px) and (min-width: 768px) {
-  .decor-right { width: 220px; } /* Tetap konsisten */
-  .decor-left { width: 300px; }  /* Tetap konsisten */
+  .decor-right { width: 220px; }
+  .decor-left { width: 300px; }
   .header { margin-top: 20px; gap: 12px; }
   #title-text { 
     font-size: 38px; 
@@ -364,7 +475,7 @@ body {
 
 /* Tablet Portrait (600px - 767px) */
 @media (max-width: 767px) and (min-width: 600px) {
-  .decor-right { width: 180px; } /* Mengecil dikit agar tidak numpuk di layar sempit */
+  .decor-right { width: 180px; }
   .decor-left { width: 240px; }
   .header { margin-top: 15px; gap: 10px; padding: 0 15px; }
   #title-text { 
@@ -423,7 +534,7 @@ body {
 
 /* Mobile Large (Dibawah 600px) */
 @media (max-width: 599px) {
-  .decor { display: none; } /* Disembunyikan di HP seperti kode kamu yang benar */
+  .decor { display: none; }
   
   .header { margin-top: 10px; gap: 8px; padding: 0 10px; }
   #title-text { 
@@ -477,44 +588,4 @@ body {
     font-size: 14px; 
     padding: 4px 6px; 
   }
-}
-/* Latar Timer jadi Merah */
-#timer.timer-danger {
-  background: #ff5252 !important;
-  color: #ffffff !important;           /* Teks Putih Solid */
-  text-shadow: none !important;        /* HAPUS bayangan putih yang bikin blur */
-  border: 2px solid #b71c1c;
-  box-shadow: 0 0 20px rgba(255, 82, 82, 0.8);
-  animation: pulseDanger 0.5s infinite alternate;
-  font-weight: 900;
-}
-
-/* Animasi Kedip Merah Tipis di Layar */
-.screen-danger-active {
-    animation: flashRed 1s infinite;
-}
-
-@keyframes flashRed {
-    0% { background-color: var(--bg); }
-    50% { background-color: rgba(255, 0, 0, 0.15); } /* Merah tipis */
-    100% { background-color: var(--bg); }
-}
-/* Efek Gempa (Shake) */
-.shake {
-  animation: shakeEffect 0.4s ease-in-out;
-}
-
-@keyframes shakeEffect {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-15px); }
-  40% { transform: translateX(15px); }
-  60% { transform: translateX(-15px); }
-  80% { transform: translateX(15px); }
-  100% { transform: translateX(0); }
-}
-
-/* Tambahan: Overlay salah agar lebih dramatis */
-.wrong-overlay {
-  /* Pastikan overlay tidak menutupi efek getar */
-  pointer-events: none; 
 }

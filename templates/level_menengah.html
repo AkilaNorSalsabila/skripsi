@@ -2,7 +2,9 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>Level Menengah – Cocokkan Siluet</title>
 
   <!-- Fonts -->
@@ -17,16 +19,13 @@
   <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
   <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
 
-  <!-- Tombol Back -->
- <!-- Back + Timer -->
-<!-- Back + Timer -->
-<div class="top-bar">
-  <a id="btn-back" href="/pilih_level" class="back-button">
-    <img src="{{ url_for('static', filename='img/back.png') }}" alt="Back">
-  </a>
-  <div id="timer">Waktu 00:00</div>
-</div>
-
+  <!-- Back + Timer -->
+  <div class="top-bar">
+    <a id="btn-back" href="/pilih_level" class="back-button">
+      <img src="{{ url_for('static', filename='img/back.png') }}" alt="Back">
+    </a>
+    <div id="timer">Waktu 00:00</div>
+  </div>
 
   <!-- Judul + tombol suara -->
   <header class="header">
@@ -44,13 +43,11 @@
 
   <!-- Progress -->
   <div id="progress" class="progress">Soal 1/5</div>
-  <!-- Progress + Timer -->
-
 
   <!-- Audio -->
   <audio id="sfx-correct" src="{{ url_for('static', filename='sounds/correct.mp3') }}"></audio>
   <audio id="sfx-wrong" src="{{ url_for('static', filename='sounds/wrong.mp3') }}"></audio>
-  <audio id="id-player"></audio>
+  <audio id="sayurAudio"></audio>
 
   <!-- JS -->
   <script src="{{ url_for('static', filename='js/menengah.js') }}"></script>

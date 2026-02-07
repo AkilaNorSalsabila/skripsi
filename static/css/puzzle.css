@@ -347,3 +347,69 @@ body {
         transform: scale(1.1) translateY(-10px); 
     }
 }
+/* ==========================================
+   MOBILE TOUCH SUPPORT FOR PUZZLE
+   ========================================== */
+
+/* Mencegah selection saat drag di mobile */
+#pieces-container img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+  cursor: grab;
+}
+
+#pieces-container img:active {
+  cursor: grabbing;
+}
+
+/* Style untuk piece yang sedang di-drag di mobile */
+.touch-dragging-puzzle {
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  filter: brightness(1.1);
+}
+
+/* Highlight slot saat piece di-hover (mobile) */
+.slot.slot-hover-target {
+  background-color: rgba(76, 175, 80, 0.3);
+  border: 3px dashed #4CAF50;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Animasi untuk slot */
+.slot {
+  transition: all 0.2s ease;
+}
+
+/* Prevent default browser behaviors on touch */
+/* Prevent default browser behaviors on touch */
+body {
+  overscroll-behavior: none;  /* ✅ BENAR: "overscroll" */
+}
+
+/* Optimasi untuk perangkat touch */
+@media (hover: none) and (pointer: coarse) {
+  #pieces-container img {
+    /* Area touch lebih besar untuk mobile */
+    padding: 2px;
+    margin: -2px;
+  }
+  
+  .slot {
+    /* Slot lebih besar sedikit di mobile */
+    border-width: 2px;
+  }
+}
+
+/* Efek saat piece dipencet di mobile */
+#pieces-container img:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}

@@ -30,6 +30,12 @@ let timeLeft = 20;
 let timeExpired = false;
 
 // ==================
+// TOUCH SUPPORT VARIABLES (TAMBAHAN BARU!)
+// ==================
+let draggedElement = null;
+let touchClone = null;
+
+// ==================
 // ELEMENT & AUDIO
 // ==================
 const siluetContainer = document.getElementById("siluet-container");
@@ -43,6 +49,7 @@ const sayurAudio = document.getElementById("sayurAudio") || new Audio();
 // Tambahan Audio Danger
 const sfxDanger = new Audio("/static/sounds/Timer.mp3");
 sfxDanger.loop = true;
+
 // ==================
 // TRANSLATION
 // ==================
@@ -87,11 +94,12 @@ const engMap = {
   "Kacang Panjang": "Yardlong Beans",
   "Terong": "Eggplant"
 };
+
 function normalizeName(raw) {
   return raw
     .toLowerCase()
-    .replace(/_full/g, "")        // ⬅️ FIX UTAMA
-    .replace(/full/g, "")         // ⬅️ JAGA-JAGA
+    .replace(/_full/g, "")
+    .replace(/full/g, "")
     .replace(/_/g, " ")
     .replace(/\d+/g, "")
     .replace(/\.(png|jpg|jpeg)/g, "")
@@ -106,7 +114,6 @@ const SangatMudah = [
   { id: "q4", questionImages: ["/static/img/seledri_siluet_m.png"], answers: ["Seledri"], options: ["Seledri", "Tomat"] },
   { id: "q5",  questionImages: ["/static/img/terong_siluet_m.png"], answers: ["Terong"], options: ["Terong", "Selada"] },
   { id: "q6", questionImages: ["/static/img/paprika_siluet_m.png"], answers: ["Paprika"], options: ["Paprika", "Kangkung"] },
-
 ];
 
 const Mudah = [
@@ -127,7 +134,6 @@ const Menengah = [
       "/static/img_full/Labu_full.png",
       "/static/img_full/Terong2.png" ]
   },
-
   { id: "q14",  questionImages: ["/static/img_full/Oyong_s.png"],
     answer: "/static/img_full/Oyong_full.png",
     options: [
@@ -222,7 +228,6 @@ const MenengahKeSulit = [
 ]
 
 const sulit = [
-
   { id: "q25",  questionImages: ["/static/img_full/Daun_Pakis_6.png"],
     answer: "/static/img_full/Daun_Pakis_full2.png",
     options: [
@@ -271,25 +276,11 @@ const sulit = [
       "/static/img_full/Bawang_bombay_4.png",
       "/static/img_full/Tomat5.png" ]
   },
-  
-  
-
-
 ]
 
-
-
-
-
-
-
-
 // ==================
-// ==========================
-// LEVEL FLOW RANDOM SYSTEM
-// ==========================
-
-// fungsi shuffle
+// SHUFFLE FUNCTION
+// ==================
 function shuffle(arr){
   let a = [...arr];
   for(let i = a.length - 1; i > 0; i--){
@@ -298,6 +289,12 @@ function shuffle(arr){
   }
   return a;
 }
+
+// ==========================
+// LEVEL FLOW RANDOM SYSTEM (FINAL)
+// ==========================
+// 🔥 FORCE RANDOM SETIAP MASUK GAME
+
 
 // ==========================
 // LEVEL FLOW RANDOM SYSTEM (FINAL)
@@ -332,6 +329,7 @@ if (!allQuestions) {
 }
 
 const totalQuestions = allQuestions.length;
+
 // ==================
 // TIMER LOGIC (DANGER FEATURE)
 // ==================
@@ -369,7 +367,6 @@ function renderTimer() {
   if (!el) return;
   el.textContent = `${translations[language].time} 00:${String(timeLeft).padStart(2, "0")}`;
 
-  // Cek 5 Detik Terakhir
   if (timeLeft <= 5 && timeLeft > 0) {
     el.classList.add("timer-danger");
     document.body.classList.add("screen-danger-active");
@@ -385,7 +382,6 @@ function onTimeUp() {
   localStorage.setItem("menengahScore", score);
   resetDangerEffects();
   
-  // Efek Gempa saat Waktu Habis
   const gameEl = document.getElementById("game");
   if (gameEl) {
     gameEl.classList.add("shake");
@@ -519,35 +515,27 @@ function loadQuestion() {
           setTimeout(() => { window.location.href = "/menengah_notif"; }, 1200);
         }
       } else {
-        // ❌ LOGIKA JAWABAN SALAH (EFEK GEMPA)
         if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
         
-        // Tambahkan class shake ke kontainer game
         const gameEl = document.getElementById("game");
         if (gameEl) {
-          gameEl.classList.remove("shake"); // Reset jika sebelumnya sudah ada
-          void gameEl.offsetWidth;          // Trigger reflow agar animasi bisa jalan ulang
+          gameEl.classList.remove("shake");
+          void gameEl.offsetWidth;
           gameEl.classList.add("shake");
-          
-          // Hapus class setelah animasi selesai (0.4 detik)
-          setTimeout(() => {
-            gameEl.classList.remove("shake");
-          }, 400);
+          setTimeout(() => { gameEl.classList.remove("shake"); }, 400);
         }
 
         showWrongOverlay("✖", language === "id" ? "Salah!" : "Wrong!");
         stopTimer();
-        
-        // Beri jeda sedikit lebih lama agar getarannya terasa sebelum pindah soal
-        setTimeout(() => { 
-          hideWrongOverlay(); 
-          nextQuestion(); 
-        }, 1000);
+        setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1000);
       }
     });
     siluetContainer.appendChild(dropZone);
   });
 
+  // ==================
+  // CREATE OPTIONS WITH MOBILE SUPPORT
+  // ==================
   let optionsShuffled = shuffle(soal.options);
   optionsShuffled.forEach(opt => {
     let img = document.createElement("img");
@@ -555,7 +543,141 @@ function loadQuestion() {
     img.dataset.name = opt;
     img.classList.add("sayur");
     img.draggable = true;
-    img.addEventListener("dragstart", e => { e.dataTransfer.setData("text", img.dataset.name); });
+
+    // DESKTOP DRAG START
+    img.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text", img.dataset.name);
+    });
+
+    // ==================
+    // MOBILE TOUCH START
+    // ==================
+    img.addEventListener("touchstart", (e) => {
+      if (timeExpired) return;
+      e.preventDefault();
+      
+      draggedElement = img;
+      
+      touchClone = img.cloneNode(true);
+      touchClone.classList.add("touch-dragging");
+      touchClone.style.position = "fixed";
+      touchClone.style.pointerEvents = "none";
+      touchClone.style.zIndex = "9999";
+      touchClone.style.opacity = "0.8";
+      touchClone.style.width = img.offsetWidth + "px";
+      touchClone.style.height = img.offsetHeight + "px";
+      
+      const touch = e.touches[0];
+      touchClone.style.left = (touch.clientX - img.offsetWidth / 2) + "px";
+      touchClone.style.top = (touch.clientY - img.offsetHeight / 2) + "px";
+      
+      document.body.appendChild(touchClone);
+      img.style.opacity = "0.3";
+    }, { passive: false });
+
+    // ==================
+    // MOBILE TOUCH MOVE
+    // ==================
+    img.addEventListener("touchmove", (e) => {
+      if (!draggedElement || timeExpired) return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      if (touchClone) {
+        touchClone.style.left = (touch.clientX - touchClone.offsetWidth / 2) + "px";
+        touchClone.style.top = (touch.clientY - touchClone.offsetHeight / 2) + "px";
+      }
+      
+      if (touchClone) touchClone.style.display = 'none';
+      const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (touchClone) touchClone.style.display = '';
+      
+      const dropZone = elementBelow?.closest('.siluet');
+      
+      document.querySelectorAll('.siluet').forEach(zone => {
+        zone.classList.remove('hover-target');
+      });
+      
+      if (dropZone) {
+        dropZone.classList.add('hover-target');
+      }
+    }, { passive: false });
+
+    // ==================
+    // MOBILE TOUCH END
+    // ==================
+    img.addEventListener("touchend", (e) => {
+      if (!draggedElement || timeExpired) return;
+      e.preventDefault();
+      
+      const touch = e.changedTouches[0];
+      if (touchClone) touchClone.style.display = 'none';
+      const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (touchClone) touchClone.style.display = '';
+      
+      const dropZone = elementBelow?.closest('.siluet');
+      
+      if (touchClone) {
+        touchClone.remove();
+        touchClone = null;
+      }
+      img.style.opacity = "1";
+      
+      document.querySelectorAll('.siluet').forEach(zone => {
+        zone.classList.remove('hover-target');
+      });
+      
+      if (dropZone) {
+        const dragged = draggedElement.dataset.name;
+        
+        if (dragged === dropZone.dataset.answer) {
+          score += 20;
+          localStorage.setItem("menengahScore", score);
+          if (sfxCorrect) { sfxCorrect.currentTime = 0; sfxCorrect.play(); }
+
+          localStorage.setItem("lastAnswer", dragged);
+          localStorage.setItem("lastIsImage", isImageMode ? "1" : "0");
+          let finalName = dragged.includes("/") ? normalizeName(dragged.split("/").pop()) : dragged;
+          localStorage.setItem("lastAnswerName", finalName);
+
+          dropZone.innerHTML = "";
+          const droppedImg = document.createElement("img");
+          droppedImg.src = isImageMode ? dragged : `/static/img/${dragged.toLowerCase().replace(/ /g,"_")}_m.png`;
+          droppedImg.classList.add("sayur-dropped");
+          droppedImg.draggable = false;
+          dropZone.appendChild(droppedImg);
+          dropZone.classList.add("correct");
+
+          const usedOption = pilihanContainer.querySelector(`img[data-name="${dragged}"]`);
+          if (usedOption) usedOption.remove();
+
+          const targetCount = isImageMode ? 1 : soal.answers.length;
+          if (siluetContainer.querySelectorAll(".correct").length === targetCount) {
+            stopTimer();
+            currentQuestion++;
+            localStorage.setItem("menengahCurrent", currentQuestion);
+            setTimeout(() => { window.location.href = "/menengah_notif"; }, 1200);
+          }
+        } else {
+          if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
+          
+          const gameEl = document.getElementById("game");
+          if (gameEl) {
+            gameEl.classList.remove("shake");
+            void gameEl.offsetWidth;
+            gameEl.classList.add("shake");
+            setTimeout(() => { gameEl.classList.remove("shake"); }, 400);
+          }
+
+          showWrongOverlay("✖", language === "id" ? "Salah!" : "Wrong!");
+          stopTimer();
+          setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1000);
+        }
+      }
+      
+      draggedElement = null;
+    }, { passive: false });
+
     pilihanContainer.appendChild(img);
   });
 
@@ -582,15 +704,11 @@ function finishGame() {
 window.onload = () => { loadQuestion(); };
 
 window.addEventListener('pageshow', (event) => {
-    // Cek apakah halaman dimuat dari cache (tombol back/forward)
     if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        // Hapus semua jejak progres
         localStorage.removeItem("menengahQuestions");
         localStorage.removeItem("menengahCurrent");
         localStorage.removeItem("menengahScore");
         localStorage.removeItem("menengahStarted");
-        
-        // PAKSA reload halaman agar script mulai dari awal (soal 1)
         window.location.reload();
     }
 });
