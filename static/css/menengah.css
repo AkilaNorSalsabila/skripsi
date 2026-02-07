@@ -536,7 +536,7 @@ body {
 @media (max-width: 599px) {
   .decor { 
     display: block; 
-    opacity: 0.5; /* Agak transparan supaya tidak mengganggu pandangan */
+    opacity: 1 !important; /* Agak transparan supaya tidak mengganggu pandangan */
   }
   .decor-right { width: 100px; } /* Ukuran diperkecil */
   .decor-left  { width: 130px; } /* Ukuran diperkecil */

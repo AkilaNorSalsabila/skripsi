@@ -299,60 +299,56 @@ body {
 }
 
 /* MODE SIDEBAR - HP Standard (360px - 479px) */
-@media (max-width: 479px) and (min-width: 360px) {
+/* HP Standard (360px - 479px) */
+@media (max-width: 479px) {
   body {
-    overflow: hidden;
+    overflow: hidden; 
   }
 
   .content h1 {
     font-size: 24px;
-    margin-bottom: 15px;
-    margin-top: 10px;
-    padding: 0 5px;
-    line-height: 1.1;
+    margin: 20px 0;
   }
 
   .menu-buttons {
-    gap: 8px;
-    padding: 0 8px;
-    flex-wrap: nowrap;
+    flex-direction: column; /* Susun vertikal agar tidak gepeng */
+    gap: 15px;
+    padding: 0 20px;
+    align-items: center;
   }
 
   .menu-card {
-    width: calc((100vw - 32px) / 3);
-    max-width: 130px;
-    min-width: 100px;
-    height: 32vh;
-    min-height: 180px;
-    padding: 8px;
-    border-radius: 12px;
+    width: 90%;
+    height: 100px; /* Kunci tinggi yang sama untuk semua kartu */
+    flex-direction: row; /* Gambar sampingan dengan teks */
+    align-items: center; /* Teks dan gambar sejajar secara vertikal di tengah */
+    justify-content: flex-start;
+    padding: 0 20px;
+    gap: 15px;
+  }
+
+  /* Reset semua margin gambar agar seragam */
+  .menu-card img, 
+  .menu-card.permainan img { 
+    width: 60px !important; 
+    height: 60px !important;
+    margin: 0 !important; /* Hapus margin yang bikin tidak sejajar */
+    order: 2; /* Gambar di kanan */
   }
 
   .menu-card span {
-    font-size: 13px;
-    line-height: 1.1;
-    margin-bottom: 4px;
+    font-size: 18px;
+    text-align: left;
+    margin: 0;
+    order: 1; /* Teks di kiri */
+    flex: 1;
+    line-height: 1.2;
   }
 
-  .menu-card img {
-    width: 70%;
-    margin-top: 0;
-  }
-
-  .menu-card.permainan img {
-    width: 80%;
-    margin-top: 5px;
-  }
-
-  .menu-item p {
-    font-size: 15px;
-    margin-top: 5px;
-  }
-
-  .decor {
-    display: none;
-  }
+  /* Hilangkan teks p di luar agar tidak double */
+  .menu-item p { display: none; }
 }
+
 
 /* MODE SIDEBAR - HP Sangat Kecil (320px - 359px) */
 @media (max-width: 359px) and (min-width: 320px) {

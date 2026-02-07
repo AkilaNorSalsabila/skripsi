@@ -166,5 +166,10 @@ body {
     width: 32px;
     height: 32px;
   }
-  .decor { display: none; } /* Hilangkan dekor di HP agar bersih */
+  .decor { 
+    display: block !important; /* Munculkan kembali */
+    opacity: 1;                /* Pastikan tidak pudar */
+  }
+  .decor-right { width: 100px; }  /* Kecilkan ukurannya agar tidak menumpuk */
+  .decor-left  { width: 130px; } /* Kecilkan ukurannya agar tidak menumpuk */
 }
