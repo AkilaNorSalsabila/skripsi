@@ -152,7 +152,8 @@ function renderTimer() {
 function onTimeUp() {
     const soundWrong = document.getElementById("sound-wrong");
     
-    totalScore = Math.max(0, totalScore - 10);
+   totalScore = Math.max(0, totalScore - 20);
+
     localStorage.setItem("puzzleScore", totalScore);
 
     const board = document.getElementById("board");

@@ -243,20 +243,26 @@ body {
 
 @media (max-width: 768px) {
   #game-container {
-    flex-direction: row; 
-    flex-wrap: nowrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* 🔥 INI KUNCI */
+    justify-content: center;
     gap: 15px;
-    margin-top: 20px;
   }
-
   #board {
-    transform: scale(0.7);
-    transform-origin: center;
-    flex-shrink: 0;
-  }
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+}
 
-  #pieces-container img {
-    width: 75px;
+
+  #pieces-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: max-content;      /* 🔥 KUNCI UTAMA */
+    justify-content: center;
   }
 
   #game-title { font-size: 28px; }
@@ -271,8 +277,8 @@ body {
     gap: 10px;
   }
   
-  #board { transform: scale(0.55); }
-  #pieces-container img { width: 55px; }
+  #board { transform: scale(0.9); }
+  #pieces-container img { width: 110px; }
   #game-title { font-size: 20px; }
   
   #progress {
