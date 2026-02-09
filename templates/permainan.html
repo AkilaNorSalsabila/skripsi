@@ -78,7 +78,7 @@
       }
     };
 
-    sessionStorage.setItem("hasStarted", "true");
+  
 
     function stopAllAudio() {
       instruction.pause();
@@ -94,15 +94,28 @@
     }
 
     // ===== MUSIK BACKGROUND =====
-    // ===== MUSIK BACKGROUND =====
+ 
+    let audioUnlocked = false; // Flag biar listener cuma jalan sekali
+
     if (sessionStorage.getItem("hasStarted") === "true") {
       bgMusic.volume = 0.03;
       bgMusic.play().catch(()=>{});
 
       // ===== LOGIKA ANIMASI SAAT INSTRUKSI BERJALAN =====
       instruction.play().catch(()=>{});
-    }
 
+      // 🔓 Fallback: Kalau audio ga bunyi otomatis, unlock saat klik pertama
+      function unlockAudio() {
+        if (!audioUnlocked) {
+          bgMusic.play().catch(()=>{});
+          instruction.play().catch(()=>{});
+          audioUnlocked = true;
+          window.removeEventListener('click', unlockAudio);
+        }
+      }
+      
+      window.addEventListener('click', unlockAudio, { once: true });
+    }
     instruction.onplay = () => bgMusic.volume = 0.015;
     
     instruction.ontimeupdate = () => {
@@ -130,7 +143,10 @@
     };
 
     // ===== KLIK GAME =====
+    // ===== KLIK GAME =====
     function goGame(type) {
+      audioUnlocked = true; // Matikan fallback listener
+      
       stopAllAudio(); 
       bgMusic.volume = 0.015;
 

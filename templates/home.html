@@ -70,27 +70,35 @@
     }
 
     function goMenu(type) {
-      stopAllVoices();
-      bgMusic.volume = 0.02;
-      const activeBtn = document.querySelector(`.menu-card.${type}`);
-      if (activeBtn) activeBtn.classList.add('btn-pulse');
+  stopAllVoices();
+  bgMusic.volume = 0.02;
+  const activeBtn = document.querySelector(`.menu-card.${type}`);
+  if (activeBtn) activeBtn.classList.add('btn-pulse');
 
-      const item = voiceMap[type];
-      const targetUrl = item.url;
-      const navigate = () => { window.location.href = targetUrl; };
-      const safetyTimer = setTimeout(navigate, 1500);
+  const item = voiceMap[type];
+  const targetUrl = item.url;
+  
+  // 🔓 UNLOCK: Play semua audio yang bakal dipake di halaman selanjutnya
+  if (type === 'permainan') {
+    // Preload audio biar unlock di halaman berikutnya
+    const tempAudio = new Audio("{{ url_for('static', filename='sounds/instruction_permainan.mp3') }}");
+    tempAudio.volume = 0;
+    tempAudio.play().catch(()=>{});
+  }
+  
+  const navigate = () => { window.location.href = targetUrl; };
+  const safetyTimer = setTimeout(navigate, 1500);
 
-      item.audio.play().then(() => {
-        item.audio.onended = () => {
-          clearTimeout(safetyTimer);
-          navigate();
-        };
-      }).catch(() => {
-        clearTimeout(safetyTimer);
-        navigate();
-      });
-    }
-
+  item.audio.play().then(() => {
+    item.audio.onended = () => {
+      clearTimeout(safetyTimer);
+      navigate();
+    };
+  }).catch(() => {
+    clearTimeout(safetyTimer);
+    navigate();
+  });
+}
     document.getElementById('start-btn').addEventListener('click', () => {
       sessionStorage.setItem("hasStarted", "true");
       overlay.style.display = "none";
