@@ -50,7 +50,7 @@ body {
   justify-content: center;
   align-items: flex-end;
   gap: 13px;
-  margin-top: 40px;
+  margin-top: -20px;
 }
 
 /* --- ANIMASI ZOOM --- */
@@ -236,13 +236,13 @@ body {
   }
 
   .content {
-    padding-bottom: 60px;
-    padding-top: 60px;
+    padding-bottom: 30px;
+    padding-top: 30px;
   }
 
   .content h1 {
     font-size: 32px;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
   }
 
   /* ✅ PAKSA VERTIKAL */
@@ -255,7 +255,7 @@ body {
   
 
   #text-easy, #text-medium, #text-hard {
-    margin-top: 0 !important;
+    margin-top: 90 !important;
   }
 
   .back-button {
@@ -282,6 +282,9 @@ body {
   }
 
   .decor-right {
+    position: fixed;   /* ⬅️ INI KUNCI */
+    bottom: -20px;     /* ⬅️ TURUNKAN (ubah -10 / -20 / -30) */
+    right: 0;
     width: 200px;
   }
 }
@@ -385,76 +388,9 @@ body {
     width: 110px;
   }
 }
-/* ================== FINAL FIX HP ONLY (AMAN DESKTOP) ================== */
-@media (max-width: 768px) {
 
-  /* ===== 1 HALAMAN TANPA SCROLL ===== */
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
 
-  body {
-    overflow-x: hidden;
-  }
 
-  .content {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;   /* ⬅️ TENGAHIN ULANG */
-    padding-top: 10px;         /* ⬅️ KECILKAN SPACE ATAS */
-    padding-bottom: 40px;
-  }
-
-  /* ===== TOMBOL MUAT 3 ===== */
-  .level-buttons {
-    gap: 5px !important;
-    margin-top: 0 !important;
-  }
-
-  /* ===== UKURAN TOMBOL PAS ===== */
-  #img-easy,
-  #img-medium,
-  #img-hard {
-    width: 200px;
-  }
-
-  /* ===== TEKS NYATU KE KOTAK KUNING ===== */
-  .level-card {
-    position: relative;
-  }
-
-  .level-text {
-    position: absolute;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
-    font-size: 18px;
-    text-align: center;
-    white-space: nowrap; 
-  }
-
-  #text-easy,
-  #text-medium,
-  #text-hard {
-    margin-top: 0;
-  }
-
-  /* ===== DECOR BAWAH RAPI ===== */
-  .decor-right {
-    bottom: 0;
-    right: -10px;
-    width: 170px;
-  }
-
-  .decor-left {
-    width: 120px;
-  }
-}
-
-/* ===== HP KECIL ===== */
 @media (max-width: 450px) {
 
   #img-easy,
