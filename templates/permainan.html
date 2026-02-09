@@ -94,11 +94,14 @@
     }
 
     // ===== MUSIK BACKGROUND =====
-    bgMusic.volume = 0.03;
-    bgMusic.play().catch(()=>{});
+    // ===== MUSIK BACKGROUND =====
+    if (sessionStorage.getItem("hasStarted") === "true") {
+      bgMusic.volume = 0.03;
+      bgMusic.play().catch(()=>{});
 
-    // ===== LOGIKA ANIMASI SAAT INSTRUKSI BERJALAN =====
-    instruction.play().catch(()=>{});
+      // ===== LOGIKA ANIMASI SAAT INSTRUKSI BERJALAN =====
+      instruction.play().catch(()=>{});
+    }
 
     instruction.onplay = () => bgMusic.volume = 0.015;
     
