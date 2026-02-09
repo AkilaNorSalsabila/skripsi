@@ -255,7 +255,7 @@ body {
   
 
   #text-easy, #text-medium, #text-hard {
-    margin-top: 90 !important;
+    margin-top: -57px !important;
   }
 
   .back-button {
@@ -302,14 +302,14 @@ body {
   }
 
   .level-card {
-    width: 95% !important;
-    max-width: 320px !important;
+    width: 100% !important;
+    max-width: 340px !important;
     padding: 12px !important;
   }
 
   #img-easy, #img-medium, #img-hard {
-    width: 85px !important;
-    height: 85px !important;
+    width: 200px !important;
+    height: auto !important;
     margin-right: 15px !important;
   }
 
