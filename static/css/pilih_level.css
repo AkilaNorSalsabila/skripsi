@@ -339,73 +339,30 @@ body {
     width: 150px;
   }
 }
-
-/* ===== MOBILE SANGAT KECIL (max 450px) ===== */
 @media (max-width: 450px) {
-  .content h1 {
-    font-size: 24px;
-    margin-bottom: 18px;
-  }
 
   .level-card {
-    padding: 10px !important;
+    width: 100% !important;
+    max-width: 340px !important;
+    padding: 16px !important;
   }
-
-  #img-easy, #img-medium, #img-hard {
-    width: 75px !important;
-    height: 75px !important;
-    margin-right: 12px !important;
-  }
-
-  .level-text {
-    font-size: 16px !important;
-  }
-
-  .back-button {
-    left: 10px;
-    top: 10px;
-  }
-
-  .back-button img {
-    width: 30px;
-  }
-
-  .lang-select {
-    top: 10px;
-    right: 10px;
-  }
-
-  .lang-select .selected {
-    padding: 3px 6px;
-    font-size: 11px;
-  }
-
-  .decor-left {
-    width: 70px;
-  }
-
-  .decor-right {
-    width: 110px;
-  }
-}
-
-
-
-@media (max-width: 450px) {
 
   #img-easy,
   #img-medium,
   #img-hard {
-    width: 190px;
+    width: 220px !important;
+    height: auto !important;
   }
 
   .level-text {
-    font-size: 16px;
-    bottom: 28px;
-    white-space: nowrap; 
+    font-size: 18px !important;
+    margin-top: -60px !important;
   }
 
   .decor-right {
     width: 140px;
   }
 }
+
+
+
