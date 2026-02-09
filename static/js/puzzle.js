@@ -309,6 +309,31 @@ function shufflePieces() {
     }
     arr.forEach(p => container.appendChild(p));
 }
+// ==================
+// HELPER: MAGNET SLOT (ANTI NYANDET)
+// ==================
+function getNearestSlot(x, y, slots, tolerance = 50) {
+    let nearest = null;
+    let minDist = Infinity;
+
+    slots.forEach(slot => {
+        if (slot.dataset.filled === "true") return;
+
+        const rect = slot.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+
+        const dist = Math.hypot(cx - x, cy - y);
+
+        if (dist < minDist && dist <= tolerance) {
+            minDist = dist;
+            nearest = slot;
+        }
+    });
+
+    return nearest;
+}
+
 
 // ==================
 // DRAG & DROP WITH MOBILE SUPPORT
@@ -363,26 +388,24 @@ function initDragDrop() {
         // ==================
         piece.addEventListener("touchmove", (e) => {
             if (!draggedPiece || timeExpired) return;
-            e.preventDefault();
-            
+
             const touch = e.touches[0];
+
             if (touchClone) {
                 touchClone.style.left = (touch.clientX - touchStartX) + "px";
                 touchClone.style.top = (touch.clientY - touchStartY) + "px";
             }
-            
-            if (touchClone) touchClone.style.display = 'none';
+
+            if (touchClone) touchClone.style.display = "none";
             const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (touchClone) touchClone.style.display = '';
-            
-            const targetSlot = elementBelow?.closest('.slot');
-            
-            slots.forEach(slot => {
-                slot.classList.remove('slot-hover-target');
-            });
-            
+            if (touchClone) touchClone.style.display = "";
+
+            const targetSlot = elementBelow?.closest(".slot");
+
+            slots.forEach(slot => slot.classList.remove("slot-hover-target"));
+
             if (targetSlot && targetSlot.dataset.filled !== "true") {
-                targetSlot.classList.add('slot-hover-target');
+                targetSlot.classList.add("slot-hover-target");
             }
         }, { passive: false });
 
@@ -391,26 +414,26 @@ function initDragDrop() {
         // ==================
         piece.addEventListener("touchend", (e) => {
             if (!draggedPiece || timeExpired) return;
-            e.preventDefault();
-            
+
             const touch = e.changedTouches[0];
-            if (touchClone) touchClone.style.display = 'none';
-            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (touchClone) touchClone.style.display = '';
-            
-            const targetSlot = elementBelow?.closest('.slot');
-            
+
+            // 🔥 MAGNET SLOT
+            const targetSlot = getNearestSlot(
+                touch.clientX,
+                touch.clientY,
+                slots,
+                50 // toleransi sentuhan jari anak
+            );
+
             if (touchClone) {
                 touchClone.remove();
                 touchClone = null;
             }
+
             piece.style.opacity = "1";
-            
-            slots.forEach(slot => {
-                slot.classList.remove('slot-hover-target');
-            });
-            
-            if (targetSlot && targetSlot.dataset.filled !== "true") {
+            slots.forEach(slot => slot.classList.remove("slot-hover-target"));
+
+            if (targetSlot) {
                 const pieceId = draggedPiece.dataset.id;
                 const correctId = targetSlot.dataset.piece;
 
@@ -431,15 +454,14 @@ function initDragDrop() {
                     placedCount++;
                     if (placedCount === slots.length) puzzleSolved();
                 } else {
-                    if (soundWrong) { 
-                        soundWrong.currentTime = 0; 
-                        soundWrong.play(); 
-                    }
+                    soundWrong.currentTime = 0;
+                    soundWrong.play();
                 }
             }
-            
+
             draggedPiece = null;
         }, { passive: false });
+
     });
 
     // ==================
