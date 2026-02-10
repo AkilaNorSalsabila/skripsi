@@ -15,7 +15,7 @@ let timeExpired = false;
 localStorage.setItem("lastLevel", "sulit");
 
 // ==================
-// TOUCH SUPPORT VARIABLES (TAMBAHAN BARU!)
+// TOUCH SUPPORT VARIABLES
 // ==================
 let touchClone = null;
 let touchStartX = 0;
@@ -152,8 +152,7 @@ function renderTimer() {
 function onTimeUp() {
     const soundWrong = document.getElementById("sound-wrong");
     
-   totalScore = Math.max(0, totalScore - 20);
-
+    totalScore = Math.max(0, totalScore - 20);
     localStorage.setItem("puzzleScore", totalScore);
 
     const board = document.getElementById("board");
@@ -216,11 +215,7 @@ function loadQuestion(no) {
     const slotsContainer = document.getElementById("slots");
     const piecesContainer = document.getElementById("pieces-container");
     const board = document.getElementById("board");
-    const container = document.getElementById("game-container");
 
-    container.style.justifyContent = "center";
-    container.style.alignItems = "flex-start";
-    container.style.gap = "20px";
     piecesContainer.style.display = "grid";
 
     board.style.width = soal.width + "px";
@@ -310,8 +305,9 @@ function shufflePieces() {
     }
     arr.forEach(p => container.appendChild(p));
 }
+
 // ==================
-// HELPER: MAGNET SLOT (ANTI NYANDET)
+// HELPER: MAGNET SLOT
 // ==================
 function getNearestSlot(x, y, slots, tolerance = 50) {
     let nearest = null;
@@ -335,7 +331,6 @@ function getNearestSlot(x, y, slots, tolerance = 50) {
     return nearest;
 }
 
-
 // ==================
 // DRAG & DROP WITH MOBILE SUPPORT
 // ==================
@@ -346,18 +341,14 @@ function initDragDrop() {
     const soundWrong = document.getElementById("sound-wrong");
 
     pieces.forEach(piece => {
-        // ==================
         // DESKTOP DRAG START
-        // ==================
         piece.addEventListener("dragstart", e => {
             if (timeExpired) { e.preventDefault(); return; }
             draggedPiece = e.target;
             e.dataTransfer.setData("text", draggedPiece.dataset.id);
         });
 
-        // ==================
         // MOBILE TOUCH START
-        // ==================
         piece.addEventListener("touchstart", (e) => {
             if (timeExpired) return;
             e.preventDefault();
@@ -384,9 +375,7 @@ function initDragDrop() {
             piece.style.opacity = "0.3";
         }, { passive: false });
 
-        // ==================
         // MOBILE TOUCH MOVE
-        // ==================
         piece.addEventListener("touchmove", (e) => {
             if (!draggedPiece || timeExpired) return;
 
@@ -410,20 +399,17 @@ function initDragDrop() {
             }
         }, { passive: false });
 
-        // ==================
         // MOBILE TOUCH END
-        // ==================
         piece.addEventListener("touchend", (e) => {
             if (!draggedPiece || timeExpired) return;
 
             const touch = e.changedTouches[0];
 
-            // 🔥 MAGNET SLOT
             const targetSlot = getNearestSlot(
                 touch.clientX,
                 touch.clientY,
                 slots,
-                50 // toleransi sentuhan jari anak
+                50
             );
 
             if (touchClone) {
@@ -465,9 +451,7 @@ function initDragDrop() {
 
     });
 
-    // ==================
     // DESKTOP DROP ZONES
-    // ==================
     slots.forEach(slot => {
         slot.addEventListener("dragover", e => e.preventDefault());
         slot.addEventListener("drop", e => {
