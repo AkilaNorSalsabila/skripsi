@@ -219,7 +219,7 @@ function loadQuestion(no) {
     const container = document.getElementById("game-container");
 
     container.style.justifyContent = "center";
-    container.style.alignItems = "flex-start";
+    container.style.alignItems = "center";
     container.style.gap = "20px";
     piecesContainer.style.display = "grid";
 
