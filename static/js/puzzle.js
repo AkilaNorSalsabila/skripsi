@@ -532,30 +532,64 @@ function initDragDrop() {
 }
 
 // --- PUZZLE SOLVED ---
+// --- PUZZLE SOLVED ---
 function puzzleSolved() {
-    if (questionSolved) return; // 🔒 pengaman
+    if (questionSolved) return; 
     questionSolved = true;
     stopTimer(); 
     
-    totalScore += scorePerSolved; // 🔥 INI YANG HILANG
+    totalScore += scorePerSolved;
     localStorage.setItem("puzzleScore", totalScore);
 
-    document.getElementById("pieces-container").style.display = "none";
     const message = document.getElementById('message');
+    const soal = selectedSoal[currentQuestion - 1]; // Ambil data soal sekarang
+    const lang = localStorage.getItem("gameLang") || "id";
+
+    // 1. Tampilkan Pesan & Confetti
+    message.textContent = (lang === "en") ? "🎉 Puzzle Completed! 🎉" : "🎉 Puzzle Selesai! 🎉";
     message.classList.remove('hidden');
-    
+    document.getElementById("pieces-container").style.display = "none";
     renderConfetti();
-    
+
+    // 2. Logika Audio (Hore + Nama Sayur)
+    const soundCongrats = document.getElementById("sound-congrats");
+    const soundVegetable = document.getElementById("sound-vegetable");
+
+    soundVegetable.pause();
+    soundCongrats.currentTime = 0;
+    soundCongrats.play(); // Putar suara "Hore/Tada"
+
+    // Tunggu suara "Hore" selesai, baru sebut nama sayur
+    soundCongrats.onended = () => {
+        if (lang === "en") {
+            // Jalur Audio English
+            soundVegetable.src = "/static/sounds/Success Puzzle.mp3";
+            soundVegetable.play().then(() => {
+                soundVegetable.onended = () => {
+                    const fileName = soal.name_id; 
+                    soundVegetable.src = "/static/sounds/En/" + encodeURIComponent(fileName) + ".mp3";
+                    soundVegetable.play().catch(e => console.error("Audio EN missing", e));
+                    soundVegetable.onended = null;
+                };
+            });
+        } else {
+            // Jalur Audio Indonesia
+            const formattedName = soal.name_id; 
+            soundVegetable.src = `/static/sounds/id/notif_puzzle/${formattedName}.m4a`;
+            soundVegetable.play().catch(e => console.error("Audio ID missing", e));
+            soundVegetable.onended = null;
+        }
+    };
+
+    // 3. Pindah ke soal berikutnya setelah 6-8 detik (agar audio tidak terpotong)
     setTimeout(() => {
         message.classList.add('hidden');
-
         const canvas = document.getElementById("confetti");
         if (canvas) canvas.remove(); 
-        
         nextQuestion();
-    }, 4000);
-    console.log("SCORE SOLVED:", totalScore);
+    }, 7000); 
 
+    console.log("SCORE SOLVED:", totalScore);
 }
 
 // --- CONFETTI HELPER ---
