@@ -242,34 +242,35 @@ body {
 }
 
 @media (max-width: 768px) {
-   body {
+  body {
     overflow-y: auto !important;
     overflow-x: hidden !important;
   }
 
+  /* ✅ PAKSA VERTIKAL kayak pilih_level.css */
   #game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;     /* 🔥 INI KUNCI */
-    justify-content: flex-start;
-    gap: 15px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 15px !important;
   }
-  #board {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: center;
-}
 
+  #board {
+    position: relative;
+    margin: 0 auto; /* Center horizontal */
+  }
 
   #pieces-container {
     margin-top: 20px;
     margin-bottom: 30px;
+    width: 100%; /* Paksa full width */
+    max-width: 500px; /* Batas lebar */
   }
 
-
-  #game-title { font-size: 28px; }
+  #game-title { 
+    font-size: 28px; 
+  }
   
   .decor {
     position: absolute;
@@ -283,7 +284,6 @@ body {
     bottom: -30px;
   }
 }
-
 @media (max-width: 480px) {
   #title-wrapper { 
     padding-top: 70px; 
