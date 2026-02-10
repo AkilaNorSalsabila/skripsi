@@ -69,13 +69,24 @@
 
         // ================== LOGIKA SCORE ==================
         function getFinalScore() {
-            let finalScore = parseInt(localStorage.getItem("finalScore"), 10);
-            if (isNaN(finalScore)) {
+            // Mengambil skor utama dari 'puzzleScore' (sinkron dengan puzzle.js)
+            let currentScore = localStorage.getItem("puzzleScore");
+            let finalScore = 0;
+
+            if (currentScore !== null) {
+                finalScore = parseInt(currentScore, 10);
+            } else {
+                // Fallback jika puzzleScore kosong, hitung dari correctCount
                 const correctCount = parseInt(localStorage.getItem("correctCount") || "0", 10);
                 const totalQuestions = parseInt(localStorage.getItem("totalQuestions") || "5", 10);
                 finalScore = Math.round((correctCount / totalQuestions) * 100);
-                localStorage.setItem("finalScore", finalScore);
             }
+
+            // Batasi skor minimal 0 dan maksimal 100
+            finalScore = Math.max(0, Math.min(100, finalScore));
+            
+            // Simpan sebagai finalScore untuk referensi halaman ini
+            localStorage.setItem("finalScore", finalScore);
             return finalScore;
         }
 
@@ -90,7 +101,7 @@
                 20: "Dua Puluh.mp4",
                 40: "Empat Puluh.mp4",
                 60: "Enam Puluh.mp4",
-                80: "Delapan pulih.mp4",
+                80: "Delapan pulih.mp4", // Sesuai typo di folder kamu
                 100: "Seratus.mp4"
             },
             "en": {
@@ -106,11 +117,9 @@
         const scoreVoice = document.getElementById("score-voice");
         
         function playScoreVoice() {
-            // Tentukan folder berdasarkan bahasa
             const folder = (lang === "en") ? "Score En" : "Score Id";
             const fileName = audioMap[lang][finalScore] || audioMap[lang][0];
             
-            // Set source audio secara dinamis
             scoreVoice.src = `/static/sounds/${folder}/${fileName}`;
             scoreVoice.play().catch(e => console.log("Audio play error:", e));
         }
@@ -119,7 +128,7 @@
         const goodSound = document.getElementById("good-sound");
         const failSound = document.getElementById("fail-sound");
 
-        // ================== EMOJI & CONFETTI (Tetap Sama) ==================
+        // ================== EMOJI & CONFETTI ==================
         function showEmojiOverlay(type) {
             const overlay = document.getElementById("emoji-overlay");
             overlay.innerHTML = "";
@@ -175,7 +184,6 @@
 
         // ================== EKSEKUSI HASIL ==================
         window.addEventListener("load", () => {
-            // 1. Mainkan suara efek (hore/gagal)
             if (finalScore >= 60) {
                 goodSound.play().catch(()=>{});
                 showEmojiOverlay("good");
@@ -188,23 +196,32 @@
                 showEmojiOverlay("bad");
             }
 
-            // 2. Mainkan suara rekaman skor setelah jeda singkat (menggantikan TTS)
             setTimeout(() => {
                 playScoreVoice();
             }, 1000);
         });
 
-        // ================== TOMBOL SUARA ==================
-        document.getElementById("btn-speak").addEventListener("click", () => {
-            playScoreVoice();
-        });
+        document.getElementById("btn-speak").addEventListener("click", playScoreVoice);
 
-        // ================== NAVIGASI ==================
+        // ================== NAVIGASI & RESET ==================
         function resetGameData() {
             const savedLang = localStorage.getItem("gameLang");
             const lastLevel = localStorage.getItem("lastLevel");
-            const keysToRemove = ["finalScore", "correctCount", "totalQuestions", "menengahQuestions", "menengahCurrent", "menengahScore", "menengahStarted", "sessionQuestions", "currentIndex"];
+            
+            // Menghapus semua data skor lama agar tidak menumpuk di game berikutnya
+            const keysToRemove = [
+                "puzzleScore", 
+                "finalScore", 
+                "correctCount", 
+                "totalQuestions", 
+                "menengahScore",
+                "currentIndex",
+                "sessionQuestions"
+            ];
+            
             keysToRemove.forEach(key => localStorage.removeItem(key));
+            
+            // Kembalikan bahasa dan level terakhir
             if (savedLang) localStorage.setItem("gameLang", savedLang);
             if (lastLevel) localStorage.setItem("lastLevel", lastLevel);
         }
@@ -212,7 +229,11 @@
         document.getElementById("btn-retry").addEventListener("click", () => {
             const lastLevel = localStorage.getItem("lastLevel") || "mudah";
             resetGameData();
-            const routes = { "mudah": "/level_mudah", "menengah": "/level_menengah", "sulit": "/puzzle_sulit1" };
+            const routes = { 
+                "mudah": "/level_mudah", 
+                "menengah": "/level_menengah", 
+                "sulit": "/puzzle_sulit1" 
+            };
             window.location.href = routes[lastLevel] || "/pilih_level";
         });
 

@@ -9,29 +9,30 @@ body {
   color: #0288D1;
   text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #81D4FA;
   overscroll-behavior: none;
+  transition: background-color 0.3s ease;
 }
 
+/* ========== CONFETTI ========== */
 #confetti {
   position: fixed;
   top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 9999;
 }
 
-/* 🟢 TIMER & PROGRESS (DESAIN BERSIH PUTIH) */
+/* ========== TIMER & PROGRESS ========== */
 #timer {
-  position: fixed; 
-  top: 18px; 
+  position: fixed;
+  top: 18px;
   left: 75px;
-  font-family: 'Mochiy Pop One', sans-serif;
   font-weight: bold;
   background: #e3f2fd;
   color: #0288D1;
   padding: 8px 15px;
   border-radius: 12px;
-  border: none; /* Hapus Garis Luar */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Shadow tipis biar elegan */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   z-index: 1000;
   font-size: 18px;
 }
@@ -40,31 +41,41 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
   font-size: 20px;
   font-weight: bold;
-  background: #ffffff; /* Putih Polos */
+  background: #ffffff;
   color: #0288D1;
   padding: 8px 18px;
   border-radius: 12px;
-  border: none; /* Hapus Garis Luar */
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   z-index: 100;
 }
 
-/* Timer Danger Tetap Merah untuk Alert */
+/* Timer Danger */
+/* Timer Danger - versi bersih (tanpa bold putih) */
 #timer.timer-danger {
   background: #ff5252 !important;
-  color: white !important;
+  color: #ffffff !important;
+
+  /* 🔥 ini kuncinya */
+  text-shadow: none !important;
+  font-weight: normal !important;
+
   animation: pulseDanger 0.5s infinite alternate;
 }
 
-/* Corner Decor */
-.decor { position: fixed; pointer-events: none; z-index: -1; }
+
+/* ========== DEKORASI ========== */
+.decor {
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+}
+
 .decor-right { top: 0; right: 0; width: 180px; }
 .decor-left { bottom: 0; left: 0; width: 180px; }
 
-/* Header */
+/* ========== HEADER ========== */
 #title-wrapper {
   display: flex;
   align-items: center;
@@ -74,10 +85,21 @@ body {
   padding: 0 10px;
 }
 
-#game-title { font-size: clamp(24px, 5vw, 45px); margin: 0; }
+#game-title {
+  font-size: clamp(24px, 5vw, 45px);
+  margin: 0;
+}
 
-.sound-button { border: 0; background: transparent; cursor: pointer; padding: 0; }
-.sound-button img { width: 44px; height: 44px; display: block; }
+.sound-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sound-button img {
+  width: 44px;
+  height: 44px;
+}
 
 /* ========== GAME CONTAINER ========== */
 #game-container {
@@ -89,22 +111,28 @@ body {
   padding: 20px;
 }
 
-#board { position: relative; flex-shrink: 0; }
+#board {
+  position: relative;
+  flex-shrink: 0;
+}
 
 .slot {
   position: absolute;
   border: 2px dashed rgba(2, 136, 209, 0.4);
-  box-sizing: border-box;
   z-index: 5;
 }
 
-#full-image, #siluet, .siluet-bg {
+#full-image,
+#siluet,
+.siluet-bg {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
+/* ========== PIECES ========== */
 #pieces-container {
   display: grid;
   grid-template-columns: repeat(2, auto);
@@ -121,13 +149,80 @@ body {
   touch-action: none;
 }
 
-/* ========== RESPONSIVE: PORTRAIT (HP TEGAK) ========== */
-@media screen and (orientation: portrait) {
-  #game-container { flex-direction: column; margin-top: 60px; }
-  
-  #board { width: 85vw; height: 85vw; }
+/* ========== OVERLAY TIME UP / SALAH ========== */
+.wrong-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(220, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
 
-  /* 🟢 Kepingan Puzzle Rapat */
+.wrong-content {
+  text-align: center;
+  color: #fff;
+  padding: 20px;
+  animation: pop 0.4s ease-out;
+}
+
+.wrong-content h1 {
+  font-size: 6rem;
+  margin: 0;
+  line-height: 1;
+}
+
+.wrong-content p {
+  font-size: 1.8rem;
+  margin-top: 12px;
+}
+
+/* ========== ANIMASI DANGER ========== */
+.piece-danger-anim {
+  animation: pieceZoom 0.5s infinite alternate ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(255,82,82,0.5));
+  z-index: 50;
+}
+
+@keyframes pieceZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+@keyframes pulseDanger {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Layar Berkedip Saat Kritis */
+.screen-danger-active {
+  animation: flashRed 1s infinite !important;
+}
+
+@keyframes flashRed {
+  0% { background-color: #EAF7FF; }
+  50% { background-color: #FFCDD2; }
+  100% { background-color: #EAF7FF; }
+}
+
+/* ========== RESPONSIVE PORTRAIT (HP) ========== */
+@media screen and (orientation: portrait) {
+  #game-container {
+    flex-direction: column;
+    margin-top: 60px;
+  }
+
+  #board {
+    width: 85vw;
+    height: 85vw;
+  }
+
   #pieces-container {
     display: flex;
     flex-wrap: wrap;
@@ -142,24 +237,46 @@ body {
     max-width: 140px;
   }
 
-  #timer { font-size: 16px; left: 65px; top: 15px; }
-  #progress { font-size: 16px; bottom: 15px; right: 15px; }
+  #timer {
+    font-size: 16px;
+    left: 65px;
+    top: 15px;
+  }
+
+  #progress {
+    font-size: 16px;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .wrong-content h1 { font-size: 4.5rem; }
+  .wrong-content p { font-size: 1.3rem; }
 }
 
-/* ========== RESPONSIVE: LANDSCAPE ========== */
+/* ========== RESPONSIVE LANDSCAPE KECIL ========== */
 @media screen and (orientation: landscape) and (max-height: 500px) {
-  #board { width: 35vh; height: 35vh; }
-  #pieces-container img { width: 40vh; max-width: 100px; }
+  #board {
+    width: 35vh;
+    height: 35vh;
+  }
+
+  #pieces-container img {
+    width: 40vh;
+    max-width: 100px;
+  }
 }
 
-/* Navigasi */
-.back-button { position: fixed; top: 15px; left: 15px; z-index: 1000; }
-.back-button img { width: 45px; }
-
-@keyframes pulseDanger { from { transform: scale(1); } to { transform: scale(1.1); } }
-.wrong-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(220, 0, 0, 0.9); display: flex;
-  justify-content: center; align-items: center; z-index: 9999;
+/* ========== NAVIGASI ========== */
+.back-button {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
 }
+
+.back-button img {
+  width: 45px;
+}
+
+/* UTIL */
 .hidden { display: none; }

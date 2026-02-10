@@ -1,4 +1,4 @@
-// Mengambil elemen dengan proteksi (null check nantinya)
+// Mengambil elemen dengan proteksi
 const selectedLangEl = document.getElementById("selected-lang");
 const langOptionsEl  = document.getElementById("lang-options");
 const titleEl        = document.getElementById("title");
@@ -9,7 +9,6 @@ const textHard   = document.getElementById("text-hard");
 
 /**
  * 🔹 TOGGLE MENU BAHASA
- * Menggunakan preventDefault agar tidak terjadi ghost-click di mobile
  */
 function toggleLangMenu(e) {
   if (e) {
@@ -23,7 +22,6 @@ function toggleLangMenu(e) {
 
 /**
  * 🔹 SET BAHASA (UI ONLY)
- * Memastikan elemen ada sebelum diisi untuk menghindari error JS
  */
 function applyLanguageUI(lang) {
   if (!selectedLangEl || !titleEl) return;
@@ -65,7 +63,6 @@ function setLanguage(lang, e) {
     langOptionsEl.classList.add("hidden");
   }
 
-  // 🔊 Jalankan instruksi suara jika fungsi tersedia
   if (typeof window.playInstruction === "function") {
     window.playInstruction();
   }
@@ -73,7 +70,6 @@ function setLanguage(lang, e) {
 
 /**
  * 🔹 CLOSE DROPDOWN
- * Menutup menu jika klik di luar area menu bahasa
  */
 function handleDocumentClick(e) {
   if (langOptionsEl && !langOptionsEl.contains(e.target) && !selectedLangEl.contains(e.target)) {
@@ -82,18 +78,26 @@ function handleDocumentClick(e) {
 }
 
 /**
+ * 🔹 RESET & NAVIGASI
+ * Fungsi untuk memastikan skor bersih sebelum pindah halaman
+ */
+function startNewGame(targetUrl) {
+    console.log("Memulai permainan baru, meriset skor...");
+    localStorage.setItem("puzzleScore", "0"); // Reset skor ke 0
+    localStorage.setItem("finalScore", "0");  // Pastikan final score juga bersih
+    window.location.href = targetUrl;
+}
+
+/**
  * 🔹 INIT (DOM CONTENT LOADED)
- * Lebih cepat dan stabil daripada window.onload
  */
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("gameLang") || "id";
 
-  // Restore UI berdasarkan pilihan bahasa terakhir
   applyLanguageUI(savedLang);
 
-  // Pasang listener hanya jika elemen ditemukan
+  // 1. Listener Menu Bahasa
   if (selectedLangEl) {
-    // Gunakan click agar kompatibel dengan mouse dan touch
     selectedLangEl.addEventListener("click", toggleLangMenu);
   }
 
@@ -102,4 +106,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.addEventListener("click", handleDocumentClick);
+
+  // 2. Listener Tombol Level (Reset Skor)
+  // Kita cari semua elemen yang merupakan tombol menu/level
+  const menuButtons = document.querySelectorAll(".menu-item, .card, a"); 
+  
+  menuButtons.forEach(btn => {
+    btn.addEventListener("click", function(e) {
+      const href = this.getAttribute("href");
+      
+      // Jika link mengarah ke salah satu permainan, reset skor dulu
+      if (href && (href.includes("puzzle") || href.includes("tebak") || href.includes("cocok"))) {
+        e.preventDefault(); // Stop pindah halaman instan
+        startNewGame(href); // Jalankan reset skor baru pindah
+      }
+    });
+  });
 });

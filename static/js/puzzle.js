@@ -8,7 +8,9 @@ let placedCount = 0;
 let draggedPiece = null;
 let selectedSoal = []; 
 const scorePerSolved = 20; 
-let totalScore = parseInt(localStorage.getItem("puzzleScore") || "0", 10);
+let questionSolved = false;
+let totalScore = 0;
+
 let timerInterval = null;
 let timeLeft = 0;
 let timeExpired = false;
@@ -53,9 +55,23 @@ function pickRandomSoal(bank) {
 }
 
 // Inisialisasi soal
+
+// Ganti bagian load window dengan ini:
 window.addEventListener("load", () => {
-    selectedSoal = pickRandomSoal(bankSoal);
-    totalScore = parseInt(localStorage.getItem("puzzleScore") || "0", 10);
+    if (typeof bankSoal !== 'undefined') {
+        selectedSoal = pickRandomSoal(bankSoal);
+    }
+    
+    let saved = localStorage.getItem("puzzleScore");
+    
+    if (saved === null || saved === undefined) {
+        totalScore = 100; 
+        localStorage.setItem("puzzleScore", "100");
+    } else {
+        // Ambil nilai yang tersimpan (misal sudah 80, tetap 80)
+        totalScore = parseInt(saved, 10);
+    }
+    
     loadQuestion(currentQuestion);
 });
 
@@ -118,9 +134,11 @@ function stopTimer() {
 function resetDangerEffects() {
     const el = document.getElementById("timer");
     if (el) el.classList.remove("timer-danger");
-    document.body.classList.remove("screen-danger-active");
     
-    const allPieces = document.querySelectorAll("#pieces-container img, #board img");
+    // TAMBAHKAN INI: Hapus kedipan merah saat reset
+    document.body.classList.remove("screen-danger-active");
+
+    const allPieces = document.querySelectorAll("img"); 
     allPieces.forEach(p => p.classList.remove("piece-danger-anim"));
 
     sfxDanger.pause();
@@ -135,30 +153,43 @@ function renderTimer() {
     
     el.textContent = (lang === "en" ? "Time " : "Waktu ") + `${mm}:${ss}`;
 
-    const remainingPieces = document.querySelectorAll("#pieces-container img");
+    const piecesInContainer = document.querySelectorAll("#pieces-container img");
 
     if (timeLeft <= 5 && timeLeft > 0) {
         el.classList.add("timer-danger");
-        document.body.classList.add("screen-danger-active");
-        remainingPieces.forEach(p => p.classList.add("piece-danger-anim"));
+        
+        // TAMBAHKAN INI: Aktifkan kedipan merah di layar
+        document.body.classList.add("screen-danger-active"); 
+        
+        piecesInContainer.forEach(p => {
+            p.classList.add("piece-danger-anim");
+        });
+
         if (sfxDanger.paused) sfxDanger.play().catch(() => {});
     } else {
         el.classList.remove("timer-danger");
-        document.body.classList.remove("screen-danger-active");
-        remainingPieces.forEach(p => p.classList.remove("piece-danger-anim"));
+        
+        // TAMBAHKAN INI: Matikan kedipan jika waktu masih aman
+        document.body.classList.remove("screen-danger-active"); 
+
+        piecesInContainer.forEach(p => {
+            p.classList.remove("piece-danger-anim");
+        });
     }
 }
-
 function onTimeUp() {
-    const soundWrong = document.getElementById("sound-wrong");
-    
-    totalScore = Math.max(0, totalScore - 20);
-    localStorage.setItem("puzzleScore", totalScore);
+    if (questionSolved) return;
+    questionSolved = true; // 🔒 kunci soal
 
+    stopTimer();
+
+    const soundWrong = document.getElementById("sound-wrong");
     const board = document.getElementById("board");
+    const lang = localStorage.getItem("gameLang") || "id";
+
     if (board) {
         board.classList.add("shake");
-        setTimeout(() => board.classList.remove("shake"), 400);
+        setTimeout(() => board.classList.remove("shake"), 500);
     }
 
     if (soundWrong) {
@@ -166,15 +197,22 @@ function onTimeUp() {
         soundWrong.play();
     }
 
-    const lang = localStorage.getItem("gameLang") || "id";
-    const msg = (lang === "en") ? "Time's Up!" : "Waktu Habis!";
-    showTimeUpOverlay("⏱️", msg);
+    // 🌐 teks sesuai bahasa
+    const text =
+        lang === "en"
+            ? "Time's up!"
+            : "Waktu habis!";
+
+    showTimeUpOverlay("⏰", text);
+
+    console.log("TIME UP → skor tetap:", totalScore);
 
     setTimeout(() => {
         hideTimeUpOverlay();
         nextQuestion();
-    }, 1500);
+    }, 2000);
 }
+
 
 function showTimeUpOverlay(icon, text) {
     hideTimeUpOverlay();
@@ -197,10 +235,18 @@ function hideTimeUpOverlay() {
 
 // --- LOAD QUESTION ---
 function loadQuestion(no) {
+    questionSolved = false;
     placedCount = 0;
     draggedPiece = null;
     timeExpired = false;
     stopTimer();
+
+    // Hapus confetti jika user klik next dengan cepat
+    const oldCanvas = document.getElementById("confetti");
+    if (oldCanvas) oldCanvas.remove(); 
+
+    // Reset overlay waktu habis jika masih nempel
+    hideTimeUpOverlay();
 
     const soal = selectedSoal[no - 1];
     if (!soal) return;
@@ -487,56 +533,29 @@ function initDragDrop() {
 
 // --- PUZZLE SOLVED ---
 function puzzleSolved() {
+    if (questionSolved) return; // 🔒 pengaman
+    questionSolved = true;
     stopTimer(); 
-    totalScore += scorePerSolved;
+    
+    totalScore += scorePerSolved; // 🔥 INI YANG HILANG
     localStorage.setItem("puzzleScore", totalScore);
 
     document.getElementById("pieces-container").style.display = "none";
     const message = document.getElementById('message');
-    const soal = selectedSoal[currentQuestion - 1];
-    const lang = localStorage.getItem("gameLang") || "id";
-
-    message.textContent = (lang === "en") ? "🎉 Puzzle Completed! 🎉" : "🎉 Puzzle Selesai! 🎉";
     message.classList.remove('hidden');
-
+    
     renderConfetti();
-
-    const soundCongrats = document.getElementById("sound-congrats");
-    const soundVegetable = document.getElementById("sound-vegetable");
-
-    soundVegetable.pause();
-    soundVegetable.onended = null;
-
-    soundCongrats.currentTime = 0;
-    soundCongrats.play();
-
-    soundCongrats.onended = () => {
-        if (lang === "en") {
-            soundVegetable.src = "/static/sounds/" + encodeURIComponent("Success Puzzle") + ".mp3";
-            
-            soundVegetable.play().then(() => {
-                soundVegetable.onended = () => {
-                    const fileName = soal.name_id;
-                    soundVegetable.src = "/static/sounds/En/" + encodeURIComponent(fileName) + ".mp3";
-                    console.log("Memutar audio EN (Nama file ID):", soundVegetable.src);
-                    soundVegetable.play().catch(e => console.error("File audio EN tidak ditemukan:", e));
-                    soundVegetable.onended = null;
-                };
-            });
-        } else {
-            const formattedName = soal.name_id; 
-            soundVegetable.src = `/static/sounds/id/notif_puzzle/${formattedName}.m4a`;
-            soundVegetable.onended = null;
-            soundVegetable.play().catch(e => console.error("File audio ID tidak ditemukan:", e));
-        }
-    };
-
+    
     setTimeout(() => {
         message.classList.add('hidden');
+
         const canvas = document.getElementById("confetti");
         if (canvas) canvas.remove(); 
+        
         nextQuestion();
-    }, 8000);
+    }, 4000);
+    console.log("SCORE SOLVED:", totalScore);
+
 }
 
 // --- CONFETTI HELPER ---
