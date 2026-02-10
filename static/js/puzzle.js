@@ -218,10 +218,14 @@ function loadQuestion(no) {
     const board = document.getElementById("board");
     const container = document.getElementById("game-container");
 
+    container.style.display = "flex";
+    container.style.flexDirection =
+    window.innerWidth <= 768 ? "column" : "row";
     container.style.justifyContent = "center";
     container.style.alignItems = "center";
     container.style.gap = "20px";
     piecesContainer.style.display = "grid";
+
 
     board.style.width = soal.width + "px";
     board.style.height = soal.height + "px";
