@@ -241,58 +241,77 @@ body {
   .decor-left { width: 180px; }
 }
 
+/* ========================================
+   MOBILE FORCE VERTICAL (SUPER PAKSA!)
+   ======================================== */
+
+/* Tablet & HP Portrait */
 @media (max-width: 768px) {
   body {
     overflow-y: auto !important;
     overflow-x: hidden !important;
   }
 
-  /* ✅ PAKSA VERTIKAL kayak pilih_level.css */
+  /* ✅ PAKSA VERTIKAL */
   #game-container {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 15px !important;
+    padding: 0 15px !important;
   }
 
   #board {
-    position: relative;
-    margin: 0 auto; /* Center horizontal */
+    position: relative !important;
+    margin: 0 auto !important;
+    order: 1 !important; /* Board di atas */
   }
 
   #pieces-container {
-    margin-top: 20px;
-    margin-bottom: 30px;
-    width: 100%; /* Paksa full width */
-    max-width: 500px; /* Batas lebar */
+    margin: 20px auto 30px auto !important;
+    width: 100% !important;
+    max-width: 450px !important;
+    display: grid !important;
+    justify-content: center !important;
+    order: 2 !important; /* Pieces di bawah */
   }
 
   #game-title { 
     font-size: 28px; 
   }
   
-  .decor {
-    position: absolute;
+  .decor-right { 
+    width: 100px; 
   }
-
-  .decor-left {
-    bottom: -20px;
-  }
-
-  .decor-right {
-    bottom: -30px;
+  
+  .decor-left { 
+    width: 120px; 
   }
 }
+
+/* HP Kecil - Refinement */
 @media (max-width: 480px) {
   #title-wrapper { 
     padding-top: 70px; 
     gap: 10px;
   }
   
-  #board { transform: scale(0.9); }
-  #pieces-container img { width: 110px; }
-  #game-title { font-size: 20px; }
+  #board { 
+    transform: scale(0.9); 
+  }
+  
+  #pieces-container { 
+    max-width: 380px !important; /* Lebih kecil di HP mini */
+  }
+  
+  #pieces-container img { 
+    width: 110px; 
+  }
+  
+  #game-title { 
+    font-size: 20px; 
+  }
   
   #progress {
     font-size: 16px;
@@ -305,6 +324,21 @@ body {
   .sound-button img {
     width: 30px;
     height: 30px;
+  }
+}
+
+/* ========================================
+   KHUSUS TOUCHSCREEN (MOBILE REAL)
+   ======================================== */
+@media (hover: none) and (pointer: coarse) {
+  #game-container {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  
+  #pieces-container {
+    width: 100% !important;
+    margin: 20px auto !important;
   }
 }
 /* Latar Timer jadi Merah (Efek Menengah) */
