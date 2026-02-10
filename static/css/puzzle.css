@@ -10,18 +10,32 @@ body {
   text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #81D4FA;
   overscroll-behavior: none;
 }
-/* ========== DASAR & TIPOGRAFI ========== */
+
 #confetti {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   pointer-events: none;
-  z-index: 9999; /* Di depan semua elemen */
+  z-index: 9999;
 }
 
-/* Progress Soal - Diposisikan di pojok bawah agar tidak menghalangi */
+/* 🟢 TIMER & PROGRESS (DESAIN BERSIH PUTIH) */
+#timer {
+  position: fixed; 
+  top: 18px; 
+  left: 75px;
+  font-family: 'Mochiy Pop One', sans-serif;
+  font-weight: bold;
+  background: #e3f2fd;
+  color: #0288D1;
+  padding: 8px 15px;
+  border-radius: 12px;
+  border: none; /* Hapus Garis Luar */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Shadow tipis biar elegan */
+  z-index: 1000;
+  font-size: 18px;
+}
+
 #progress {
   position: fixed;
   bottom: 20px;
@@ -29,199 +43,28 @@ body {
   font-family: "Comic Sans MS", cursive, sans-serif;
   font-size: 20px;
   font-weight: bold;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 8px 15px;
+  background: #ffffff; /* Putih Polos */
+  color: #0288D1;
+  padding: 8px 18px;
   border-radius: 12px;
+  border: none; /* Hapus Garis Luar */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   z-index: 100;
-  border: 2px solid #81D4FA;
 }
 
-/* Corner Decor - Ukuran disamakan agar seimbang */
-.decor { position: fixed; pointer-events: none; z-index: -1; }
-.decor-right { top: 0; right: 0; width: 180px; }
-.decor-left { bottom: 0; left: 0; width: 180px; }
-
-/* Header Wrapper */
-#title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
-  padding: 0 10px;
-}
-
-#game-title {
-  font-size: clamp(24px, 5vw, 45px); /* Font adaptif */
-  margin: 0;
-}
-
-.sound-button {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
-
-.sound-button img {
-  width: 44px;
-  height: 44px;
-  display: block;
-}
-
-/* ========== CONTAINER UTAMA (DESKTOP/LANDSCAPE) ========== */
-#game-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px; /* Jarak antara board dan pieces */
-  margin-top: 30px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-#board {
-  position: relative;
-  flex-shrink: 0; /* Mencegah siluet mengecil paksa */
-}
-
-.slot {
-  position: absolute;
-  border: 2px dashed rgba(2, 136, 209, 0.4);
-  box-sizing: border-box;
-  z-index: 5;
-}
-
-#full-image, #siluet, .siluet-bg {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  object-fit: contain;
-}
-
-/* Pieces Container - Sidebar Mode */
-#pieces-container {
-  display: grid;
-  grid-template-columns: repeat(2, auto); /* Gunakan auto agar tidak ada gap hantu */
-  gap: 12px;
-  justify-items: center;
-}
-
-#pieces-container img {
-  width: 120px; /* Ukuran default desktop */
-  cursor: grab;
-  border-radius: 10px;
-  mix-blend-mode: multiply;
-  background: transparent;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  touch-action: none;
-}
-
-/* ========== RESPONSIVE: PORTRAIT (HP TEGAK) ========== */
-@media screen and (orientation: portrait) {
-  #game-container {
-    flex-direction: column; /* Pieces pindah ke bawah */
-    margin-top: 60px; /* Ruang untuk timer/back */
-  }
-
-  #board {
-    width: 90vw; /* Siluet diperbesar maksimal */
-    height: 90vw;
-  }
-
-  #pieces-container {
-    display: flex;         /* 🟢 Ubah ke flex supaya bisa rapat */
-    flex-wrap: wrap;      /* 🟢 Biar kalau banyak tetap turun ke bawah */
-    justify-content: center; /* 🟢 Rata tengah rapat */
-    width: 90vw;          /* Jangan 100vw supaya ada space di pinggir */
-    margin: 20px auto;
-    gap: 10px;            /* 🟢 Atur kerapatan antar kepingan di sini */
-  }
-
-  #pieces-container img {
-    width: 40vw; /* Ukuran pieces diperbesar */
-    max-width: 140px;
-  }
-  
-  .decor-right { width: 100px; }
-  .decor-left { width: 120px; }
-}
-
-/* ========== RESPONSIVE: LANDSCAPE (HP MIRING) ========== */
-@media screen and (orientation: landscape) and (max-height: 500px) {
-  #game-container {
-    gap: 20px;
-    padding-top: 10px;
-  }
-
-  #board {
-    width: 35vh; /* Sesuaikan dengan tinggi layar miring */
-    height: 35vh;
-  }
-
-  #pieces-container img {
-    width: 40vh; /* Pastikan tidak meluber keluar sidebar */
-    max-width: 100px;
-  }
-  
-  #game-title { font-size: 22px; }
-  .decor-right, .decor-left { width: 80px; }
-}
-
-/* UI Navigasi Fixed */
-.back-button { position: fixed; top: 15px; left: 15px; z-index: 1000; }
-.back-button img { width: 45px; }
-
-#timer {
-  position: fixed; top: 18px; left: 75px;
-  font-family: 'Mochiy Pop One', sans-serif;
-  background: #e3f2fd;
-  padding: 5px 12px;
-  border-radius: 10px;
-  border: 2px solid #0288D1;
-  z-index: 1000;
-  font-size: 18px;
-}
-
-/* Efek Salah & Timer Danger */
+/* Timer Danger Tetap Merah untuk Alert */
 #timer.timer-danger {
   background: #ff5252 !important;
   color: white !important;
   animation: pulseDanger 0.5s infinite alternate;
 }
 
-@keyframes pulseDanger {
-  from { transform: scale(1); } to { transform: scale(1.1); }
-}
-
-.wrong-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(220, 0, 0, 0.9); display: flex;
-  justify-content: center; align-items: center; z-index: 9999;
-}
-
-.hidden { display: none; }
-/* Progress Soal - Diposisikan di pojok bawah agar tidak menghalangi */
-#progress {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  font-size: 20px;
-  font-weight: bold;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 8px 15px;
-  border-radius: 12px;
-  z-index: 100;
-  border: 2px solid #81D4FA;
-}
-
-/* Corner Decor - Ukuran disamakan agar seimbang */
+/* Corner Decor */
 .decor { position: fixed; pointer-events: none; z-index: -1; }
 .decor-right { top: 0; right: 0; width: 180px; }
 .decor-left { bottom: 0; left: 0; width: 180px; }
 
-/* Header Wrapper */
+/* Header */
 #title-wrapper {
   display: flex;
   align-items: center;
@@ -231,39 +74,22 @@ body {
   padding: 0 10px;
 }
 
-#game-title {
-  font-size: clamp(24px, 5vw, 45px); /* Font adaptif */
-  margin: 0;
-}
+#game-title { font-size: clamp(24px, 5vw, 45px); margin: 0; }
 
-.sound-button {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
+.sound-button { border: 0; background: transparent; cursor: pointer; padding: 0; }
+.sound-button img { width: 44px; height: 44px; display: block; }
 
-.sound-button img {
-  width: 44px;
-  height: 44px;
-  display: block;
-}
-
-/* ========== CONTAINER UTAMA (DESKTOP/LANDSCAPE) ========== */
+/* ========== GAME CONTAINER ========== */
 #game-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px; /* Jarak antara board dan pieces */
+  gap: 30px;
   margin-top: 30px;
   padding: 20px;
-  box-sizing: border-box;
 }
 
-#board {
-  position: relative;
-  flex-shrink: 0; /* Mencegah siluet mengecil paksa */
-}
+#board { position: relative; flex-shrink: 0; }
 
 .slot {
   position: absolute;
@@ -279,103 +105,61 @@ body {
   object-fit: contain;
 }
 
-/* Pieces Container - Sidebar Mode */
 #pieces-container {
   display: grid;
-  grid-template-columns: repeat(2, auto); /* Gunakan auto agar tidak ada gap hantu */
+  grid-template-columns: repeat(2, auto);
   gap: 12px;
   justify-items: center;
 }
 
 #pieces-container img {
-  width: 120px; /* Ukuran default desktop */
+  width: 120px;
   cursor: grab;
   border-radius: 10px;
   mix-blend-mode: multiply;
-  background: transparent;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   touch-action: none;
 }
 
 /* ========== RESPONSIVE: PORTRAIT (HP TEGAK) ========== */
 @media screen and (orientation: portrait) {
-  #game-container {
-    flex-direction: column; /* Pieces pindah ke bawah */
-    margin-top: 60px; /* Ruang untuk timer/back */
-  }
+  #game-container { flex-direction: column; margin-top: 60px; }
+  
+  #board { width: 85vw; height: 85vw; }
 
-  #board {
-    width: 85vw; /* Siluet diperbesar maksimal */
-    height: 85vw;
-  }
-
+  /* 🟢 Kepingan Puzzle Rapat */
   #pieces-container {
-    grid-template-columns: repeat(3, auto); /* 3 kolom agar hemat tempat */
-    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 95vw;
     margin-top: 20px;
-    gap: 8px;
+    gap: 15px;
   }
 
   #pieces-container img {
-    width: 28vw; /* Ukuran pieces diperbesar */
+    width: 28vw;
     max-width: 140px;
   }
-  
-  .decor-right { width: 100px; }
-  .decor-left { width: 120px; }
+
+  #timer { font-size: 16px; left: 65px; top: 15px; }
+  #progress { font-size: 16px; bottom: 15px; right: 15px; }
 }
 
-/* ========== RESPONSIVE: LANDSCAPE (HP MIRING) ========== */
+/* ========== RESPONSIVE: LANDSCAPE ========== */
 @media screen and (orientation: landscape) and (max-height: 500px) {
-  #game-container {
-    gap: 20px;
-    padding-top: 10px;
-  }
-
-  #board {
-    width: 35vh; /* Sesuaikan dengan tinggi layar miring */
-    height: 35vh;
-  }
-
-  #pieces-container img {
-    width: 40vh; /* Pastikan tidak meluber keluar sidebar */
-    max-width: 100px;
-  }
-  
-  #game-title { font-size: 22px; }
-  .decor-right, .decor-left { width: 80px; }
+  #board { width: 35vh; height: 35vh; }
+  #pieces-container img { width: 40vh; max-width: 100px; }
 }
 
-/* UI Navigasi Fixed */
+/* Navigasi */
 .back-button { position: fixed; top: 15px; left: 15px; z-index: 1000; }
 .back-button img { width: 45px; }
 
-#timer {
-  position: fixed; top: 18px; left: 75px;
-  font-family: 'Mochiy Pop One', sans-serif;
-  background: #e3f2fd;
-  padding: 5px 12px;
-  border-radius: 10px;
-  border: 2px solid #0288D1;
-  z-index: 1000;
-  font-size: 18px;
-}
-
-/* Efek Salah & Timer Danger */
-#timer.timer-danger {
-  background: #ff5252 !important;
-  color: white !important;
-  animation: pulseDanger 0.5s infinite alternate;
-}
-
-@keyframes pulseDanger {
-  from { transform: scale(1); } to { transform: scale(1.1); }
-}
-
+@keyframes pulseDanger { from { transform: scale(1); } to { transform: scale(1.1); } }
 .wrong-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(220, 0, 0, 0.9); display: flex;
   justify-content: center; align-items: center; z-index: 9999;
 }
-
 .hidden { display: none; }
