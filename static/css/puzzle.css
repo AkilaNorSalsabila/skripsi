@@ -125,19 +125,19 @@ body {
   }
 
   #board {
-    width: 85vw; /* Siluet diperbesar maksimal */
-    height: 85vw;
+    width: 90vw; /* Siluet diperbesar maksimal */
+    height: 90vw;
   }
 
   #pieces-container {
     grid-template-columns: repeat(3, auto); /* 3 kolom agar hemat tempat */
     width: 100vw;
     margin-top: 20px;
-    gap: 8px;
+    gap: 2px;
   }
 
   #pieces-container img {
-    width: 28vw; /* Ukuran pieces diperbesar */
+    width: 40vw; /* Ukuran pieces diperbesar */
     max-width: 140px;
   }
   
