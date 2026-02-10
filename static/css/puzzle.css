@@ -242,11 +242,16 @@ body {
 }
 
 @media (max-width: 768px) {
+   body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
   #game-container {
     display: flex;
     flex-direction: column;
     align-items: center;     /* 🔥 INI KUNCI */
-    justify-content: center;
+    justify-content: flex-start;
     gap: 15px;
   }
   #board {
@@ -259,16 +264,24 @@ body {
 
 
   #pieces-container {
-    margin-left: auto;
-    margin-right: auto;
-    width: max-content;      /* 🔥 KUNCI UTAMA */
-    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
   }
+
 
   #game-title { font-size: 28px; }
   
-  .decor-right { width: 100px; }
-  .decor-left { width: 120px; }
+  .decor {
+    position: absolute;
+  }
+
+  .decor-left {
+    bottom: -20px;
+  }
+
+  .decor-right {
+    bottom: -30px;
+  }
 }
 
 @media (max-width: 480px) {
