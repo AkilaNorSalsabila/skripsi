@@ -130,10 +130,12 @@ body {
   }
 
   #pieces-container {
-    grid-template-columns: repeat(3, auto); /* 3 kolom agar hemat tempat */
-    width: 100vw;
-    margin-top: 20px;
-    gap: 2px;
+    display: flex;         /* 🟢 Ubah ke flex supaya bisa rapat */
+    flex-wrap: wrap;      /* 🟢 Biar kalau banyak tetap turun ke bawah */
+    justify-content: center; /* 🟢 Rata tengah rapat */
+    width: 90vw;          /* Jangan 100vw supaya ada space di pinggir */
+    margin: 20px auto;
+    gap: 10px;            /* 🟢 Atur kerapatan antar kepingan di sini */
   }
 
   #pieces-container img {
