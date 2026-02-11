@@ -301,35 +301,43 @@ function shuffle(arr){
 // ==========================
 
 // AMBIL data yang sudah ada
+// AMBIL data yang sudah ada
+// ==========================
+// LEVEL FLOW RANDOM SYSTEM (FINAL FIXED)
+// ==========================
+
+// 1. Ambil data yang tersimpan
 let allQuestions = JSON.parse(localStorage.getItem("menengahQuestions"));
 
-// JIKA tidak ada (berarti baru masuk game pertama kali), BARU buat soal baru
-if (!allQuestions) {
+// 2. Cek apakah soal kosong atau versi berubah
+if (!allQuestions || localStorage.getItem("MENENGAH_Q_VERSION") !== MENENGAH_QUESTION_VERSION) {
+    
+    // 🔥 DEFINISIKAN ULANG SHUFFLE DI SINI
     const sm = shuffle(SangatMudah);
     const m = shuffle(Mudah);
     const mid = shuffle(Menengah);
     const ms = shuffle(MenengahKeSulit);
     const h = shuffle(sulit);
 
-    // Ambil masing-masing 1 soal dari tiap tingkat kesulitan
+    // Ambil masing-masing 1 soal dari tiap tingkat kesulitan (Total 5 Soal)
     allQuestions = [sm[0], m[0], mid[0], ms[0], h[0]];
     
-    // Simpan ke localStorage agar tidak berubah saat refresh/pindah soal
+    // Simpan ke localStorage
     localStorage.setItem("menengahQuestions", JSON.stringify(allQuestions));
+    localStorage.setItem("MENENGAH_Q_VERSION", MENENGAH_QUESTION_VERSION);
     
-    // Setel ulang progres ke 0
+    // Reset Progres & Skor
     currentQuestion = 0;
     score = 0;
     localStorage.setItem("menengahCurrent", "0");
     localStorage.setItem("menengahScore", "0");
 } else {
-    // JIKA data sudah ada, ambil progres terakhir agar tidak balik ke soal 1
+    // Jika soal sudah ada, cukup ambil progresnya saja
     currentQuestion = parseInt(localStorage.getItem("menengahCurrent") || "0", 10);
     score = parseInt(localStorage.getItem("menengahScore") || "0", 10);
 }
 
 const totalQuestions = allQuestions.length;
-
 // ==================
 // TIMER LOGIC (DANGER FEATURE)
 // ==================
@@ -378,7 +386,7 @@ function renderTimer() {
 }
 
 function onTimeUp() {
-  score = Math.max(0, score - 20);
+  // Skor tetap, tidak dikurangi (score = score)
   localStorage.setItem("menengahScore", score);
   resetDangerEffects();
   
@@ -391,9 +399,11 @@ function onTimeUp() {
   if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
   const msg = (language === "id") ? "Waktu Habis!" : "Time's Up!";
   showWrongOverlay("⏱️", msg);
+  
+  // Langsung lanjut ke soal berikutnya tanpa tambah skor
+  stopTimer();
   setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1500);
 }
-
 // ==================
 // AUDIO & SPEECH
 // ==================
@@ -514,21 +524,30 @@ function loadQuestion() {
           localStorage.setItem("menengahCurrent", currentQuestion);
           setTimeout(() => { window.location.href = "/menengah_notif"; }, 1200);
         }
-      } else {
-        if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
-        
-        const gameEl = document.getElementById("game");
-        if (gameEl) {
-          gameEl.classList.remove("shake");
-          void gameEl.offsetWidth;
-          gameEl.classList.add("shake");
-          setTimeout(() => { gameEl.classList.remove("shake"); }, 400);
-        }
 
-        showWrongOverlay("✖", language === "id" ? "Salah!" : "Wrong!");
-        stopTimer();
-        setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1000);
-      }
+        } else {
+          // JIKA SALAH:
+          if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
+          
+          const gameEl = document.getElementById("game");
+          if (gameEl) {
+            gameEl.classList.remove("shake");
+            void gameEl.offsetWidth;
+            gameEl.classList.add("shake");
+            setTimeout(() => { gameEl.classList.remove("shake"); }, 400);
+          }
+
+          // Tampilkan overlay salah
+          showWrongOverlay("✖", language === "id" ? "Salah!" : "Wrong!");
+          
+          stopTimer(); // Hentikan timer soal ini
+          
+          // Pindah ke soal berikutnya (Skor otomatis tidak bertambah)
+          setTimeout(() => { 
+            hideWrongOverlay(); 
+            nextQuestion(); 
+          }, 1000);
+        }
     });
     siluetContainer.appendChild(dropZone);
   });
@@ -693,27 +712,29 @@ function nextQuestion() {
 }
 
 function finishGame() {
-  localStorage.setItem("finalScore", score);
-  localStorage.setItem("correctCount", Math.floor(score / 20));
-  localStorage.setItem("totalQuestions", totalQuestions);
-  localStorage.removeItem("menengahStarted");
-  setTimeout(() => { window.location.href = "/skor"; }, 300);
-}
+    // 1. Simpan skor akhir ke finalScore agar dibaca oleh skor.html
+    localStorage.setItem("finalScore", score);
+    
+    // 2. Simpan juga ke key khusus level menengah
+    localStorage.setItem("menengahScore", score);
 
+    // 3. Simpan data tambahan untuk statistik jika perlu
+    localStorage.setItem("correctCount", Math.round(score / 20)); 
+    localStorage.setItem("totalQuestions", totalQuestions);
+
+    // 4. JANGAN hapus menengahScore di sini! 
+    // Biarkan halaman skor.html yang menghapusnya lewat resetGameData() nanti.
+    localStorage.removeItem("menengahStarted");
+    localStorage.removeItem("menengahCurrent");
+
+    setTimeout(() => { window.location.href = "/skor"; }, 300);
+}
 // ==================
 // INITIALIZATION
 // ==================
 window.onload = () => { loadQuestion(); };
 
-window.addEventListener('pageshow', (event) => {
-    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        localStorage.removeItem("menengahQuestions");
-        localStorage.removeItem("menengahCurrent");
-        localStorage.removeItem("menengahScore");
-        localStorage.removeItem("menengahStarted");
-        window.location.reload();
-    }
-});
+
 
 const btnBack = document.getElementById("btn-back");
 if (btnBack) {

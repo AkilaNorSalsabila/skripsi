@@ -158,4 +158,35 @@ body {
 .emoji { position: absolute; font-size: 3rem; opacity: 0; }
 @keyframes slideLeft { 0% { transform: translateX(-100vw); opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateX(0); opacity: 0; } }
 @keyframes slideRight { 0% { transform: translateX(100vw); opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateX(0); opacity: 0; } }
-@keyframes floatDown { 0% { transform: translateY(-100px); opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateY(100px); opacity: 0; } }
+@keyframes floatDown { 0% { transform: translateY(-100px); opacity: 0; } 30% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateY(100px); opacity: 0; } }/* Animasi untuk Emoji yang dibuat melalui JS */
+.emoji {
+    position: fixed;
+    font-size: 3rem;
+    pointer-events: none;
+    z-index: 9999;
+    user-select: none;
+}
+
+@keyframes floatDown {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0;
+    }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Container Overlay */
+#emoji-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+}
