@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Notifikasi Suara
     const successSound = new Audio("/static/sounds/success.mp3");
-    const errorSound   = new Audio("/static/sounds/error.mp3");
+    const errorSound = new Audio("/static/sounds/error.mp3");
 
     // --- Awal: sembunyikan tombol audio & reload ---
     btnAudioID.style.display = "none";
@@ -42,27 +42,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentAudio && currentButton === buttonEl) {
             if (isPaused) {
                 currentAudio.play();
-                playIcon.src = "/static/img/pause.png";
-                waveIcon.style.display = "flex";
+                if (playIcon) playIcon.src = "/static/img/pause.png";
+                if (waveIcon) waveIcon.style.display = "flex";
                 isPaused = false;
             } else {
                 currentAudio.pause();
-                playIcon.src = "/static/img/play.png";
-                waveIcon.style.display = "none";
+                if (playIcon) playIcon.src = "/static/img/play.png";
+                if (waveIcon) waveIcon.style.display = "none";
                 isPaused = true;
             }
             return;
         }
 
-        // stop audio lama
-        if (currentAudio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-            if (currentButton) {
-                currentButton.querySelector(".play-icon img").src = "/static/img/play.png";
-                currentButton.querySelector(".wave-icon").style.display = "none";
-            }
-        }
+        // 🛑 STOP audio lama sebelum mulai yang baru
+        stopAllAudio();
 
         currentList = audioList;
         currentIndex = 0;
@@ -75,23 +68,30 @@ document.addEventListener("DOMContentLoaded", () => {
     function playNext() {
         if (currentIndex < currentList.length) {
             currentAudio = new Audio(currentList[currentIndex]);
-            currentAudio.play();
+            
+            // Penanganan khusus jika formatnya MP4
+            if (currentList[currentIndex].endsWith(".mp4")) {
+                currentAudio.type = "audio/mp4";
+            }
+
+            currentAudio.play().catch(err => console.error("Playback error:", err));
 
             const playIcon = currentButton.querySelector(".play-icon img");
             const waveIcon = currentButton.querySelector(".wave-icon");
 
-            playIcon.src = "/static/img/pause.png";
-            waveIcon.style.display = "flex";
+            if (playIcon) playIcon.src = "/static/img/pause.png";
+            if (waveIcon) waveIcon.style.display = "flex";
 
             currentAudio.onended = () => {
                 currentIndex++;
                 playNext();
             };
-
         } else {
             if (currentButton) {
-                currentButton.querySelector(".play-icon img").src = "/static/img/play.png";
-                currentButton.querySelector(".wave-icon").style.display = "none";
+                const playIcon = currentButton.querySelector(".play-icon img");
+                const waveIcon = currentButton.querySelector(".wave-icon");
+                if (playIcon) playIcon.src = "/static/img/play.png";
+                if (waveIcon) waveIcon.style.display = "none";
             }
             resetAudioState();
         }
@@ -110,165 +110,167 @@ document.addEventListener("DOMContentLoaded", () => {
         if (autoVegSound) {
             autoVegSound.pause();
             autoVegSound.currentTime = 0;
+            autoVegSound.onended = null; 
             autoVegSound = null;
         }
+
         if (currentAudio) {
             currentAudio.pause();
             currentAudio.currentTime = 0;
-            if (currentButton) {
-                currentButton.querySelector(".play-icon img").src = "/static/img/play.png";
-                currentButton.querySelector(".wave-icon").style.display = "none";
-            }
-            resetAudioState();
+            currentAudio.onended = null; 
         }
+
+        if (currentButton) {
+            const pi = currentButton.querySelector(".play-icon img");
+            const wi = currentButton.querySelector(".wave-icon");
+            if (pi) pi.src = "/static/img/play.png";
+            if (wi) wi.style.display = "none";
+        }
+
+        successSound.pause();
+        successSound.currentTime = 0;
+        successSound.onended = null;
+        errorSound.pause();
+        errorSound.currentTime = 0;
+
+        resetAudioState();
     }
 
     // =========================================================
 
-    // --- Fungsi untuk klasifikasi gambar ---
-    // --- Fungsi untuk klasifikasi gambar ---
-async function classifyImage(blob) {
-    const formData = new FormData();
-    formData.append("image", blob);
+    async function classifyImage(blob) {
+        const formData = new FormData();
+        formData.append("image", blob);
 
-    try {
-        let response = await fetch("/klasifikasi", {
-            method: "POST",
-            body: formData
-        });
-
-        // kalau request pertama gagal → coba ulang sekali lagi
-        if (!response.ok) {
-            console.warn("Percobaan pertama gagal, coba ulang...");
-            response = await fetch("/klasifikasi", {
+        try {
+            let response = await fetch("/klasifikasi", {
                 method: "POST",
                 body: formData
             });
-        }
 
-        const result = await response.json();
-        
+            if (!response.ok) {
+                console.warn("Percobaan pertama gagal, coba ulang...");
+                response = await fetch("/klasifikasi", {
+                    method: "POST",
+                    body: formData
+                });
+            }
 
-        if (!response.ok) {
-            errorSound.play();
-            alert(result.error || "Terjadi kesalahan saat klasifikasi");
+            const result = await response.json();
+
+            if (!response.ok) {
+                stopAllAudio();
+                errorSound.play();
+                alert(result.error || "Terjadi kesalahan saat klasifikasi");
+                if (reloadBtn) reloadBtn.style.display = "inline-block";
+                return;
+            }
+
+            if (result.status === "rejected") {
+                stopAllAudio();
+                errorSound.play();
+                const persen = (result.confidence * 100).toFixed(2);
+                alert(`Gambar belum dikenali dengan baik.\nConfidence: ${persen}% .\n\n`);
+                textID.textContent = "-";
+                textEN.textContent = "-";
+                btnAudioID.style.display = "none";
+                btnAudioEN.style.display = "none";
+                if (reloadBtn) reloadBtn.style.display = "inline-block";
+                return;
+            }
+
+            // ✅ Update teks hasil
+            textID.textContent = result.nama_id || "-";
+            textEN.textContent = result.nama_en || "-";
+            btnAudioID.style.display = "inline-block";
+            btnAudioEN.style.display = "inline-block";
             if (reloadBtn) reloadBtn.style.display = "inline-block";
-            return;
-        }
-        if (result.status === "rejected") {
-            errorSound.play();
 
-            const persen = (result.confidence * 100).toFixed(2);
+            // 🔊 LOGIKA SUARA OTOMATIS (DIPERBAIKI UNTUK RESPON INSTAN)
+            if (result.nama_id) {
+                stopAllAudio(); 
 
-            alert(
-                `Gambar belum dikenali dengan baik.\n` +
-                `Confidence: ${persen}% .\n\n` 
-            );
-
-            textID.textContent = "-";
-            textEN.textContent = "-";
-            btnAudioID.style.display = "none";
-            btnAudioEN.style.display = "none";
-
-            if (reloadBtn) reloadBtn.style.display = "inline-block";
-            return;
-        }
-
-
-        // ✅ Update teks hasil nama sayur
-        textID.textContent = result.nama_id || "-";
-        textEN.textContent = result.nama_en || "-";
-
-        // ✅ Tampilkan tombol Play (meskipun kosong tetap biar UI konsisten)
-        btnAudioID.style.display = "inline-block";
-        btnAudioEN.style.display = "inline-block";
-
-        // ✅ Tampilkan tombol Reload (SELALU)
-        if (reloadBtn) reloadBtn.style.display = "inline-block";
-
-        // 🔊 Jika ada hasil nama_id → anggap sukses
-        if (result.nama_id) {
-            successSound.play();
-
-            successSound.onended = () => {
+                // 🚀 Tahap 1: Siapkan (Preload) audio sayuran secepat mungkin
                 if (result.audio_nama_id) {
                     autoVegSound = new Audio(result.audio_nama_id);
-                    autoVegSound.play();
+                    if (result.audio_nama_id.endsWith(".mp4")) autoVegSound.type = "audio/mp4";
+                    autoVegSound.load(); 
+                }
+
+                // 🚀 Tahap 2: Putar successSound ("cling")
+                successSound.play();
+
+                // 🚀 Tahap 3: Gunakan pemicu ganda untuk kecepatan maksimal
+                let vegetablePlayed = false;
+                const playVegetable = () => {
+                    if (!vegetablePlayed && autoVegSound) {
+                        vegetablePlayed = true;
+                        autoVegSound.play().catch(e => console.warn("Auto play blocked:", e));
+                    }
+                };
+
+                // Pemicu A: Langsung putar setelah 500ms (sebelum cling benar-benar habis)
+                setTimeout(playVegetable, 500); 
+
+                // Pemicu B: Cadangan jika suara cling sangat pendek
+                successSound.onended = playVegetable;
+            }
+
+            // --- Tombol Play Indonesia ---
+            btnAudioID.onclick = () => {
+                let audioList = [];
+                const formattedName = result.nama_id.charAt(0).toUpperCase() + result.nama_id.slice(1);
+                audioList.push(`/static/sounds/id/sayuran/${formattedName}.mp4`);
+                playAudioSequence(audioList, btnAudioID);
+            };
+
+            // --- Tombol Play English ---
+            btnAudioEN.onclick = () => {
+                let audioList = [];
+                if (result.nama_id && result.nama_id !== "-") {
+                    const formattedName = result.nama_id.charAt(0).toUpperCase() + result.nama_id.slice(1);
+                    const audioManfaatPath = `/static/sounds/Manfaat/${formattedName}.mp3`;
+                    audioList.push(audioManfaatPath);
+                }
+                if (audioList.length > 0) {
+                    playAudioSequence(audioList, btnAudioEN);
                 }
             };
-        } else {
+
+        } catch (err) {
+            console.error("Gagal klasifikasi:", err);
+            stopAllAudio();
             errorSound.play();
+            alert("Gagal menghubungi server Flask.");
+            if (reloadBtn) reloadBtn.style.display = "inline-block";
         }
-
-        // --- Tombol Play Indonesia ---
-        btnAudioID.onclick = () => {
-            stopAllAudio();
-            let audioList = [];
-            if (result.audio_nama_id) audioList.push(result.audio_nama_id);
-            if (audioList.length > 0) playAudioSequence(audioList, btnAudioID);
-        };
-
-        // --- Tombol Play English ---
-        // --- Tombol Play English (Hanya pakai file Manfaat) ---
-        btnAudioEN.onclick = () => {
-            stopAllAudio();
-            let audioList = [];
-
-            // 1. KITA HAPUS result.audio_nama_en agar TTS lama tidak bunyi lagi
-            
-            // 2. Langsung masukkan suara Manfaat dari folder static/sounds/Manfaat/
-            if (result.nama_id && result.nama_id !== "-") {
-                // Pastikan path benar. Kita pakai nama_id (Tomat, Kangkung)
-                const audioManfaatPath = `/static/sounds/Manfaat/${result.nama_id}.mp3`;
-                audioList.push(audioManfaatPath);
-            }
-
-            if (audioList.length > 0) {
-                playAudioSequence(audioList, btnAudioEN);
-            } else {
-                console.warn("File audio di folder Manfaat tidak ditemukan untuk: " + result.nama_id);
-            }
-        };
-
-    } catch (err) {
-        console.error("Gagal klasifikasi:", err);
-        errorSound.play();
-        alert("Gagal menghubungi server Flask.");
-
-        if (reloadBtn) reloadBtn.style.display = "inline-block";
     }
-}
-
-
 
     // --- Ambil foto dari kamera ---
     captureBtn.addEventListener("click", () => {
-        stopAllAudio(); // 🔴 stop audio dulu
+        stopAllAudio();
         const context = canvas.getContext("2d");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
 
-        // Balik biar hasil foto normal
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
-
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         context.setTransform(1, 0, 0, 1, 0, 0);
 
         video.style.display = "none";
         canvas.style.display = "block";
-
         canvas.toBlob(blob => { classifyImage(blob); }, "image/jpeg");
     });
 
     // --- Upload dari file ---
     uploadBtn.addEventListener("click", () => { 
-        stopAllAudio(); // 🔴 stop audio dulu
+        stopAllAudio();
         fileInput.click(); 
     });
 
     fileInput.addEventListener("change", (event) => {
-        stopAllAudio(); // 🔴 stop audio dulu
+        stopAllAudio();
         const file = event.target.files[0];
         if (!file) return;
 
@@ -277,22 +279,16 @@ async function classifyImage(blob) {
             const img = new Image();
             img.onload = function() {
                 const context = canvas.getContext("2d");
-
                 canvas.width = 600;
                 canvas.height = 380;
-
                 const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
                 const x = (canvas.width - img.width * scale) / 2;
                 const y = (canvas.height - img.height * scale) / 2;
-
                 context.fillStyle = "black";
                 context.fillRect(0, 0, canvas.width, canvas.height);
-
                 context.drawImage(img, x, y, img.width * scale, img.height * scale);
-
                 video.style.display = "none";
                 canvas.style.display = "block";
-
                 canvas.toBlob(blob => { classifyImage(blob); }, "image/jpeg");
             };
             img.src = e.target.result;
@@ -303,22 +299,15 @@ async function classifyImage(blob) {
     // --- Tombol Reload ---
     if (reloadBtn) {
         reloadBtn.addEventListener("click", () => {
-            stopAllAudio(); // 🔴 stop audio dulu
+            stopAllAudio();
             textID.textContent = "";
             textEN.textContent = "";
             btnAudioID.style.display = "none";
             btnAudioEN.style.display = "none";
-
             canvas.style.display = "none";
             video.style.display = "block";
-
             const ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => { video.srcObject = stream; })
-                .catch(err => { console.error("Tidak bisa akses kamera: ", err); });
-
             reloadBtn.style.display = "none";
         });
     }

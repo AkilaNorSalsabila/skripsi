@@ -131,7 +131,7 @@ def klasifikasi():
     en_text = data['en']
 
     # 🔹 Audio Indonesia (rekaman kamu)
-    audio_nama_id = f"/static/sounds/id/sayuran/{nama_id}.m4a"
+    audio_nama_id = f"/static/sounds/id/sayuran/{nama_id}.mp4"
 
     # 🔹 Audio Inggris (file statis dari JSON)
     audio_nama_en = data.get("audio_en")

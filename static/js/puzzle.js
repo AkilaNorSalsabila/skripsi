@@ -94,7 +94,7 @@ function playInstructionStart() {
     if (lang === "en") {
         soundVegetable.src = "/static/sounds/Puzzle.mp3";
     } else {
-        soundVegetable.src = "/static/sounds/id/ui/puzzle.m4a";
+        soundVegetable.src = "/static/sounds/id/ui/puzzle.mp4";
     }
     soundVegetable.play().catch(e => console.log("Audio play blocked", e));
 }
@@ -321,10 +321,12 @@ function loadQuestion(no) {
 }
 
 // --- RENDER PIECES ---
+// --- RENDER PIECES ---
 function renderPieces(pieces) {
     const container = document.getElementById("pieces-container");
     container.innerHTML = "";
 
+    // Grid tetap dipertahankan untuk layouting awal
     if (pieces.length === 12) {
         container.style.gridTemplateColumns = "repeat(4, auto)";
     } else if (pieces.length === 4) {
@@ -338,10 +340,23 @@ function renderPieces(pieces) {
         img.src = p.src;
         img.dataset.id = p.id;
         img.draggable = true;
+        
+        // 🔥 PENTING: Set ukuran secara eksplisit
+        const targetWidth = p.slot.width;
+        const targetHeight = p.slot.height;
+        
+        img.style.width = targetWidth + "px";
+        img.style.height = targetHeight + "px";
+        img.style.minWidth = targetWidth + "px";   // 🔥 TAMBAH INI
+        img.style.minHeight = targetHeight + "px"; // 🔥 TAMBAH INI
+        img.style.maxWidth = targetWidth + "px";   // 🔥 TAMBAH INI
+        img.style.maxHeight = targetHeight + "px"; // 🔥 TAMBAH INI
+        img.style.objectFit = "contain";
+        img.style.display = "block"; // 🔥 TAMBAH INI
+
         container.appendChild(img);
     });
 }
-
 function shufflePieces() {
     const container = document.getElementById("pieces-container");
     const arr = Array.from(container.children);
@@ -388,38 +403,89 @@ function initDragDrop() {
 
     pieces.forEach(piece => {
         // DESKTOP DRAG START
-        piece.addEventListener("dragstart", e => {
-            if (timeExpired) { e.preventDefault(); return; }
-            draggedPiece = e.target;
-            e.dataTransfer.setData("text", draggedPiece.dataset.id);
-        });
+       piece.addEventListener("dragstart", e => {
+    if (timeExpired) { 
+        e.preventDefault(); 
+        return; 
+    }
+    
+    draggedPiece = e.target;
+    const rect = draggedPiece.getBoundingClientRect();
+    
+    // Paksa ukuran fix
+    draggedPiece.style.width = rect.width + "px";
+    draggedPiece.style.height = rect.height + "px";
+    
+    // 🔥 CANVAS dengan scale untuk sharpness
+    const canvas = document.createElement('canvas');
+    const scale = 2;
+    
+    canvas.width = rect.width * scale;
+    canvas.height = rect.height * scale;
+    
+    // 🔥 TAPI canvas.style tetap ukuran asli (ini kuncinya!)
+    canvas.style.width = rect.width + "px";
+    canvas.style.height = rect.height + "px";
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Disable smoothing
+    ctx.imageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.msImageSmoothingEnabled = false;
+    
+    // Draw dengan ukuran scaled
+    ctx.drawImage(draggedPiece, 0, 0, rect.width * scale, rect.height * scale);
+    
+    // 🔥 OFFSET berdasarkan ukuran VISUAL (style), bukan canvas internal
+    const offsetX = rect.width / 2;
+    const offsetY = rect.height / 2;
+    
+    e.dataTransfer.setDragImage(canvas, offsetX, offsetY);
+    e.dataTransfer.setData("text", draggedPiece.dataset.id);
+});
 
         // MOBILE TOUCH START
-        piece.addEventListener("touchstart", (e) => {
-            if (timeExpired) return;
-            e.preventDefault();
-            
-            draggedPiece = piece;
-            
-            const touch = e.touches[0];
-            const rect = piece.getBoundingClientRect();
-            touchStartX = touch.clientX - rect.left;
-            touchStartY = touch.clientY - rect.top;
-            
-            touchClone = piece.cloneNode(true);
-            touchClone.classList.add("touch-dragging-puzzle");
-            touchClone.style.position = "fixed";
-            touchClone.style.pointerEvents = "none";
-            touchClone.style.zIndex = "9999";
-            touchClone.style.opacity = "0.8";
-            touchClone.style.width = piece.offsetWidth + "px";
-            touchClone.style.height = piece.offsetHeight + "px";
-            touchClone.style.left = (touch.clientX - touchStartX) + "px";
-            touchClone.style.top = (touch.clientY - touchStartY) + "px";
-            
-            document.body.appendChild(touchClone);
-            piece.style.opacity = "0.3";
-        }, { passive: false });
+        // MOBILE TOUCH START
+piece.addEventListener("touchstart", (e) => {
+    if (timeExpired) return;
+    e.preventDefault();
+    
+    draggedPiece = piece;
+    
+    const touch = e.touches[0];
+    const rect = piece.getBoundingClientRect();
+    touchStartX = touch.clientX - rect.left;
+    touchStartY = touch.clientY - rect.top;
+    
+    touchClone = piece.cloneNode(true);
+    touchClone.classList.add("touch-dragging-puzzle");
+    
+    // 🔥 PERBAIKAN: Gunakan ukuran dari getBoundingClientRect (ukuran render aktual)
+    const actualWidth = rect.width;
+    const actualHeight = rect.height;
+    
+    touchClone.style.position = "fixed";
+    touchClone.style.pointerEvents = "none";
+    touchClone.style.zIndex = "9999";
+    touchClone.style.opacity = "0.8";
+    
+    // 🔥 Set ukuran dengan min/max agar tidak berubah
+    touchClone.style.width = actualWidth + "px";
+    touchClone.style.height = actualHeight + "px";
+    touchClone.style.minWidth = actualWidth + "px";
+    touchClone.style.minHeight = actualHeight + "px";
+    touchClone.style.maxWidth = actualWidth + "px";
+    touchClone.style.maxHeight = actualHeight + "px";
+    touchClone.style.objectFit = "contain";
+    
+    touchClone.style.left = (touch.clientX - touchStartX) + "px";
+    touchClone.style.top = (touch.clientY - touchStartY) + "px";
+    
+    document.body.appendChild(touchClone);
+    piece.style.opacity = "0.3";
+}, { passive: false });
 
         // MOBILE TOUCH MOVE
         piece.addEventListener("touchmove", (e) => {
@@ -537,6 +603,18 @@ function puzzleSolved() {
     if (questionSolved) return; 
     questionSolved = true;
     stopTimer(); 
+
+    // MENGHILANGKAN GARIS HITAM/BIRU TOTAL
+    const slots = document.querySelectorAll(".slot");
+    slots.forEach(s => {
+        s.style.display = "none";  // Benar-benar hapus dari layar
+    });
+
+    // MEMASTIKAN GAMBAR MENUTUPI CELAH
+    const placedPieces = document.querySelectorAll("#board img:not(.siluet-bg):not(#full-image)");
+    placedPieces.forEach(p => {
+        p.style.transform = "translateZ(0) scale(1.01)"; // Paksa tumpang tindih 1%
+    });
     
     totalScore += scorePerSolved;
     localStorage.setItem("puzzleScore", totalScore);
@@ -575,7 +653,7 @@ function puzzleSolved() {
         } else {
             // Jalur Audio Indonesia
             const formattedName = soal.name_id; 
-            soundVegetable.src = `/static/sounds/id/notif_puzzle/${formattedName}.m4a`;
+            soundVegetable.src = `/static/sounds/id/notif_puzzle/${formattedName}.mp4`;
             soundVegetable.play().catch(e => console.error("Audio ID missing", e));
             soundVegetable.onended = null;
         }
@@ -587,7 +665,7 @@ function puzzleSolved() {
         const canvas = document.getElementById("confetti");
         if (canvas) canvas.remove(); 
         nextQuestion();
-    }, 7000); 
+    }, 8000); 
 
     console.log("SCORE SOLVED:", totalScore);
 }

@@ -15,7 +15,7 @@ body {
 /* ========== CONFETTI ========== */
 #confetti {
   position: fixed;
-  top: 0; left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
@@ -52,18 +52,12 @@ body {
 }
 
 /* Timer Danger */
-/* Timer Danger - versi bersih (tanpa bold putih) */
 #timer.timer-danger {
   background: #ff5252 !important;
   color: #ffffff !important;
-
-  /* 🔥 ini kuncinya */
   text-shadow: none !important;
-  font-weight: normal !important;
-
   animation: pulseDanger 0.5s infinite alternate;
 }
-
 
 /* ========== DEKORASI ========== */
 .decor {
@@ -111,17 +105,28 @@ body {
   padding: 20px;
 }
 
+/* BOARD */
 #board {
   position: relative;
   flex-shrink: 0;
 }
 
+/* SLOT */
 .slot {
   position: absolute;
   border: 2px dashed rgba(2, 136, 209, 0.4);
   z-index: 5;
+  transition: opacity 0.5s ease;
 }
 
+/* Fix seam tanpa blur */
+#board img:not(#full-image):not(.siluet-bg) {
+  outline: 1px solid transparent;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Background puzzle */
 #full-image,
 #siluet,
 .siluet-bg {
@@ -132,24 +137,40 @@ body {
   object-fit: contain;
 }
 
-/* ========== PIECES ========== */
+/* ========== PIECES CONTAINER ========== */
 #pieces-container {
   display: grid;
   grid-template-columns: repeat(2, auto);
   gap: 12px;
   justify-items: center;
+  align-items: center;
 }
 
+/* PIECE STABIL & TAJAM */
 #pieces-container img {
-  width: 120px;
   cursor: grab;
   border-radius: 10px;
-  mix-blend-mode: multiply;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   touch-action: none;
+  display: block;
+  object-fit: contain;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-/* ========== OVERLAY TIME UP / SALAH ========== */
+#pieces-container img:active {
+  cursor: grabbing;
+}
+
+/* Touch clone */
+.touch-dragging-puzzle {
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  backface-visibility: hidden;
+}
+
+/* ========== OVERLAY TIME UP ========== */
 .wrong-overlay {
   position: fixed;
   inset: 0;
@@ -170,7 +191,6 @@ body {
 .wrong-content h1 {
   font-size: 6rem;
   margin: 0;
-  line-height: 1;
 }
 
 .wrong-content p {
@@ -178,16 +198,15 @@ body {
   margin-top: 12px;
 }
 
-/* ========== ANIMASI DANGER ========== */
+/* ========== ANIMASI ========== */
 .piece-danger-anim {
   animation: pieceZoom 0.5s infinite alternate ease-in-out;
   filter: drop-shadow(0 0 10px rgba(255,82,82,0.5));
-  z-index: 50;
 }
 
 @keyframes pieceZoom {
   from { transform: scale(1); }
-  to { transform: scale(1.15); }
+  to { transform: scale(1.08); }
 }
 
 @keyframes pulseDanger {
@@ -196,13 +215,13 @@ body {
 }
 
 @keyframes pop {
-  0% { transform: scale(0.7); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
-/* Layar Berkedip Saat Kritis */
+/* Screen flash */
 .screen-danger-active {
-  animation: flashRed 1s infinite !important;
+  animation: flashRed 1s infinite;
 }
 
 @keyframes flashRed {
@@ -211,8 +230,8 @@ body {
   100% { background-color: #EAF7FF; }
 }
 
-/* ========== RESPONSIVE PORTRAIT (HP) ========== */
-@media screen and (orientation: portrait) {
+/* ========== RESPONSIVE PORTRAIT ========== */
+@media (orientation: portrait) {
   #game-container {
     flex-direction: column;
     margin-top: 60px;
@@ -232,11 +251,6 @@ body {
     gap: 15px;
   }
 
-  #pieces-container img {
-    width: 28vw;
-    max-width: 140px;
-  }
-
   #timer {
     font-size: 16px;
     left: 65px;
@@ -254,15 +268,10 @@ body {
 }
 
 /* ========== RESPONSIVE LANDSCAPE KECIL ========== */
-@media screen and (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 500px) {
   #board {
     width: 35vh;
     height: 35vh;
-  }
-
-  #pieces-container img {
-    width: 40vh;
-    max-width: 100px;
   }
 }
 
@@ -276,6 +285,14 @@ body {
 
 .back-button img {
   width: 45px;
+}
+
+/* ========== MESSAGE ========== */
+#message {
+  font-size: 2rem;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #4CAF50;
 }
 
 /* UTIL */

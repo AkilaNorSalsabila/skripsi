@@ -14,6 +14,19 @@ if (localStorage.getItem("MENENGAH_Q_VERSION") !== MENENGAH_QUESTION_VERSION) {
 // MENENGAH GAME JS
 // ==================
 localStorage.setItem("lastLevel", "menengah");
+
+// 🔥 TAMBAHAN BARU: Deteksi back dari browser
+const isBackFromBrowser = (performance.navigation && performance.navigation.type === 2) || 
+                          (performance.getEntriesByType && performance.getEntriesByType("navigation")[0]?.type === "back_forward");
+
+// JIKA back dari browser, RESET semua data
+if (isBackFromBrowser) {
+  localStorage.removeItem("menengahQuestions");
+  localStorage.removeItem("menengahCurrent");
+  localStorage.removeItem("menengahScore");
+  localStorage.removeItem("menengahStarted");
+}
+
 if (!localStorage.getItem("menengahStarted")) {
   localStorage.setItem("menengahStarted", "true");
   localStorage.setItem("menengahScore", "0");
@@ -307,32 +320,30 @@ function shuffle(arr){
 // ==========================
 
 // 1. Ambil data yang tersimpan
+
 let allQuestions = JSON.parse(localStorage.getItem("menengahQuestions"));
 
-// 2. Cek apakah soal kosong atau versi berubah
-if (!allQuestions || localStorage.getItem("MENENGAH_Q_VERSION") !== MENENGAH_QUESTION_VERSION) {
-    
-    // 🔥 DEFINISIKAN ULANG SHUFFLE DI SINI
+// JIKA tidak ada (berarti baru masuk game / back dari browser), BUAT soal baru
+if (!allQuestions) {
     const sm = shuffle(SangatMudah);
     const m = shuffle(Mudah);
     const mid = shuffle(Menengah);
     const ms = shuffle(MenengahKeSulit);
     const h = shuffle(sulit);
 
-    // Ambil masing-masing 1 soal dari tiap tingkat kesulitan (Total 5 Soal)
+    // Ambil masing-masing 1 soal dari tiap tingkat kesulitan
     allQuestions = [sm[0], m[0], mid[0], ms[0], h[0]];
     
-    // Simpan ke localStorage
+    // Simpan ke localStorage agar tidak berubah saat refresh/pindah soal
     localStorage.setItem("menengahQuestions", JSON.stringify(allQuestions));
-    localStorage.setItem("MENENGAH_Q_VERSION", MENENGAH_QUESTION_VERSION);
     
-    // Reset Progres & Skor
+    // Setel ulang progres ke 0
     currentQuestion = 0;
     score = 0;
     localStorage.setItem("menengahCurrent", "0");
     localStorage.setItem("menengahScore", "0");
 } else {
-    // Jika soal sudah ada, cukup ambil progresnya saja
+    // JIKA data sudah ada, ambil progres terakhir agar tidak balik ke soal 1
     currentQuestion = parseInt(localStorage.getItem("menengahCurrent") || "0", 10);
     score = parseInt(localStorage.getItem("menengahScore") || "0", 10);
 }
@@ -732,9 +743,23 @@ function finishGame() {
 // ==================
 // INITIALIZATION
 // ==================
+
 window.onload = () => { loadQuestion(); };
 
-
+// 🔥 TAMBAHAN BARU: Event listener untuk pageshow (back browser)
+window.addEventListener('pageshow', (event) => {
+    // Jika halaman dimuat dari cache (back browser)
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // RESET semua data game
+        localStorage.removeItem("menengahQuestions");
+        localStorage.removeItem("menengahCurrent");
+        localStorage.removeItem("menengahScore");
+        localStorage.removeItem("menengahStarted");
+        
+        // Reload halaman untuk mulai dari awal
+        window.location.reload();
+    }
+});
 
 const btnBack = document.getElementById("btn-back");
 if (btnBack) {

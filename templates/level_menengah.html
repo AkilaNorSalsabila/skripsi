@@ -48,6 +48,7 @@
   <audio id="sfx-correct" src="{{ url_for('static', filename='sounds/correct.mp3') }}"></audio>
   <audio id="sfx-wrong" src="{{ url_for('static', filename='sounds/wrong.mp3') }}"></audio>
   <audio id="sayurAudio"></audio>
+  <body onpageshow="if (event.persisted) window.location.reload();"></body>
 
   <!-- JS -->
   <script src="{{ url_for('static', filename='js/menengah.js') }}"></script>

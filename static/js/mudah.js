@@ -39,11 +39,11 @@ const bankSangatMudah = [
     }
   },
   {
-    image: "/static/img/paprika.png",
-    correctAnswer: { id: "Paprika", en: "Bell Pepper" },
+    image: "/static/img/kentang.png",
+    correctAnswer: { id: "Kentang", en: "Potato" },
     answers: {
-      id: ["Paprika", "Bayam", "Kentang"],
-      en: ["Bell Pepper", "spinach", "potato"]
+      id: ["Kentang", "Paprika", "Bayam"],
+      en: ["Potato", "Radish", "Carrot"]
     }
   },
   {
@@ -114,11 +114,11 @@ const bankMudah = [
     }
   },
   {
-    image: "/static/img/kentang.png",
-    correctAnswer: { id: "Kentang", en: "Potato" },
+    image: "/static/img/paprika.png",
+    correctAnswer: { id: "Paprika", en: "Bell Pepper" },
     answers: {
-      id: ["Kentang", "Lobak", "Wortel"],
-      en: ["Potato", "Radish", "Carrot"]
+      id: ["Paprika", "Tomat", "Wortel"],
+      en: ["Bell Pepper", "Tomato", "Carrot"]
     }
   },
 
@@ -222,8 +222,8 @@ const bankSedangkeSulit = [
     image: "/static/img/jantung_pisang.png",
     correctAnswer: { id: "jantung pisang", en: "Banana Blossom" },
     answers: {
-      id: ["jantung pisang", "Jamur Kancing", "Jamur Tiram"],
-      en: ["Banana Blossom", "Button Mushroom", "Oyster Mushroom"]
+      id: ["jantung pisang", "Jamur Kancing", "Rebung"],
+      en: ["Banana Blossom", "Button Mushroom", "Bamboo Shoot"]
     }
   },
 
@@ -250,8 +250,8 @@ const bankSulit = [
     image: "/static/img/jamur_kancing.png",
     correctAnswer: { id: "Jamur Kancing", en: "Button Mushroom" },
     answers: {
-      id: ["Jamur Kancing", "Jantung Pisang", "Jamur Tiram"],
-      en: ["Button Mushroom", "Banana Blossom", "Oyster mushroom"]
+      id: ["Jamur Kancing", "Jantung Pisang", "Bawang Bombay"],
+      en: ["Button Mushroom", "Banana Blossom", "Onion"]
     }
   },
   {
@@ -364,7 +364,7 @@ function speakInstruksi() {
   
   let path = (lang === "en") 
     ? "/static/sounds/En/Tebak nama.mp3" 
-    : "/static/sounds/id/ui/pilih_nama.mp3";
+    : "/static/sounds/id/ui/pilih_nama.mp4";
 
   idPlayer.src = path;
   
@@ -378,7 +378,7 @@ function speakInstruksi() {
   }).catch(e => {
     // Jika file .mp3 instruksi ID tidak ketemu, coba .m4a
     if (lang === "id") {
-      idPlayer.src = "/static/sounds/id/ui/pilih_nama.m4a";
+      idPlayer.src = "/static/sounds/id/ui/pilih_nama.mp4";
       idPlayer.play().then(() => {
         idPlayer.onended = () => playOptionsSequentially(0);
       }).catch(() => playOptionsSequentially(0));
@@ -420,7 +420,7 @@ function playOptionsSequentially(idx) {
   }).catch(err => {
     // Fallback .m4a jika .mp3 tidak ada
     if (lang === "id") {
-      idPlayer.src = `/static/sounds/${folder}/${fileName}.m4a`;
+      idPlayer.src = `/static/sounds/${folder}/${fileName}.mp4`;
       idPlayer.play()
         .then(() => { idPlayer.onended = () => playOptionsSequentially(idx + 1); })
         .catch(() => playOptionsSequentially(idx + 1));

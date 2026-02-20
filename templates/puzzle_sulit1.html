@@ -66,19 +66,19 @@
   <script>
     const bankSoal = [
   {
-    width: 411, height: 264,
-    full: "{{ url_for('static', filename='img/jantung_full.png') }}",
-    siluet: "{{ url_for('static', filename='img/jantung_siluet.png') }}",
-    pieces: [
-      { id: 1, src: "{{ url_for('static', filename='img/jantung_piece1.png') }}", 
-        slot: { left: 206, top: 0, width: 205, height: 264.19 } },
-      { id: 2, src: "{{ url_for('static', filename='img/jantung_piece2.png') }}", 
-        slot: { left: 0, top: 0, width: 206, height: 264.19 } }
-    ],
-    name_id: "Jantung Pisang",
-    name_en: "Banana Blossom",
-    sound_id: "{{ url_for('static', filename='sounds/jantungpisang_id.OGG') }}",
-  },
+  width: 411, height: 264,
+  full: "{{ url_for('static', filename='img/jantung_full.png') }}",
+  siluet: "{{ url_for('static', filename='img/jantung_siluet.png') }}",
+  pieces: [
+    { id: 1, src: "{{ url_for('static', filename='img/jantung_piece1.png') }}", 
+      slot: { left: 206, top: 0, width: 205, height: 264 } },  // 264.19 → 264
+    { id: 2, src: "{{ url_for('static', filename='img/jantung_piece2.png') }}", 
+      slot: { left: 0, top: 0, width: 206, height: 264 } }     // 264.19 → 264
+  ],
+  name_id: "Jantung Pisang",
+  name_en: "Banana Blossom",
+  sound_id: "{{ url_for('static', filename='sounds/jantungpisang_id.OGG') }}",
+},
 
   {
     width: 406, height: 345,
@@ -186,7 +186,7 @@
   sound_id: "{{ url_for('static', filename='sounds/timun_id.OGG') }}",
 },
 {
-  width: 408, height: 391.65,
+  width: 408, height: 392,
   full: "{{ url_for('static', filename='img/terong_full.png') }}",
   siluet: "{{ url_for('static', filename='img/terong_siluet.png') }}",
   pieces: [
@@ -197,10 +197,10 @@
       slot: { left: 0, top: 0, width: 204, height: 196 } },     // kiri atas
 
     { id: 3, src: "{{ url_for('static', filename='img/terong_piece3.png') }}", 
-      slot: { left: 204, top: 196, width: 204, height: 195.65 } }, // kanan bawah
+      slot: { left: 204, top: 196, width: 204, height: 195 } }, // kanan bawah
 
     { id: 4, src: "{{ url_for('static', filename='img/terong_piece4.png') }}", 
-      slot: { left: 0, top: 196, width: 204, height: 195.65 } }   // kiri bawah
+      slot: { left: 0, top: 196, width: 204, height: 195 } }   // kiri bawah
   ],
   name_id: "Terong",
   name_en: "Eggplant",

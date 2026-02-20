@@ -6,54 +6,63 @@
   <title>Notif Level Mudah</title>
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/mudah_notif.css') }}">
+  <style>
+    #veg-name {
+      display: inline-block;
+      white-space: pre; 
+    }
+    .syllable {
+      display: inline-block;
+      padding: 0 !important;
+      margin: 0 !important;
+      transition: all 0.2s ease;
+    }
+    .syllable.active {
+      color: #FFCA3A !important; 
+      transform: scale(1.2);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
-  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
-  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
+  <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left">
+  <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right">
 
   <header class="notif-header">
     <h1>
       <span id="notif-text"></span><br>
       <span id="veg-name"></span>
     </h1>
-    <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
-      <img src="{{ url_for('static', filename='img/sound.png') }}" alt="Suara">
+    <button id="btn-speak" class="speak-btn">
+      <img src="{{ url_for('static', filename='img/sound.png') }}">
     </button>
   </header>
 
   <main class="notif-main">
     <div class="veg-frame">
-      <img id="notif-veg" src="" alt="">
+      <img id="notif-veg" src="">
     </div>
   </main>
 
-  <div id="confetti-container">
-    <canvas id="confetti"></canvas>
-  </div>
-
+  <div id="confetti-container"><canvas id="confetti"></canvas></div>
   <audio id="id-player"></audio>
 
   <script>
-    // --- LOGIKA CONFETTI (DIPERBAIKI RESPONSIVE) ---
+    // --- 1. LOGIKA CONFETTI MEWAH ---
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
-    
-    // Function untuk resize canvas
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
-    
-    // Set ukuran awal
     resizeCanvas();
     
     const pieces = [];
     const colors = ["#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"];
     let timeUp = false;
 
-    // Initialize confetti pieces
     function initPieces() {
-      pieces.length = 0; // Clear existing pieces
+      pieces.length = 0;
       for (let i = 0; i < 150; i++) {
         pieces.push({
           x: Math.random() * canvas.width,
@@ -66,7 +75,6 @@
         });
       }
     }
-    
     initPieces();
 
     function draw() {
@@ -85,122 +93,184 @@
           p.x = Math.random() * canvas.width; 
         }
       });
-      if (!timeUp) {
-        requestAnimationFrame(draw);
-      }
+      if (!timeUp) requestAnimationFrame(draw);
     }
     draw();
 
-    // Handle window resize
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', () => {
       resizeCanvas();
-      // Reinitialize pieces dengan posisi baru
-      pieces.forEach(p => {
-        if (p.x > canvas.width) p.x = Math.random() * canvas.width;
-      });
+      pieces.forEach(p => { if (p.x > canvas.width) p.x = Math.random() * canvas.width; });
     });
 
-    // Handle orientation change (mobile)
-    window.addEventListener('orientationchange', function() {
-      setTimeout(() => {
-        resizeCanvas();
-      }, 100);
-    });
-
-    // --- LOGIKA DATA & DISPLAY ---
+    // --- 2. DATA TIMING EJAAN (DIPISAH BERDASARKAN BAHASA) ---
     const lang = localStorage.getItem("gameLang") || "id";
     const vegData = JSON.parse(localStorage.getItem("notifVeg"));
     const player = document.getElementById("id-player");
+    let activeTimeouts = [];
 
-    const notifText = document.getElementById("notif-text");
-    const vegNameDisplay = document.getElementById("veg-name");
-    const vegImage = document.getElementById("notif-veg");
-
-    if (vegData) {
-      if (lang === "en") {
-        notifText.textContent = "Correct";
-        vegNameDisplay.textContent = vegData.en;
-      } else {
-        notifText.textContent = "Benar";
-        vegNameDisplay.textContent = vegData.id;
+    const spellingTimings = {
+      // Kelompok Indonesia (id)
+      "id": {
+        "brokoli": [0, 0.7, 1.4],
+        "oyong": [0, 0.8],
+        "jantung pisang": [0, 0.6, 1.1, 1.6],
+        "bawang bombay": [0, 0.6, 1.2, 1.8],
+        "kubis": [0, 0.8], 
+        "mentimun": [0, 0.7, 1.4],
+        "wortel": [0, 0.8], 
+        "tomat": [0, 0.8], 
+        "paprika": [0, 0.7, 1.4],
+        "bayam": [0, 0.8], 
+        "kangkung": [0, 0.9], 
+        "selada": [0, 0.7, 1.4],
+        "lobak": [0, 0.8], 
+        "kentang": [0, 0.8], 
+        "rebung": [0, 1],
+        "asparagus": [1.0, 1.8, 2.6, 3.4], // Lebih Lambat untuk Voice Indonesia
+        "seledri": [0.4, 0.9, 1.8],
+        "buncis": [0, 0.8], 
+        "terong": [0, 0.8], 
+        "sawi hijau": [0, 0.6, 1.2, 1.8], 
+        "sawi putih": [0, 0.6, 1.2, 1.8],
+        "bit merah": [0, 0.7, 1.2], 
+        "jamur kancing": [0, 0.6, 1.1, 1.6],
+        "bawang merah": [0, 0.6, 1.1, 1.6], 
+        "bawang putih": [0, 0.6, 1.2, 1.8],
+        "bawang daun": [0, 0.8, 1.2, 1.7], 
+        "cabai rawit": [0, 0.6, 1.4, 1.9],
+        "daun pakis": [0, 0.6, 1.1, 1.6], 
+        "labu siam": [0, 0.6, 1.1, 1.6],
+        "kacang panjang": [0, 0.6, 1.1, 1.6], 
+        "default": [0, 0.8, 1.6]
+      },
+      // Kelompok English (en)
+      "en": {
+        "broccoli": [0, 0.7, 1.4], 
+        "cabbage": [0, 0.8], 
+        "cucumber": [0, 1.0, 2.6],
+        "carrot": [0, 1.2], 
+        "tomato": [0, 0.8, 1.4], 
+        "bell pepper": [0, 1.1, 2.2],
+        "spinach": [0, 0.8], 
+        "water spinach": [0, 1.1, 2.2, 3.3], 
+        "mustard greens": [0, 0.9, 1.6],
+        "chinese cabbage": [0, 1.0, 2.0, 2.4], 
+        "lettuce": [0, 1.9], 
+        "radish": [0, 1.2],
+        "potato": [0, 0.6, 1.2], 
+        "beetroot": [0, 2], 
+        "button mushroom": [0, 1.2, 2.4, 3.6],
+        "shallot": [0, 0.8], 
+        "garlic": [0, 1.4], 
+        "onion": [0, 1.7],
+        "leek": [0], 
+        "bird's eye chili": [0, 2.8, 4], 
+        "banana blossom": [0, 1.1, 2.2, 3.3, 4.4],
+        "bamboo shoot": [0, 0.9, 1.6], 
+        "fiddlehead fern": [0, 1.3, 2.6, 3.9], 
+        "asparagus": [0, 0.8, 1.8, 2.8], // English Lebih Cepat
+        "luffa": [0, 1], 
+        "chayote": [0, 1.4, 2.3], 
+        "celery": [0, 1],
+        "green beans": [0, 0.8], 
+        "yardlong beans": [0, 1.5, 2.3], 
+        "eggplant": [0, 1],
+        "default": [0, 0.8, 1.6]
       }
-      vegImage.src = vegData.img;
-      vegImage.alt = vegData.id;
-    }
+    };
 
-    // --- LOGIKA AUDIO (PERBAIKAN TOTAL) ---
-
-    // 1. Suara Sayur Saja (Tombol Speaker)
-    function playOnlyVegetable() {
-      if (timeUp || !vegData) return;
+    // --- 3. LOGIKA RENDER TEKS ---
+    function renderSyllables(displayName) {
+      const container = document.getElementById("veg-name");
+      container.innerHTML = "";
       
-      let path = "";
-      if (lang === "en") {
-        path = `/static/sounds/En/${vegData.id}.mp3`;
-      } else {
-        path = `/static/sounds/id/options/${vegData.id}.m4a`;
-      }
-
-      player.src = path;
-      player.play().catch(e => {
-        let altPath = path.endsWith(".m4a") ? path.replace(".m4a", ".mp3") : path.replace(".mp3", ".m4a");
-        player.src = altPath;
-        player.play().catch(err => console.log("Audio tidak ditemukan: " + path));
+      const manualSplit = {
+        "brokoli": ["Bro", "ko", "li"], "oyong": ["O", "yong"], "jantung pisang": ["Jan", "tung", " Pi", "sang"],
+        "kubis": ["Ku", "bis"], "mentimun": ["Men", "ti", "mun"], "wortel": ["Wor", "tel"], "tomat": ["To", "mat"],
+        "paprika": ["Pa", "pri", "ka"], "bayam": ["Ba", "yam"], "kangkung": ["Kang", "kung"], "selada": ["Se", "la", "da"],
+        "lobak": ["Lo", "bak"], "kentang": ["Ken", "tang"], "rebung": ["Re", "bung"], "asparagus": ["As", "pa", "ra", "gus"],
+        "seledri": ["Se", "le", "dri"], "buncis": ["Bun", "cis"], "terong": ["Te", "rong"], "sawi hijau": ["Sa", "wi", " Hi", "jau"],
+        "sawi putih": ["Sa", "wi", " Pu", "tih"], "bit merah": ["Bit", " Me", "rah"], "jamur kancing": ["Ja", "mur", " Kan", "cing"],
+        "bawang merah": ["Ba", "wang", " Me", "rah"], "bawang putih": ["Ba", "wang", " Pu", "tih"], "bawang bombay": ["Ba", "wang", " Bom", "bay"],
+        "bawang daun": ["Ba", "wang", " Da", "un"], "cabai rawit": ["Ca", "bai", " Ra", "wit"], "daun pakis": ["Da", "un", " Pa", "kis"],
+        "labu siam": ["La", "bu", " Si", "am"], "kacang panjang": ["Ka", "cang", " Pan", "jang"],
+        "broccoli": ["Broc", "co", "li"], "cabbage": ["Cab", "bage"], "cucumber": ["Cu", "cum", "ber"], "carrot": ["Car", "rot"],
+        "tomato": ["To", "ma", "to"], "bell pepper": ["Bell", " Pep", "per"], "spinach": ["Spi", "nach"], "water spinach": ["Wa", "ter", " Spi", "nach"],
+        "mustard greens": ["Mus", "tard", " Greens"], "chinese cabbage": ["Chi", "nese", " Cab", "bage"], "lettuce": ["Let", "tuce"], "radish": ["Ra", "dish"],
+        "potato": ["Po", "ta", "to"], "beetroot": ["Beet", "root"], "button mushroom": ["But", "ton", " Mush", "room"], "shallot": ["Shal", "lot"],
+        "garlic": ["Gar", "lic"], "onion": ["On", "ion"], "leek": ["Leek"], "bird's eye chili": ["Bird's", " Eye", " Chili"],
+        "banana blossom": ["Ba", "na", "na", " Blos", "som"], "bamboo shoot": ["Bam", "boo", " Shoot"], "fiddlehead fern": ["Fid", "dle", "head", " Fern"],
+        "luffa": ["Luf", "fa"], "chayote": ["Cha", "yo", "te"], "celery": ["Cel", "ery"], "green beans": ["Green", " Beans"],
+        "yardlong beans": ["Yard", "long", " Beans"], "eggplant": ["Egg", "plant"]
+      };
+      
+      let syls = manualSplit[displayName.toLowerCase()] || [displayName];
+      syls.forEach(s => {
+        const span = document.createElement("span");
+        span.className = "syllable";
+        span.textContent = s;
+        container.appendChild(span);
       });
     }
 
-    // 2. Suara Lengkap (Otomatis saat muncul)
-    function playFullNotification() {
-      if (timeUp || !vegData) return;
+    function playSequence() {
+      if (!vegData) return;
+      activeTimeouts.forEach(clearTimeout);
+      activeTimeouts = [];
 
-      if (lang === "en") {
-        player.src = "/static/sounds/En/Benar.mp3"; 
-        player.play().then(() => {
-          player.onended = () => {
-            playOnlyVegetable();
-            player.onended = null;
-          };
-        }).catch(() => playOnlyVegetable());
-      } else {
-        let fileNameId = `${vegData.id}_id`; 
-        player.src = `/static/sounds/id/notif/${fileNameId}.m4a`;
-        player.play().catch(e => {
-            player.src = `/static/sounds/id/notif/${fileNameId}.mp3`;
-            player.play().catch(err => console.log("Notif Indo tidak ditemukan"));
+      player.src = (lang === "en") ? "/static/sounds/En/Benar.mp3" : "/static/sounds/id/notif_mudah/Notif.mp4";
+      player.play();
+
+      player.onended = () => {
+        player.src = (lang === "en") ? `/static/sounds/En/Notif_Menengah/${vegData.en}.mp3` : `/static/sounds/id/notif_mudah/${vegData.id}.mp4`;
+        player.play();
+
+        const spans = document.querySelectorAll(".syllable");
+        const lowId = ((lang === "en") ? vegData.en : vegData.id).toLowerCase().trim();
+        
+        // AMBIL TIMING BERDASARKAN BAHASA
+        const langGroup = spellingTimings[lang] || spellingTimings["id"];
+        const times = langGroup[lowId] || langGroup["default"];
+        
+        spans.forEach(s => s.classList.remove("active"));
+        times.forEach((t, i) => {
+          let tout = setTimeout(() => {
+            spans.forEach(s => s.classList.remove("active"));
+            if (spans[i]) spans[i].classList.add("active");
+          }, t * 1000);
+          activeTimeouts.push(tout);
         });
-      }
+
+        player.onended = () => {
+          setTimeout(() => spans.forEach(s => s.classList.remove("active")), 500);
+          player.onended = null;
+        };
+      };
     }
 
-    // Jalankan otomatis saat load
     window.addEventListener("load", () => {
-      setTimeout(playFullNotification, 600);
-    });
-
-    // Jalankan saat tombol ditekan
-    document.getElementById("btn-speak").addEventListener("click", () => {
-      playOnlyVegetable();
-    });
-
-    // --- REDIRECT (8 DETIK) ---
-    setTimeout(() => {
-      timeUp = true; 
-      if (!player.paused) {
-        player.pause();
-        player.currentTime = 0;
+      if (vegData) {
+        const displayName = (lang === "en") ? vegData.en : vegData.id;
+        document.getElementById("notif-text").textContent = (lang === "en") ? "Correct!" : "Benar!";
+        renderSyllables(displayName);
+        document.getElementById("notif-veg").src = vegData.img;
+        setTimeout(playSequence, 500);
       }
+    });
 
+    document.getElementById("btn-speak").addEventListener("click", playSequence);
+
+    // Redirect
+    setTimeout(() => {
+      timeUp = true;
       let currentIndex = parseInt(localStorage.getItem("currentIndex") || "0");
-      let totalQuestions = 5;
-
-      if (currentIndex < totalQuestions - 1) {
+      if (currentIndex < 4) {
         localStorage.setItem("currentIndex", currentIndex + 1);
         window.location.href = "/level_mudah";
       } else {
-        localStorage.removeItem("sessionQuestions");
-        localStorage.removeItem("currentIndex");
         window.location.href = "/skor";
       }
-    }, 8000);
+    }, 10000);
   </script>
 </body>
 </html>
