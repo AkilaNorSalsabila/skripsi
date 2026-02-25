@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pilihan Game</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/permainan.css') }}">
 
@@ -63,9 +64,8 @@
     const bgMusic = document.getElementById("bg-music");
     const instruction = document.getElementById("instruction-audio");
     
-    // Ambil elemen tombol untuk dianimasikan
     const btnSayuran = document.querySelector('.game-sayuran');
-    const btnHewan = document.querySelector('.game-hewan');
+    const btnHewan   = document.querySelector('.game-hewan');
 
     const voiceMap = {
       sayuran: {
@@ -78,58 +78,47 @@
       }
     };
 
-  
-
     function stopAllAudio() {
       instruction.pause();
       instruction.currentTime = 0;
-      // Hilangkan animasi jika ada yang masih jalan
       btnSayuran.classList.remove('btn-pulse');
       btnHewan.classList.remove('btn-pulse');
-
       Object.values(voiceMap).forEach(item => {
         item.audio.pause();
         item.audio.currentTime = 0;
       });
     }
 
-    // ===== MUSIK BACKGROUND =====
- 
-    let audioUnlocked = false; // Flag biar listener cuma jalan sekali
+    let audioUnlocked = false;
 
     if (sessionStorage.getItem("hasStarted") === "true") {
       bgMusic.volume = 0.03;
-      bgMusic.play().catch(()=>{});
+      bgMusic.play().catch(() => {});
+      instruction.play().catch(() => {});
 
-      // ===== LOGIKA ANIMASI SAAT INSTRUKSI BERJALAN =====
-      instruction.play().catch(()=>{});
-
-      // 🔓 Fallback: Kalau audio ga bunyi otomatis, unlock saat klik pertama
       function unlockAudio() {
         if (!audioUnlocked) {
-          bgMusic.play().catch(()=>{});
-          instruction.play().catch(()=>{});
+          bgMusic.play().catch(() => {});
+          instruction.play().catch(() => {});
           audioUnlocked = true;
           window.removeEventListener('click', unlockAudio);
         }
       }
-      
       window.addEventListener('click', unlockAudio, { once: true });
     }
+
     instruction.onplay = () => bgMusic.volume = 0.015;
-    
+
     instruction.ontimeupdate = () => {
       let time = instruction.currentTime;
 
-      // Contoh: Suara bilang "Sayuran" di detik 2 sampai 4
-      if (time >= 1.5 && time <= 2.5) { 
+      if (time >= 1.5 && time <= 2.5) {
         btnSayuran.classList.add('btn-pulse');
       } else {
         btnSayuran.classList.remove('btn-pulse');
       }
 
-      // Contoh: Suara bilang "Hewan" di detik 5 sampai 7
-      if (time >= 2.6 && time <= 3.7) { 
+      if (time >= 2.6 && time <= 3.7) {
         btnHewan.classList.add('btn-pulse');
       } else {
         btnHewan.classList.remove('btn-pulse');
@@ -142,12 +131,9 @@
       btnHewan.classList.remove('btn-pulse');
     };
 
-    // ===== KLIK GAME =====
-    // ===== KLIK GAME =====
     function goGame(type) {
-      audioUnlocked = true; // Matikan fallback listener
-      
-      stopAllAudio(); 
+      audioUnlocked = true;
+      stopAllAudio();
       bgMusic.volume = 0.015;
 
       const activeBtn = document.querySelector(`.game-${type}`);

@@ -70,6 +70,9 @@ body {
   font-size: 24px;
   font-weight: bold;
   color: #fff;
+  /* Touchscreen support */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menu-card img {
@@ -79,8 +82,17 @@ body {
   margin-top: 15px;
 }
 
-.menu-card:hover {
-  transform: scale(1.05);
+/* Hover HANYA untuk mouse, tidak untuk jari */
+@media (hover: hover) and (pointer: fine) {
+  .menu-card:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* Efek tekan untuk layar sentuh */
+.menu-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* Warna Kartu */
@@ -96,6 +108,12 @@ body {
 
 .btn-pulse {
   animation: pulse 0.6s ease-in-out infinite !important;
+}
+
+/* Tombol start di overlay juga support touch */
+#start-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ========== 2. RESPONSIVE TABLET BESAR (1025px - 1280px) ========== */
@@ -237,7 +255,6 @@ body {
     text-align: left !important;
   }
 
-  /* Dekorasi diperkecil agar tidak mengganggu tombol */
   .decor-left  { width: 80px !important; }
   .decor-right { width: 90px !important; }
 }

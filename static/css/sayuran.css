@@ -149,6 +149,9 @@ body {
     align-items: center;
     padding: 0;
     flex-shrink: 0;
+    /* Touchscreen support */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .play-icon {
@@ -173,9 +176,23 @@ body {
     align-items: center;
     gap: 12px;
     justify-content: center;
+    /* Touchscreen support */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.btn:hover { background: #009acd; }
+/* Hover HANYA untuk mouse, tidak untuk jari */
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover           { background: #009acd; }
+    .btn.reload:hover    { background: #e68900; }
+    .back-button img:hover { transform: scale(1.1); }
+}
+
+/* Efek tekan untuk layar sentuh */
+.btn:active {
+    opacity: 0.85;
+    transform: scale(0.97);
+}
 
 .icon-btn {
     width: 24px;
@@ -195,9 +212,10 @@ body {
     height: auto;
     cursor: pointer;
     transition: transform 0.2s;
+    /* Touchscreen support */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
-
-.back-button img:hover { transform: scale(1.1); }
 
 .audio-wrapper {
     display: flex;
@@ -254,8 +272,7 @@ body {
     top: -3px;
 }
 
-.btn.reload          { background: #ff9800; cursor: pointer; }
-.btn.reload:hover    { background: #e68900; }
+.btn.reload { background: #ff9800; cursor: pointer; }
 
 /* ========== DESKTOP BESAR (≥1440px) ========== */
 @media (min-width: 1440px) {
@@ -312,7 +329,6 @@ body {
 }
 
 /* ========== HP BESAR / TABLET PORTRAIT (601px–768px) ========== */
-/* Samsung Galaxy S series, Note, A54, dll */
 @media (max-width: 768px) and (min-width: 601px) {
     body {
         overflow-y: auto;
@@ -463,7 +479,7 @@ body {
     .bottom-right       { width: 180px; }
 }
 
-/* ========== HP KECIL (≤480px) — TIDAK DIUBAH ========== */
+/* ========== HP KECIL (≤480px) ========== */
 @media (max-width: 480px) {
     body { overflow-y: auto; overflow-x: hidden; }
 
