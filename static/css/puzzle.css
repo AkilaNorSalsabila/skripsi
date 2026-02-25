@@ -111,14 +111,33 @@ body {
   flex-shrink: 0;
 }
 
-/* SLOT */
+/* SLOT — garis dashed saat bermain */
 .slot {
   position: absolute;
-  border:  2px dashed rgba(2, 136, 209, 0.4);
+  border: 2px dashed rgba(2, 136, 209, 0.4);
   z-index: 5;
-  transition: opacity 0.5s ease;
+  box-sizing: border-box;
+  transition: border 0.2s ease, background 0.2s ease;
 }
-/* Fix seam tanpa blur */
+
+/* SLOT — hilang saat sudah diisi piece */
+.slot[data-filled="true"] {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  visibility: hidden !important;
+}
+
+/* SLOT — hilang saat puzzle selesai (class .solved ditambah via JS) */
+.slot.solved {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  visibility: hidden !important;
+  display: none !important;
+}
+
+/* Fix seam antar piece */
 #board img:not(#full-image):not(.siluet-bg) {
   outline: none;
   border: none;
@@ -156,7 +175,7 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   touch-action: none;
   display: block;
-  object-fit: fill; /* ← ubah dari contain ke fill */
+  object-fit: fill;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
