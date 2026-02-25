@@ -84,36 +84,118 @@ body {
 }
 
 /* Warna Kartu */
-.menu-card.sayuran { background-color: #00B4E1; }
-.menu-card.hewan { background-color: #008BAF; }
-.menu-card.permainan { background-color: #4FC3F7; }
+.menu-card.sayuran    { background-color: #00B4E1; }
+.menu-card.hewan      { background-color: #008BAF; }
+.menu-card.permainan  { background-color: #4FC3F7; }
 
 /* Animasi Pulse */
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50%       { transform: scale(1.1); }
 }
 
 .btn-pulse {
   animation: pulse 0.6s ease-in-out infinite !important;
 }
 
-/* ========== 2. RESPONSIVE TABLET (769px - 1024px) ========== */
-@media screen and (max-width: 1024px) and (min-width: 769px) {
-  .menu-buttons {
-    gap: 30px !important;
-    justify-content: center !important;
-  }
-  
+/* ========== 2. RESPONSIVE TABLET BESAR (1025px - 1280px) ========== */
+@media screen and (max-width: 1280px) and (min-width: 1025px) {
   .menu-card {
-    width: 250px !important;
-    height: 320px !important;
-    font-size: 20px !important;
+    width: 20vw !important;
+    height: 40vh !important;
+    font-size: 22px !important;
+  }
+
+  .menu-buttons {
+    gap: 40px !important;
   }
 }
 
-/* ========== 3. RESPONSIVE HP (Maksimal 768px) ========== */
-@media screen and (max-width: 768px) {
+/* ========== 3. RESPONSIVE TABLET (769px - 1024px) ========== */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  .content h1 {
+    font-size: 38px !important;
+    margin-top: 4vh !important;
+    margin-bottom: 4vh !important;
+  }
+
+  .menu-buttons {
+    gap: 30px !important;
+    justify-content: center !important;
+    padding: 0 30px 40px !important;
+  }
+
+  .menu-card {
+    width: 26vw !important;
+    height: 36vh !important;
+    font-size: 20px !important;
+    padding: 16px !important;
+  }
+
+  .menu-card img {
+    width: 80% !important;
+    height: 65% !important;
+  }
+
+  .decor-left  { width: 150px !important; }
+  .decor-right { width: 170px !important; }
+}
+
+/* ========== 4. RESPONSIVE HP BESAR (481px - 768px) ========== */
+@media screen and (max-width: 768px) and (min-width: 481px) {
+  body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  .content h1 {
+    font-size: 32px !important;
+    margin-top: 30px !important;
+    margin-bottom: 25px !important;
+  }
+
+  .menu-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 0 20px 50px !important;
+  }
+
+  .menu-card {
+    width: 80% !important;
+    max-width: 420px !important;
+    height: 130px !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    padding: 15px 25px !important;
+    border-radius: 20px !important;
+    font-size: 22px !important;
+  }
+
+  .menu-card img {
+    width: 85px !important;
+    height: 85px !important;
+    margin-top: 0 !important;
+    margin-right: 25px !important;
+  }
+
+  .menu-card span {
+    font-size: 20px !important;
+    text-align: left !important;
+  }
+
+  .decor-left  { width: 100px !important; }
+  .decor-right { width: 110px !important; }
+}
+
+/* ========== 5. RESPONSIVE HP STANDAR (Maksimal 480px) ========== */
+@media screen and (max-width: 480px) {
   body { 
     overflow-y: auto !important; 
     height: auto !important; 
@@ -127,7 +209,7 @@ body {
 
   .menu-buttons {
     display: flex !important;
-    flex-direction: column !important; /* PAKSA 1 KOLOM KE BAWAH */
+    flex-direction: column !important;
     align-items: center !important;
     gap: 20px !important;
     padding-bottom: 50px !important;
@@ -136,8 +218,8 @@ body {
   .menu-card {
     width: 85% !important; 
     max-width: 320px !important; 
-    height: 120px !important; /* Tinggi kartu lebih ramping di HP */
-    flex-direction: row !important; /* Gambar di Kiri, Teks di Kanan */
+    height: 120px !important;
+    flex-direction: row !important;
     justify-content: flex-start !important;
     padding: 10px 20px !important;
     border-radius: 20px !important;
@@ -156,6 +238,6 @@ body {
   }
 
   /* Dekorasi diperkecil agar tidak mengganggu tombol */
-  .decor-left { width: 80px !important; }
+  .decor-left  { width: 80px !important; }
   .decor-right { width: 90px !important; }
 }

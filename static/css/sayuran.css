@@ -1,4 +1,9 @@
-/* Pastikan body benar-benar tanpa jarak */
+/* ========== DASAR ========== */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 body {
     font-family: sans-serif;
     background-color: #EAF7FF;
@@ -9,7 +14,7 @@ body {
     min-height: 100vh;
 }
 
-/* Corner Sayuran - DIPERBAIKI RESPONSIF */
+/* Corner Sayuran */
 .corner {
     position: fixed;
     display: block;
@@ -33,7 +38,7 @@ body {
     width: 350px;
 }
 
-/* Layout utama: 2 kolom (kamera kiri, translate kanan) */
+/* ========== LAYOUT UTAMA (DESKTOP) ========== */
 .content-row {
     display: flex;
     justify-content: flex-start;
@@ -43,12 +48,10 @@ body {
     z-index: 2;
 }
 
-/* Geser semua isi ke kanan */
 .shift-right {
     margin-left: 200px;
 }
 
-/* Kolom kiri: kamera + tombol */
 .left-col {
     display: flex;
     flex-direction: column;
@@ -67,12 +70,14 @@ body {
     margin-top: 50px;
     margin-left: 30px;
 }
+
 .image-box video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transform: scaleX(-1);
 }
+
 .image-box canvas {
     width: 100%;
     height: 100%;
@@ -88,7 +93,7 @@ body {
     margin-left: 130px;
 }
 
-/* Box translate di kanan kamera */
+/* Box translate */
 .translate-box {
     display: flex;
     flex-direction: column;
@@ -111,7 +116,6 @@ body {
     justify-content: center;
 }
 
-/* Saat sudah ada teks, justify jadi space-between */
 .translate-item.has-text {
     justify-content: space-between;
 }
@@ -122,7 +126,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Teks sayuran */
 .translate-item .text {
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
@@ -131,7 +134,6 @@ body {
     white-space: nowrap;
 }
 
-/* Biar teks + tombol audio sejajar */
 .translate-content {
     display: flex;
     align-items: center;
@@ -139,7 +141,6 @@ body {
     flex: 1;
 }
 
-/* Tombol audio */
 .audio-btn {
     background: none;
     border: none;
@@ -174,9 +175,7 @@ body {
     justify-content: center;
 }
 
-.btn:hover {
-    background: #009acd;
-}
+.btn:hover { background: #009acd; }
 
 .icon-btn {
     width: 24px;
@@ -198,9 +197,7 @@ body {
     transition: transform 0.2s;
 }
 
-.back-button img:hover {
-    transform: scale(1.1);
-}
+.back-button img:hover { transform: scale(1.1); }
 
 .audio-wrapper {
     display: flex;
@@ -220,6 +217,7 @@ body {
     gap: 3px;
     height: 20px;
 }
+
 .wave-icon span {
     display: block;
     width: 3px;
@@ -228,17 +226,16 @@ body {
     border-radius: 2px;
     animation: waveAnim 1s infinite;
 }
+
 .wave-icon span:nth-child(2) { animation-delay: 0.2s; }
 .wave-icon span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes waveAnim {
     0%, 100% { height: 6px; }
-    50% { height: 18px; }
+    50%       { height: 18px; }
 }
 
-.btn.camera img {
-    margin-top: 8px;
-}
+.btn.camera img { margin-top: 8px; }
 
 /* Tombol Reload */
 .reload-box {
@@ -249,7 +246,6 @@ body {
     z-index: 20;
 }
 
-/* khusus ikon reload */
 .btn.reload .icon-btn {
     width: 28px;
     height: 28px;
@@ -258,61 +254,33 @@ body {
     top: -3px;
 }
 
-.btn.reload {
-    background: #ff9800;
-    cursor: pointer;
-}
+.btn.reload          { background: #ff9800; cursor: pointer; }
+.btn.reload:hover    { background: #e68900; }
 
-.btn.reload:hover {
-    background: #e68900;
-}
-
-/* ===== DESKTOP BESAR (1440px keatas) ===== */
+/* ========== DESKTOP BESAR (≥1440px) ========== */
 @media (min-width: 1440px) {
-    .top-left {
-        width: 250px;
-    }
-    
-    .bottom-right {
-        width: 400px;
-    }
+    .top-left     { width: 250px; }
+    .bottom-right { width: 400px; }
 }
 
-/* ===== DESKTOP SEDANG (1200px - 1440px) ===== */
+/* ========== LAPTOP (1200px–1440px) ========== */
 @media (max-width: 1440px) {
-    .top-left {
-        width: 210px;
-    }
-    
-    .bottom-right {
-        width: 350px;
-    }
+    .top-left     { width: 210px; }
+    .bottom-right { width: 350px; }
 }
 
-/* ===== LAPTOP KECIL (1024px - 1200px) ===== */
+/* ========== LAPTOP KECIL (1024px–1200px) ========== */
 @media (max-width: 1200px) {
-    .shift-right {
-        margin-left: 120px;
-    }
-
-    .top-left {
-        width: 180px;
-    }
-    
-    .bottom-right {
-        width: 300px;
-    }
+    .shift-right  { margin-left: 120px; }
+    .top-left     { width: 180px; }
+    .bottom-right { width: 300px; }
 }
 
-/* ===== TABLET (768px - 1024px) ===== */
+/* ========== TABLET LANDSCAPE (768px–1024px) ========== */
 @media (max-width: 1024px) {
-    .shift-right {
-        margin-left: 50px;
-    }
+    .shift-right { margin-left: 50px; }
 
-    .content-row {
-        gap: 20px;
-    }
+    .content-row { gap: 20px; }
 
     .image-box {
         width: 450px;
@@ -321,59 +289,127 @@ body {
         margin-left: 20px;
     }
 
-    .button-box {
-        margin-left: 80px;
-    }
+    .button-box { margin-left: 80px; }
 
-    .translate-box {
-        margin-top: 60px;
-        gap: 15px;
-    }
+    .translate-box { margin-top: 60px; gap: 15px; }
 
     .translate-item {
-        min-width: 180px; /* DIKECILKAN dari 200px */
-        max-width: 280px; /* DIKECILKAN dari 320px */
+        min-width: 180px;
+        max-width: 280px;
         min-height: 60px;
         padding: 8px 15px;
     }
 
-    .translate-item .text {
-        font-size: 20px; /* DIKECILKAN dari 22px */
-    }
+    .translate-item .text { font-size: 20px; }
+    .translate-item .flag { width: 32px; }
 
-    .translate-item .flag {
-        width: 32px; /* DIKECILKAN dari 35px */
-    }
+    .btn { font-size: 18px; padding: 11px 18px; }
 
-    .btn {
-        font-size: 18px; /* DIKECILKAN dari 20px */
-        padding: 11px 18px; /* DIKECILKAN dari 12px 20px */
-    }
-
-    .back-button {
-        left: 20px;
-        top: 20px;
-    }
-
-    .back-button img {
-        width: 45px;
-    }
-
-    .top-left {
-        width: 160px;
-    }
-
-    .bottom-right {
-        width: 280px;
-    }
+    .back-button        { left: 20px; top: 20px; }
+    .back-button img    { width: 45px; }
+    .top-left           { width: 160px; }
+    .bottom-right       { width: 280px; }
 }
 
-/* ===== TABLET KECIL / MOBILE LANDSCAPE (576px - 768px) ===== */
-@media (max-width: 768px) {
+/* ========== HP BESAR / TABLET PORTRAIT (601px–768px) ========== */
+/* Samsung Galaxy S series, Note, A54, dll */
+@media (max-width: 768px) and (min-width: 601px) {
     body {
         overflow-y: auto;
         overflow-x: hidden;
     }
+
+    .shift-right {
+        margin-left: 0;
+        padding: 0 20px;
+    }
+
+    .content-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding-top: 70px;
+    }
+
+    .left-col {
+        align-items: center;
+        width: 100%;
+    }
+
+    .image-box {
+        width: 88vw;
+        max-width: 600px;
+        height: 42vw;
+        max-height: 340px;
+        margin-top: 10px;
+        margin-left: 0;
+    }
+
+    .button-box {
+        margin-left: 0;
+        align-items: center;
+        width: 100%;
+        gap: 14px;
+    }
+
+    .btn {
+        font-size: 5vw;
+        padding: 3vw 5vw;
+        width: 88%;
+        max-width: 480px;
+        justify-content: center;
+        border-radius: 14px;
+    }
+
+    .icon-btn { width: 5vw; height: 5vw; max-width: 28px; max-height: 28px; }
+
+    .translate-box {
+        margin-top: 10px;
+        width: 100%;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .translate-item {
+        width: 88%;
+        max-width: 520px;
+        min-width: unset;
+        min-height: 70px;
+        padding: 14px 22px;
+        font-size: 20px;
+        border-radius: 12px;
+    }
+
+    .translate-item .text { font-size: 5.5vw; }
+    .translate-item .flag { width: 6vw; max-width: 42px; }
+
+    .play-icon        { width: 5vw; height: 5vw; max-width: 30px; max-height: 30px; }
+    .play-icon img    { width: 5vw; height: 5vw; max-width: 30px; max-height: 30px; }
+
+    .reload-box {
+        margin-top: 18px;
+        margin-bottom: 60px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn.reload {
+        width: 88%;
+        max-width: 480px;
+        font-size: 5vw;
+    }
+
+    .btn.reload .icon-btn { width: 5vw; height: 5vw; max-width: 28px; }
+
+    .back-button        { left: 15px; top: 15px; }
+    .back-button img    { width: 5.5vw; max-width: 44px; }
+    .top-left           { width: 15vw; max-width: 130px; }
+    .bottom-right       { width: 26vw; max-width: 220px; }
+}
+
+/* ========== HP STANDAR (481px–600px) ========== */
+@media (max-width: 600px) and (min-width: 481px) {
+    body { overflow-y: auto; overflow-x: hidden; }
 
     .shift-right {
         margin-left: 0;
@@ -387,10 +423,7 @@ body {
         padding-top: 60px;
     }
 
-    .left-col {
-        align-items: center;
-        width: 100%;
-    }
+    .left-col { align-items: center; width: 100%; }
 
     .image-box {
         width: 90vw;
@@ -400,66 +433,84 @@ body {
         margin-left: 0;
     }
 
-    .button-box {
-        margin-left: 0;
-        align-items: center;
-        width: 100%;
+    .button-box { margin-left: 0; align-items: center; width: 100%; }
+
+    .btn {
+        font-size: 18px;
+        padding: 12px 20px;
+        width: 88%;
+        max-width: 400px;
     }
 
-    .translate-box {
-        margin-top: 20px;
-        width: 100%;
-        align-items: center;
-    }
+    .translate-box { margin-top: 20px; width: 100%; align-items: center; }
 
     .translate-item {
-        min-width: 170px; /* DIKECILKAN dari 180px */
-        max-width: 340px; /* DIKECILKAN dari 400px */
-        padding: 9px 16px; /* DIKECILKAN dari 10px 18px */
+        width: 88%;
+        max-width: 400px;
+        min-width: unset;
+        min-height: 60px;
+        padding: 10px 16px;
     }
 
-    .translate-item .text {
-        font-size: 19px; /* DIKECILKAN dari 20px */
-    }
+    .translate-item .text { font-size: 19px; white-space: nowrap; }
+    .translate-item .flag { width: 32px; }
 
-    .translate-item .flag {
-        width: 30px; /* DIKECILKAN dari default */
-    }
+    .reload-box { margin-top: 15px; margin-bottom: 60px; }
 
-    .reload-box {
-        margin-top: 15px;
-        margin-bottom: 80px;
-    }
-
-    .back-button {
-        left: 15px;
-        top: 15px;
-    }
-
-    .back-button img {
-        width: 40px;
-    }
-
-    .top-left {
-        width: 130px;
-    }
-
-    .bottom-right {
-        width: 220px;
-    }
+    .back-button        { left: 15px; top: 15px; }
+    .back-button img    { width: 40px; }
+    .top-left           { width: 110px; }
+    .bottom-right       { width: 180px; }
 }
 
-/* ===== MOBILE (max 576px) ===== */
-@media (max-width: 576px) {
+/* ========== HP KECIL (≤480px) — TIDAK DIUBAH ========== */
+@media (max-width: 480px) {
+    body { overflow-y: auto; overflow-x: hidden; }
+
+    .shift-right { margin-left: 0; padding: 0 15px; }
+
     .content-row {
-        padding-top: 50px;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding-top: 60px;
     }
 
+    .left-col { align-items: center; width: 100%; }
+
     .image-box {
-        width: 92vw;
-        height: 250px;
-        margin-top: 15px;
+        width: 90vw;
+        max-width: 500px;
+        height: 280px;
+        margin-top: 20px;
+        margin-left: 0;
     }
+
+    .button-box { margin-left: 0; align-items: center; width: 100%; }
+
+    .translate-box { margin-top: 20px; width: 100%; align-items: center; }
+
+    .translate-item {
+        min-width: 170px;
+        max-width: 340px;
+        padding: 9px 16px;
+    }
+
+    .translate-item .text { font-size: 19px; }
+    .translate-item .flag { width: 30px; }
+
+    .reload-box { margin-top: 15px; margin-bottom: 80px; }
+
+    .back-button        { left: 15px; top: 15px; }
+    .back-button img    { width: 40px; }
+    .top-left           { width: 130px; }
+    .bottom-right       { width: 220px; }
+}
+
+@media (max-width: 576px) {
+    .content-row { padding-top: 50px; }
+
+    .image-box { width: 92vw; height: 250px; margin-top: 15px; }
 
     .translate-item {
         min-width: 160px;
@@ -469,77 +520,32 @@ body {
         gap: 12px;
     }
 
-    .translate-item .text {
-        font-size: 18px;
-    }
+    .translate-item .text { font-size: 18px; }
+    .translate-item .flag { width: 32px; }
 
-    .translate-item .flag {
-        width: 32px;
-    }
+    .play-icon        { width: 24px; height: 24px; }
+    .play-icon img    { width: 24px; height: 24px; }
 
-    .play-icon {
-        width: 24px;
-        height: 24px;
-    }
+    .btn { font-size: 18px; padding: 12px 18px; }
 
-    .play-icon img {
-        width: 24px;
-        height: 24px;
-    }
+    .icon-btn             { width: 22px; height: 22px; }
+    .btn.reload .icon-btn { width: 24px; height: 24px; }
 
-    .btn {
-        font-size: 18px;
-        padding: 12px 18px;
-    }
-
-    .icon-btn {
-        width: 22px;
-        height: 22px;
-    }
-
-    .btn.reload .icon-btn {
-        width: 24px;
-        height: 24px;
-    }
-
-    .back-button img {
-        width: 35px;
-    }
-
-    .top-left {
-        width: 100px;
-    }
-
-    .bottom-right {
-        width: 170px;
-    }
+    .back-button img  { width: 35px; }
+    .top-left         { width: 100px; }
+    .bottom-right     { width: 170px; }
 }
 
-/* ===== SIDEBAR / LAYAR SEMPIT (max 450px) ===== */
 @media (max-width: 450px) {
-    body {
-        overflow-y: auto;
-    }
+    body { overflow-y: auto; }
 
-    .content-row {
-        padding-top: 45px;
-        gap: 15px;
-    }
+    .content-row { padding-top: 45px; gap: 15px; }
 
-    .image-box {
-        width: 95vw;
-        height: 220px;
-        margin-top: 10px;
-    }
+    .image-box { width: 95vw; height: 220px; margin-top: 10px; }
 
-    .button-box {
-        gap: 6px;
-    }
+    .button-box { gap: 6px; }
 
-    .translate-box {
-        gap: 12px;
-        margin-top: 15px;
-    }
+    .translate-box { gap: 12px; margin-top: 15px; }
 
     .translate-item {
         min-width: 140px;
@@ -549,59 +555,24 @@ body {
         gap: 10px;
     }
 
-    .translate-item .text {
-        font-size: 16px;
-        white-space: normal;
-    }
+    .translate-item .text { font-size: 16px; white-space: normal; }
+    .translate-item .flag { width: 28px; }
 
-    .translate-item .flag {
-        width: 28px;
-    }
+    .play-icon        { width: 22px; height: 22px; }
+    .play-icon img    { width: 22px; height: 22px; }
 
-    .play-icon {
-        width: 22px;
-        height: 22px;
-    }
+    .btn { font-size: 16px; padding: 10px 16px; gap: 8px; }
 
-    .play-icon img {
-        width: 22px;
-        height: 22px;
-    }
+    .reload-box { margin-top: 12px; margin-bottom: 60px; }
 
-    .btn {
-        font-size: 16px;
-        padding: 10px 16px;
-        gap: 8px;
-    }
-
-    .reload-box {
-        margin-top: 12px;
-        margin-bottom: 60px;
-    }
-
-    .back-button {
-        left: 10px;
-        top: 10px;
-    }
-
-    .back-button img {
-        width: 32px;
-    }
-
-    .top-left {
-        width: 80px;
-    }
-
-    .bottom-right {
-        width: 140px;
-    }
+    .back-button        { left: 10px; top: 10px; }
+    .back-button img    { width: 32px; }
+    .top-left           { width: 80px; }
+    .bottom-right       { width: 140px; }
 }
 
-/* ===== MOBILE SANGAT KECIL (max 380px) ===== */
 @media (max-width: 380px) {
-    .image-box {
-        height: 200px;
-    }
+    .image-box { height: 200px; }
 
     .translate-item {
         min-width: 130px;
@@ -609,24 +580,11 @@ body {
         padding: 7px 10px;
     }
 
-    .translate-item .text {
-        font-size: 15px;
-    }
+    .translate-item .text { font-size: 15px; }
+    .translate-item .flag { width: 26px; }
 
-    .translate-item .flag {
-        width: 26px;
-    }
+    .btn { font-size: 15px; padding: 9px 14px; }
 
-    .btn {
-        font-size: 15px;
-        padding: 9px 14px;
-    }
-
-    .top-left {
-        width: 70px;
-    }
-
-    .bottom-right {
-        width: 120px;
-    }
+    .top-left     { width: 70px; }
+    .bottom-right { width: 120px; }
 }
