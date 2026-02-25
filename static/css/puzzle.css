@@ -114,16 +114,19 @@ body {
 /* SLOT */
 .slot {
   position: absolute;
-  border: 2px dashed rgba(2, 136, 209, 0.4);
+  border:  2px dashed rgba(2, 136, 209, 0.4);
   z-index: 5;
   transition: opacity 0.5s ease;
 }
-
 /* Fix seam tanpa blur */
 #board img:not(#full-image):not(.siluet-bg) {
-  outline: 1px solid transparent;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  image-rendering: pixelated;
 }
 
 /* Background puzzle */
@@ -153,7 +156,7 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   touch-action: none;
   display: block;
-  object-fit: contain;
+  object-fit: fill; /* ← ubah dari contain ke fill */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }

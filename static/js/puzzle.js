@@ -580,6 +580,13 @@ piece.addEventListener("touchstart", (e) => {
                 img.style.top = slot.style.top;
                 img.style.width = slot.style.width;
                 img.style.height = slot.style.height;
+                img.style.border = "none";
+img.style.outline = "none";
+img.style.boxShadow = "none";
+img.style.borderRadius = "0";
+img.style.objectFit = "fill";
+img.style.margin = "0";
+img.style.padding = "0";
                 img.draggable = false;
 
                 document.getElementById("board").appendChild(img);
@@ -611,10 +618,26 @@ function puzzleSolved() {
     });
 
     // MEMASTIKAN GAMBAR MENUTUPI CELAH
-    const placedPieces = document.querySelectorAll("#board img:not(.siluet-bg):not(#full-image)");
-    placedPieces.forEach(p => {
-        p.style.transform = "translateZ(0) scale(1.01)"; // Paksa tumpang tindih 1%
-    });
+  const placedPieces = document.querySelectorAll("#board img:not(.siluet-bg):not(#full-image)");
+placedPieces.forEach(p => {
+    // Hapus semua styling yang bisa bikin gap
+    p.style.border = "none";
+    p.style.outline = "none";
+    p.style.boxShadow = "none";
+    p.style.borderRadius = "0";
+    p.style.margin = "0";
+    p.style.padding = "0";
+    // Expand 1px ke semua sisi untuk tutup seam
+    const left = parseFloat(p.style.left) - 0.5;
+    const top = parseFloat(p.style.top) - 0.5;
+    const width = parseFloat(p.style.width) + 1;
+    const height = parseFloat(p.style.height) + 1;
+    p.style.left = left + "px";
+    p.style.top = top + "px";
+    p.style.width = width + "px";
+    p.style.height = height + "px";
+    p.style.imageRendering = "pixelated";
+});
     
     totalScore += scorePerSolved;
     localStorage.setItem("puzzleScore", totalScore);
