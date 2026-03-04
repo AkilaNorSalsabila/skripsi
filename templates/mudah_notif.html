@@ -218,17 +218,33 @@
       activeTimeouts.forEach(clearTimeout);
       activeTimeouts = [];
 
+      // Suara "Benar!" atau "Correct!"
       player.src = (lang === "en") ? "/static/sounds/En/Benar.mp3" : "/static/sounds/id/notif_mudah/Notif.mp4";
       player.play();
 
       player.onended = () => {
-        player.src = (lang === "en") ? `/static/sounds/En/Notif_Menengah/${vegData.en}.mp3` : `/static/sounds/id/notif_mudah/${vegData.id}.mp4`;
+        // --- PERBAIKAN DI SINI (AGAR OYONG BUNYI) ---
+        let rawId = vegData.id.trim();
+        let rawEn = vegData.en.trim();
+
+        // Fungsi untuk membuat huruf pertama jadi BESAR (Capitalize)
+        // Agar "oyong" jadi "Oyong", sesuai nama file di VPS
+        function formatName(name) {
+          return name.charAt(0).toUpperCase() + name.slice(1);
+        }
+
+        let fileName = (lang === "en") ? rawEn : formatName(rawId);
+        let folder = (lang === "en") ? "/static/sounds/En/Notif_Menengah/" : "/static/sounds/id/notif_mudah/";
+        let ext = (lang === "en") ? ".mp3" : ".mp4";
+
+        // Gunakan encodeURIComponent agar sayuran yang ada spasi (Bawang Bombay) tidak error
+        player.src = folder + encodeURIComponent(fileName) + ext;
         player.play();
+        // --------------------------------------------
 
         const spans = document.querySelectorAll(".syllable");
-        const lowId = ((lang === "en") ? vegData.en : vegData.id).toLowerCase().trim();
+        const lowId = ((lang === "en") ? rawEn : rawId).toLowerCase();
         
-        // AMBIL TIMING BERDASARKAN BAHASA
         const langGroup = spellingTimings[lang] || spellingTimings["id"];
         const times = langGroup[lowId] || langGroup["default"];
         
