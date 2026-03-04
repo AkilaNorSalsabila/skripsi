@@ -56,9 +56,9 @@ const bankSangatMudah = [
   },
   {
     image: "/static/img/broccoli.png",
-    correctAnswer: { id: "brokoli", en: "broccoli" },
+    correctAnswer: { id: "Brokoli", en: "broccoli" },
     answers: {
-      id: ["brokoli", "cabai rawit", "kentang"],
+      id: ["Brokoli", "Cabai rawit", "Kentang"],
       en: ["Broccoli", "Bird's Eye Chili", "Potato"]
     }
   },
@@ -75,9 +75,9 @@ const bankSangatMudah = [
 const bankMudah = [
   {
     image: "/static/img/oyong.png",
-    correctAnswer: { id: "oyong", en: "luffa" },
+    correctAnswer: { id: "Oyong", en: "luffa" },
     answers: {
-      id: ["oyong", "Mentimun", "Labu Siam"],
+      id: ["Oyong", "Mentimun", "Labu Siam"],
       en: ["Luffa", "Cucumber", "Chayote"]
     }
   },
@@ -220,9 +220,9 @@ const bankSedangkeSulit = [
   },
    {
     image: "/static/img/jantung_pisang.png",
-    correctAnswer: { id: "jantung pisang", en: "Banana Blossom" },
+    correctAnswer: { id: "Jantung Pisang", en: "Banana Blossom" },
     answers: {
-      id: ["jantung pisang", "Jamur Kancing", "Rebung"],
+      id: ["Jantung Pisang", "Jamur Kancing", "Rebung"],
       en: ["Banana Blossom", "Button Mushroom", "Bamboo Shoot"]
     }
   },

@@ -4,23 +4,25 @@
 .vscode/
 __pycache__/
 *.pyc
+.DS_Store
 
 # ======================
-# DATASET & TRAINING
+# DATASET & TRAINING (Ignore Folder Data Besar)
 # ======================
 dataset/
 dataset_split/
 vegetable_classifier/
 static/data/
-
-!static/data/manfaat_sayuran.json
 data/
 train/
 val/
 test/
 
+# Pengecualian: File JSON ini harus tetap ikut di-push
+!static/data/manfaat_sayuran.json
+
 # ======================
-# TRAINING OUTPUT
+# TRAINING OUTPUT & LOGS
 # ======================
 history/
 logs/
@@ -30,17 +32,25 @@ checkpoints/
 tensorboard/
 
 # ======================
-# MODEL TRAINING (ignore semua model lain)
+# MODEL TRAINING (Ignore semua model mentah/sementara)
 # ======================
 models/*.h5
 models/*.keras
+models/*.pkl
+models/*.joblib
 
 # ======================
-# MODEL FINAL (ALLOW)
+# MODEL SVM (Ignore Folder SVM Khusus)
+# ======================
+svm_model/
+
+# ======================
+# MODEL FINAL (ALLOW - Whitelist Model Utama)
 # ======================
 !models/best_model_Efficiennetb0_C70finalfix2.keras
 !models/final_model_Efficiennetb0_C70finalfix2.keras
 !models/best_model_mobilenetv2.keras
+
 # ======================
 # LABEL MAP (KEEP FINAL ONLY)
 # ======================
