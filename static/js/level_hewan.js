@@ -9,6 +9,7 @@ const labelMenengah = document.getElementById("label-menengah");
 const labelSulit = document.getElementById("label-sulit");
 
 let audioPlayer = null;
+let _levelAnimTimeouts = [];
 
 function initAudioPlayer() {
   if (!audioPlayer) {
@@ -43,20 +44,45 @@ function playWelcomeAudio(lang) {
     });
     
     animateLevelButtons();
-    
+
     player.onended = null;
   };
 }
 
 function animateLevelButtons() {
+  _levelAnimTimeouts.forEach(id => clearTimeout(id));
+  _levelAnimTimeouts = [];
+
   const buttons = [btnEasy, btnMedium, btnHard].filter(btn => btn !== null);
   buttons.forEach((btn, index) => {
-    setTimeout(() => {
+    const t1 = setTimeout(() => {
       btn.classList.add('btn-popup');
-      setTimeout(() => {
+      const t2 = setTimeout(() => {
         btn.classList.remove('btn-popup');
       }, 600);
+      _levelAnimTimeouts.push(t2);
     }, index * 2000);
+    _levelAnimTimeouts.push(t1);
+  });
+}
+
+function resetLevelHoverAndAudio() {
+  if (audioPlayer) {
+    try {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      audioPlayer.onended = null;
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  _levelAnimTimeouts.forEach(id => clearTimeout(id));
+  _levelAnimTimeouts = [];
+
+  const stuckEls = document.querySelectorAll('.btn-popup, .hover, .is-hover');
+  stuckEls.forEach(el => {
+    el.classList.remove('btn-popup', 'hover', 'is-hover');
   });
 }
 
@@ -67,6 +93,8 @@ function toggleLangMenu(e) {
 
 function setLanguage(lang, e) {
   if (e) e.stopPropagation();
+
+  resetLevelHoverAndAudio();
 
   if (lang === "en") {
     selectedLangEl.innerHTML = `<img src="/static/img/flag uk.png" alt="EN"><span>English</span>`;
