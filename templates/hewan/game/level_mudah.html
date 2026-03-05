@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/hewan/mudah.css') }}">
+</head>
+
+
+<body>
+  <div class="grass"></div> 
+  <div class="content">
+  <header class="header">
+      <a href="/pilih_level" class="back-button hidden" >
+      <img src="{{ url_for('static', filename='img/hewan/desain/back.png') }}" alt="Kembali">
+    </a> 
+    <h1 id="title-text"></h1> 
+    <button id="btn-speak" class="speak-btn" aria-label="Putar instruksi">
+      <img src="{{ url_for('static', filename='img/hewan/desain/sound.png') }}" alt="speak">
+    </button>
+  </header>
+
+  <div id="wrong-overlay" class="wrong-overlay hidden">
+    <div class="wrong-content">
+      <h1>✖</h1>
+      <p id="wrong-text"></p>
+    </div>
+  </div>
+
+  <!-- Gambar hewan -->
+  <main id="game">
+    <div class="image-wrap">
+      <img id="animal-image" src="" alt=""> 
+    </div>
+    <!-- Pilihan jawaban -->
+    <div id="options" class="options"></div>
+  </main></div>
+  
+
+  <!-- Progress -->
+  <div id="progress" class="progress">Soal 1/5</div>
+  <!-- Feedback -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Audio -->
+  <audio id="sfx-correct" src="{{ url_for('static', filename='sounds/correct.mp3') }}"></audio>
+  <audio id="sfx-wrong" src="{{ url_for('static', filename='sounds/wrong.mp3') }}"></audio>
+  <audio id="clickSound" src="{{ url_for('static', filename='sounds/sound-click.mp3') }}"></audio>
+  <audio id="id-player"></audio>
+
+
+
+    <script src="{{ url_for('static', filename='js/hewan_mudah.js') }}"></script>
+    <!-- Confirm keluar game -->
+     
+    <div id="exit-confirm" class="confirm-overlay hidden">
+      <div class="confirm-box">
+        <h2 id="exit-confirm-text"></h2>
+
+        <div class="confirm-actions">
+      <button id="cancel-exit" class="btn-cancel">
+        <img src="{{ url_for('static', filename='img/hewan/desain/exit.png') }}" alt="Batal">
+      </button>
+
+      <button id="confirm-exit" class="btn-confirm">
+        <img src="{{ url_for('static', filename='img/hewan/desain/check.png') }}" alt="Ya">
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const clickSound = document.getElementById("clickSound");
+
+  document.addEventListener("click", function () {
+    clickSound.currentTime = 0; 
+    clickSound.play();
+  });
+</script>
+</body>
+
+</html>
+

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title>Siapakah Aku? - Pengenalan Hewan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hewan/pengenalan_hewan.css') }}">
+    
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="leaf-decoration">
+        <img src="{{ url_for('static', filename='img/hewan/desain/top_grass.png') }}" alt="Leaf Decoration">
+    </div>
+    <header class="header">
+           <button class="btn-back" onclick="window.history.back()">
+                <img src="{{ url_for('static', filename='img/hewan/desain/back2.png') }}" alt="Back" class="icon-back">
+            </button>  
+            <h1 class="title">Siapakah Aku?</h1>
+            <button class="btn-sound">
+                <img src="{{ url_for('static', filename='img/hewan/desain/sound2.png') }}" alt="Sound" class="icon-sound">
+            </button>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <audio id="bgMusic" src="{{ url_for('static', filename='sounds/hewan/effect/1.mp3') }}" loop></audio>
+
+            <!-- Left Section - Image Upload -->
+            <div class="left-section">
+                <div class="image-section" id="imagePlaceholder">
+                    <video id="cameraVideo" autoplay playsinline></video>
+                    <img id="capturedPreview" style="display:none;" />
+                    <canvas id="canvas" style="display:none;"></canvas>
+                </div>
+                <!-- Button Controls -->
+                <div class="button-controls">
+                    <button class="btn-control btn-upload-file" id="btnUploadFile">
+                        <svg class="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5m0 0L7 8m5-5v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                        </svg>
+                        Upload Gambar
+                    </button>
+                    <button class="btn-control btn-take-photo" id="btnTakePhoto">
+                        <svg class="icon-camera-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                            <circle cx="12" cy="13" r="4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                        </svg>
+                        Ambil Gambar
+                    </button>
+                    <button class="btn-reset-camera" id="btnResetCamera">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Right Section - Description -->
+            <div class="description-section">
+                <div class="description-box">
+                    <p class="description-text">
+                        Scan gambar hewan untuk mengetahui nama dan habitatnya! Pastikan gambar jelas dan fokus pada hewan yang ingin dikenali.
+                    </p>
+                    <p class="confidence-text" hidden></p>
+                </div>
+                
+                <!-- Audio Section -->
+                <div class="audio-container">
+                    <!-- Indonesian Audio -->
+                    <div class="audio-item">
+                        <img src="{{ url_for('static', filename='img/hewan/desain/flag_in.png') }}" alt="Indonesia" class="flag">
+                        <button class="play-btn" data-audio="in">
+                            <img src="{{ url_for('static', filename='img/hewan/desain/play.png') }}" alt="Play" class="play-icon">
+                        </button>
+                        <span class="audio-label">Indonesia</span>
+                    </div>
+
+                    <!-- English Audio -->
+                    <div class="audio-item">
+                        <img src="{{ url_for('static', filename='img/hewan/desain/flag_en.png') }}" alt="English" class="flag">
+                        <button class="play-btn" data-audio="en">
+                            <img src="{{ url_for('static', filename='img/hewan/desain/play.png') }}" alt="Play" class="play-icon">
+                        </button>
+                        <span class="audio-label">English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/pengenalan_hewan.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/upload_validator.js') }}"></script>
+    <script>
+    // Inisialisasi validator setelah DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.uploadValidator) {
+        uploadValidator.init('#imageInput');
+      }
+    });
+
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.volume = 0.08;
+    bgMusic.play().catch(err => console.log("BG music error:", err));
+
+    function playAndGo(url) {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(err => console.log(err));
+      setTimeout(() => {
+        window.location.href = url;
+      }, 500);
+    }
+    document.addEventListener("click", function (e) {
+  if (e.target.closest("button, a")) {
+    clickSound.currentTime = 0;
+    clickSound.play();
+  }
+});
+
+  </script>
+</body>
+</html>

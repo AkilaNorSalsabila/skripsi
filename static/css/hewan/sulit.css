@@ -1,0 +1,699 @@
+body {
+   font-family:'Mochiy Pop One', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  background: #f0f8ff;
+  overflow-x: hidden;
+  transition: background 0.3s;
+}
+
+html, body {
+  max-width: 100%;
+}
+*, *:before, *:after { box-sizing: border-box; }
+
+.grass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  background: url("/static/img/hewan/desain/rumput.png") bottom center / cover no-repeat;
+  z-index: 2;
+}
+
+.grass {
+  pointer-events: none;
+}
+
+#title-text{
+  font-size:45px;
+  margin:0;
+  color: #ff8d39;
+   -webkit-text-stroke: 20px white;
+  paint-order: stroke fill;
+  
+}
+
+
+header.header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.speak-btn {
+  position: fixed;
+  top: 48px;
+  right: 100px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 999;
+}
+.speak-btn img {
+  width: 90px;
+}
+.speak-btn:hover {
+  transform: scale(1.05);
+}
+
+
+.back-button {
+  position: absolute;
+  top: 50px;
+  left: 40px;
+  z-index: 9999;
+}
+.back-button img {
+  width: 90px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.back-button:hover img {
+  transform: scale(1.05);
+  filter: brightness(0.9);
+}
+
+.timer {
+  position: absolute;
+  top: 55px;
+  left: 220px;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px 24px;
+  border-radius: 15px;
+  font-family: 'Mochiy Pop One', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.timer.warning {
+  background: #ffcccc;
+  color: #cc0000;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+
+#progress {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 6;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.option-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.option-wrapper.active {
+  z-index: 2;
+}
+
+.option-wrapper.exit {
+  z-index: 1;
+}
+
+
+.wrong-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(220, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.2s ease-in;
+}
+.wrong-overlay.hidden {
+  display: none;
+}
+.wrong-content {
+  text-align: center;
+  color: #fff;
+  font-family: 'Mochiy Pop One', sans-serif;
+  animation: pop 0.5s ease-out;
+}
+.wrong-content h1 {
+  font-size: 8rem;
+  margin: 0;
+}
+.wrong-content p {
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.confirm-overlay.hidden {
+  display: none;
+}
+.confirm-box {
+  background: #fff;
+  padding: 26px 30px;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: pop 0.25s ease-out;
+}
+.confirm-box h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  position: relative !important; 
+  z-index: 2147483647 !important; /* highest practical z-index so it sits in front of .grass */
+}
+.btn-cancel,
+.btn-confirm {
+  width: 72px;
+  height: 72px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.btn-cancel img,
+.btn-confirm img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: transparent;
+}
+
+.puzzle-wrapper {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px;
+  transition: all 0.5s ease;
+}
+
+.puzzle-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
+.puzzle-content {
+  display: flex;
+  gap: 35px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+}
+
+.puzzle-wrapper.completed .puzzle-content {
+  justify-content: center;
+} 
+
+
+
+#siluet-container {
+  border: 2px dashed #ff8d39;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0; /* biar ga mengecil */
+}
+
+
+.slot {
+  /* border: 2px dashed #ff8d39; */
+  background: transparent;
+  position: relative;
+  box-sizing: border-box;
+  transition: border-color 180ms ease, border-width 180ms ease;
+}
+
+.slot.filled {
+  border-color: transparent;
+  border-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+.slot {
+  border: 2px dashed #ff8d39;
+  position: relative;
+  box-sizing: border-box;
+  transition: border-color 360ms cubic-bezier(.2,.8,.2,1), border-width 240ms ease;
+}
+
+
+.puzzle-wrapper.completed #siluet-container .slot {
+  border-color: transparent !important;
+  border-width: 0 !important;
+
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.slot > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+#pilihan-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 15px;
+  width: 260px; 
+}
+
+/* Keep options above background decorations */
+#pilihan-container {
+  z-index: 11;
+  position: relative;
+}
+
+#pilihan-container img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  cursor: grab;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Allow pointer-based dragging on touch devices */
+#pilihan-container img, .slot > img {
+  touch-action: none;
+}
+
+/* Visual clone used by pointer fallback drag implementation */
+.drag-clone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate3d(0,0,0);
+  z-index: 99999;
+  pointer-events: none;
+  will-change: transform;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+.side-panel{
+  width: 380px;
+  transition: opacity 0.5s ease, transform 0.5s ease, width 0.5s ease;
+}
+
+.puzzle-wrapper.completed .side-panel {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  width: 0;
+  overflow: hidden;
+}
+
+.info-panel{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  animation: slideUp 0.45s ease;
+  animation-fill-mode: both; 
+  margin-top: 10px;
+  position: relative !important; 
+  z-index: 2147483647 !important; 
+}
+
+.info-box{
+  background: #fff8de;
+  min-height: 50px;
+  width: min(600px, 92vw);
+  border: 4px solid #ffd21f;
+  border-radius: 30px;
+  padding: 10px 30px;
+  text-align: center;
+  font-family: 'Mochiy Pop One', sans-serif;
+  /* color: #000; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.150);
+  position: relative; 
+  z-index: 1001; 
+}
+
+.animal-name {
+  font-size: 50px;
+  font-weight: 700;
+  /* color: #000; */
+    color: #ff9040;
+  -webkit-text-stroke: 20px white;
+  paint-order: stroke fill;
+
+  margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+/* Responsive adjustments to avoid overflow on small screens */
+@media (max-width: 768px) {
+  #title-text { font-size: 32px; }
+  .speak-btn { top: 12px; right: 12px; }
+  .speak-btn img { width: 56px; }
+  /* .back-button { top: 12px; left: 12px; } */
+  .back-button img { width: 56px; }
+  .timer { top: 54px; left: 12px; right: 12px; position: relative; }
+  .info-box { padding: 8px 14px; }
+  .animal-name { font-size: 30px; }
+  .puzzle-wrapper { margin-top: 20px; }
+}
+
+.habitat-text {
+  font-size: 24px;
+  font-weight: 600;
+  font-family: 'Quicksand', sans-serif;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.hidden{
+  display: none;
+}
+
+
+
+#confetti-canvas{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+/* ===== ANIMATIONS ===== */
+@keyframes slideUp{
+  from{
+    transform: translateY(30px); /* animate from below so it appears to come up in front of the grass */
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+  #title-text {
+    font-size: 32px;
+    -webkit-text-stroke: 12px white;
+  }
+
+  .speak-btn {
+    top: 30px;
+    right: 50px;
+  }
+  .speak-btn img {
+    width: 60px;
+  }
+
+  .back-button {
+    top: 30px;
+    left: 50px;
+  }
+  .back-button img {
+    width: 60px;
+  }
+
+  .timer {
+    top: 30px;
+    left: 130px;
+    font-size: 24px;
+    padding: 8px 18px;
+  }
+
+  #progress {
+    font-size: 16px;
+    padding: 6px 10px;
+  }
+
+  .puzzle-wrapper {
+    margin-top: 30px;
+    gap: 25px;
+  }
+
+  #siluet-container {
+    width: 300px;
+    height: 300px;
+  }
+
+  #pilihan-container {
+    width: 300px;
+    gap: 12px;
+  }
+  #pilihan-container img {
+    border-radius: 10px;
+  }
+
+  .info-box {
+    width: 300px;
+    padding: 8px 20px;
+  }
+  .animal-name {
+    font-size: 24px;
+  }
+  .habitat-text {
+    font-size: 18px;
+  }
+
+  .side-panel {
+    width: 280px;
+  }
+}
+
+
+/* ==/* =========================
+   FIX TAMPILAN MOBILE PUZZLE
+   ========================= */
+@media (max-width:768px){
+
+  body{
+    overflow-x:hidden;
+  }
+
+  .back-button,
+  .speak-btn,
+  .timer{
+    position: static;
+  }
+
+  
+  header.header{
+    margin-top:15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* gap: 8px; */
+  }
+  
+  .puzzle-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    gap: 12px;
+    padding-bottom: 120px;
+  }
+  
+  .puzzle-content {
+    display: contents; 
+  }
+  
+  #siluet-container {
+    order: 1;
+  }
+  
+  .info-panel {
+    order: 2; 
+    width: 92%;
+    max-width: 320px;
+    margin-top: 10px;
+  }
+  
+  .side-panel {
+    order: 3; 
+  }
+
+  #title-text{
+    font-size:26px;
+    -webkit-text-stroke:6px white;
+    text-align:center;
+  }
+
+ 
+  #siluet-container{
+    width:260px;
+    height:260px;
+  }
+  
+  .side-panel{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #pilihan-container{
+    width:100%;
+    max-width:260px;
+    gap:10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+  }
+
+  #pilihan-container img{
+    border-radius:10px;
+  }
+  
+  .info-box{
+    width:90%;
+    padding:10px;
+  }
+
+  .animal-name{
+    font-size:22px;
+  }
+
+  .habitat-text{
+    font-size:16px;
+  }
+    .grass {
+    height: clamp(120px, 30vh, 120px);
+    background-position: 0%;
+  }
+  #progress {
+  bottom: 10px;
+font-size: 14px;}
+  
+}
+
+  @media (max-width: 480px) {
+    .confirm-box {
+      padding: 16px 18px;
+      border-radius: 14px;
+      width: min(92vw, 320px);
+    }
+
+    .confirm-box h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .confirm-actions {
+      gap: 16px;
+    }
+
+    .btn-cancel,
+    .btn-confirm {
+      width: 52px;
+      height: 52px;
+    }
+
+    .btn-cancel img,
+    .btn-confirm img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .confirm-box {
+      padding: 12px 14px;
+      width: 92vw;
+    }
+    .confirm-box h2 { font-size: 16px; }
+    .btn-cancel, .btn-confirm { width: 48px; height: 48px; }
+  }
+@media (max-width: 768px) {
+  header.header {
+    display: grid;
+    grid-template-columns: auto 2fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas: "back title speak" "timer timer timer";
+    align-items: center;
+    padding: 18px 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  header.header #title-text { grid-area: title; margin-top: 0; font-size: 24px; -webkit-text-stroke: 6px white; text-align:center;}
+  header.header .speak-btn { grid-area: speak; position: relative; left: 30px; top: auto; }
+  header.header .back-button { grid-area: back; position: relative; left: -30px; top: auto; }
+  header.header #timer { grid-area: timer; justify-self: center; position: static; font-size: 18px; margin-top: 5px;}
+
+  header.header .back-button img,
+  header.header .speak-btn img { width: 50px; }
+
+}
