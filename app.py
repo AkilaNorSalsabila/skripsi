@@ -8,6 +8,7 @@ from PIL import Image
 import os, uuid, json
 import io
 
+from predict import predict_hewan_api
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 CORS(app)
@@ -196,6 +197,46 @@ def skor():
 @app.route("/puzzle_sulit1")
 def puzzle_sulit1():
     return render_template("puzzle_sulit1.html")
+
+
+# Hewan Routes
+@app.route("/hewan")
+def pengenalan_hewan():
+    return render_template("hewan/pengenalan_hewan.html")
+
+app.add_url_rule(
+    "/predict_hewan",
+    view_func=predict_hewan_api,
+    methods=["POST"]
+)
+
+@app.route("/game_hewan")
+def game_hewan():
+    return render_template("hewan/game/pilih_level.html")
+
+@app.route("/hewan_mudah")
+def hewan_mudah():
+    return render_template("hewan/game/level_mudah.html")
+
+@app.route("/notif_mudah")
+def notif_mudah():
+    return render_template("hewan/game/notif_mudah.html")
+
+@app.route("/skor_hewan")
+def skor_hewan():
+    return render_template("hewan/game/skor.html")
+
+@app.route("/hewan_menengah")
+def hewan_menengah():
+    return render_template("hewan/game/level_menengah.html")
+@app.route("/hewan_sulit")
+def hewan_sulit():
+    return render_template("hewan/game/level_sulit.html")
+@app.route("/notif_confetti")
+def notif_confetti():
+    return render_template("hewan/game/confetti.html")
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

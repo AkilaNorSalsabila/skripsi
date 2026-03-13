@@ -1,0 +1,348 @@
+
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Skor</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/hewan/skor.css') }}">
+</head>
+<body>
+    <div class="grass"></div>
+    <a href="/game_hewan" class="exit-button hidden" >
+    <img src="{{ url_for('static', filename='img/hewan/desain/exit.png') }}" alt="Keluar">
+    </a>
+
+  <audio id="clickSound" src="{{ url_for('static', filename='sounds/sound-click.mp3') }}"></audio>
+  <audio id="winnerSound" src="{{ url_for('static', filename='sounds/hewan/effect/winner.mp3') }}"></audio>
+  <audio id="gameOverSound" src="{{ url_for('static', filename='sounds/hewan/effect/game_over.mp3') }}"></audio>
+  <audio id="cobaLagiSound" src="{{ url_for('static', filename='sounds/hewan/effect/coba_lagi.m4a') }}"></audio>
+  <audio id="tryAgainSound" src="{{ url_for('static', filename='sounds/hewan/effect/try_again.m4a') }}"></audio>
+  <audio id="amazingSound" src="{{ url_for('static', filename='sounds/hewan/effect/amazing.m4a') }}"></audio>
+  <audio id="hebatSound" src="{{ url_for('static', filename='sounds/hewan/effect/hebat.m4a') }}"></audio>
+  <audio id="excellentSound" src="{{ url_for('static', filename='sounds/hewan/effect/excellent.m4a') }}"></audio>
+  <audio id="istimewaSound" src="{{ url_for('static', filename='sounds/hewan/effect/istimewa.m4a') }}"></audio>
+  <canvas id="confetti-canvas" style="position:fixed;left:0;top:0;pointer-events:none;z-index:9998;display:none"></canvas>
+  <!-- Header -->
+  <header class="header">
+    <h1 id="title-text">Skor</h1>
+  </header>
+
+  <!-- Konten utama -->
+  <main class="score-main">
+  <div class="score-row">
+    <button id="btn-retry" class="icon-btn-repeat" title="Ulang">
+      <img src="{{ url_for('static', filename='img/hewan/desain/repeat.png') }}" alt="Ulang">
+    </button>
+
+    <div id="score-box">0/100</div>
+
+    <button id="btn-next" class="icon-btn" title="Lanjut">
+      <img src="{{ url_for('static', filename='img/hewan/desain/next.png') }}" alt="Lanjut">
+    </button>
+  </div>
+</main>
+
+    <script>
+      const lang = localStorage.getItem("gameLang") || "id";
+      function getFinalScore() {
+        const fs = localStorage.getItem("finalScore");
+        if (fs !== null) return fs.toString();
+
+        const totalQuestions = parseInt(localStorage.getItem("totalQuestions") || "5", 10);
+
+        // Try namespaced keys used by different game pages to avoid stale/missing data
+        const tryKeys = [
+          "correctCount_hewan_mudah",
+          "correctCount",
+          "score_menengah"
+        ];
+
+        for (const k of tryKeys) {
+          const v = localStorage.getItem(k);
+          if (v === null) continue;
+
+          const n = parseInt(v, 10);
+          if (!isNaN(n)) {
+            if (k === "score_menengah") {
+              // menengah stores score as points (0..100 by 20-point steps), but keep safe
+              const pct = Math.round((n / (totalQuestions * 20)) * 100);
+              return String(isNaN(pct) ? 0 : pct);
+            }
+            const pct = Math.round((n / totalQuestions) * 100);
+            return String(isNaN(pct) ? 0 : pct);
+          }
+        }
+
+        return "0";
+      }
+
+      const finalScore = getFinalScore();
+      document.getElementById("score-box").textContent = `${finalScore}/100`;
+
+      window.addEventListener('load', () => {
+        const scoreNum = parseInt(finalScore);
+        const winnerAudio = document.getElementById("winnerSound");
+        const gameOverAudio = document.getElementById("gameOverSound");
+        const cobaLagiAudio = document.getElementById("cobaLagiSound");
+        const tryAgainAudio = document.getElementById("tryAgainSound");
+
+        const amazingAudio = document.getElementById('amazingSound');
+        const hebatAudio = document.getElementById('hebatSound');
+        const excellentAudio = document.getElementById('excellentSound');
+        const istimewaAudio = document.getElementById('istimewaSound');
+
+        try {
+          winnerAudio.volume = 0.3;
+          if (amazingAudio) amazingAudio.volume = 1.0;
+          if (hebatAudio) hebatAudio.volume = 1.0;
+          if (excellentAudio) excellentAudio.volume = 1.0;
+          if (istimewaAudio) istimewaAudio.volume = 1.0;
+        } catch (e) {
+          console.log('Error setting volumes:', e);
+        }
+        if (scoreNum >= 70) {
+          winnerAudio.volume = 0.3;
+          const praiseDelay = 200; 
+          try {
+            winnerAudio.play().catch(err => console.log("Error playing winner sound:", err));
+            setTimeout(() => {
+              try {
+                if (scoreNum >= 70 && scoreNum <= 80) {
+                  if (lang === 'en') {
+                    document.getElementById('amazingSound').play().catch(e => console.log('Error playing amazing:', e));
+                  } else {
+                    document.getElementById('hebatSound').play().catch(e => console.log('Error playing hebat:', e));
+                  }
+                } else if (scoreNum >= 90) {
+                  if (lang === 'en') {
+                    document.getElementById('excellentSound').play().catch(e => console.log('Error playing excellent:', e));
+                  } else {
+                    document.getElementById('istimewaSound').play().catch(e => console.log('Error playing istimewa:', e));
+                  }
+                }
+              } catch (e) {
+                console.log('Error playing tiered praise sound:', e);
+              }
+            }, praiseDelay);
+          } catch (e) {
+            console.log('Error scheduling tiered praise:', e);
+          }
+          startVictoryConfetti();
+          } else {
+          gameOverAudio.play().catch(err => console.log("Error playing game over sound:", err));
+          setTimeout(() => {
+            if (lang === 'en') {
+              tryAgainAudio.play().catch(err => console.log('Error playing try again:', err));
+            } else {
+              cobaLagiAudio.play().catch(err => console.log('Error playing coba lagi:', err));
+            }
+          }, 300);
+          startSadConfetti();
+        }
+
+        const scoreBoxEl = document.getElementById('score-box');
+        if (scoreBoxEl) {
+          if (scoreNum >= 70) {
+            scoreBoxEl.classList.add('score-popup');
+            scoreBoxEl.addEventListener('animationend', () => {
+              scoreBoxEl.classList.remove('score-popup');
+            }, { once: true });
+          } else {
+            scoreBoxEl.classList.add('score-shake');
+            scoreBoxEl.addEventListener('animationend', () => {
+              scoreBoxEl.classList.remove('score-shake');
+            }, { once: true });
+          }
+        }
+      });
+
+    document.getElementById("btn-retry").addEventListener("click", () => {
+      const lastLevel = localStorage.getItem("lastLevel") || "mudah";
+
+      // hapus data game lama
+      localStorage.removeItem("sessionQuestions");
+      localStorage.removeItem("currentIndex");
+      localStorage.removeItem("finalScore");
+      localStorage.removeItem("correctCount");
+      localStorage.removeItem("totalQuestions");
+      localStorage.removeItem("puzzleScore");
+
+      // redirect sesuai level
+      if (lastLevel === "mudah") {
+        window.location.href = "/hewan_mudah";
+      } else if (lastLevel === "menengah") {
+        window.location.href = "/hewan_menengah";
+      } else if (lastLevel === "sulit") {
+        window.location.href = "/hewan_sulit";
+      } else {
+        window.location.href = "/hewan_mudah"; 
+      }
+    });
+
+
+
+      document.getElementById("btn-next").addEventListener("click", () => {
+        localStorage.removeItem("sessionQuestions");
+        localStorage.removeItem("currentIndex");
+        localStorage.removeItem("finalScore");
+        localStorage.removeItem("correctCount");
+        localStorage.removeItem("totalQuestions");
+        window.location.href = "/game_hewan";
+      });
+
+      document.getElementById("btn-speak").addEventListener("click", () => {
+        const scoreText = (lang === "en")
+          ? `Your score is ${finalScore} out of 100`
+          : `Skormu ${finalScore} dari 100`;
+        const utter = new SpeechSynthesisUtterance(scoreText);
+        utter.lang = (lang === "en") ? "en-US" : "id-ID";
+        speechSynthesis.speak(utter);
+      });
+    </script>
+    <script>
+        
+      const exitOverlay   = document.getElementById("exit-confirm");
+      const cancelExitBtn = document.getElementById("cancel-exit");
+      const confirmExitBtn = document.getElementById("confirm-exit");
+      const backBtn = document.querySelector(".back-button");
+
+      if (backBtn) {
+        backBtn.onclick = (e) => {
+          e.preventDefault();
+          stopAllSounds();
+          exitOverlay.classList.remove("hidden");
+        };
+      }
+
+      cancelExitBtn.onclick = () => {
+        exitOverlay.classList.add("hidden");
+      };
+
+      confirmExitBtn.onclick = () => {
+        stopAllSounds();
+        localStorage.removeItem("sessionQuestions");
+        localStorage.removeItem("currentIndex");
+        window.location.href = "/game_hewan";
+      };
+    </script>
+
+    <script>
+      const clickSound = document.getElementById("clickSound");
+
+      document.addEventListener("click", function () {
+        clickSound.currentTime = 0;
+        clickSound.play();
+      });
+    </script>
+
+    <script>
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const confettiCtx = confettiCanvas.getContext ? confettiCanvas.getContext('2d') : null;
+    let confettis = [];
+    let confettiActive = false;
+    let confettiEndTime = 0;
+
+    function ensureCanvasSize() {
+      if (!confettiCanvas) return;
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', ensureCanvasSize);
+
+    function startVictoryConfetti(duration = 5000) {
+      if (!confettiCtx) return;
+      ensureCanvasSize();
+      confettiCanvas.style.display = 'block';
+      confettis = [];
+      confettiActive = true;
+      const colors = ["#FF595E","#FFCA3A","#8AC926","#1982C4","#6A4C93"];
+      for (let i = 0; i < 300; i++) {
+        confettis.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * -confettiCanvas.height,
+          w: 8 + Math.random()*8,
+          h: 10 + Math.random()*10,
+          color: colors[Math.floor(Math.random()*colors.length)],
+          speed: 2 + Math.random()*4,
+          rotate: Math.random()*360,
+          dr: Math.random()*6
+        });
+      }
+      confettiEndTime = Date.now() + duration;
+      drawConfetti();
+    }
+
+    function startSadConfetti(duration = 5000) {
+      if (!confettiCtx) return;
+      ensureCanvasSize();
+      confettiCanvas.style.display = 'block';
+      confettis = [];
+      confettiActive = true;
+      const colors = ["rgba(120,120,120,0.9)", "rgba(160,160,160,0.9)", "rgba(200,200,200,0.9)"];
+      for (let i = 0; i < 300; i++) {
+        confettis.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * -confettiCanvas.height,
+          w: 6 + Math.random()*6,
+          h: 8 + Math.random()*8,
+          color: colors[Math.floor(Math.random()*colors.length)],
+          speed: 1 + Math.random()*2,
+          rotate: Math.random()*360,
+          dr: Math.random()*4
+        });
+      }
+      confettiEndTime = Date.now() + duration;
+      drawConfetti();
+    }
+
+    function drawConfetti() {
+      if (!confettiActive || !confettiCtx) return;
+      confettiCtx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+
+      const now = Date.now();
+      const ended = now >= confettiEndTime;
+
+      for (let i = confettis.length - 1; i >= 0; i--) {
+        const c = confettis[i];
+        confettiCtx.save();
+        confettiCtx.translate(c.x, c.y);
+        confettiCtx.rotate((c.rotate * Math.PI) / 180);
+        confettiCtx.fillStyle = c.color;
+        confettiCtx.fillRect(-c.w/2, -c.h/2, c.w, c.h);
+        confettiCtx.restore();
+
+        c.y += c.speed;
+        c.rotate += c.dr;
+
+        if (ended) {
+          if (c.y > confettiCanvas.height + 20) {
+            confettis.splice(i, 1);
+          }
+        } else {
+          if (c.y > confettiCanvas.height) {
+            c.y = -10;
+            c.x = Math.random() * confettiCanvas.width;
+          }
+        }
+      }
+
+      if (confettis.length === 0 && ended) {
+        confettiActive = false;
+        confettiCanvas.style.display = 'none';
+        return;
+      }
+
+      requestAnimationFrame(drawConfetti);
+    }
+    </script>
+</body>
+
+</html>

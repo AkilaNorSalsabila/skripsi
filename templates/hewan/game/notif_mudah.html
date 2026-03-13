@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notif Level Mudah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/hewan/notif_mudah.css') }}">
+</head>
+<body>
+<div class="grass"></div>
+
+  <header class="notif-header">
+    <h1>
+        <span id="notif-text"></span><br>
+        <span id="anm-name"></span>
+    </h1>
+    <button id="btn-speak" class="speak-btn" aria-label="Putar suara">
+        <img src="{{ url_for('static', filename='img/hewan/desain/sound.png') }}" alt="Suara">
+    </button>
+    </header>
+  <!-- <div id="anm-name">Nama Hewan</div> -->
+<main class="notif-main">
+  <img id="notif-anm" src="" alt="">
+</main>
+<div id="confetti-container">
+  <canvas id="confetti"></canvas>
+</div>
+
+<audio id="id-player"></audio>
+
+<!-- Confetti Animation -->
+<script>
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const pieces = [];
+  const colors = ["#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"];
+  
+  for (let i = 0; i < 150; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: 8,
+      h: 14,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: 2 + Math.random() * 3,
+      rotate: Math.random() * 360,
+      dr: Math.random() * 10
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach((p) => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotate * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+
+      p.y += p.speed;
+      p.rotate += p.dr;
+
+      if (p.y > canvas.height) {
+        p.y = -10;
+        p.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+
+<!-- Main notification logic -->
+<script src="{{ url_for('static', filename='js/notif_mudah_hewan.js') }}"></script>
+</body>
+</html>

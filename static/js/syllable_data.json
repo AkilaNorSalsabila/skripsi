@@ -1,0 +1,214 @@
+{
+  "animals": {
+    "capung": {
+      "id": "Capung",
+      "en": "Dragonfly",
+      "syllables_id": ["Ca", "pung"],
+      "syllables_en": ["Drag", "on", "fly"]
+    },
+    "bintang_laut": {
+      "id": "Bintang Laut",
+      "en": "Starfish",
+      "syllables_id": ["Bin", "tang", "La", "ut"],
+      "syllables_en": ["Star", "fish"]
+    },
+    "kucing": {
+      "id": "Kucing",
+      "en": "Cat",
+      "syllables_id": ["Ku", "cing"],
+      "syllables_en": ["Cat"]
+    },
+    "gajah": {
+      "id": "Gajah",
+      "en": "Elephant",
+      "syllables_id": ["Ga", "jah"],
+      "syllables_en": ["El", "e", "phant"]
+    },
+    "badak": {
+      "id": "Badak",
+      "en": "Rhinoceros",
+      "syllables_id": ["Ba", "dak"],
+      "syllables_en": ["Rhi", "no", "cer", "os"]
+    },
+    "harimau": {
+      "id": "Harimau",
+      "en": "Tiger",
+      "syllables_id": ["Ha", "ri", "mau"],
+      "syllables_en": ["Ti", "ger"]
+    },
+    "zebra": {
+      "id": "Zebra",
+      "en": "Zebra",
+      "syllables_id": ["Ze", "bra"],
+      "syllables_en": ["Ze", "bra"]
+    },
+    "jerapah": {
+      "id": "Jerapah",
+      "en": "Giraffe",
+      "syllables_id": ["Je", "ra", "pah"],
+      "syllables_en": ["Gi", "raffe"]
+    },
+    "monyet": {
+      "id": "Monyet",
+      "en": "Monkey",
+      "syllables_id": ["Mo", "nyet"],
+      "syllables_en": ["Mon", "key"]
+    },
+    "ayam": {
+      "id": "Ayam",
+      "en": "Chicken",
+      "syllables_id": ["A", "yam"],
+      "syllables_en": ["Chick", "en"]
+    },
+    "anjing": {
+      "id": "Anjing",
+      "en": "Dog",
+      "syllables_id": ["An", "jing"],
+      "syllables_en": ["Dog"]
+    },
+    "lumba_lumba": {
+      "id": "Lumba-lumba",
+      "en": "Dolphin",
+      "syllables_id": ["Lum", "ba", "lum", "ba"],
+      "syllables_en": ["Dol", "phin"]
+    },
+    "paus": {
+      "id": "Paus",
+      "en": "Whale",
+      "syllables_id": ["Pa", "us"],
+      "syllables_en": ["Whale"]
+    },
+    "hiu": {
+      "id": "Hiu",
+      "en": "Shark",
+      "syllables_id": ["Hi", "u"],
+      "syllables_en": ["Shark"]
+    },
+    "katak": {
+      "id": "Katak",
+      "en": "Frog",
+      "syllables_id": ["Ka", "tak"],
+      "syllables_en": ["Frog"]
+    },
+    "kupu_kupu": {
+      "id": "Kupu-kupu",
+      "en": "Butterfly",
+      "syllables_id": ["Ku", "pu", "ku", "pu"],
+      "syllables_en": ["But", "ter", "fly"]
+    },
+    "lebah": {
+      "id": "Lebah",
+      "en": "Bee",
+      "syllables_id": ["Le", "bah"],
+      "syllables_en": ["Bee"]
+    },
+    "elang": {
+      "id": "Elang",
+      "en": "Eagle",
+      "syllables_id": ["E", "lang"],
+      "syllables_en": ["Ea", "gle"]
+    },
+    "burung_hantu": {
+      "id": "Burung Hantu",
+      "en": "Owl",
+      "syllables_id": ["Bu", "rung", "Han", "tu"],
+      "syllables_en": ["Owl"]
+    },
+    "merak": {
+      "id": "Merak",
+      "en": "Peacock",
+      "syllables_id": ["Me", "rak"],
+      "syllables_en": ["Pea", "cock"]
+    },
+    "cendrawasih": {
+      "id": "Cendrawasih",
+      "en": "Bird of Paradise",
+      "syllables_id": ["Cen", "dra", "wa", "sih"],
+      "syllables_en": ["Bird", "of", "Par", "a", "dise"]
+    },
+    "pinguin": {
+      "id": "Pinguin",
+      "en": "Penguin",
+      "syllables_id": ["Pin", "guin"],
+      "syllables_en": ["Pen", "guin"]
+    },
+    "landak": {
+      "id": "Landak",
+      "en": "Hedgehog",
+      "syllables_id": ["Lan", "dak"],
+      "syllables_en": ["Hedge", "hog"]
+    },
+    "trenggiling": {
+      "id": "Trenggiling",
+      "en": "Pangolin",
+      "syllables_id": ["Treng", "gi", "ling"],
+      "syllables_en": ["Pan", "go", "lin"]
+    },
+    "komodo": {
+      "id": "Komodo",
+      "en": "Komodo Dragon",
+      "syllables_id": ["Ko", "mo", "do"],
+      "syllables_en": ["Ko", "mo", "do", "Drag", "on"]
+    },
+    "bunglon": {
+      "id": "Bunglon",
+      "en": "Chameleon",
+      "syllables_id": ["Bung", "lon"],
+      "syllables_en": ["Cha", "me", "le","on"]
+    },
+    "unta": {
+      "id": "Unta",
+      "en": "Camel",
+      "syllables_id": ["Un", "ta"],
+      "syllables_en": ["Cam", "el"]
+    },
+    "koi": {
+      "id": "Koi",
+      "en": "Koi Fish",
+      "syllables_id": ["Ko", "i"],
+      "syllables_en": ["Koi", "Fish"]
+    },
+    "ubur_ubur": {
+      "id": "Ubur-ubur",
+      "en": "Jellyfish",
+      "syllables_id": ["U", "bur", "u", "bur"],
+      "syllables_en": ["Jel", "ly", "fish"]
+    },
+    "pari": {
+      "id": "Pari",
+      "en": "Stingray",
+      "syllables_id": ["Pa", "ri"],
+      "syllables_en": ["Sting", "ray"]
+    },
+    "gurita": {
+      "id": "Gurita",
+      "en": "Octopus",
+      "syllables_id": ["Gu", "ri", "ta"],
+      "syllables_en": ["Oc", "to", "pus"]
+    },
+    "kuda_laut": {
+      "id": "Kuda Laut",
+      "en": "Seahorse",
+      "syllables_id": ["Ku", "da", "La","ut"],
+      "syllables_en": ["Sea", "horse"]
+    },
+    "anjing_laut": {
+      "id": "Anjing Laut",
+      "en": "Seal",
+      "syllables_id": ["An", "jing", "La", "ut"],
+      "syllables_en": ["Seal"]
+    },
+    "kura_kura": {
+      "id": "Kura-kura",
+      "en": "Turtle",
+      "syllables_id": ["Ku", "ra", "ku", "ra"],
+      "syllables_en": ["Tur", "tle"]
+    },
+    "platipus": {
+      "id": "Platipus",
+      "en": "Platypus",
+      "syllables_id": ["Pla", "ti", "pus"],
+      "syllables_en": ["Plat", "y", "pus"]
+    }
+  }
+}

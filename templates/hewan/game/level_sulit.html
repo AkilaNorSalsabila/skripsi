@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puzzle Hewan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/hewan/sulit.css') }}">
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  <audio id="sfx-correct" src="{{ url_for('static', filename='sounds/correct.mp3') }}"></audio>
+  <audio id="sfx-wrong" src="{{ url_for('static', filename='sounds/wrong.mp3') }}"></audio>
+  <audio id="clickSound" src="{{ url_for('static', filename='sounds/sound-click.mp3') }}"></audio>
+
+  <audio id="id-player"></audio>
+ <div class="grass"></div>
+  <a href="/game_hewan" class="back-button" >
+      <img src="{{ url_for('static', filename='img/hewan/desain/back.png') }}" alt="Kembali">
+  </a>
+
+  <div id="timer" class="timer">00:00</div>
+
+  <div class="content">
+    <header class="header">
+      <h1 id="title-text"></h1> 
+      <button id="btn-speak" class="speak-btn" aria-label="Putar instruksi">
+        <img src="{{ url_for('static', filename='img/hewan/desain/sound.png') }}" alt="speak">
+      </button>
+    </header>
+
+    <div id="wrong-overlay" class="wrong-overlay hidden">
+      <div class="wrong-content">
+        <h1>✖</h1>
+        <p id="wrong-text"></p>
+      </div>
+    </div>
+    <h2 id="progress"></h2>
+
+    <div class="puzzle-wrapper">
+      <div class="puzzle-content">
+        <div id="siluet-container"></div>
+        <div class="side-panel">
+          <div id="pilihan-container"></div>
+        </div>
+      </div>
+      
+      <div id="info-panel" class="info-panel hidden">
+        <div id="info-combined" class="info-box combined">
+          <div id="info-animal" class="animal-name"></div>
+          <div id="info-habitat" class="habitat-text"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div id="exit-confirm" class="confirm-overlay hidden">
+      <div class="confirm-box">
+      <h2 id="exit-confirm-text"></h2>
+
+        <div class="confirm-actions">
+        <button id="cancel-exit" class="btn-cancel">
+        <img src="{{ url_for('static', filename='img/hewan/desain/exit.png') }}" alt="Batal">
+        </button>
+
+        <button id="confirm-exit" class="btn-confirm">
+        <img src="{{ url_for('static', filename='img/hewan/desain/check.png') }}" alt="Ya">
+        </button>
+    </div>
+    <script src="{{ url_for('static', filename='js/hewan_sulit.js') }}"></script>
+  </div>
+
+  <script>
+  const clickSound = document.getElementById("clickSound");
+
+  document.addEventListener("click", function () {
+    clickSound.currentTime = 0; 
+    clickSound.play();
+  });
+</script>
+</body>
+</html>
+
+

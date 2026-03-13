@@ -1,0 +1,250 @@
+:root {
+  --bg: #EAF7FF;
+  --brand:#ffd21f;
+  /* --success: #ffd21f; */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  font-family:'Mochiy Pop One', sans-serif;
+  text-align: center;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
+/* Judul */
+.notif-header {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 🌱 GRASS */
+.grass{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:220px;
+  background:url("/static/img/hewan/desain/rumput.png") bottom center / cover no-repeat;
+  z-index:2;
+}
+
+
+.notif-header h1 {
+  font-size: 52px;
+  -webkit-text-stroke: 8px white;
+  paint-order: stroke fill;
+  color: #ff9040;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+    position: relative; 
+}
+
+.notif-header{
+  color: var(--brand);
+}
+
+
+#anm-name {
+  display: inline-block;
+  font-size: 60px;
+  -webkit-text-stroke: 8px white;
+  paint-order: stroke fill;
+  color: #ffd21f;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  font-family: 'Mochiy Pop One', sans-serif;
+  margin-top: 20px;
+  z-index: 6;
+  text-align: center;
+}
+
+/* Syllable pieces placed inside #anm-name - visible by default */
+#anm-name .syllable-piece{
+  display: inline;
+  margin: 0;
+  padding: 0;
+  font-size: 60px;
+  -webkit-text-stroke: 8px white;
+  paint-order: stroke fill;
+  color: #ffd21f;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  font-family: 'Mochiy Pop One', sans-serif;
+  transition: all 350ms cubic-bezier(.34,1.56,.64,1);
+}
+
+#anm-name .syllable-space{
+  display: inline;
+}
+
+#anm-name .syllable-dash{
+  display: inline;
+  margin: 0;
+  padding: 0;
+  font-size: 60px;
+  -webkit-text-stroke: 5px white;
+  paint-order: stroke fill;
+  color: #ffd21f;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  font-family: 'Mochiy Pop One', sans-serif;
+}
+
+/* Pop-up animation when syllable is mentioned in test audio */
+.syllable-piece-animate{
+  display: inline-block !important;
+  position: relative;
+  z-index: 10;
+  animation: syllable-pop 400ms cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes syllable-pop {
+  0% {
+    transform: scale(1);
+    color: #ffd21f;
+    -webkit-text-stroke: 8px white;
+  }
+  50% {
+    transform: scale(1.5);
+    color: #ff9040;
+    -webkit-text-stroke: 12px white;
+    text-shadow: 2px 2px 12px rgba(255, 144, 64, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    color: #ff9040;
+    -webkit-text-stroke: 8px white;
+  }
+}
+
+
+#anm-name.playing{
+  transform: scale(1.02);
+}
+
+/* Full pop-up animation when animals audio plays */
+#anm-name.full-popup{
+  animation: full-word-pop 600ms cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes full-word-pop {
+  0% {
+    transform: scale(1);
+    color: #ffd21f;
+  }
+  50% {
+    transform: scale(1.15);
+    color: #ff9040;
+    -webkit-text-stroke: 12px white;
+    text-shadow: 2px 2px 12px rgba(255, 144, 64, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    color: #ff9040;
+  }
+}
+
+
+/* Tombol suara */
+.speak-btn{
+  position: absolute;
+  right: 100px;
+  top: clamp(36px, 5vh, 50px);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.speak-btn img{ width: clamp(44px, 6vw, 90px); }
+
+
+.back-button{
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  z-index: 9999; 
+  display: inline-block;
+}
+
+.back-button img{
+  width: clamp(44px, 6vw, 90px);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.back-button:hover img{
+  transform: scale(1.05);
+  filter: brightness(0.9);
+}
+
+
+/* Gambar sayuran */
+.notif-main {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  padding: 0 clamp(12px, 4vw, 40px);
+  box-sizing: border-box;
+}
+
+/* Match sizing used in level mudah: use same rules as #animal-image */
+#notif-anm {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: clamp(220px, 50vh, 450px);
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Confetti */
+#confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .grass {
+    height: clamp(120px, 30vh, 150px);
+    background-position: 0%;
+  }
+  .notif-header h1 {
+    font-size: 45px;
+    -webkit-text-stroke: 5px white;
+  }
+  #anm-name,
+  #anm-name .syllable-piece,
+  #anm-name .syllable-dash {
+    font-size: 45px;
+    -webkit-text-stroke: 5px white;
+  }
+  .speak-btn img { width: 60px; }
+  .back-button img { width: 60px; }
+  .back-button { left: clamp(8px, 3vw, 16px); top: clamp(36px, 5vh, 50px); }
+  .speak-btn { right: clamp(8px, 3vw, 16px); top: clamp(36px, 5vh, 50px); }
+  /* mirror mudah.css responsive sizing for the animal image */
+  #notif-anm { max-width: 90vw; max-height: clamp(200px, 45vh, 250px); }
+}

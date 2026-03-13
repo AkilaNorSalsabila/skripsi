@@ -1,0 +1,360 @@
+:root{
+  --bg:#EAF7FF;
+  --brand:#ffd21f;
+  /* --text:#00687a; */
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  background:var(--bg);
+  font-family:'Mochiy Pop One', sans-serif;
+  /* color:var(--text); */
+  height:100vh;
+  overflow:hidden;
+  position:relative;
+}
+
+.grass {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(140px, 30vh, 220px);
+  background-image: url("/static/img/hewan/desain/rumput.png");
+  background-size: cover;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  z-index: 2;
+}
+
+.content{
+  position:relative;
+  z-index:5;
+  height:calc(100vh - clamp(140px, 18vh, 220px));
+  padding-top: clamp(36px, 5vh, 50px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* HEADER */
+.header{
+  margin-top:5px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+   margin-bottom:30px;
+}
+
+#title-text{
+  text-align: center;
+  font-size: clamp(20px, 5vw, 40px);
+  -webkit-text-stroke: 12px white;
+  paint-order: stroke fill;
+  color: #ff9040;
+  margin-bottom: 8px;
+  margin-top: 0; /* prevent extra top spacing so title lines up */
+}
+
+
+
+/* GAME */
+#game{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  /* justify-content:start; */
+  gap:120px;
+
+}
+
+.image-wrap {
+  width: 100%;
+  max-width: 900px;        
+  margin: 0 auto;
+  padding: 0 clamp(12px, 4vw, 40px);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+#animal-image {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: clamp(220px, 50vh, 450px);
+  object-fit: contain;
+  display: block;
+}
+
+
+/* OPTIONS */
+.options{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:40px;
+  width:min(1000px, 92vw);
+  z-index:6;
+  margin-bottom: 20px;
+}
+
+
+.option-btn{
+  background:var(--brand);
+  color:#000000;
+  border:0;
+  border-radius:18px;
+  padding:16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size:40px;
+  font-family:'Quicksand', sans-serif;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+
+#progress {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+
+.speak-btn{
+  position:absolute;
+  right: clamp(10px, 3vw, 40px);
+  top: clamp(36px, 5vh, 50px);
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+.speak-btn img{ width: clamp(50px, 6vw, 90px); }
+
+.back-button{
+  position: absolute;
+  top: clamp(36px, 5vh, 50px);
+  left: clamp(14px, 3vw, 40px);
+  z-index: 9999; 
+  display: inline-block;
+}
+
+.back-button img{
+  width: clamp(50px, 6vw, 90px);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.back-button:hover img{
+  transform: scale(1.05);
+  filter: brightness(0.9);
+}
+
+
+.wrong-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(220, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.wrong-overlay.hidden {
+  display: none;
+}
+
+.wrong-content {
+  text-align: center;
+  color: #fff;
+  font-family: 'Mochiy Pop One', sans-serif;
+  animation: pop 0.5s ease-out;
+}
+
+.wrong-content h1 {
+  font-size: 8rem;
+  margin: 0;
+}
+
+.wrong-content p {
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+/* === CONFIRM EXIT === */
+.confirm-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+
+.confirm-overlay.hidden{
+  display:none;
+}
+
+.confirm-box{
+  background:#fff;
+  padding:26px 30px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  animation:pop .25s ease-out;
+}
+
+.confirm-box h2{
+  font-size:26px;
+  margin-bottom:20px;
+}
+
+.confirm-actions{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+}
+.btn-cancel,
+.btn-confirm{
+  width:72px;
+  height:72px;
+  border:none;
+  border-radius:50%;
+  cursor:pointer;
+  overflow:hidden;
+  padding:0;
+  box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+.btn-cancel img,
+.btn-confirm img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:transparent;
+}
+
+
+@keyframes pop{
+  from{ transform:scale(.8); opacity:0; }
+  to{ transform:scale(1); opacity:1; }
+}
+@keyframes fadeIn{
+  from{ opacity:0; }
+  to{ opacity:1; }
+}
+
+/* Animasi Pop-up untuk opsi jawaban */
+@keyframes popUpBounce{
+  0% { transform:scale(1); }
+  30% { transform:scale(1.25); box-shadow:0 8px 25px rgba(255, 210, 31, 0.6); }
+  50% { transform:scale(1.15); }
+  100% { transform:scale(1); box-shadow:0 4px 10px rgba(0,0,0,.15); }
+}
+
+.pop-up-animation{
+  animation: popUpBounce 0.6s ease-out;
+}
+
+@media (max-width:1023px){
+
+  .content{
+    height:calc(100vh - clamp(120px, 22vh, 196px));
+  }
+
+  .grass {
+    height: clamp(120px, 30vh, 150px);
+    background-position: 0%;
+  }
+  .options{
+    grid-template-columns:1fr;
+    gap:20px;
+    width:50%;
+  }
+
+  .option-btn{
+    width:100%;
+    font-size:25px;
+    padding:14px;
+  }
+
+  #title-text{
+    font-size: clamp(20px, 4vw, 30px);
+    -webkit-text-stroke: 4px white;
+  }
+
+  #game{
+    gap: 50px;
+  }
+  #animal-image{
+    max-height:clamp(200px, 45vh, 250px);
+  }
+}
+
+/* ============================= */
+/* DESKTOP >=1024px */
+/* ============================= */
+
+@media (min-width:1024px){
+
+  .options{
+    grid-template-columns:repeat(3, 1fr);
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+}
+
+  /* Mobile adjustments for confirmation dialog */
+  @media (max-width: 480px) {
+    .confirm-box {
+      padding: 16px 18px;
+      border-radius: 14px;
+      width: min(92vw, 320px);
+    }
+
+    .confirm-box h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .confirm-actions {
+      gap: 16px;
+    }
+
+    .btn-cancel,
+    .btn-confirm {
+      width: 52px;
+      height: 52px;
+    }
+
+    .btn-cancel img,
+    .btn-confirm img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .confirm-box {
+      padding: 12px 14px;
+      width: 92vw;
+    }
+    .confirm-box h2 { font-size: 16px; }
+    .btn-cancel, .btn-confirm { width: 48px; height: 48px; }
+  }
