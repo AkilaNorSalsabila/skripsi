@@ -11,8 +11,8 @@ body{
   background:var(--bg);
   font-family:'Mochiy Pop One', sans-serif;
   /* color:var(--text); */
-  height:100vh;
-  overflow:hidden;
+  min-height:100vh;
+  overflow-x:hidden;
   position:relative;
 }
 
@@ -32,7 +32,7 @@ body{
 .content{
   position:relative;
   z-index:5;
-  height:calc(100vh - clamp(140px, 18vh, 220px));
+  min-height:calc(100vh - clamp(140px, 18vh, 220px));
   padding-top: clamp(36px, 5vh, 50px);
   display:flex;
   flex-direction:column;
