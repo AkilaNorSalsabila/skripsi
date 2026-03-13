@@ -1,0 +1,325 @@
+{
+  "ANJING": {
+    "hewan": "Anjing",
+    "nama_en": "Dog",
+    "habitat": "Darat",
+    "habitat_spesifik": "Lingkungan rumah dan pekarangan",
+    "audio_id": "anjing",
+    "audio_en": "dog",
+    "narasi_id": "Anjing, hewan yang setia dan memiliki penciuman yang tajam. Habitat mereka di darat, biasanya di lingkungan rumah dan pekarangan."
+  },
+  "AYAM": {
+    "hewan": "Ayam",
+    "nama_en": "Chicken",
+    "habitat": "Darat",
+    "habitat_spesifik": "Pekarangan dan peternakan",
+    "audio_id": "ayam",
+    "audio_en": "chicken",
+    "narasi_id": "Ayam, dia bisa bertelur dan sering dipelihara manusia. Habitat mereka di darat, biasanya di pekarangan dan peternakan."
+  },
+  "BADAK": {
+    "hewan": "Badak",
+    "nama_en": "Rhinoceros",
+    "habitat": "Darat",
+    "habitat_spesifik": "Savana",
+    "audio_id": "badak",
+    "audio_en": "rhinoceros",
+    "narasi_id": "Badak, bertubuh besar dan memiliki cula di hidung. Habitat mereka di darat, biasanya di savana yang luas."
+  }, 
+  "BUNGLON": {
+    "hewan": "Bunglon",
+    "nama_en": "Chameleon",
+    "habitat": "Darat",
+    "habitat_spesifik": "Hutan dan pepohonan",
+    "audio_id": "bunglon",
+    "audio_en": "chameleon",
+    "narasi_id": "Bunglon, bisa mengubah warna kulit sesuai lingkungannya. Habitat mereka di darat, biasanya di hutan dan pepohonan yang lebat." 
+  },
+  "BURUNG HANTU": {
+    "hewan": "Burung Hantu",
+    "nama_en": "Owl",
+    "habitat": "Darat",
+    "habitat_spesifik": "Hutan",
+    "audio_id": "burung_hantu",
+    "audio_en": "owl",
+    "narasi_id": "Burung hantu, dia memiliki penglihatan yang tajam. Habitat mereka di darat, biasanya di hutan dan pepohonan yang lebat."
+  },
+  "CENDRAWASIH": {
+    "hewan": "Cendrawasih",
+    "nama_en": "Bird of Paradise",
+    "habitat": "Darat",
+    "habitat_spesifik": "Hutan hujan tropis",
+    "audio_id": "cendrawasih",
+    "audio_en": "bird_of_paradise",
+    "narasi_id": "Cendrawasih, bulunya sangat indah dan berwarna cerah. Habitat mereka di darat, biasanya di hutan hujan Papua."
+  },
+  "ELANG": {
+    "hewan": "Elang",
+    "nama_en": "Eagle",
+    "habitat": "Darat",
+    "habitat_spesifik": "Pegunungan dan hutan",
+    "audio_id": "elang",
+    "audio_en": "eagle",
+    "narasi_id": "Elang, burung pemangsa dengan penglihatan yang sangat tajam. Habitat mereka di darat, biasanya di hutan dan pegunungan."
+  },
+  "GAJAH": {
+    "hewan": "Gajah",
+    "nama_en": "Elephant",
+    "habitat": "Darat",
+    "habitat_spesifik": "Savana dan hutan", 
+    "karakteristik": "Gajah memiliki belalai panjang dan tubuh sangat besar",
+    "audio_id": "gajah",
+    "audio_en": "elephant",
+    "narasi_id": "Gajah, memiliki belalai yang panjang dan tubuhnya sangat besar. Habitat mereka di darat, biasanya di hutan dan savana yang luas."
+  },
+  "HARIMAU": {
+    "hewan": "Harimau",
+    "nama_en": "Tiger",
+    "habitat": "Darat",
+    "habitat_spesifik": "Hutan",
+    "audio_id": "harimau",
+    "audio_en": "tiger",
+    "narasi_id": "Harimau, memiliki belang hitam dan merupakan hewan pemangsa. Habitat mereka di darat, biasanya di hutan yang lebat." 
+  },
+  "JERAPAH": {
+    "hewan": "Jerapah",
+    "nama_en": "Giraffe",
+    "habitat": "Darat",
+    "habitat_spesifik": "Savana",
+    "audio_id": "jerapah",
+    "audio_en": "giraffe",
+    "narasi_id": "Jerapah, memiliki leher yang sangat panjang. Habitat mereka di darat, biasanya di savana yang luas."
+  },
+  "KOMODO": {
+    "hewan": "Komodo",
+    "nama_en": "Komodo Dragon",
+    "habitat": "Darat",
+    "habitat_spesifik": "Pulau-pulau di Indonesia",
+    "audio_id": "komodo",
+    "audio_en": "komodo_dragon",
+    "narasi_id": "Komodo, menjadi kadal terbesar di dunia dan gigitannya beracun. Habitat mereka di darat, biasanya di Pulau Komodo dan Pulau Rinca."
+  },
+  "KUCING": {
+    "hewan": "Kucing",
+    "nama_en": "Cat",
+    "habitat": "Darat",
+    "habitat_spesifik": "Lingkungan rumah dan pekarangan",
+    "audio_id": "kucing",
+    "audio_en": "cat",
+    "narasi_id": "Kucing, hewan yang lincah, suka bermain dan sering menjadi peliharaan. Habitat mereka di darat, biasanya di lingkungan rumah dan pekarangan."
+  },
+  "KUPU-KUPU": {
+    "hewan": "Kupu-kupu",
+    "nama_en": "Butterfly",
+    "habitat": "Darat",
+    "habitat_spesifik": "Taman dan kebun bunga",
+    "audio_id": "kupu_kupu",
+    "audio_en": "butterfly",
+    "narasi_id": "Kupu-kupu, memiliki sayap yang indah dan mengalami metamorfosis. Habitat mereka di darat, biasanya di taman dan kebun bunga"
+  },
+  "LANDAK": {
+    "hewan": "Landak",
+    "nama_en": "Hedgehog",
+    "habitat": "Darat",
+    "habitat_spesifik": "Hutan",
+    "audio_id": "landak",
+    "audio_en": "hedgehog",
+    "narasi_id": "Landak, dia memiliki duri yang sangat tajam di tubuhnya. Habitat mereka di darat, biasanya di hutan."
+  },
+  "LEBAH": {
+    "hewan": "Lebah",
+    "nama_en": "Bee",
+    "habitat": "Darat",
+    "habitat_spesifik": "Taman dan kebun bunga",
+    "audio_id": "lebah",
+    "audio_en": "bee",
+    "narasi_id": "Lebah, lebah bisa menghasilkan madu yang manis. Habitat mereka di darat, biasanya di taman dan kebun bunga."
+  },
+  "MERAK": {
+    "hewan": "Merak",
+    "nama_en": "Peacock",
+    "habitat": "Darat",
+    "habitat_spesifik": "Savana",
+    "audio_id": "merak",
+    "audio_en": "peacock",
+    "narasi_id": "Burung Merak, ekornya sangat indah dan bisa dikembangkan seperti kipas. Habitat mereka di darat, biasanya ada di savana yang luas."
+  },
+  "MONYET": {
+    "hewan": "Monyet",
+    "nama_en": "Monkey",
+    "habitat": "Darat",
+    "habitat_spesifik": "Hutan dan pepohonan",
+    "karakteristik": "Monyet, pandai memanjat pohon",
+    "audio_id": "monyet",
+    "audio_en": "monkey",
+    "narasi_id": "Monyet, monyet sangat pandai memanjat pohon. Habitat mereka di darat, biasanya di hutan dan pepohonan yang tinggi."
+  },
+  "TRENGGILING": {
+    "hewan": "Trenggiling",
+    "nama_en": "Pangolin",
+    "habitat": "Darat",
+    "habitat_spesifik": "Hutan",
+    "audio_id": "trenggiling",
+    "audio_en": "pangolin",
+    "narasi_id": "Trenggiling, tubuhnya bersisik dan keras. Habitat mereka di darat, biasanya ada di hutan."
+  },
+  "UNTA": {
+    "hewan": "Unta",
+    "nama_en": "Camel",
+    "habitat": "Darat",
+    "habitat_spesifik": "Gurun Pasir",
+    "karakteristik": "Unta memiliki punuk dan mampu bertahan di gurun",
+    "audio_id": "unta",
+    "audio_en": "camel",
+    "narasi_id": "Unta, dia memiliki punuk di punggungnya. Habitat mereka di darat, biasanya di gurun pasir."
+  },
+  "ZEBRA": {
+    "hewan": "Zebra",
+    "nama_en": "Zebra",
+    "habitat": "Darat",
+    "habitat_spesifik": "Savana",
+    "audio_id": "zebra",
+    "audio_en": "zebra",
+    "narasi_id": "Zebra, memiliki garis hitam putih di seluruh tubuhnya. Habitat mereka di darat, biasanya di savana yang luas."
+  },
+
+    "ANJING LAUT": {
+    "hewan": "Anjing Laut",
+    "nama_en": "Seal",
+    "habitat": "Air",
+    "habitat_spesifik": "Pulau beriklim dingin",
+    "audio_id": "anjing_laut",
+    "audio_en": "seals",
+    "narasi_id": "Anjing laut, dia sebagai mamalia laut yang pandai berenang. Habitat mereka di air, biasanya ada di pulau yang beriklim dingin."
+  },
+  "BINTANG LAUT": {
+    "hewan": "Bintang Laut",
+    "nama_en": "Starfish",
+    "habitat": "Air",
+    "habitat_spesifik": "Dasar laut",
+    "audio_id": "bintang_laut",
+    "audio_en": "starfish",
+    "narasi_id": "Bintang laut, tubuhnya unik berbentuk seperti bintang. Habitat mereka di air, biasanya di dasar laut."
+  },
+  "GURITA": {
+    "hewan": "Gurita",
+    "nama_en": "Octopus",
+    "habitat": "Air",
+    "habitat_spesifik": "Dasar laut",
+    "audio_id": "gurita",
+    "audio_en": "octopus",
+    "narasi_id": "Gurita, dia memiliki delapan lengan dan bisa menyemprotkan tinta. Habitat mereka di air, biasanya ada di dasar laut."
+  },
+  "HIU": {
+    "hewan": "Hiu",
+    "nama_en": "Shark",
+    "habitat": "Air",
+    "habitat_spesifik": "Laut",
+    "audio_id": "hiu",
+    "audio_en": "shark",
+    "narasi_id": "Hiu, dia memiliki gigi tajam dan perenang yang cepat. Habitat mereka di air, biasanya di laut."
+  },
+  "IKAN PARI": {
+    "hewan": "Ikan Pari",
+    "nama_en": "Stingray",
+    "habitat": "Air",
+    "habitat_spesifik": "Laut",
+    "audio_id": "pari",
+    "audio_en": "stingray",
+    "narasi_id": "Ikan pari, tubuhnya pipih dan saat berenang seperti melayang. Habitat mereka di air, biasanya di laut."
+  },
+  "KOI": {
+    "hewan": "Koi",
+    "nama_en": "Koi Fish",
+    "habitat": "Air",
+    "habitat_spesifik": "Kolam dan Danau",
+    "audio_id": "koi",
+    "audio_en": "koi",
+    "narasi_id": "Koi, ikan hias yang memiliki corak warna-warni. Habitat mereka di air, biasanya di kolam dan danau."
+  },
+  "KUDA LAUT": {
+    "hewan": "Kuda Laut",
+    "nama_en": "Seahorse",
+    "habitat": "Air",
+    "habitat_spesifik": "Laut",
+    "audio_id": "kuda_laut",
+    "audio_en": "seahorse",
+    "narasi_id": "Kuda laut, bentuk tubuhnya unik menyerupai kuda. Habitat mereka di air, biasanya ada di laut."
+  },
+  "LUMBA-LUMBA": {
+    "hewan": "Lumba-lumba",
+    "nama_en": "Dolphin",
+    "habitat": "Air",
+    "habitat_spesifik": "Laut",
+    "audio_id": "lumba_lumba",
+    "audio_en": "dolphin",
+    "narasi_id": "Lumba-lumba, mamalia laut yang cerdas dan ramah. Habitat mereka di air, biasanya di laut yang luas."
+  },
+  "PAUS": {
+    "hewan": "Paus",
+    "nama_en": "Whale",
+    "habitat": "Air",
+    "habitat_spesifik": "Laut",
+    "audio_id": "paus",
+    "audio_en": "whale",
+    "narasi_id": "Paus, mamalia terbesar di laut. Habitat mereka di air, biasanya di lautan yang luas."
+  },
+  "UBUR-UBUR": {
+    "hewan": "Ubur-ubur",
+    "nama_en": "Jellyfish",
+    "habitat": "Air",
+    "habitat_spesifik": "Laut",
+    "audio_id": "ubur_ubur",
+    "audio_en": "jellyfish",
+    "narasi_id": "Ubur-ubur, tubuhnya transparan dan memiliki tentakel yang menyengat. Habitat mereka di air, biasanya ada di lautan yang luas."
+  },
+
+
+
+  "CAPUNG": {
+    "hewan": "Capung",
+    "nama_en": "Dragonfly",
+    "habitat": "Darat dan Air",
+    "habitat_spesifik": "Tepi sungai, danau atau rawa",
+    "audio_id": "capung",
+    "audio_en": "dragonfly",
+    "narasi_id": "Capung, dia memiliki sayap dan sering terbang di dekat air. Habitat mereka di darat dan air, biasanya di tepi sungai, danau atau rawa."
+  },
+  "KATAK": {
+    "hewan": "Katak",
+    "nama_en": "Frog",
+    "habitat": "Darat dan Air",
+    "habitat_spesifik": "Rawa-rawa dan tepi sungai",
+    "audio_id": "katak",
+    "audio_en": "frog",
+    "narasi_id": "Katak, hidupnya di dua alam dan pandai melompat. Habitat mereka di darat dan air, biasanya di rawa-rawa dan tepi sungai."
+  },
+  "KURA-KURA": {
+    "hewan": "Kura-kura",
+    "nama_en": "Turtle",
+    "habitat": "Darat dan Air",
+    "habitat_spesifik": "Sungai atau Danau",
+    "audio_id": "kura_kura",
+    "audio_en": "turtle",
+    "narasi_id": "Kura-kura, memiliki tempurung keras untuk melindungi tubuhnya. Habitat mereka di darat dan air, biasanya di sungai atau danau."
+  },
+  "PINGUIN": {
+    "hewan": "Pinguin",
+    "nama_en": "Penguin",
+    "habitat": "Darat dan Air",
+    "habitat_spesifik": "Pantai es bersalju dan laut yang dingin",
+    "audio_id": "pinguin",
+    "audio_en": "penguin",
+    "narasi_id": "Pinguin, burung yang tidak bisa terbang tetapi pandai berenang. Habitat mereka di darat dan air, biasanya di pantai es bersalju dan laut yang dingin."
+  },
+  "PLATIPUS": {
+    "hewan": "Platipus",
+    "nama_en": "Platypus",
+    "habitat": "Darat dan Air",
+    "habitat_spesifik": "Sungai atau rawa di Australia",
+    "audio_id": "platipus",
+    "audio_en": "platypus",
+    "narasi_id": "Platipus, tubuhnya unik mulutnya berparuh seperti bebek. Habitat mereka di darat dan air, biasanya di sungai atau rawa di Australia."
+  }
+
+}

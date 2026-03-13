@@ -38,7 +38,7 @@ const questionBank = {
       correctAnswer: { id: "Kucing", en: "Cat" },
       answers: {
         id: ["Kucing", "Ayam", "Zebra"],
-        en: ["Cat", "Chicken", "Zebras"]
+        en: ["Cat", "Chicken", "Zebra"]
       }
     },
     {
