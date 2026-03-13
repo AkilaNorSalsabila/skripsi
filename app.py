@@ -197,6 +197,13 @@ def skor():
 @app.route("/puzzle_sulit1")
 def puzzle_sulit1():
     return render_template("puzzle_sulit1.html")
+@app.route("/puzzle_notif")
+def puzzle_notif():
+    return render_template("puzzle_notif.html")
+
+@app.route("/puzzle_next")
+def puzzle_next():
+    return render_template("puzzle_sulit1.html")
 
 
 # Hewan Routes
