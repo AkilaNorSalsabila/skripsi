@@ -644,10 +644,11 @@ function puzzleSolved() {
                 };
             });
         } else {
-            soundVegetable.src = `/static/sounds/id/notif_puzzle/${soal.name_id}.mp4`;
+    // Logika tambahan khusus untuk Timun
+     soundVegetable.src = `/static/sounds/id/notif_puzzle/${soal.name_id}.mp4`;
             soundVegetable.play().catch(e => console.error("Audio ID missing", e));
             soundVegetable.onended = null;
-        }
+}
     };
 
     setTimeout(() => {

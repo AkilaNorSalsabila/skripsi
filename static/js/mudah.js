@@ -178,28 +178,13 @@ const bankSedang = [
 ];
 
 const bankSedangkeSulit = [
-  {
-    image: "/static/img/seledri.png",
-    correctAnswer: { id: "Seledri", en: "Celery" },
-    answers: {
-      id: ["Seledri", "Sawi Hijau", "Selada"],
-      en: ["Celery", "Mustard Greens", "Lettuce"]
-    }
-  },
-   {
-    image: "/static/img/bawang_daun.png",
-    correctAnswer: { id: "Bawang Daun", en: "Leek" },
-    answers: {
-      id: ["Bawang Daun", "Bawang Merah", "Bawang Putih"],
-      en: ["Leek", "Shallot", "Garlic"]
-    }
-  },
+
   {
     image: "/static/img/daun_pakis.png",
     correctAnswer: { id: "Daun Pakis", en: "Fiddlehead Fern" },
     answers: {
-      id: ["Daun Pakis", "Daun Bawang", "Daun Selada"],
-      en: ["Fiddlehead Fern", "spring onion", "Spinach"]
+      id: ["Daun Pakis", "Bawang Daun", "Selada"],
+      en: ["Fiddlehead Fern", "Leek", "Lettuce"]
     }
   },
   {
