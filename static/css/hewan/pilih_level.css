@@ -61,7 +61,7 @@ body {
   margin-bottom: clamp(40px, 8vh, 100px);
   color: #ff8d39;
   font-weight: normal;
-  -webkit-text-stroke: 6px white;
+  -webkit-text-stroke: 15px white;
   paint-order: stroke fill;
 }
 

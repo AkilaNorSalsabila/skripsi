@@ -11,10 +11,11 @@ body{
   font-family:'Mochiy Pop One', system-ui, sans-serif;
   color:var(--text);
   overflow-x:hidden;
+  min-height:100vh;
 }
 
 .grass{
-  position:absolute;
+  position:fixed;
   bottom:0;
   left:0;
   width:100%;

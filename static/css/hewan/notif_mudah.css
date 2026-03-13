@@ -11,7 +11,7 @@ body {
   font-family:'Mochiy Pop One', sans-serif;
   text-align: center;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -29,7 +29,7 @@ body {
 
 /* 🌱 GRASS */
 .grass{
-  position:absolute;
+  position:fixed;
   bottom:0;
   left:0;
   width:100%;
