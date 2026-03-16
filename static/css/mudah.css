@@ -10,25 +10,25 @@ body {
   margin: 0;
   background: var(--bg);
   font-family: 'Mochiy Pop One', system-ui, sans-serif;
-  color: #0288D1; /* Biru utama */
+  color: #0288D1;
   text-shadow:
     1px 1px 0 #ffffff,
     2px 2px 0 #81D4FA;
   overflow-x: hidden;
 }
 
-/* --- KONTROL TOMBOL BACK (DISAMAKAN DENGAN MENENGAH) --- */
+/* --- KONTROL TOMBOL BACK --- */
 .top-bar {
   display: flex;
   align-items: center;
   position: absolute;
   top: 20px;
-  left: 110px; /* Diubah dari 20px ke 110px agar sama dengan level menengah */
+  left: 110px;
   z-index: 100;
 }
 
 .back-button {
-  display: none; /* Muncul via JS di soal No.1 */
+  display: none;
 }
 
 .back-button img {
@@ -49,7 +49,7 @@ body {
   z-index: -1;
 }
 .decor-right { top: 0; right: 0; width: 220px; }
-.decor-left { bottom: 0; left: 0; width: 300px; }
+.decor-left  { bottom: 0; left: 0; width: 300px; }
 
 /* --- HEADER & JUDUL --- */
 .header {
@@ -111,7 +111,7 @@ body {
   gap: 28px;
   width: min(920px, 92vw);
   margin-inline: auto;
-  margin-top: -50px;
+  margin-top: clamp(-50px, -4.5vw, -20px); /* naik lebih dari sebelumnya */
 }
 
 .option-btn {
@@ -159,26 +159,23 @@ body {
 }
 
 .wrong-content h1 { font-size: 8rem; margin: 0; }
-.wrong-content p { font-size: 2rem; margin-top: 10px; }
+.wrong-content p  { font-size: 2rem; margin-top: 10px; }
 
 /* --- ANIMASI --- */
-/* Efek Gempa (Shake) Level Mudah */
-.shake {
-  animation: shakeEffect 0.4s ease-in-out;
-}
+.shake { animation: shakeEffect 0.4s ease-in-out; }
 
 @keyframes shakeEffect {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-15px); }
-  40% { transform: translateX(15px); }
-  60% { transform: translateX(-15px); }
-  80% { transform: translateX(15px); }
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-15px); }
+  40%  { transform: translateX(15px); }
+  60%  { transform: translateX(-15px); }
+  80%  { transform: translateX(15px); }
   100% { transform: translateX(0); }
 }
 
 @keyframes pop {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1);   opacity: 1; }
 }
 
 .zoom-active {
@@ -188,8 +185,8 @@ body {
 }
 
 @keyframes zoomInOut {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); filter: brightness(1.2); }
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); filter: brightness(1.2); }
   100% { transform: scale(1); }
 }
 
@@ -197,12 +194,16 @@ body {
 
 /* --- RESPONSIVE MOBILE --- */
 @media (max-width: 992px) {
-  .top-bar { 
-    top: 15px; 
-    left: 20px; /* Kembali ke kiri pada layar kecil agar tidak terpotong */
+  .top-bar {
+    top: 15px;
+    left: 20px;
   }
   .back-button img { width: 40px; }
   #title-text { font-size: 42px; }
-  .options { grid-template-columns: 1fr; gap: 16px; }
+  .options {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 0;
+  }
   .option-btn { font-size: 24px; }
 }
