@@ -158,7 +158,9 @@ body {
   height: 15px;
   border-radius: 2px;
 }
-
+.lang-select img.flag-id {
+  border: 1px solid #ccc;
+}
 .lang-select .options {
   margin-top: 5px;
   background: #fff;

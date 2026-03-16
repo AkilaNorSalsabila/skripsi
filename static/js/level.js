@@ -37,9 +37,9 @@ function applyLanguageUI(lang) {
     if (textHard) textHard.textContent = "Puzzle";
   } else {
     selectedLangEl.innerHTML = `
-      <img src="/static/img/flag indo.png" alt="Indo Flag">
-      <span>Indonesia</span>
-    `;
+  <img src="/static/img/flag indo.png" alt="Indo Flag" class="flag-id">
+  <span>Indonesia</span>
+`;
     titleEl.textContent = "Ayo Bermain!";
     if (textEasy) textEasy.textContent = "Tebak Nama";
     if (textMedium) textMedium.textContent = "Mencocokkan";
