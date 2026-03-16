@@ -414,3 +414,42 @@ font-size: 14px;}
     .confirm-box h2 { font-size: 16px; }
     .btn-cancel, .btn-confirm { width: 48px; height: 48px; }
   }
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+  #title-text { font-size: 36px; -webkit-text-stroke: 14px white; }
+  header.header { margin-top: 40px; }
+  #siluet-habitat-wrapper { gap: 40px; margin-top: 45px; }
+  #siluet-container, #habitat-container { width: 200px; height: 200px; }
+
+  .drop-zone, .habitat-drop { width: 200px; height: 200px; }
+  .option-img, .habitat-option { width: 180px; height: 180px; }
+  .option-wrapper {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .speak-btn img, .back-button img { width: 70px; }
+  .speak-btn { right: 60px; top: 40px; }
+  .back-button { left: 30px; top: 40px; }
+
+  .info-panel { width: 500px; }
+  .animal-name { font-size: 40px; -webkit-text-stroke: 18px white; }
+  .habitat-text { font-size: 20px; }
+  #pilihan-container {
+    position: relative;
+    height: auto;
+    min-height: 200px;
+    column-gap: 20px;
+    row-gap: 18px;
+    overflow: visible;
+  }
+
+  .grass { height: clamp(140px, 28vh, 180px); background-position: bottom center; }
+  #progress { bottom: 16px; right: 16px; }
+}

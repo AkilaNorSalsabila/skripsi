@@ -85,7 +85,7 @@ body{
   width: auto;
   max-width: 100%;
   height: auto;
-  max-height: clamp(220px, 50vh, 450px);
+  max-height: clamp(240px, 50vh, 480px);
   object-fit: contain;
   display: block;
 }
@@ -317,6 +317,33 @@ body{
     transform: translateX(-50%);
   }
 
+}
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+  #game{ gap: 70px; }
+  .image-wrap { max-width: 760px; padding: 0 28px; }
+  #animal-image {
+  max-height: clamp(240px, 50vh, 480px);
+  }
+
+  .options{
+    gap: 28px;
+    width: min(860px, 90vw);
+    bottom: 42px;
+  }
+
+  .option-btn{
+    font-size: 30px;
+    padding: 12px 14px;
+    border-radius:14px;
+  }
+
+   .speak-btn img, .back-button img { width: 70px; }
+  .speak-btn { right: 60px; top: 40px; }
+  .back-button { left: 30px; top: 40px; }
+  #title-text{ -webkit-text-stroke: 8px white; font-size: clamp(20px, 4.2vw, 30px); }
+
+  #progress{ right:16px; bottom:12px; padding:6px 10px; }
 }
 
   /* Mobile adjustments for confirmation dialog */

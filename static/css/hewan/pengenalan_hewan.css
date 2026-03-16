@@ -6,7 +6,6 @@
 
 
 body {
-    /* font-family: 'Arial', sans-serif; */
     font-family:'Mochiy Pop One', sans-serif;
     background: linear-gradient(180deg, #e8f4f8 0%, #d4e9f2 100%);
     min-height: 100vh;
@@ -14,11 +13,7 @@ body {
     position: relative;
 }
 
-/* Leaf Decoration */
 .leaf-decoration {
-    /* position: absolute; */
-    /* top: 0;
-    left: 0; */
     width: 100%;
     height: 100px;
     overflow: hidden;
@@ -48,9 +43,6 @@ body {
     gap: 80px; 
 
 }
-
-
-
 
 .btn-back {
     width: 70px;
@@ -84,8 +76,6 @@ body {
     
 }
 
-
-
 .icon-cloud {
     width: 24px;
     height: 24px;
@@ -104,8 +94,7 @@ body {
     transition: all 0.3s ease;
     padding: 0;
     outline: none;
-        margin-left: auto;
-
+    margin-left: auto;
 }
 
 .btn-sound:hover {
@@ -126,7 +115,6 @@ body {
     pointer-events: none;
 }
 
-/* Content Area */
 .content {
     display: grid;
     grid-template-columns: 55% 45%;
@@ -134,8 +122,6 @@ body {
     align-items: start;
 }
 
-
-/* Left Section */
 .left-section {
     display: flex;
     flex-direction: column;
@@ -145,30 +131,23 @@ body {
  .image-section {
     background: #ffffff;
     border-radius: 30px;
-    padding: 8px;
+    padding: 0px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    
-    /* Hapus min-height tetap */
     min-height: auto; 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /* Tambahkan aspect ratio 4:3 atau 16:9 */
-    aspect-ratio: 4 / 3; /* atau 16/9 sesuai kamera */
+    aspect-ratio: 4 / 3; 
 }
-
-
 
 #cameraVideo, #capturedPreview  {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* cover agar tidak terdistorsi */
+    object-fit: cover;
     border-radius: 20px;
+    padding: 0px;
 }
 
-
-/* Reset Camera Button */
 .btn-reset-camera {
     width: 60px;
     height: 60px;
@@ -258,7 +237,6 @@ body {
     stroke-width: 2;
 }
 
-/* Description Section */
 .description-section {
     background: transparent;
     display: flex;
@@ -283,7 +261,6 @@ body {
     margin-bottom: 0;
 }
 
-/* Audio Container */
 .audio-container {
     display: flex;
     flex-direction: column;
@@ -318,7 +295,7 @@ body {
     transition: all 0.3s ease;
     flex-shrink: 0;
     padding: 0;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .play-btn:hover {
@@ -386,7 +363,6 @@ body {
     font-family: 'Mochiy Pop One', sans-serif;
 }
 
-/* Pop-up animation when syllable is mentioned */
 .syllable-piece-animate{
     display: inline-block !important;
     position: relative;
@@ -417,7 +393,6 @@ body {
     transform: scale(1.02);
 }
 
-/* Full pop-up animation when full animal audio plays */
 .audio-label.full-popup{
     animation: full-word-pop 1000ms cubic-bezier(.34,1.56,.64,1);
 }
@@ -441,10 +416,6 @@ body {
     }
 }
 
-
-
-
-/* Consolidated responsive breakpoints: mobile <=768, tablet 769-1024, desktop >=1025 */
 
 /* Mobile: <=768px */
 @media (max-width: 767px) {
@@ -494,7 +465,7 @@ body {
     .header { padding: 30px 50px 50px !important;  }
     .title { font-size: 45px !important; -webkit-text-stroke: 20px white !important; }
     .leaf-decoration { height: 100px !important; }
-    .image-section {  width: 860px !important; height: 630px; padding: 10px !important; margin-left: 0;}
+    .image-section {  width: 860px !important; height: 630px; margin-left: 0;}
     .description-box { padding: 40px !important; margin-left: 30px; }
     .audio-container { padding: 16px !important; margin-left: 30px;}
     .audio-label { font-size: 45px !important; -webkit-text-stroke: 10px white !important; }
@@ -582,4 +553,34 @@ body {
   .upload-notif-box h2 {
     font-size: 16px;
   }
+}
+
+/* Mid-size laptop adjustments (match large-desktop look on 1366x768) */
+@media (min-width: 1200px) and (max-width: 1366px) {
+    .container { max-width: 1250px !important; padding: 0 18px; }
+    .header { padding: 26px 40px 40px !important; gap: 60px !important; }
+    .title { font-size: 34px !important; -webkit-text-stroke: 18px white !important; }
+    .content { grid-template-columns: 560px 400px !important; gap: 100px !important; align-items: start; }
+    .image-section { width: 560px !important; height: 380px !important; padding: 0px !important; border-radius: 18px; background: #fff; box-shadow: 0 10px 24px rgba(0,0,0,0.10); margin: 0 auto; border: 0px solid #ffffff; }
+    #cameraVideo, #capturedPreview { border-radius: 18px; }
+    .description-box { padding: 28px !important; width: 550px; border-radius: 18px; }
+    .description-text { font-size: 20px !important; }
+
+    .audio-container { padding: 20px !important; }
+    .audio-label { font-size: 30px !important; -webkit-text-stroke: 8px white !important; }
+
+    .btn-back, .btn-sound, .icon-back, .icon-sound { width: 64px !important; height: 64px !important; }
+    .btn-control { font-size: 18px !important; padding: 14px 20px !important; border-radius: 12px;}
+    .btn-reset-camera { width: 56px !important; height: 56px !important; border-radius: 50% !important; }
+    .btn-reset-camera svg { width: 28px !important; height: 28px !important; }
+    .button-controls { justify-content: center !important; grid-template-columns: 1fr 1fr 64px !important; width: 560px !important; gap: 10px !important; margin: -10px auto 0 !important; }
+
+    .leaf-decoration { height: 80px !important; }
+    .left-section { transform: translateY(-30px); margin-left: 100px;}
+    .description-section { transform: translateY(-30px); }
+    .flag { width: 45px !important; height: 30px !important; }
+     .play-btn { width: 56px !important; height: 56px !important; margin-left: 10px !important; }
+    .play-icon { width: 56px !important; height: 56px !important; }
+     .audio-label { font-size: 35px !important; -webkit-text-stroke: 8px white !important; }
+    .btn-back, .title, .btn-sound { position: relative; top: -15px; }
 }

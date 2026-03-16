@@ -31,10 +31,44 @@ async function initializePage() {
     }
     anmImage.src = anmData.img;
     anmImage.alt = anmData[lang];
+    triggerImagePop();
     
-    // Tampilkan teks utuh dari JSON
     const label = lang === "en" ? anmData.en : anmData.id;
     anmName.textContent = label;
+  }
+}
+
+function triggerImagePop() {
+  if (!anmImage) return;
+
+  function doPop() {
+    anmImage.classList.remove('image-pop');
+    void anmImage.offsetWidth;
+    anmImage.classList.add('image-pop');
+    setTimeout(() => anmImage.classList.remove('image-pop'), 800);
+  }
+
+  if (anmImage.complete && anmImage.naturalWidth !== 0) {
+    doPop();
+  } else {
+    const onLoad = () => {
+      doPop();
+      anmImage.removeEventListener('load', onLoad);
+    };
+    anmImage.addEventListener('load', onLoad);
+  }
+
+  if (!triggerImagePop._observing) {
+    const obs = new MutationObserver(muts => {
+      for (const m of muts) {
+        if (m.attributeName === 'src') {
+          triggerImagePop();
+          break;
+        }
+      }
+    });
+    obs.observe(anmImage, { attributes: true });
+    triggerImagePop._observing = true;
   }
 }
 

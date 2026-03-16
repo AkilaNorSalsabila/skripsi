@@ -251,6 +251,7 @@ header.header {
   border-radius: 16px;
   overflow: hidden;
   flex-shrink: 0; /* biar ga mengecil */
+  transition: transform 0.5s ease;
 }
 
 
@@ -285,6 +286,10 @@ header.header {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+}
+
+.puzzle-wrapper.completed #siluet-container {
+  transform: translateX(25px);
 }
 
 .slot > img {
@@ -384,7 +389,6 @@ header.header {
 .animal-name {
   font-size: 45px;
   font-weight: 700;
-  /* color: #000; */
     color: #ff9040;
   -webkit-text-stroke: 20px white;
   paint-order: stroke fill;
@@ -392,20 +396,10 @@ header.header {
   margin-top: 10px;
 }
 
-
-
-
-
-
-
-
-
-/* Responsive adjustments to avoid overflow on small screens */
 @media (max-width: 768px) {
   #title-text { font-size: 32px; }
   .speak-btn { top: 12px; right: 12px; }
   .speak-btn img { width: 56px; }
-  /* .back-button { top: 12px; left: 12px; } */
   .back-button img { width: 56px; }
   .timer { top: 54px; left: 12px; right: 12px; position: relative; }
   .info-box { padding: 8px 14px; }
@@ -436,7 +430,7 @@ header.header {
 /* ===== ANIMATIONS ===== */
 @keyframes slideUp{
   from{
-    transform: translateY(30px); /* animate from below so it appears to come up in front of the grass */
+    transform: translateY(30px); 
     opacity: 0;
   }
   to{
@@ -532,7 +526,6 @@ header.header {
   }
 }
 
-
 /* ==/* =========================
    FIX TAMPILAN MOBILE PUZZLE
    ========================= */
@@ -554,7 +547,6 @@ header.header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* gap: 8px; */
   }
   
   .puzzle-wrapper {
@@ -635,7 +627,7 @@ header.header {
   }
   #progress {
   bottom: 10px;
-font-size: 14px;}
+  font-size: 14px;}
   
 }
 
@@ -695,5 +687,45 @@ font-size: 14px;}
 
   header.header .back-button img,
   header.header .speak-btn img { width: 50px; }
+}
 
+
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+  #title-text { font-size: 36px; -webkit-text-stroke: 18px white; }
+  .puzzle-wrapper { margin-top: 40px; gap: 28px; }
+
+  #siluet-container { width: 290px; height: 290px; }
+  #pilihan-container { width: 290px; gap: 14px; grid-template-columns: repeat(2, 1fr); }
+  #pilihan-container img { border-radius: 12px; }
+
+  .option-wrapper {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+    .speak-btn img, .back-button img { width: 70px; }
+  .speak-btn { right: 60px; top: 40px; }
+  .back-button { left: 30px; top: 40px; }
+  .timer { top: 40px; left: 150px; font-size: 28px; padding: 10px 22px; }
+  .side-panel { width: 200px; }
+  .info-box { width: min(350px, 92vw); }
+  .info-panel { margin-top: 5px;     position: absolute;
+    left: 3%;
+}
+  
+  .animal-name { font-size: 25px; -webkit-text-stroke: 16px white; }
+  .habitat-text { font-size: 15px; }
+
+  .grass { height: clamp(140px, 28vh, 180px); background-position: bottom center; }
+.puzzle-wrapper.completed #siluet-container {
+  transform: translateX(25px);
+}
+  .puzzle-wrapper { max-width: calc(100% - 40px); }
 }

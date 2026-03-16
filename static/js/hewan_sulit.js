@@ -286,6 +286,8 @@ if (screenWidth <= 768) {
   PUZZLE_SIZE = 260;}
 if (screenWidth > 768 && screenWidth <= 1023) {
   PUZZLE_SIZE = 300;}
+if (screenWidth > 1200 && screenWidth <= 1366) {
+  PUZZLE_SIZE = 290;}
 
   siluet.innerHTML = "";
   piecesContainer.innerHTML = "";

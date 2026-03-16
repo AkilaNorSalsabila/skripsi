@@ -1,7 +1,6 @@
 :root {
   --bg: #EAF7FF;
   --brand:#ffd21f;
-  /* --success: #ffd21f; */
 }
 
 body {
@@ -18,8 +17,6 @@ body {
   align-items: center;
 }
 
-
-/* Judul */
 .notif-header {
   margin-top: 30px;
   display: flex;
@@ -27,7 +24,6 @@ body {
   align-items: center;
 }
 
-/* 🌱 GRASS */
 .grass{
   position:fixed;
   bottom:0;
@@ -68,7 +64,6 @@ body {
   text-align: center;
 }
 
-/* Syllable pieces placed inside #anm-name - visible by default */
 #anm-name .syllable-piece{
   display: inline;
   margin: 0;
@@ -100,7 +95,6 @@ body {
   font-family: 'Mochiy Pop One', sans-serif;
 }
 
-/* Pop-up animation when syllable is mentioned in test audio */
 .syllable-piece-animate{
   display: inline-block !important;
   position: relative;
@@ -132,7 +126,6 @@ body {
   transform: scale(1.02);
 }
 
-/* Full pop-up animation when animals audio plays */
 #anm-name.full-popup{
   animation: full-word-pop 600ms cubic-bezier(.34,1.56,.64,1);
 }
@@ -155,7 +148,6 @@ body {
 }
 
 
-/* Tombol suara */
 .speak-btn{
   position: absolute;
   right: 100px;
@@ -187,7 +179,6 @@ body {
 }
 
 
-/* Gambar sayuran */
 .notif-main {
   margin-top: 20px;
   width: 100%;
@@ -200,7 +191,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Match sizing used in level mudah: use same rules as #animal-image */
 #notif-anm {
   width: auto;
   max-width: 100%;
@@ -245,6 +235,49 @@ body {
   .back-button img { width: 60px; }
   .back-button { left: clamp(8px, 3vw, 16px); top: clamp(36px, 5vh, 50px); }
   .speak-btn { right: clamp(8px, 3vw, 16px); top: clamp(36px, 5vh, 50px); }
-  /* mirror mudah.css responsive sizing for the animal image */
   #notif-anm { max-width: 90vw; max-height: clamp(200px, 45vh, 250px); }
+}
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+
+  .notif-header h1 {
+    margin-top: 0px;
+    font-size: 45px;
+    -webkit-text-stroke: 6px white;
+  }
+
+  #anm-name,
+  #anm-name .syllable-piece,
+  #anm-name .syllable-dash {
+    font-size: 45px;
+    -webkit-text-stroke: 6px white;
+  }
+
+  .notif-main {
+    max-width: 820px;
+    padding: 0 28px;
+    margin-top: 12px;
+  }
+
+  #notif-anm {
+    max-height: clamp(240px, 50vh, 480px);
+
+  }
+  .speak-btn { right: 60px; top: 40px; }
+  .speak-btn img { width: 70px; }
+  .back-button { left: 60px; top: 40px; }
+  .grass { height: clamp(140px, 28vh, 180px); background-position: bottom center; }
+  #confetti { z-index: 1; }
+}
+
+.image-pop {
+  transform-origin: center;
+  will-change: transform, opacity;
+  animation: image-pop 600ms cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes image-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
