@@ -1,6 +1,9 @@
 :root {
   --bg: #EAF7FF;
   --brand: #00B4E1;
+  --danger: #dc0000; /* Merah lebih pekat untuk overlay */
+  --timer-red: #ff5252;
+  --correct-yellow: #ffeb3b;
 }
 
 * { box-sizing: border-box; }
@@ -11,6 +14,8 @@ body {
   font-family: 'Mochiy Pop One', system-ui, sans-serif;
   color: #0288D1;
   overflow-x: hidden;
+  transition: background-color 0.3s;
+  overscroll-behavior: none;
 }
 
 /* ================== DEKORASI ================== */
@@ -22,7 +27,7 @@ body {
 .decor-right { top: 0; right: 0; width: 17vw; }
 .decor-left  { bottom: 0; left: 0; width: 24vw; }
 
-/* ================== TOMBOL BACK & TOP BAR ================== */
+/* ================== TOP BAR & TIMER ================== */
 .top-bar {
   display: flex;
   align-items: center;
@@ -33,11 +38,7 @@ body {
   gap: 15px;
 }
 
-/* Catatan: Di kode asalmu display:none, ganti ke block jika ingin muncul */
-.back-button {
-  display: block; 
-}
-
+.back-button { display: block; }
 .back-button img {
   width: 3.5vw;
   height: auto;
@@ -45,9 +46,27 @@ body {
   transition: transform 0.2s;
   min-width: 30px;
 }
+.back-button:hover img { transform: scale(1.1); }
 
-.back-button:hover img {
-  transform: scale(1.1);
+#timer {
+  font-family: 'Mochiy Pop One', sans-serif;
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #1565c0;
+  background: #e3f2fd;
+  padding: 0.4vw 1vw;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  text-shadow: none;
+}
+
+#timer.timer-danger {
+  background: var(--timer-red) !important;
+  color: #ffffff !important;
+  border: 2px solid #b71c1c;
+  box-shadow: 0 0 20px rgba(255,82,82,0.8);
+  animation: pulseDanger 0.5s infinite alternate;
 }
 
 /* ================== HEADER & JUDUL ================== */
@@ -65,9 +84,7 @@ body {
   text-align: center;
   margin: 0;
   color: #0288D1;
-  text-shadow:
-    1px 1px 0 #ffffff,
-    2px 2px 0 #81D4FA;
+  text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #81D4FA;
 }
 
 .speak-btn {
@@ -77,17 +94,14 @@ body {
   padding: 0.5vw;
   transition: transform .15s ease;
 }
-
 .speak-btn img {
-  width: 3.2vw;
-  height: 3.2vw;
-  display: block;
-  min-width: 30px;
+  width: 3.2vw; height: 3.2vw;
+  display: block; min-width: 30px;
 }
 
 /* ================== GAME AREA ================== */
 #game {
-  margin-top: 0;
+  margin-top: 2vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -104,13 +118,11 @@ body {
 }
 
 #veg-image {
-  width: 90%;
-  height: auto;
-  display: block;
-  object-fit: contain;
+  width: 90%; height: auto;
+  display: block; object-fit: contain;
 }
 
-/* ================== PILIHAN JAWABAN (DESKTOP) ================== */
+/* ================== PILIHAN JAWABAN ================== */
 .options {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -133,109 +145,102 @@ body {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0,0,0,.15);
-  transition: transform .12s ease, filter .12s ease;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
 }
 
-.option-btn:active { transform: translateY(3px); }
+/* Efek Pop Up saat dibacakan */
+.zoom-active {
+  transform: scale(1.18) !important;
+  background-color: var(--correct-yellow) !important;
+  color: #333 !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+  z-index: 20;
+}
 
-/* ================== PROGRESS & TIMER ================== */
+/* ================== WRONG OVERLAY (STYLING BARU) ================== */
+.wrong-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(220, 0, 0, 0.95); /* Merah pekat */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-in;
+  pointer-events: none;
+}
+
+.wrong-content {
+  text-align: center;
+  color: #ffffff;
+  animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-shadow: none;
+}
+
+.wrong-content h1 { font-size: 8vw; margin: 0; }
+.wrong-content p  { font-size: 2vw; margin-top: 10px; }
+
+
+/* ================== PROGRESS ================== */
 .progress {
   position: fixed;
-  right: 2vw;
-  bottom: 3vh;
+  right: 2vw; bottom: 3vh;
   font: 700 1.6vw "Comic Sans MS", cursive;
-  background: rgba(255,255,255,.65);
+  background: rgba(255,255,255,.75);
   padding: 0.5vw 1vw;
   border-radius: 10px;
   color: #0288D1;
   z-index: 100;
 }
 
-#timer {
-  font-family: 'Mochiy Pop One', sans-serif;
-  font-size: 1.5vw;
-  font-weight: bold;
-  color: #1565c0;
-  background: #e3f2fd;
-  padding: 0.4vw 1vw;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-}
-
-#timer.timer-danger {
-  background: #ff5252 !important;
-  color: #ffffff !important;
-  animation: pulseDanger 0.5s infinite alternate;
-}
-
-/* ================== RESPONSIVE (PERBAIKAN HP & TABLET) ================== */
-
-/* Tablet (769px - 1024px) */
+/* ================== RESPONSIVE ================== */
 @media (max-width: 1024px) {
-  .top-bar { top: 20px; left: 20px; }
-  .back-button img { width: 50px; }
   .header { margin-top: 80px; }
   #title-text { font-size: 36px; }
-  .speak-btn img { width: 45px; height: 45px; }
-
+  #timer { font-size: 22px; }
   .image-wrap { width: 55vw; margin-top: 0; }
-  
-  /* Pilihan jadi ke bawah agar tidak kosong */
-  .options {
-    grid-template-columns: 1fr; 
-    width: 60vw; 
-    gap: 20px;
-    margin-top: 20px;
-  }
+  .options { grid-template-columns: 1fr; width: 60vw; gap: 20px; }
   .option-btn { font-size: 26px; padding: 18px; }
-  .progress { font-size: 20px; }
+  .wrong-content h1 { font-size: 80px; }
+  .wrong-content p { font-size: 24px; }
 }
 
-/* HP Besar & Sedang (max 768px) */
 @media (max-width: 768px) {
-  body { overflow-y: auto; }
-  .top-bar { top: 15px; left: 15px; }
-  .back-button img { width: 40px; }
-  
-  .header { margin-top: 70px; gap: 10px; }
   #title-text { font-size: 28px; }
-  
-  .image-wrap { width: 70vw; margin-top: 10px; }
-
-  /* Kancing ke bawah (vertical) */
-  .options {
-    grid-template-columns: 1fr;
-    width: 85vw;
-    gap: 15px;
-    margin-top: 20px;
-    padding-bottom: 80px; /* Jarak agar tidak tertutup progress */
-  }
-  .option-btn { font-size: 22px; padding: 16px; }
-  
-  .progress { font-size: 18px; bottom: 15px; right: 15px; }
-  .decor-right { width: 120px; }
-  .decor-left  { width: 160px; }
-}
-
-/* HP Kecil (max 420px) */
-@media (max-width: 420px) {
-  #title-text { font-size: 22px; }
-  .image-wrap { width: 80vw; }
-  .options { width: 90vw; }
-  .option-btn { font-size: 18px; padding: 14px; }
-}
-
-/* Landscape Mode HP */
-@media (orientation: landscape) and (max-height: 500px) {
-  .header { margin-top: 10px; }
-  .image-wrap { width: 30vw; }
-  .options { grid-template-columns: repeat(3, 1fr); width: 80vw; margin-top: 0; }
+  .image-wrap { width: 70vw; }
+  .options { width: 85vw; padding-bottom: 100px; }
+  .progress { font-size: 18px; }
 }
 
 /* ================== ANIMASI ================== */
-@keyframes pulseDanger {
-  from { transform: scale(1); }
-  to   { transform: scale(1.1); }
+@keyframes pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-.hidden { display: none; }
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@keyframes pulseDanger {
+  from { transform: scale(1); } to { transform: scale(1.1); }
+}
+
+.screen-danger-active {
+  animation: flashRed 1s infinite;
+}
+
+@keyframes flashRed {
+  0% { background-color: var(--bg); }
+  50% { background-color: rgba(255,0,0,0.15); }
+  100% { background-color: var(--bg); }
+}
+
+.hidden { display: none !important; }
