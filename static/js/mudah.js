@@ -1,4 +1,58 @@
 const lang = localStorage.getItem("gameLang") || "id";
+let timeLeft = 20;
+let timerInterval;
+let isAnswered = false;
+
+// 🔹 format 00:00
+function formatTime(seconds) {
+  let m = Math.floor(seconds / 60);
+  let s = seconds % 60;
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+function startTimer() {
+  stopTimer();
+  timeLeft = 20;
+  isAnswered = false;
+
+  const timerEl = document.getElementById("timer");
+
+  function updateTimerDisplay() {
+  if (!timerEl) return;
+
+  const label = (lang === "id") ? "Waktu" : "Time";
+  timerEl.textContent = `${label} ${formatTime(timeLeft)}`;
+
+  // 🔥 TAMBAHAN LOGIC MERAH
+  if (timeLeft <= 5 && timeLeft > 0) {
+    timerEl.classList.add("timer-danger");
+    document.body.classList.add("screen-danger-active");
+  } else {
+    timerEl.classList.remove("timer-danger");
+    document.body.classList.remove("screen-danger-active");
+  }
+}
+
+  updateTimerDisplay();
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+
+    if (timeLeft <= 0) {
+      stopTimer();
+      onTimeUp(); // 🔥 langsung panggil
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
 const toastEl = document.getElementById("toast");
 const sfxCorrect = document.getElementById("sfx-correct"); 
 const sfxWrong = document.getElementById("sfx-wrong");
@@ -289,6 +343,11 @@ if (sessionQuestions.length === 0) {
 
 // --- FUNGSI LOAD SOAL ---
 function loadQuestion() {
+  isAnswered = false;
+  // 🔥 RESET TIMER STYLE
+const timerEl = document.getElementById("timer");
+if (timerEl) timerEl.classList.remove("timer-danger");
+document.body.classList.remove("screen-danger-active");
   if (btnBack) btnBack.style.display = (currentIndex === 0) ? "block" : "none";
   
   let question = sessionQuestions[currentIndex];
@@ -303,44 +362,75 @@ function loadQuestion() {
     btn.className = "option-btn";
     btn.textContent = opt.toLowerCase();
 
-    btn.addEventListener("click", () => {
-      stopAllSounds();
-      const isCorrect = opt.toLowerCase() === question.correctAnswer[lang].toLowerCase();
-      
-      if (isCorrect) {
-        // ... (kode benar tetap sama)
-        localStorage.setItem("notifVeg", JSON.stringify({
-          id: question.correctAnswer.id,
-          en: question.correctAnswer.en,
-          img: question.image
-        }));
-        sfxCorrect.play();
-        correctCount++;
-        localStorage.setItem("correctCount", correctCount);
-        setTimeout(() => { window.location.href = "/mudah_notif"; }, 800);
-      } else {
-        // ❌ LOGIKA SALAH DENGAN EFEK GEMPA
-        sfxWrong.play();
-        
-        // Pemicu Getaran pada elemen #game
-        const gameEl = document.getElementById("game");
-        if (gameEl) {
-          gameEl.classList.remove("shake"); // Reset class
-          void gameEl.offsetWidth;          // Trigger Reflow
-          gameEl.classList.add("shake");
-          
-          setTimeout(() => gameEl.classList.remove("shake"), 400);
-        }
+btn.addEventListener("click", () => {
+  // 🔥 cegah klik berulang
+  if (isAnswered) return;
+  isAnswered = true;
 
-        showWrongOverlay("✖", (lang === "id" ? "salah!" : "wrong!"));
-        setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1200);
-      }
-    });
-    optionsContainer.appendChild(btn);
-  });
+  stopTimer();
+  stopAllSounds();
+
+  const isCorrect = opt.toLowerCase() === question.correctAnswer[lang].toLowerCase();
+
+  if (isCorrect) {
+    // ✅ suara benar (reset biar ga numpuk)
+    if (sfxCorrect) {
+      sfxCorrect.currentTime = 0;
+      sfxCorrect.play();
+    }
+
+    // ✅ tambah skor
+    correctCount++;
+    localStorage.setItem("correctCount", correctCount);
+
+    // 🔥 WAJIB: kirim data ke halaman notif
+    localStorage.setItem("notifVeg", JSON.stringify({
+      id: question.correctAnswer.id,
+      en: question.correctAnswer.en,
+      img: question.image
+    }));
+
+    // ✅ pindah halaman
+    setTimeout(() => {
+      window.location.href = "/mudah_notif";
+    }, 800);
+
+  } else {
+    // ❌ suara salah
+    if (sfxWrong) {
+      sfxWrong.currentTime = 0;
+      sfxWrong.play();
+    }
+
+    // 🔥 efek getar (shake)
+    const gameEl = document.getElementById("game");
+    if (gameEl) {
+      gameEl.classList.remove("shake");
+      void gameEl.offsetWidth; // trigger ulang animasi
+      gameEl.classList.add("shake");
+
+      setTimeout(() => {
+        gameEl.classList.remove("shake");
+      }, 400);
+    }
+
+    // ❌ tampilkan overlay salah
+    showWrongOverlay("✖", (lang === "id" ? "Salah!" : "Wrong!"));
+
+    // ❌ lanjut soal berikutnya
+    setTimeout(() => {
+      hideWrongOverlay();
+      nextQuestion();
+    }, 1200);
+  }
+});
+
+optionsContainer.appendChild(btn);
+});
 
   document.getElementById("progress").textContent = `Soal ${currentIndex + 1}/${totalQuestions}`;
   setTimeout(speakInstruksi, 600);
+  startTimer();
 }
 
 // --- AUDIO LOGIC (DIREVISI TOTAL) ---
@@ -420,8 +510,36 @@ function stopAllSounds() {
   idPlayer.currentTime = 0;
   idPlayer.onended = null;
 }
+function onTimeUp() {
+  if (isAnswered) return;
+  isAnswered = true;
 
+  stopTimer();
+  stopAllSounds();
+
+  if (sfxWrong) {
+    sfxWrong.currentTime = 0;
+    sfxWrong.play();
+  }
+
+  // efek getar
+  const gameEl = document.getElementById("game");
+  if (gameEl) {
+    gameEl.classList.remove("shake");
+    void gameEl.offsetWidth;
+    gameEl.classList.add("shake");
+    setTimeout(() => gameEl.classList.remove("shake"), 400);
+  }
+
+  showWrongOverlay("⏰", (lang === "id" ? "Waktu habis!" : "Time's up!"));
+
+  setTimeout(() => {
+    hideWrongOverlay();
+    nextQuestion(); // 🔥 lanjut soal
+  }, 1200);
+}
 function nextQuestion() {
+  stopTimer();
   currentIndex++;
   localStorage.setItem("currentIndex", currentIndex);
   if (currentIndex >= totalQuestions) {

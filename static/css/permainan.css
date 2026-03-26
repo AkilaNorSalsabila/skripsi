@@ -4,150 +4,116 @@ html {
   text-size-adjust: 100%;
 }
 
+* { box-sizing: border-box; }
+
 body {
   background-color: #EAF7FF;
   margin: 0;
-  font-family: 'Bakso Sapi', sans-serif;
+  font-family: 'Mochiy Pop One', sans-serif;
   overflow: hidden;
+  min-height: 100vh;
 }
 
+/* ========== DEKORASI ========== */
 .decor {
-  position: absolute;
+  position: fixed;
   z-index: 1;
   pointer-events: none;
 }
 
-.decor-left {
-  top: 0;
-  left: 0;
-  width: 220px;
-  height: 250px;
-  z-index: 1;
-  pointer-events: none;
-}
+.decor-left  { top: 0; left: 0; width: 17vw; height: auto; }
+.decor-right { bottom: -15px; right: 0; width: 27vw; height: auto; }
 
-.decor-right {
-  bottom: -15px;
-  right: 0;
-  width: 350px;
-  height: auto;
-  z-index: 1;
-  pointer-events: none;
-}
-
+/* ========== CONTENT ========== */
 .content {
   position: relative;
   z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 2vw;
 }
 
 .content h1 {
   font-family: 'Mochiy Pop One', sans-serif;
-  font-size: 50px;
+  font-size: 3.9vw;
   text-align: center;
-  margin-bottom: 40px;
+  margin: -25vh 0 7vh 0;
   font-weight: normal;
-  z-index: 10;
   color: #0288D1;
   text-shadow:
     1px 1px 0 #ffffff,
     2px 2px 0 #81D4FA;
 }
 
+/* ========== MENU BUTTONS ========== */
 .menu-buttons {
   display: flex;
   justify-content: center;
-  gap: 80px;
+  gap: 5vw;
 }
 
 .menu-buttons button {
   width: 20vw;
-  height: 45vh;
+  height: 44vh;
   border: none;
   border-radius: 20px;
-  padding-top: 30px;
+  padding-top: 2vw;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   font-family: 'Quicksand', sans-serif;
-  font-size: 28px;
+  font-size: 2vw;
   color: #FFFFFF;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.2s;
   background-color: #00B4E1;
   z-index: 5;
-  /* Penting untuk touchscreen laptop */
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Hover hanya untuk perangkat yang punya mouse/pointer halus */
-@media (hover: hover) and (pointer: fine) {
-  .menu-buttons button:hover {
-    transform: scale(1.05);
-  }
-}
-
-/* Efek tekan untuk touchscreen (laptop touch & HP) */
-.menu-buttons button:active {
-  transform: scale(0.97);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
 .menu-buttons button img {
-  width: 95%;
-  height: 100%;
+  width: 90%;
+  height: auto;
   object-fit: contain;
   display: block;
   margin: 0 auto;
-  margin-left: 10px;
-  margin-top: -20px;
-  margin-bottom: -5px;
+  margin-top: 1vw;
 }
 
 .menu-buttons button span {
-  font-size: 32px;
+  font-size: 2.4vw;
   font-weight: bold;
-  margin-top: -25px;
+  margin-top: 1vw;
 }
 
 .menu-buttons .game-sayuran { background-color: #00B4E1; }
 .menu-buttons .game-hewan   { background-color: #00B4E1; }
 
-.menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@media (hover: hover) and (pointer: fine) {
+  .menu-buttons button:hover { transform: scale(1.05); }
 }
 
-/* --- ANIMASI PULSE --- */
-@keyframes pulse-animation {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.1); }
-  100% { transform: scale(1); }
+.menu-buttons button:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.btn-pulse {
-  animation: pulse-animation 1.2s infinite ease-in-out !important;
-  z-index: 99 !important;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5) !important;
-}
-
-.menu-buttons button {
-  transition: transform 0.2s;
-  will-change: transform;
-}
-
+/* ========== BACK BUTTON ========== */
 .back-button {
   position: fixed;
-  top: 60px;
-  left: 260px;
+  top: 10vh;
+  left: 20vw;
   z-index: 10;
 }
 
 .back-button img {
-  width: 50px;
+  width: 3.8vw;
   height: auto;
   cursor: pointer;
   transition: transform 0.2s;
@@ -159,121 +125,95 @@ body {
   .back-button img:hover { transform: scale(1.1); }
 }
 
-/* ===== TABLET (768px - 992px) ===== */
-@media (max-width: 992px) {
-  .back-button { left: 20px; top: 20px; }
-  .back-button img { width: 40px; }
-
-  .content h1 { font-size: 42px; margin-bottom: 30px; }
-
-  .menu-buttons { gap: 50px; }
-
-  .menu-buttons button {
-    width: 35vw;
-    height: 42vh;
-  }
-
-  .menu-buttons button span { font-size: 28px; }
-
-  .decor-left  { width: 180px; height: 200px; }
-  .decor-right { width: 280px; }
+/* ========== ANIMASI PULSE ========== */
+@keyframes pulse-animation {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
-/* ===== HP BESAR (601px - 768px) ===== */
-@media (max-width: 768px) and (min-width: 601px) {
+.btn-pulse {
+  animation: pulse-animation 1.2s infinite ease-in-out !important;
+  z-index: 99 !important;
+  box-shadow: 0 0 20px rgba(255,255,255,0.5) !important;
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .decor-left  { width: 150px; }
+  .decor-right { width: 240px; }
+  .content h1  { font-size: 34px; }
+  .menu-buttons { gap: 40px; }
+  .menu-buttons button {
+    width: 32vw;
+    height: 40vh;
+    font-size: 20px;
+    padding-top: 20px;
+  }
+  .menu-buttons button span { font-size: 24px; }
+  .back-button { left: 20px; top: 20px; }
+  .back-button img { width: 42px; }
+}
+
+/* HP Besar (481px - 768px) */
+@media (max-width: 768px) and (min-width: 481px) {
   body { overflow-y: auto; }
 
   .content {
+    justify-content: flex-start;
+    padding-top: 70px;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 80px 20px 60px;
-    box-sizing: border-box;
   }
 
-  .content h1 {
-    font-size: 8vw;
-    margin-bottom: 5vw;
-    margin-top: 0;
-  }
+  .content h1 { font-size: 30px; margin-bottom: 24px; }
 
   .menu-buttons {
     flex-direction: column;
     align-items: center;
-    gap: 4vw;
+    gap: 20px;
   }
 
   .menu-buttons button {
-    width: 80vw;
-    max-width: 480px;
+    width: 80%;
+    max-width: 440px;
     height: auto;
-    min-height: 22vw;
-    padding: 4vw 4vw;
-    border-radius: 3vw;
+    min-height: 130px;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
-    gap: 5vw;
-    padding-top: 4vw;
+    padding: 16px 20px;
+    gap: 20px;
+    border-radius: 18px;
+    font-size: 20px;
   }
 
   .menu-buttons button img {
-    width: 20vw;
-    height: 20vw;
-    max-width: 120px;
-    max-height: 120px;
-    object-fit: contain;
+    width: 90px;
+    height: 90px;
     margin: 0;
     flex-shrink: 0;
   }
 
-  .menu-buttons button span { font-size: 6.5vw; margin-top: 0; }
+  .menu-buttons button span { font-size: 22px; margin-top: 0; }
 
-  .back-button { left: 15px; top: 15px; }
-  .back-button img { width: 6vw; max-width: 44px; }
-
-  .decor-left  { width: 14vw; max-width: 110px; height: auto; }
-  .decor-right { width: 24vw; max-width: 190px; }
+  .back-button { left: 12px; top: 12px; }
+  .back-button img { width: 40px; }
+  .decor-left  { width: 110px; }
+  .decor-right { width: 190px; }
 }
 
-/* ===== TABLET KECIL / MOBILE (max 576px) ===== */
-@media (max-width: 576px) {
-  body { overflow: hidden; }
+/* HP Sedang (max 480px) */
+@media (max-width: 480px) {
+  body { overflow-y: auto; }
 
   .content {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 10px;
+    justify-content: flex-start;
+    padding-top: 60px;
+    min-height: 100vh;
   }
 
-  .content h1 { font-size: 32px; margin-bottom: 15px; margin-top: 0; }
-
-  .menu-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .menu-buttons button {
-    width: 80vw;
-    max-width: 400px;
-    height: 32vh;
-    max-height: 300px;
-  }
-
-  .menu-buttons button span { font-size: 26px; }
-
-  .decor-left  { width: 120px; height: 140px; }
-  .decor-right { width: 180px; }
-}
-
-/* ===== MOBILE (max 576px) ===== */
-@media (max-width: 576px) {
-  body { overflow-y: auto; }
+  .content h1 { font-size: 26px; margin-bottom: 20px; }
 
   .menu-buttons {
     flex-direction: column;
@@ -282,72 +222,51 @@ body {
   }
 
   .menu-buttons button {
-    width: 92vw;
+    width: 88%;
     max-width: 360px;
     height: auto;
-    min-height: 160px;
-    padding: 18px 12px;
-    border-radius: 18px;
-  }
-
-  .menu-buttons button img { width: 70%; height: auto; margin: 0 auto; }
-  .menu-buttons button span { font-size: 22px; margin-top: 8px; }
-  .content h1 { font-size: 26px; margin-bottom: 14px; }
-}
-
-/* ===== LAYAR SEMPIT (max 450px) ===== */
-@media (max-width: 450px) {
-  body { overflow: hidden; }
-
-  .content {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5px;
-  }
-
-  .content h1 { font-size: 24px; margin-bottom: 10px; margin-top: 0; }
-
-  .menu-buttons { gap: 10px; }
-
-  .menu-buttons button {
-    width: 88vw;
-    height: 30vh;
-    max-height: 260px;
-    font-size: 20px;
-    padding-top: 15px;
-  }
-
-  .menu-buttons button span { font-size: 22px; margin-top: -18px; }
-  .menu-buttons button img  { margin-top: -12px; width: 90%; }
-
-  .back-button { left: 10px; top: 10px; }
-  .back-button img { width: 32px; }
-
-  .decor-left  { width: 70px; height: 80px; }
-  .decor-right { width: 110px; }
-}
-
-/* ===== SANGAT SEMPIT (max 380px) ===== */
-@media (max-width: 380px) {
-  .content h1 { font-size: 22px; margin-bottom: 8px; }
-
-  .menu-buttons { gap: 8px; }
-
-  .menu-buttons button {
-    height: 28vh;
-    max-height: 240px;
+    min-height: 120px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 14px 16px;
+    gap: 16px;
+    border-radius: 16px;
     font-size: 18px;
   }
 
-  .menu-buttons button span { font-size: 20px; }
+  .menu-buttons button img {
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    flex-shrink: 0;
+  }
 
-  .decor-left  { width: 60px; height: 70px; }
-  .decor-right { width: 90px; }
+  .menu-buttons button span { font-size: 20px; margin-top: 0; }
+
+  .back-button { left: 10px; top: 10px; }
+  .back-button img { width: 36px; }
+  .decor-left  { width: 90px; }
+  .decor-right { width: 160px; }
 }
 
-/* ===== SIDEBAR SUPPORT ===== */
-@media (min-width: 1200px) {
-  body.with-sidebar .back-button { left: 280px; }
+/* HP Kecil (max 380px) */
+@media (max-width: 380px) {
+  .content h1 { font-size: 22px; }
+  .menu-buttons button {
+    min-height: 105px;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+  .menu-buttons button img  { width: 70px; height: 70px; }
+  .menu-buttons button span { font-size: 18px; }
+  .decor-left  { width: 75px; }
+  .decor-right { width: 130px; }
+}
+
+/* HP Sangat Kecil (max 320px) */
+@media (max-width: 320px) {
+  .content h1 { font-size: 20px; }
+  .menu-buttons button { min-height: 95px; }
+  .menu-buttons button img  { width: 60px; height: 60px; }
+  .menu-buttons button span { font-size: 16px; }
 }

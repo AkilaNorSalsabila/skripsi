@@ -1,7 +1,3 @@
-/* ============================================================
-   KODE CSS NOTIF MUDAH (FINAL REVISED - PERFECT SIZE)
-   ============================================================ */
-
 :root {
   --bg: #EAF7FF;
   --brand: #00B4E1;
@@ -22,28 +18,27 @@ body {
   align-items: center;
 }
 
-/* --- DEKORASI --- */
+/* ================== DEKORASI ================== */
 .decor {
   position: fixed;
   pointer-events: none;
   z-index: -1;
 }
-.decor-right { top: 0; right: 0; width: 200px; }
-.decor-left  { bottom: 0; left: 0; width: 280px; }
+.decor-right { top: 0; right: 0; width: 16vw; }
+.decor-left  { bottom: 0; left: 0; width: 22vw; }
 
-/* --- HEADER --- */
+/* ================== HEADER ================== */
 .notif-header {
-  margin-top: 25px;
+  margin-top: 3vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14px;
-  transform: translateY(-5px); 
+  gap: 1.5vw;
   z-index: 10;
 }
 
 .notif-header h1 {
-  font-size: 50px;
+  font-size: 3.5vw;
   line-height: 1.2;
   color: var(--success);
   text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
@@ -61,13 +56,13 @@ body {
 }
 
 .speak-btn img {
-  width: 50px;
-  height: 50px;
+  width: 3.5vw;
+  height: 3.5vw;
 }
 
-/* --- AREA UTAMA SAYUR (OPTIMAL UNTUK LANDSCAPE & PORTRAIT) --- */
+/* ================== AREA UTAMA SAYUR ================== */
 .notif-main {
-  margin-top: -40px; /* Posisi ideal: tidak terlalu mepet teks, tidak terlalu bawah */
+  margin-top: -2vw;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -77,23 +72,21 @@ body {
 }
 
 .veg-frame {
-  width: 580px;         /* Ukuran lebar dikurangi agar tidak "raksasa" */
-  height: 360px;        
+  width: 42vw;
+  height: 26vw;
   max-width: 90vw;
   max-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: visible;    
+  overflow: visible;
 }
 
 #notif-veg {
   width: 100%;
   height: 100%;
-  object-fit: contain; 
+  object-fit: contain;
   filter: drop-shadow(0 15px 30px rgba(0,0,0,0.18));
-  
-  /* Animasi Pop-Up - Ukuran disesuaikan */
   opacity: 0;
   transform: scale(0);
   animation: popInBalanced 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -101,12 +94,12 @@ body {
 }
 
 @keyframes popInBalanced {
-  0% { opacity: 0; transform: scale(0.3); }
-  70% { transform: scale(1.35); } /* Lambungan dikurangi */
-  100% { opacity: 1; transform: scale(1.25); } /* Ukuran akhir lebih sopan */
+  0%   { opacity: 0; transform: scale(0.3); }
+  70%  { transform: scale(1.35); }
+  100% { opacity: 1; transform: scale(1.25); }
 }
 
-/* --- KONFETTI --- */
+/* ================== KONFETTI ================== */
 #confetti-container {
   position: fixed;
   top: 0; left: 0;
@@ -119,28 +112,78 @@ body {
   text-transform: lowercase;
 }
 
-/* ================== RESPONSIVE ================== */
-
-@media (max-width: 992px) {
-  .notif-header h1 { font-size: 40px; }
-  .veg-frame { width: 450px; height: 320px; }
+/* ================== EFEK SUKU KATA ================== */
+.syllable {
+  display: inline-block;
+  transition: all 0.3s ease;
+  color: var(--brand);
 }
 
-@media (max-width: 576px) {
+.syllable.active {
+  color: #FFCA3A;
+  transform: scale(1.3);
+  text-shadow: 0 0 10px rgba(255, 202, 58, 0.5);
+  z-index: 10;
+}
+
+/* ================== RESPONSIVE ================== */
+
+/* Tablet (769px - 992px) */
+@media (max-width: 992px) and (min-width: 769px) {
+  .decor-right { width: 150px; }
+  .decor-left  { width: 200px; }
+  .notif-header h1 { font-size: 36px; }
+  .speak-btn img { width: 40px; height: 40px; }
+  .notif-header { gap: 14px; margin-top: 20px; }
+  .veg-frame { width: 55vw; height: 35vw; }
+}
+
+/* HP Besar (max 768px) */
+@media (max-width: 768px) {
+  body { overflow-y: auto; }
+  .decor-right { width: 130px; }
+  .decor-left  { width: 180px; }
+  .notif-header { margin-top: 20px; gap: 12px; }
   .notif-header h1 { font-size: 28px; }
-  .notif-header { margin-top: 20px; }
   .speak-btn img { width: 38px; height: 38px; }
-  .veg-frame { width: 85vw; height: 260px; }
-  .notif-main { margin-top: -15px; }
-  
-  #notif-veg { 
-    animation: popInMobile 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; 
+  .veg-frame { width: 80vw; height: 55vw; }
+  .notif-main { margin-top: -10px; }
+}
+
+/* HP Sedang (max 576px) */
+@media (max-width: 576px) {
+  .decor-right { width: 100px; }
+  .decor-left  { width: 140px; }
+  .notif-header h1 { font-size: 24px; }
+  .speak-btn img { width: 32px; height: 32px; }
+  .notif-header { margin-top: 15px; gap: 10px; }
+  .veg-frame { width: 85vw; height: 58vw; }
+  .notif-main { margin-top: -5px; }
+
+  #notif-veg {
+    animation: popInMobile 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.15s;
   }
 }
 
 @keyframes popInMobile {
-  0% { opacity: 0; transform: scale(0.3); }
+  0%   { opacity: 0; transform: scale(0.3); }
   100% { opacity: 1; transform: scale(1.15); }
+}
+
+/* HP Kecil (max 420px) */
+@media (max-width: 420px) {
+  .decor-right { width: 80px; }
+  .decor-left  { width: 110px; }
+  .notif-header h1 { font-size: 20px; }
+  .speak-btn img { width: 28px; height: 28px; }
+  .veg-frame { width: 88vw; height: 60vw; }
+}
+
+/* HP Sangat Kecil (max 320px) */
+@media (max-width: 320px) {
+  .notif-header h1 { font-size: 18px; }
+  .veg-frame { width: 92vw; height: 65vw; }
 }
 
 /* Landscape HP */
@@ -148,19 +191,6 @@ body {
   .notif-header { margin-top: 8px; }
   .notif-header h1 { font-size: 22px; }
   .notif-main { margin-top: 0; }
-  .veg-frame { height: 180px; width: 400px; }
-}
-
-/* Efek Suku Kata saat Dieja */
-.syllable {
-    display: inline-block;
-    transition: all 0.3s ease;
-    color: var(--brand); /* Warna dasar biru */
-}
-
-.syllable.active {
-    color: #FFCA3A; /* Berubah jadi kuning cerah saat dieja */
-    transform: scale(1.3); /* Pop in / Membesar */
-    text-shadow: 0 0 10px rgba(255, 202, 58, 0.5);
-    z-index: 10;
+  .veg-frame { height: 25vh; width: 35vw; }
+  .speak-btn img { width: 28px; height: 28px; }
 }

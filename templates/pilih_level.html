@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Pilihan Level Game</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pilih_level.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
@@ -15,51 +14,6 @@
   <audio id="bg-music" src="{{ url_for('static', filename='sounds/bensound-besttime.m4a') }}" loop></audio>
   <audio id="instruction-id" src="{{ url_for('static', filename='sounds/instruction_level_id.mp3') }}"></audio>
   <audio id="instruction-en" src="{{ url_for('static', filename='sounds/instruction_level_en.mp3') }}"></audio>
-
-  <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" class="decor decor-left">
-  <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" class="decor decor-right">
-
-  <div class="lang-select">
-    <div id="selected-lang" class="selected">
-      <img src="/static/img/flag indo.png" class="flag-id">
-      <span>Indonesia</span>
-    </div>
-
-    <div id="lang-options" class="options hidden">
-      <div onclick="setLanguage('id', event)">
-        <img src="/static/img/flag indo.png" class="flag-id"><span>Indonesia</span>
-      </div>
-      <div onclick="setLanguage('en', event)">
-        <img src="/static/img/flag uk.png"><span>English</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="content">
-    <h1 id="title">Ayo Bermain!</h1>
-
-    <div class="level-buttons">
-      <div class="level-card" onclick="localStorage.removeItem('sessionQuestions'); localStorage.setItem('currentIndex', 0); goLevel('easy');">
-        <img id="img-easy" class="level-img" src="/static/img/Permaiann/Tebak.png">
-        <p id="text-easy" class="level-text">Tebak Nama</p>
-      </div>
-
-      <div class="level-card" onclick="goLevel('medium')">
-        <img id="img-medium" class="level-img" src="/static/img/Permaiann/Mencocokkan.png">
-        <p id="text-medium" class="level-text">Mencocokkan</p>
-      </div>
-
-      <div class="level-card" onclick="goLevel('hard')">
-        <img id="img-hard" class="level-img" src="/static/img/Permaiann/puzzle.png">
-        <p id="text-hard" class="level-text">Puzzle</p>
-      </div>
-    </div>
-  </div>
-
-  <a href="/permainan" class="back-button">
-    <img src="{{ url_for('static', filename='img/back.png') }}">
-  </a>
-
   <audio id="voice-tebak-id" src="/static/sounds/tebak_id.mp3"></audio>
   <audio id="voice-tebak-en" src="/static/sounds/tebak_en.mp3"></audio>
   <audio id="voice-match-id" src="/static/sounds/mencocokkan_id.mp3"></audio>
@@ -67,22 +21,64 @@
   <audio id="voice-puzzle-id" src="/static/sounds/puzzle_id.mp3"></audio>
   <audio id="voice-puzzle-en" src="/static/sounds/puzzle_en.mp3"></audio>
 
-  <script src="{{ url_for('static', filename='js/level.js') }}"></script>
+  <div class="page-wrapper">
 
+    <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" class="decor decor-left">
+    <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" class="decor decor-right">
+
+    <div class="lang-select">
+      <div id="selected-lang" class="selected">
+        <img src="/static/img/flag indo.png" class="flag-id">
+        <span>Indonesia</span>
+      </div>
+      <div id="lang-options" class="options hidden">
+        <div onclick="setLanguage('id', event)">
+          <img src="/static/img/flag indo.png" class="flag-id"><span>Indonesia</span>
+        </div>
+        <div onclick="setLanguage('en', event)">
+          <img src="/static/img/flag uk.png"><span>English</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="/permainan" class="back-button">
+      <img src="{{ url_for('static', filename='img/back.png') }}">
+    </a>
+
+    <div class="content">
+      <h1 id="title">Ayo Bermain!</h1>
+      <div class="level-buttons">
+        <div class="level-card" onclick="localStorage.removeItem('sessionQuestions'); localStorage.setItem('currentIndex', 0); goLevel('easy');">
+          <img id="img-easy" class="level-img" src="/static/img/Permaiann/Tebak.png">
+          <p id="text-easy" class="level-text">Tebak Nama</p>
+        </div>
+        <div class="level-card" onclick="goLevel('medium')">
+          <img id="img-medium" class="level-img" src="/static/img/Permaiann/Mencocokkan.png">
+          <p id="text-medium" class="level-text">Mencocokkan</p>
+        </div>
+        <div class="level-card" onclick="goLevel('hard')">
+          <img id="img-hard" class="level-img" src="/static/img/Permaiann/puzzle.png">
+          <p id="text-hard" class="level-text">Puzzle</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/level.js') }}"></script>
   <script>
     let isTransitioning = false;
     const bgMusic = document.getElementById("bg-music");
     const instrID = document.getElementById("instruction-id");
     const instrEN = document.getElementById("instruction-en");
-
     const cardTebak = document.querySelectorAll('.level-card')[0];
     const cardCocok = document.querySelectorAll('.level-card')[1];
     const cardPuzzle = document.querySelectorAll('.level-card')[2];
 
     const levelVoice = {
-      easy: { id: document.getElementById("voice-tebak-id"), en: document.getElementById("voice-tebak-en"), url: "/level_mudah" },
-      medium: { id: document.getElementById("voice-match-id"), en: document.getElementById("voice-match-en"), url: "/level_menengah" },
-      hard: { id: document.getElementById("voice-puzzle-id"), en: document.getElementById("voice-puzzle-en"), url: "/puzzle_sulit1" }
+      easy:   { id: document.getElementById("voice-tebak-id"),  en: document.getElementById("voice-tebak-en"),  url: "/level_mudah" },
+      medium: { id: document.getElementById("voice-match-id"),  en: document.getElementById("voice-match-en"),  url: "/level_menengah" },
+      hard:   { id: document.getElementById("voice-puzzle-id"), en: document.getElementById("voice-puzzle-en"), url: "/puzzle_sulit1" }
     };
 
     function stopAllAudio() {
@@ -94,88 +90,54 @@
     function playInstruction() {
       const lang = localStorage.getItem("gameLang") || "id";
       stopAllAudio();
-      
       const audio = (lang === "en") ? instrEN : instrID;
-      if(!audio) return;
-
-      // --- TAMBAHKAN INI AGAR MUSIK JALAN BARENGAN ---
+      if (!audio) return;
       bgMusic.volume = 0.03;
-      bgMusic.play().catch(() => {
-        console.log("Autoplay musik diblokir browser");
-      });
-      // ----------------------------------------------
-
-      audio.onplay = () => bgMusic.volume = 0.015; // Kecilkan musik saat narasi bunyi
-      
+      bgMusic.play().catch(() => console.log("Autoplay diblokir"));
+      audio.onplay = () => bgMusic.volume = 0.015;
       audio.ontimeupdate = () => {
         const time = audio.currentTime;
-        const conf = (lang === "id") 
+        const conf = (lang === "id")
           ? { tebak: [1.2, 2.4], cocok: [2.5, 3.5], puzzle: [3.7, 4.7] }
-          : { tebak: [1, 2.3], cocok: [2.6, 3.8], puzzle: [3.85, 4.7] };
-
-        if (time >= conf.tebak[0] && time <= conf.tebak[1]) cardTebak.classList.add('btn-pulse');
-        else cardTebak.classList.remove('btn-pulse');
-
-        if (time >= conf.cocok[0] && time <= conf.cocok[1]) cardCocok.classList.add('btn-pulse');
-        else cardCocok.classList.remove('btn-pulse');
-
-        if (time >= conf.puzzle[0] && time <= conf.puzzle[1]) cardPuzzle.classList.add('btn-pulse');
-        else cardPuzzle.classList.remove('btn-pulse');
+          : { tebak: [1, 2.3],   cocok: [2.6, 3.8], puzzle: [3.85, 4.7] };
+        cardTebak.classList.toggle('btn-pulse', time >= conf.tebak[0] && time <= conf.tebak[1]);
+        cardCocok.classList.toggle('btn-pulse', time >= conf.cocok[0] && time <= conf.cocok[1]);
+        cardPuzzle.classList.toggle('btn-pulse', time >= conf.puzzle[0] && time <= conf.puzzle[1]);
       };
-
       audio.onended = () => {
-        bgMusic.volume = 0.03; // Besarkan lagi musik setelah narasi selesai
+        bgMusic.volume = 0.03;
         [cardTebak, cardCocok, cardPuzzle].forEach(c => c.classList.remove('btn-pulse'));
       };
-      
-      audio.play().catch(()=>{});
+      audio.play().catch(() => {});
     }
 
-    // Jalankan instruksi saat halaman dimuat
-    window.addEventListener("pageshow", () => {
-        // Cek jika audio sudah di-unlock sebelumnya
-        playInstruction();
-    });
+    window.addEventListener("pageshow", () => playInstruction());
 
-    // Trik Unlock Audio: Jika autoplay diblokir, musik akan nyala saat klik pertama di mana saja
     window.addEventListener('click', () => {
-        if (bgMusic.paused) {
-            bgMusic.volume = 0.03;
-            bgMusic.play();
-            
-            // Cek apakah instruksi juga sedang berhenti, jika ya jalankan
-            const lang = localStorage.getItem("gameLang") || "id";
-            const audio = (lang === "en") ? instrEN : instrID;
-            if (audio && audio.paused) {
-                audio.play();
-            }
-        }
-    }, { once: true }); // { once: true } artinya fungsi ini cuma jalan sekali saja
+      if (bgMusic.paused) {
+        bgMusic.volume = 0.03;
+        bgMusic.play();
+        const lang = localStorage.getItem("gameLang") || "id";
+        const audio = (lang === "en") ? instrEN : instrID;
+        if (audio && audio.paused) audio.play();
+      }
+    }, { once: true });
 
     function goLevel(level) {
       if (isTransitioning) return;
       isTransitioning = true;
       stopAllAudio();
-
-      const activeBtn = (level === 'easy') ? cardTebak : (level === 'medium') ? cardCocok : cardPuzzle;
+      const activeBtn = level === 'easy' ? cardTebak : level === 'medium' ? cardCocok : cardPuzzle;
       if (activeBtn) activeBtn.classList.add('btn-pulse');
-
       const lang = localStorage.getItem("gameLang") || "id";
       const audio = levelVoice[level][lang];
       const targetUrl = levelVoice[level].url;
-
-      // Fungsi Navigasi
       const navigate = () => { window.location.href = targetUrl; };
-
       if (audio) {
-        audio.play().then(() => {
-          audio.onended = navigate;
-        }).catch(() => { navigate(); });
+        audio.play().then(() => { audio.onended = navigate; }).catch(() => navigate());
       } else {
         navigate();
       }
-
-      // SAFETY TIMEOUT: Jika 1.5 detik suara tidak selesai/error, tetap pindah halaman
       setTimeout(navigate, 1500);
     }
   </script>

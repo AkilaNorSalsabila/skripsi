@@ -19,10 +19,10 @@
   <audio id="background-music" src="{{ url_for('static', filename='sounds/bensound-besttime.m4a') }}" loop></audio>
 
   <div id="start-overlay" style="position: fixed; inset: 0; background: #EAF7FF; display: flex; justify-content: center; align-items: center; z-index: 9999;">
-    <button id="start-btn" style="background:none;border:none;cursor:pointer;">
-      <img src="{{ url_for('static', filename='img/start_logo2.png') }}" alt="Mulai" class="btn-pulse" style="width:260px;">
-    </button>
-  </div>
+  <button id="start-btn" style="background:none;border:none;cursor:pointer;">
+    <img src="{{ url_for('static', filename='img/start_logo2.png') }}" alt="Mulai" class="btn-pulse">
+  </button>
+</div>
 
   <img src="{{ url_for('static', filename='img/monyet_corner.png') }}" class="decor decor-left" alt="Monkey">
   <img src="{{ url_for('static', filename='img/vegetables_corner.png') }}" class="decor decor-right" alt="Vegetables">

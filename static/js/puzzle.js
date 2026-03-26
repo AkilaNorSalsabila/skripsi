@@ -1,4 +1,4 @@
-// puzzle.js (Final Version - Fixed Audio & Logic + Mobile Touch Support)
+// puzzle.js (Final Version - Fixed Audio & Logic + Mobile Touch Support + Responsive Scale)
 const sfxDanger = new Audio("/static/sounds/Timer.mp3");
 sfxDanger.loop = true;
 
@@ -10,6 +10,7 @@ let selectedSoal = [];
 const scorePerSolved = 20; 
 let questionSolved = false;
 let totalScore = 0;
+let currentScale = 1;
 
 let timerInterval = null;
 let timeLeft = 0;
@@ -31,6 +32,28 @@ const timeByPieces = {
     9: 90,
     12: 120
 };
+
+// ==================
+// SCALE FACTOR — sesuai breakpoint CSS
+// ==================
+function getBoardScale(soal) {
+    const vw = window.innerWidth;
+    let targetVw;
+
+    if (vw <= 420) {
+        targetVw = 0.75;
+    } else if (vw <= 576) {
+        targetVw = 0.70;
+    } else if (vw <= 767) {
+        targetVw = 0.60;
+    } else if (vw <= 991) {
+        targetVw = 0.45;
+    } else {
+        targetVw = 0.30;
+    }
+
+    return (vw * targetVw) / soal.width;
+}
 
 // --- SOAL UTILS ---
 function groupSoalByPieces(bank) {
@@ -59,15 +82,12 @@ window.addEventListener("load", () => {
     const savedQ    = localStorage.getItem("puzzleCurrentQuestion");
     const savedSoal = localStorage.getItem("puzzleSelectedSoal");
 
-    // ✅ Lanjut dari notif HANYA jika KEDUANYA ada
     if (savedQ && savedSoal) {
         currentQuestion = parseInt(savedQ);
         selectedSoal    = JSON.parse(savedSoal);
         localStorage.removeItem("puzzleCurrentQuestion");
-        // Baca skor yang sedang berjalan
         totalScore = parseInt(localStorage.getItem("puzzleScore") || "0", 10);
     } else {
-        // ✅ Mulai baru: bersihkan semua state lama, reset skor ke 0
         localStorage.removeItem("puzzleSelectedSoal");
         localStorage.removeItem("puzzleCurrentQuestion");
         localStorage.removeItem("puzzleNotifDest");
@@ -188,7 +208,6 @@ function onTimeUp() {
     const text = lang === "en" ? "Time's up!" : "Waktu habis!";
     showTimeUpOverlay("⏰", text);
 
-    // ✅ Waktu habis = TIDAK dapat poin
     console.log("TIME UP → skor tetap:", totalScore);
 
     setTimeout(() => {
@@ -272,13 +291,20 @@ function loadQuestion(no) {
     const piecesContainer = document.getElementById("pieces-container");
     const board           = document.getElementById("board");
 
+    // Hitung scale sesuai viewport & breakpoint
+    const scale = getBoardScale(soal);
+    currentScale = scale;
+
+    const scaledW = Math.round(soal.width  * scale);
+    const scaledH = Math.round(soal.height * scale);
+
     piecesContainer.style.display = "grid";
-    board.style.width      = soal.width  + "px";
-    board.style.height     = soal.height + "px";
-    fullImage.style.width  = soal.width  + "px";
-    fullImage.style.height = soal.height + "px";
-    siluetBg.style.width   = soal.width  + "px";
-    siluetBg.style.height  = soal.height + "px";
+    board.style.width      = scaledW + "px";
+    board.style.height     = scaledH + "px";
+    fullImage.style.width  = scaledW + "px";
+    fullImage.style.height = scaledH + "px";
+    siluetBg.style.width   = scaledW + "px";
+    siluetBg.style.height  = scaledH + "px";
 
     slotsContainer.innerHTML  = "";
     piecesContainer.innerHTML = "";
@@ -291,18 +317,19 @@ function loadQuestion(no) {
     fullImage.src = soal.full;
     siluetBg.src  = soal.siluet;
 
+    // Slot dikali scale
     soal.pieces.forEach(p => {
         const slot = document.createElement("div");
         slot.classList.add("slot");
         slot.dataset.piece = p.id;
-        slot.style.left   = Math.round(p.slot.left)   + "px";
-        slot.style.top    = Math.round(p.slot.top)    + "px";
-        slot.style.width  = Math.round(p.slot.width)  + "px";
-        slot.style.height = Math.round(p.slot.height) + "px";
+        slot.style.left   = Math.round(p.slot.left   * scale) + "px";
+        slot.style.top    = Math.round(p.slot.top    * scale) + "px";
+        slot.style.width  = Math.round(p.slot.width  * scale) + "px";
+        slot.style.height = Math.round(p.slot.height * scale) + "px";
         slotsContainer.appendChild(slot);
     });
 
-    renderPieces(soal.pieces);
+    renderPieces(soal.pieces, scale);
     shufflePieces();
     initDragDrop();
     updateProgress();
@@ -327,7 +354,7 @@ function loadQuestion(no) {
 }
 
 // --- RENDER PIECES ---
-function renderPieces(pieces) {
+function renderPieces(pieces, scale) {
     const container = document.getElementById("pieces-container");
     container.innerHTML = "";
 
@@ -344,15 +371,17 @@ function renderPieces(pieces) {
         img.src        = p.src;
         img.dataset.id = p.id;
         img.draggable  = true;
-        const targetWidth  = Math.round(p.slot.width);
-        const targetHeight = Math.round(p.slot.height);
+
+        const targetWidth  = Math.round(p.slot.width  * scale);
+        const targetHeight = Math.round(p.slot.height * scale);
+
         img.style.width     = targetWidth  + "px";
         img.style.height    = targetHeight + "px";
         img.style.minWidth  = targetWidth  + "px";
         img.style.minHeight = targetHeight + "px";
         img.style.maxWidth  = targetWidth  + "px";
         img.style.maxHeight = targetHeight + "px";
-        img.style.objectFit = "contain";
+        img.style.objectFit = "fill";
         img.style.display   = "block";
         container.appendChild(img);
     });
@@ -395,19 +424,19 @@ function initDragDrop() {
         piece.addEventListener("dragstart", e => {
             if (timeExpired) { e.preventDefault(); return; }
             draggedPiece = e.target;
-            const rect = draggedPiece.getBoundingClientRect();
-            draggedPiece.style.width  = rect.width  + "px";
-            draggedPiece.style.height = rect.height + "px";
+
+            // TIDAK override width/height agar ukuran piece tidak berubah
+            const rect    = draggedPiece.getBoundingClientRect();
             const canvas  = document.createElement('canvas');
-            const scale   = 2;
-            canvas.width  = rect.width  * scale;
-            canvas.height = rect.height * scale;
+            const dpr     = 2;
+            canvas.width  = rect.width  * dpr;
+            canvas.height = rect.height * dpr;
             const ctx = canvas.getContext('2d');
             ctx.imageSmoothingEnabled       = false;
             ctx.webkitImageSmoothingEnabled = false;
             ctx.mozImageSmoothingEnabled    = false;
             ctx.msImageSmoothingEnabled     = false;
-            ctx.drawImage(draggedPiece, 0, 0, rect.width * scale, rect.height * scale);
+            ctx.drawImage(draggedPiece, 0, 0, rect.width * dpr, rect.height * dpr);
             e.dataTransfer.setDragImage(canvas, rect.width / 2, rect.height / 2);
             e.dataTransfer.setData("text", draggedPiece.dataset.id);
         });
@@ -432,7 +461,7 @@ function initDragDrop() {
             touchClone.style.minHeight     = rect.height + "px";
             touchClone.style.maxWidth      = rect.width  + "px";
             touchClone.style.maxHeight     = rect.height + "px";
-            touchClone.style.objectFit     = "contain";
+            touchClone.style.objectFit     = "fill";
             touchClone.style.left          = (touch.clientX - touchStartX) + "px";
             touchClone.style.top           = (touch.clientY - touchStartY) + "px";
             document.body.appendChild(touchClone);
@@ -510,13 +539,11 @@ function puzzleSolved() {
     questionSolved = true;
     stopTimer(); 
 
-    // Sembunyikan slot
     const slots = document.querySelectorAll(".slot");
     slots.forEach(s => {
         s.style.cssText = "display:none!important;border:none!important;visibility:hidden!important;outline:none!important;background:transparent!important;";
     });
 
-    // Expand piece 1px tutup celah sub-pixel
     const placedPieces = document.querySelectorAll("#board img:not(.siluet-bg):not(#full-image)");
     placedPieces.forEach(p => {
         const l = parseFloat(p.style.left)   - 1;
@@ -540,21 +567,18 @@ function puzzleSolved() {
         p.style.padding      = "0";
     });
 
-    // ✅ +20 poin karena berhasil sebelum waktu habis
     totalScore += scorePerSolved;
     localStorage.setItem("puzzleScore", totalScore);
     console.log("SCORE SOLVED:", totalScore);
 
     const soal = selectedSoal[currentQuestion - 1];
 
-    // ✅ Simpan data sayuran untuk halaman notif
     localStorage.setItem("notifVeg", JSON.stringify({
         id:  soal.name_id,
         en:  soal.name_en,
         img: soal.full
     }));
 
-    // ✅ Simpan state untuk lanjut soal setelah notif
     const nextQ = currentQuestion + 1;
     if (nextQ <= selectedSoal.length) {
         localStorage.setItem("puzzleCurrentQuestion", nextQ);
@@ -568,20 +592,18 @@ function puzzleSolved() {
         localStorage.removeItem("puzzleSelectedSoal");
     }
 
-    // ✅ Putar suara congrats, lalu LANGSUNG redirect tanpa nunggu audio selesai
     const soundCongrats  = document.getElementById("sound-congrats");
     const soundVegetable = document.getElementById("sound-vegetable");
     soundVegetable.pause();
     soundCongrats.currentTime = 0;
     soundCongrats.play().catch(() => {});
 
-    // Redirect setelah 2 detik (sambil suara congrats berbunyi)
     setTimeout(() => {
         window.location.href = "/puzzle_notif";
     }, 2000);
 }
 
-// --- NEXT QUESTION & FINISH (dipakai saat waktu habis) ---
+// --- NEXT QUESTION & FINISH ---
 function nextQuestion() {
     document.getElementById("sound-vegetable").pause();
     document.getElementById("sound-congrats").pause();

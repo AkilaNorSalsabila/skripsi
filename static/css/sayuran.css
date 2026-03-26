@@ -4,6 +4,8 @@ html {
     text-size-adjust: 100%;
 }
 
+* { box-sizing: border-box; }
+
 body {
     font-family: sans-serif;
     background-color: #EAF7FF;
@@ -14,7 +16,7 @@ body {
     min-height: 100vh;
 }
 
-/* Corner Sayuran */
+/* ========== CORNER ========== */
 .corner {
     position: fixed;
     display: block;
@@ -26,49 +28,38 @@ body {
     z-index: 1;
 }
 
-.top-left {
-    top: 0;
-    left: 0;
-    width: 210px;
-}
+.top-left    { top: 0; left: 0; width: 16vw; }
+.bottom-right { bottom: 0; right: 0; width: 27vw; }
 
-.bottom-right {
-    bottom: 0;
-    right: 0;
-    width: 350px;
-}
-
-/* ========== LAYOUT UTAMA (DESKTOP) ========== */
+/* ========== LAYOUT UTAMA ========== */
 .content-row {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 40px;
+    gap: 3vw;
     position: relative;
     z-index: 2;
 }
 
-.shift-right {
-    margin-left: 200px;
-}
+.shift-right { margin-left: 17vw; }
 
 .left-col {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 1vw;
 }
 
-/* Kamera */
+/* ========== KAMERA ========== */
 .image-box {
-    width: 600px;
-    height: 380px;
+    width: 45vw;
+    height: 30vw;
     background-color: #ddd;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-    margin-top: 50px;
-    margin-left: 30px;
+    margin-top: 9vh;
+    margin-left: 2vw;
 }
 
 .image-box video {
@@ -84,21 +75,20 @@ body {
     object-fit: cover;
 }
 
-/* Tombol kamera + upload */
+/* ========== TOMBOL KAMERA & UPLOAD ========== */
 .button-box {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 0px;
-    margin-left: 130px;
+    gap: 0.8vw;
+    margin-left: 9vw;
 }
 
-/* Box translate */
+/* ========== TRANSLATE BOX ========== */
 .translate-box {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 100px;
+    gap: 1.5vw;
+    margin-top: 18vh;
 }
 
 .translate-item {
@@ -106,22 +96,18 @@ body {
     align-items: center;
     background: #00bfff;
     border-radius: 8px;
-    padding: 10px 20px;
-    gap: 15px;
+    padding: 0.8vw 1.5vw;
+    gap: 1vw;
     color: white;
-    font-size: 18px;
-    min-height: 70px;
-    min-width: 300px;
-    max-width: 400px;
+    font-size: 1.3vw;
+    min-height: 6.9vw;
+    min-width: 26.6vw;
+    max-width: 32vw;
     justify-content: center;
 }
 
-.translate-item.has-text {
-    justify-content: space-between;
-}
-
 .translate-item .flag {
-    width: 45px;
+    width: 4vw;
     height: auto;
     flex-shrink: 0;
 }
@@ -129,7 +115,7 @@ body {
 .translate-item .text {
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
-    font-size: 28px;
+    font-size: 2.2vw;
     color: white;
     white-space: nowrap;
 }
@@ -137,10 +123,11 @@ body {
 .translate-content {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.8vw;
     flex: 1;
 }
 
+/* ========== AUDIO BUTTON ========== */
 .audio-btn {
     background: none;
     border: none;
@@ -149,70 +136,6 @@ body {
     align-items: center;
     padding: 0;
     flex-shrink: 0;
-    /* Touchscreen support */
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.play-icon {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn {
-    padding: 14px 22px;
-    border: none;
-    border-radius: 12px;
-    background: #00bfff;
-    color: white;
-    font-size: 22px;
-    font-family: 'Mochiy Pop One', sans-serif;
-    cursor: pointer;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    justify-content: center;
-    /* Touchscreen support */
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* Hover HANYA untuk mouse, tidak untuk jari */
-@media (hover: hover) and (pointer: fine) {
-    .btn:hover           { background: #009acd; }
-    .btn.reload:hover    { background: #e68900; }
-    .back-button img:hover { transform: scale(1.1); }
-}
-
-/* Efek tekan untuk layar sentuh */
-.btn:active {
-    opacity: 0.85;
-    transform: scale(0.97);
-}
-
-.icon-btn {
-    width: 24px;
-    height: 24px;
-}
-
-/* Tombol back */
-.back-button {
-    position: fixed;
-    top: 70px;
-    left: 159px;
-    z-index: 10;
-}
-
-.back-button img {
-    width: 50px;
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.2s;
-    /* Touchscreen support */
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
 }
@@ -220,26 +143,34 @@ body {
 .audio-wrapper {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 0.4vw;
+}
+
+.play-icon {
+    width: 2vw;
+    height: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .play-icon img {
-    width: 28px;
-    height: 28px;
+    width: 2vw;
+    height: 2vw;
 }
 
-/* Wave animasi */
+/* ========== WAVE ANIMASI ========== */
 .wave-icon {
     display: flex;
     align-items: flex-end;
     gap: 3px;
-    height: 20px;
+    height: 1.4vw;
 }
 
 .wave-icon span {
     display: block;
     width: 3px;
-    height: 6px;
+    height: 0.4vw;
     background: white;
     border-radius: 2px;
     animation: waveAnim 1s infinite;
@@ -249,114 +180,131 @@ body {
 .wave-icon span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes waveAnim {
-    0%, 100% { height: 6px; }
-    50%       { height: 18px; }
+    0%, 100% { height: 0.4vw; }
+    50%       { height: 1.2vw; }
 }
 
-.btn.camera img { margin-top: 8px; }
+/* ========== TOMBOL UTAMA ========== */
+.btn {
+    padding: 1.2vw 2vw;
+    border: none;
+    border-radius: 12px;
+    background: #00bfff;
+    color: white;
+    font-size: 1.7vw;
+    font-family: 'Mochiy Pop One', sans-serif;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
 
-/* Tombol Reload */
+.icon-btn { width: 2.2vw; height: 2.2vw; }
+
+.btn.camera img { margin-top: 0.5vw; }
+
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover           { background: #009acd; }
+    .btn.reload:hover    { background: #e68900; }
+    .back-button img:hover { transform: scale(1.1); }
+}
+
+.btn:active {
+    opacity: 0.85;
+    transform: scale(0.97);
+}
+
+/* ========== TOMBOL RELOAD ========== */
 .reload-box {
-    margin-top: 20px;
+    margin-top: 1.5vw;
     display: flex;
     justify-content: center;
     position: relative;
     z-index: 20;
 }
 
-.btn.reload .icon-btn {
-    width: 28px;
-    height: 28px;
-    vertical-align: middle;
-    position: relative;
-    top: -3px;
-}
-
 .btn.reload { background: #ff9800; cursor: pointer; }
+.btn.reload .icon-btn { width: 2vw; height: 2vw; }
 
-/* ========== DESKTOP BESAR (≥1440px) ========== */
-@media (min-width: 1440px) {
-    .top-left     { width: 250px; }
-    .bottom-right { width: 400px; }
+/* ========== BACK BUTTON ========== */
+.back-button {
+    position: fixed;
+    top: 13vh;
+    left: 14vw;
+    z-index: 10;
 }
 
-/* ========== LAPTOP (1200px–1440px) ========== */
-@media (max-width: 1440px) {
-    .top-left     { width: 210px; }
-    .bottom-right { width: 350px; }
+.back-button img {
+    width: 4vw;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* ========== LAPTOP KECIL (1024px–1200px) ========== */
-@media (max-width: 1200px) {
-    .shift-right  { margin-left: 120px; }
-    .top-left     { width: 180px; }
-    .bottom-right { width: 300px; }
-}
-
-/* ========== TABLET LANDSCAPE (768px–1024px) ========== */
-@media (max-width: 1024px) {
-    .shift-right { margin-left: 50px; }
-
-    .content-row { gap: 20px; }
+/* ========== RESPONSIVE TABLET (768px - 1024px) ========== */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .shift-right  { margin-left: 40px; }
+    .top-left     { width: 150px; }
+    .bottom-right { width: 260px; }
 
     .image-box {
-        width: 450px;
-        height: 300px;
-        margin-top: 40px;
-        margin-left: 20px;
+        width: 420px;
+        height: 280px;
+        margin-top: 30px;
+        margin-left: 10px;
     }
 
-    .button-box { margin-left: 80px; }
+    .button-box { margin-left: 60px; gap: 8px; }
 
-    .translate-box { margin-top: 60px; gap: 15px; }
+    .translate-box { margin-top: 50px; gap: 14px; }
 
     .translate-item {
         min-width: 180px;
         max-width: 280px;
         min-height: 60px;
-        padding: 8px 15px;
+        padding: 10px 16px;
+        font-size: 16px;
     }
 
     .translate-item .text { font-size: 20px; }
-    .translate-item .flag { width: 32px; }
+    .translate-item .flag { width: 34px; }
 
-    .btn { font-size: 18px; padding: 11px 18px; }
+    .play-icon, .play-icon img { width: 26px; height: 26px; }
 
-    .back-button        { left: 20px; top: 20px; }
-    .back-button img    { width: 45px; }
-    .top-left           { width: 160px; }
-    .bottom-right       { width: 280px; }
+    .btn { font-size: 18px; padding: 12px 18px; gap: 10px; }
+    .icon-btn { width: 22px; height: 22px; }
+    .btn.reload .icon-btn { width: 24px; height: 24px; }
+
+    .back-button { left: 20px; top: 20px; }
+    .back-button img { width: 42px; }
 }
 
-/* ========== HP BESAR / TABLET PORTRAIT (601px–768px) ========== */
-@media (max-width: 768px) and (min-width: 601px) {
-    body {
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
+/* ========== HP BESAR (481px - 768px) ========== */
+@media (max-width: 768px) and (min-width: 481px) {
+    body { overflow-y: auto; overflow-x: hidden; }
 
-    .shift-right {
-        margin-left: 0;
-        padding: 0 20px;
-    }
+    .shift-right { margin-left: 0; padding: 0 16px; }
 
     .content-row {
         flex-direction: column;
         align-items: center;
-        gap: 24px;
-        padding-top: 70px;
+        gap: 20px;
+        padding-top: 65px;
     }
 
-    .left-col {
-        align-items: center;
-        width: 100%;
-    }
+    .left-col { align-items: center; width: 100%; }
 
     .image-box {
         width: 88vw;
-        max-width: 600px;
-        height: 42vw;
-        max-height: 340px;
+        max-width: 560px;
+        height: 52vw;
+        max-height: 320px;
         margin-top: 10px;
         margin-left: 0;
     }
@@ -365,242 +313,158 @@ body {
         margin-left: 0;
         align-items: center;
         width: 100%;
-        gap: 14px;
+        gap: 12px;
     }
 
     .btn {
-        font-size: 5vw;
-        padding: 3vw 5vw;
+        font-size: 18px;
+        padding: 12px 20px;
         width: 88%;
-        max-width: 480px;
-        justify-content: center;
-        border-radius: 14px;
+        max-width: 460px;
+        gap: 10px;
     }
 
-    .icon-btn { width: 5vw; height: 5vw; max-width: 28px; max-height: 28px; }
+    .icon-btn { width: 22px; height: 22px; }
 
     .translate-box {
         margin-top: 10px;
         width: 100%;
         align-items: center;
-        gap: 18px;
+        gap: 16px;
     }
 
     .translate-item {
         width: 88%;
-        max-width: 520px;
+        max-width: 500px;
         min-width: unset;
-        min-height: 70px;
-        padding: 14px 22px;
-        font-size: 20px;
+        min-height: 65px;
+        padding: 12px 20px;
+        font-size: 18px;
         border-radius: 12px;
     }
 
-    .translate-item .text { font-size: 5.5vw; }
-    .translate-item .flag { width: 6vw; max-width: 42px; }
-
-    .play-icon        { width: 5vw; height: 5vw; max-width: 30px; max-height: 30px; }
-    .play-icon img    { width: 5vw; height: 5vw; max-width: 30px; max-height: 30px; }
+    .translate-item .text { font-size: 22px; white-space: nowrap; }
+    .translate-item .flag { width: 36px; }
+    .play-icon, .play-icon img { width: 28px; height: 28px; }
 
     .reload-box {
-        margin-top: 18px;
-        margin-bottom: 60px;
+        margin-top: 16px;
+        margin-bottom: 50px;
         width: 100%;
         justify-content: center;
     }
 
     .btn.reload {
         width: 88%;
-        max-width: 480px;
-        font-size: 5vw;
-    }
-
-    .btn.reload .icon-btn { width: 5vw; height: 5vw; max-width: 28px; }
-
-    .back-button        { left: 15px; top: 15px; }
-    .back-button img    { width: 5.5vw; max-width: 44px; }
-    .top-left           { width: 15vw; max-width: 130px; }
-    .bottom-right       { width: 26vw; max-width: 220px; }
-}
-
-/* ========== HP STANDAR (481px–600px) ========== */
-@media (max-width: 600px) and (min-width: 481px) {
-    body { overflow-y: auto; overflow-x: hidden; }
-
-    .shift-right {
-        margin-left: 0;
-        padding: 0 15px;
-    }
-
-    .content-row {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        padding-top: 60px;
-    }
-
-    .left-col { align-items: center; width: 100%; }
-
-    .image-box {
-        width: 90vw;
-        max-width: 500px;
-        height: 280px;
-        margin-top: 20px;
-        margin-left: 0;
-    }
-
-    .button-box { margin-left: 0; align-items: center; width: 100%; }
-
-    .btn {
+        max-width: 460px;
         font-size: 18px;
-        padding: 12px 20px;
-        width: 88%;
-        max-width: 400px;
     }
 
-    .translate-box { margin-top: 20px; width: 100%; align-items: center; }
-
-    .translate-item {
-        width: 88%;
-        max-width: 400px;
-        min-width: unset;
-        min-height: 60px;
-        padding: 10px 16px;
-    }
-
-    .translate-item .text { font-size: 19px; white-space: nowrap; }
-    .translate-item .flag { width: 32px; }
-
-    .reload-box { margin-top: 15px; margin-bottom: 60px; }
-
-    .back-button        { left: 15px; top: 15px; }
-    .back-button img    { width: 40px; }
-    .top-left           { width: 110px; }
-    .bottom-right       { width: 180px; }
+    .back-button { left: 12px; top: 12px; }
+    .back-button img { width: 40px; }
+    .top-left     { width: 110px; }
+    .bottom-right { width: 190px; }
 }
 
-/* ========== HP KECIL (≤480px) ========== */
+/* ========== HP SEDANG (max 480px) ========== */
 @media (max-width: 480px) {
     body { overflow-y: auto; overflow-x: hidden; }
 
-    .shift-right { margin-left: 0; padding: 0 15px; }
+    .shift-right { margin-left: 0; padding: 0 12px; }
 
     .content-row {
         flex-direction: column;
         align-items: center;
-        gap: 20px;
-        padding-top: 60px;
+        gap: 16px;
+        padding-top: 55px;
     }
 
     .left-col { align-items: center; width: 100%; }
 
     .image-box {
-        width: 90vw;
-        max-width: 500px;
-        height: 280px;
-        margin-top: 20px;
+        width: 92vw;
+        height: 55vw;
+        max-height: 280px;
+        margin-top: 10px;
         margin-left: 0;
     }
 
-    .button-box { margin-left: 0; align-items: center; width: 100%; }
-
-    .translate-box { margin-top: 20px; width: 100%; align-items: center; }
-
-    .translate-item {
-        min-width: 170px;
-        max-width: 340px;
-        padding: 9px 16px;
-    }
-
-    .translate-item .text { font-size: 19px; }
-    .translate-item .flag { width: 30px; }
-
-    .reload-box { margin-top: 15px; margin-bottom: 80px; }
-
-    .back-button        { left: 15px; top: 15px; }
-    .back-button img    { width: 40px; }
-    .top-left           { width: 130px; }
-    .bottom-right       { width: 220px; }
-}
-
-@media (max-width: 576px) {
-    .content-row { padding-top: 50px; }
-
-    .image-box { width: 92vw; height: 250px; margin-top: 15px; }
-
-    .translate-item {
-        min-width: 160px;
-        max-width: 350px;
-        min-height: 55px;
-        padding: 8px 15px;
-        gap: 12px;
-    }
-
-    .translate-item .text { font-size: 18px; }
-    .translate-item .flag { width: 32px; }
-
-    .play-icon        { width: 24px; height: 24px; }
-    .play-icon img    { width: 24px; height: 24px; }
-
-    .btn { font-size: 18px; padding: 12px 18px; }
-
-    .icon-btn             { width: 22px; height: 22px; }
-    .btn.reload .icon-btn { width: 24px; height: 24px; }
-
-    .back-button img  { width: 35px; }
-    .top-left         { width: 100px; }
-    .bottom-right     { width: 170px; }
-}
-
-@media (max-width: 450px) {
-    body { overflow-y: auto; }
-
-    .content-row { padding-top: 45px; gap: 15px; }
-
-    .image-box { width: 95vw; height: 220px; margin-top: 10px; }
-
-    .button-box { gap: 6px; }
-
-    .translate-box { gap: 12px; margin-top: 15px; }
-
-    .translate-item {
-        min-width: 140px;
-        max-width: 280px;
-        min-height: 50px;
-        padding: 8px 12px;
+    .button-box {
+        margin-left: 0;
+        align-items: center;
+        width: 100%;
         gap: 10px;
     }
 
-    .translate-item .text { font-size: 16px; white-space: normal; }
-    .translate-item .flag { width: 28px; }
-
-    .play-icon        { width: 22px; height: 22px; }
-    .play-icon img    { width: 22px; height: 22px; }
-
-    .btn { font-size: 16px; padding: 10px 16px; gap: 8px; }
-
-    .reload-box { margin-top: 12px; margin-bottom: 60px; }
-
-    .back-button        { left: 10px; top: 10px; }
-    .back-button img    { width: 32px; }
-    .top-left           { width: 80px; }
-    .bottom-right       { width: 140px; }
-}
-
-@media (max-width: 380px) {
-    .image-box { height: 200px; }
-
-    .translate-item {
-        min-width: 130px;
-        max-width: 260px;
-        padding: 7px 10px;
+    .btn {
+        font-size: 16px;
+        padding: 11px 16px;
+        width: 90%;
+        max-width: 380px;
+        gap: 8px;
     }
 
-    .translate-item .text { font-size: 15px; }
+    .icon-btn { width: 20px; height: 20px; }
+
+    .translate-box {
+        margin-top: 10px;
+        width: 100%;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .translate-item {
+        width: 90%;
+        max-width: 380px;
+        min-width: unset;
+        min-height: 58px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        gap: 10px;
+    }
+
+    .translate-item .text { font-size: 18px; white-space: nowrap; }
+    .translate-item .flag { width: 30px; }
+    .play-icon, .play-icon img { width: 24px; height: 24px; }
+
+    .reload-box {
+        margin-top: 14px;
+        margin-bottom: 50px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn.reload { width: 90%; max-width: 380px; font-size: 16px; }
+
+    .back-button { left: 10px; top: 10px; }
+    .back-button img { width: 36px; }
+    .top-left     { width: 90px; }
+    .bottom-right { width: 160px; }
+}
+
+/* ========== HP KECIL (max 380px) ========== */
+@media (max-width: 380px) {
+    .image-box { height: 58vw; }
+
+    .translate-item {
+        padding: 8px 12px;
+        min-height: 52px;
+    }
+
+    .translate-item .text { font-size: 16px; }
     .translate-item .flag { width: 26px; }
+    .play-icon, .play-icon img { width: 22px; height: 22px; }
 
-    .btn { font-size: 15px; padding: 9px 14px; }
+    .btn { font-size: 15px; padding: 10px 14px; }
+    .back-button img { width: 32px; }
+    .top-left     { width: 75px; }
+    .bottom-right { width: 130px; }
+}
 
-    .top-left     { width: 70px; }
-    .bottom-right { width: 120px; }
+/* ========== HP SANGAT KECIL (max 320px) ========== */
+@media (max-width: 320px) {
+    .translate-item .text { font-size: 14px; }
+    .btn { font-size: 14px; padding: 9px 12px; }
+    .top-left     { width: 65px; }
+    .bottom-right { width: 110px; }
 }

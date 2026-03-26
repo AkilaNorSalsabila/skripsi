@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: #EAF7FF;
   margin: 0;
@@ -5,6 +9,17 @@ body {
   overflow: hidden;
 }
 
+/* ================== PAGE WRAPPER ================== */
+.page-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
 /* ================== DEKOR ================== */
 .decor {
@@ -16,31 +31,107 @@ body {
 .decor-left {
   top: 0;
   left: 0;
-  width: 220px;
+  width: 17vw;
 }
 
 .decor-right {
-  bottom: -15px;
+  bottom: -1vw;
   right: 0;
-  width: 350px;
+  width: 27vw;
+}
+
+/* ================== TOMBOL BACK ================== */
+.back-button {
+  position: absolute;
+  top: 10vh;
+  left: 21vw;
+  z-index: 10;
+}
+
+.back-button img {
+  width: 3.8vw;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+
+/* ================== PILIH BAHASA ================== */
+.lang-select {
+  position: absolute;
+  top: 4vh;
+  right: 3.5vw;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4vw;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.lang-select .selected {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+  background: #fff;
+  padding: 0.4vw 0.8vw;
+  border-radius: 10px;
+  border: 2px solid #00B4E1;
+}
+
+.lang-select img {
+  width: 2vw;
+  height: 1.3vw;
+  border-radius: 2px;
+}
+
+.lang-select img.flag-id {
+  border: 1px solid #ccc;
+}
+
+.lang-select .options {
+  margin-top: 5px;
+  background: #fff;
+  border: 2px solid #00B4E1;
+  border-radius: 10px;
+}
+
+.lang-select .options div {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+  padding: 0.4vw 0.8vw;
+}
+
+.lang-select .options div:hover {
+  background: #EAF7FF;
+}
+
+.hidden {
+  display: none;
 }
 
 /* ================== KONTEN ================== */
 .content {
   position: relative;
   z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2vw;
+  margin-top: -11vw;
 }
 
 .content h1 {
   font-family: 'Mochiy Pop One', sans-serif;
-  font-size: 50px;
-  text-align: center;
-  margin-bottom: 50px;
+  font-size: 3.9vw;
+  margin: 0;
   color: #0288D1;
   text-shadow:
     1px 1px 0 #ffffff,
     2px 2px 0 #81D4FA;
-  margin-top: 40px;
 }
 
 /* ================== MENU LEVEL ================== */
@@ -49,8 +140,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;
-  gap: 13px;
-  margin-top: -20px;
+  gap: 1vw;
 }
 
 /* --- ANIMASI ZOOM --- */
@@ -67,7 +157,7 @@ body {
 
 /* CARD LEVEL */
 .level-card {
-  position: relative; 
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,14 +168,13 @@ body {
   background: transparent;
 }
 
-/* UKURAN GAMBAR DISAMAKAN SEMUA */
 #img-easy, #img-medium, #img-hard {
-  width: 300px;
+  width: 23vw;
+  height: auto;
   transition: transform 0.25s ease, filter 0.25s ease;
   z-index: 1;
 }
 
-/* HOVER EFEK */
 .level-card:hover {
   transform: scale(1.05);
 }
@@ -93,278 +182,106 @@ body {
 /* TEKS LEVEL */
 .level-text {
   font-family: 'Quicksand', sans-serif;
-  font-size: 26px;
+  font-size: 2vw;
   font-weight: 700;
   color: #0288D1;
   text-align: center;
   z-index: 5;
-  margin-bottom: 20px;
+  margin-bottom: 1.5vw;
   pointer-events: none;
-  
-  text-shadow: 
-    -1.5px -1.5px 0 #fff,  
+  text-shadow:
+    -1.5px -1.5px 0 #fff,
      1.5px -1.5px 0 #fff,
     -1.5px  1.5px 0 #fff,
      1.5px  1.5px 0 #fff;
-  
   transition: all 0.25s ease;
 }
 
-/* POSISI TEKS DI ATAS GAMBAR (Overlapping) */
 #text-easy, #text-medium, #text-hard {
-  margin-top: -75px;
-}
-
-/* ================== TOMBOL BACK ================== */
-.back-button {
-  position: fixed;
-  top: 60px;
-  left: 260px;
-  z-index: 10;
-}
-
-.back-button img {
-  width: 50px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.back-button img:hover {
-  transform: scale(1.1);
-}
-
-/* ================== PILIH BAHASA ================== */
-.lang-select {
-  position: fixed;
-  top: 20px;
-  right: 50px;
-  font-family: 'Quicksand', sans-serif;
-  cursor: pointer;
-  z-index: 100;
-}
-
-.lang-select .selected {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff;
-  padding: 6px 12px;
-  border-radius: 10px;
-  border: 2px solid #00B4E1;
-}
-
-.lang-select img {
-  width: 22px;
-  height: 15px;
-  border-radius: 2px;
-}
-.lang-select img.flag-id {
-  border: 1px solid #ccc;
-}
-.lang-select .options {
-  margin-top: 5px;
-  background: #fff;
-  border: 2px solid #00B4E1;
-  border-radius: 10px;
-}
-
-.lang-select .options div {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-}
-
-.lang-select .options div:hover {
-  background: #EAF7FF;
-}
-
-.hidden {
-  display: none;
+  margin-top: -5.5vw;
 }
 
 /* ================== RESPONSIVE ================== */
 
-/* ===== TABLET (768px - 992px) ===== */
-@media (max-width: 992px) {
-  .back-button {
-    left: 20px;
-    top: 20px;
-  }
-
-  .back-button img {
-    width: 40px;
-  }
-
-  .content h1 {
-    font-size: 40px;
-    margin-bottom: 30px;
-  }
-
-  #img-easy, #img-medium, #img-hard {
-    width: 220px;
-  }
-
-  .level-text {
-    font-size: 22px;
-  }
-
-  #text-easy, #text-medium, #text-hard {
-    margin-top: -55px;
-  }
-
-  .level-buttons {
-    gap: 12px;
-  }
-
-  .lang-select {
-    right: 30px;
-  }
-
-  .decor-left {
-    width: 180px;
-  }
-
-  .decor-right {
-    width: 280px;
-  }
-}
-
-/* ===== HP & TABLET KECIL (max 768px) - VERTIKAL ===== */
 @media (max-width: 768px) {
-  body {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+  body { overflow-y: auto; overflow-x: hidden; }
+
+  .page-wrapper {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding-top: 80px;
+    padding-bottom: 30px;
+    overflow: visible;
   }
 
   .content {
-    padding-bottom: 30px;
-    padding-top: 30px;
+    margin-top: 0;
+    gap: 20px;
   }
 
-  .content h1 {
-    font-size: 32px;
-    margin-bottom: 35px;
-  }
+  .content h1 { font-size: 32px; }
 
-  /* ✅ PAKSA VERTIKAL */
   .level-buttons {
     flex-direction: column !important;
     align-items: center !important;
     gap: 20px !important;
   }
 
-  
+  #img-easy, #img-medium, #img-hard { width: 220px !important; }
+  #text-easy, #text-medium, #text-hard { margin-top: -57px !important; }
 
-  #text-easy, #text-medium, #text-hard {
-    margin-top: -57px !important;
-  }
+  .back-button { left: 15px; top: 15px; }
+  .back-button img { width: 40px; }
 
-  .back-button {
-    left: 15px;
-    top: 15px;
-  }
+  .lang-select { top: 15px; right: 15px; font-size: 14px; }
+  .lang-select .selected { padding: 5px 10px; gap: 8px; }
+  .lang-select img { width: 22px; height: 15px; }
+  .lang-select .options div { padding: 6px 12px; gap: 8px; }
 
-  .back-button img {
-    width: 40px;
-  }
-
-  .lang-select {
-    top: 15px;
-    right: 15px;
-  }
-
-  .lang-select .selected {
-    padding: 5px 10px;
-    font-size: 14px;
-  }
-
-  .decor-left {
-    width: 130px;
-  }
-
+  .decor-left { width: 130px; }
   .decor-right {
-    position: fixed;   /* ⬅️ INI KUNCI */
-    bottom: -20px;     /* ⬅️ TURUNKAN (ubah -10 / -20 / -30) */
+    position: fixed;
+    bottom: -20px;
     right: 0;
     width: 200px;
   }
 }
 
-/* ===== MOBILE KECIL (max 576px) ===== */
 @media (max-width: 576px) {
-  .content h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-
-  .level-buttons {
-    gap: 15px !important;
-    padding: 0 15px;
-  }
-
+  .content h1 { font-size: 28px; }
+  .level-buttons { gap: 15px !important; padding: 0 15px; }
   .level-card {
     width: 100% !important;
     max-width: 340px !important;
     padding: 12px !important;
   }
-
   #img-easy, #img-medium, #img-hard {
     width: 200px !important;
     height: auto !important;
-    margin-right: 15px !important;
   }
-
-  .level-text {
-    font-size: 18px !important;
-  }
-
-  .back-button img {
-    width: 35px;
-  }
-
-  .lang-select .selected {
-    padding: 4px 8px;
-    font-size: 13px;
-  }
-
-  .lang-select img {
-    width: 18px;
-    height: 12px;
-  }
-
-  .decor-left {
-    width: 100px;
-  }
-
-  .decor-right {
-    width: 150px;
-  }
+  .level-text { font-size: 18px !important; }
+  .back-button img { width: 35px; }
+  .lang-select .selected { padding: 4px 8px; font-size: 13px; }
+  .lang-select img { width: 18px; height: 12px; }
+  .decor-left { width: 100px; }
+  .decor-right { width: 150px; }
 }
-@media (max-width: 450px) {
 
+@media (max-width: 450px) {
   .level-card {
     width: 100% !important;
     max-width: 340px !important;
     padding: 16px !important;
   }
-
-  #img-easy,
-  #img-medium,
-  #img-hard {
+  #img-easy, #img-medium, #img-hard {
     width: 220px !important;
     height: auto !important;
   }
-
   .level-text {
     font-size: 18px !important;
     margin-top: -60px !important;
   }
-
-  .decor-right {
-    width: 140px;
-  }
+  .decor-right { width: 140px; }
 }
-
-
-

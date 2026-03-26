@@ -1,4 +1,5 @@
-/* ========== 1. KODE DASAR & DESKTOP ========== */
+* { box-sizing: border-box; }
+
 body {
   background-color: #EAF7FF;
   margin: 0;
@@ -10,7 +11,7 @@ body {
   position: relative;
 }
 
-/* Dekorasi - Fixed agar nempel di layar */
+/* ========== DEKORASI ========== */
 .decor {
   position: fixed;
   z-index: 1;
@@ -18,47 +19,46 @@ body {
   pointer-events: none;
 }
 
-.decor-left { 
-  top: 0; 
-  left: 0; 
-  width: 220px; 
-}
+.decor-left  { top: 0; left: 0; width: 16vw; }
+.decor-right { bottom: 0; right: 0; width: 18vw; }
 
-.decor-right { 
-  bottom: 0; 
-  right: 0; 
-  width: 245px; 
-}
-
-/* Judul Utama */
-.content h1 {
-  font-size: 50px;
-  text-align: center;
-  margin-top: 5vh;
-  margin-bottom: 5vh;
-  color: #0288D1;
-  text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #81D4FA;
+/* ========== CONTENT ========== */
+.content {
   position: relative;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 8vh 2vw 0 2vw;   /* ← ganti margin-top jadi padding-top */
+  margin-top: 0;
 }
 
-/* Menu Buttons Desktop */
+/* ========== JUDUL ========== */
+.content h1 {
+  font-size: 3.9vw;
+  text-align: center;
+  margin: 0 0 4vh 0;
+  color: #0288D1;
+  text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #81D4FA;
+}
+
+/* ========== MENU BUTTONS ========== */
 .menu-buttons {
   display: flex;
   justify-content: center;
-  gap: 60px;
-  padding: 0 20px;
-  position: relative;
-  z-index: 10;
-  flex-wrap: wrap;
+  gap: 4vw;
+  padding: 0 2vw;
+  flex-wrap: nowrap;
 }
 
 .menu-card {
-  width: 16.44vw; 
-  height: 42vh;
+  width: 19vw;
+  height: 40vh;
   border: none;
   border-radius: 20px;
-  padding: 20px;
+  padding: 1.5vw;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -67,10 +67,9 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.2s;
   font-family: 'Quicksand', sans-serif;
-  font-size: 24px;
+  font-size: 1.7vw;
   font-weight: bold;
   color: #fff;
-  /* Touchscreen support */
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -79,28 +78,28 @@ body {
   width: 85%;
   height: 70%;
   object-fit: contain;
-  margin-top: 15px;
+  margin-top: 1vw;
 }
 
-/* Hover HANYA untuk mouse, tidak untuk jari */
+.menu-card span {
+  margin-top: 1vh;
+  text-align: center;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .menu-card:hover {
-    transform: scale(1.05);
-  }
+  .menu-card:hover { transform: scale(1.05); }
 }
 
-/* Efek tekan untuk layar sentuh */
 .menu-card:active {
   transform: scale(0.97);
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* Warna Kartu */
-.menu-card.sayuran    { background-color: #00B4E1; }
-.menu-card.hewan      { background-color: #008BAF; }
-.menu-card.permainan  { background-color: #4FC3F7; }
+.menu-card.sayuran   { background-color: #00B4E1; }
+.menu-card.hewan     { background-color: #008BAF; }
+.menu-card.permainan { background-color: #4FC3F7; }
 
-/* Animasi Pulse */
+/* ========== ANIMASI PULSE ========== */
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50%       { transform: scale(1.1); }
@@ -110,151 +109,121 @@ body {
   animation: pulse 0.6s ease-in-out infinite !important;
 }
 
-/* Tombol start di overlay juga support touch */
 #start-btn {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ========== 2. RESPONSIVE TABLET BESAR (1025px - 1280px) ========== */
-@media screen and (max-width: 1280px) and (min-width: 1025px) {
-  .menu-card {
-    width: 20vw !important;
-    height: 40vh !important;
-    font-size: 22px !important;
-  }
-
-  .menu-buttons {
-    gap: 40px !important;
-  }
+/* ========== START OVERLAY ========== */
+#start-overlay img {
+  width: 22vw;
+  min-width: 170px;
 }
 
-/* ========== 3. RESPONSIVE TABLET (769px - 1024px) ========== */
-@media screen and (max-width: 1024px) and (min-width: 769px) {
-  body {
-    overflow-y: auto !important;
-    height: auto !important;
+/* ========== RESPONSIVE ========== */
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .content h1 { font-size: 36px; }
+  .menu-buttons { gap: 24px; }
+  .menu-card {
+    width: 26vw;
+    height: 36vh;
+    font-size: 20px;
+    padding: 16px;
+  }
+  .decor-left  { width: 140px; }
+  .decor-right { width: 160px; }
+}
+
+/* HP Besar (481px - 768px) */
+@media (max-width: 768px) and (min-width: 481px) {
+  body { overflow-y: auto; }
+
+  .content {
+    justify-content: flex-start;
+    padding-top: 30px;
+    min-height: unset;
   }
 
-  .content h1 {
-    font-size: 38px !important;
-    margin-top: 4vh !important;
-    margin-bottom: 4vh !important;
-  }
+  .content h1 { font-size: 30px; margin-bottom: 20px; }
 
   .menu-buttons {
-    gap: 30px !important;
-    justify-content: center !important;
-    padding: 0 30px 40px !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 40px;
   }
 
   .menu-card {
-    width: 26vw !important;
-    height: 36vh !important;
-    font-size: 20px !important;
-    padding: 16px !important;
+    width: 80%;
+    max-width: 400px;
+    height: 120px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 15px 20px;
+    font-size: 20px;
   }
 
   .menu-card img {
-    width: 80% !important;
-    height: 65% !important;
+    width: 80px;
+    height: 80px;
+    margin-top: 0;
+    margin-right: 20px;
   }
 
-  .decor-left  { width: 150px !important; }
-  .decor-right { width: 170px !important; }
+  .decor-left  { width: 100px; }
+  .decor-right { width: 110px; }
+
+  #start-overlay img { width: 200px; }
 }
 
-/* ========== 4. RESPONSIVE HP BESAR (481px - 768px) ========== */
-@media screen and (max-width: 768px) and (min-width: 481px) {
-  body {
-    overflow-y: auto !important;
-    height: auto !important;
+/* HP Standar (max 480px) */
+@media (max-width: 480px) {
+  body { overflow-y: auto; }
+
+  .content {
+    justify-content: flex-start;
+    padding-top: 30px;
+    min-height: unset;
   }
 
-  .content h1 {
-    font-size: 32px !important;
-    margin-top: 30px !important;
-    margin-bottom: 25px !important;
-  }
+  .content h1 { font-size: 26px; margin-bottom: 20px; }
 
   .menu-buttons {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 20px !important;
-    padding: 0 20px 50px !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 40px;
   }
 
   .menu-card {
-    width: 80% !important;
-    max-width: 420px !important;
-    height: 130px !important;
-    flex-direction: row !important;
-    justify-content: flex-start !important;
-    padding: 15px 25px !important;
-    border-radius: 20px !important;
-    font-size: 22px !important;
+    width: 85%;
+    max-width: 320px;
+    height: 110px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 12px 18px;
+    font-size: 18px;
   }
 
   .menu-card img {
-    width: 85px !important;
-    height: 85px !important;
-    margin-top: 0 !important;
-    margin-right: 25px !important;
+    width: 70px;
+    height: 70px;
+    margin-top: 0;
+    margin-right: 16px;
   }
 
-  .menu-card span {
-    font-size: 20px !important;
-    text-align: left !important;
-  }
+  .decor-left  { width: 80px; }
+  .decor-right { width: 90px; }
 
-  .decor-left  { width: 100px !important; }
-  .decor-right { width: 110px !important; }
+  #start-overlay img { width: 160px; }
 }
 
-/* ========== 5. RESPONSIVE HP STANDAR (Maksimal 480px) ========== */
-@media screen and (max-width: 480px) {
-  body { 
-    overflow-y: auto !important; 
-    height: auto !important; 
-  }
-
-  .content h1 {
-    font-size: 28px !important;
-    margin-top: 30px !important;
-    margin-bottom: 30px !important;
-  }
-
-  .menu-buttons {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 20px !important;
-    padding-bottom: 50px !important;
-  }
-
-  .menu-card {
-    width: 85% !important; 
-    max-width: 320px !important; 
-    height: 120px !important;
-    flex-direction: row !important;
-    justify-content: flex-start !important;
-    padding: 10px 20px !important;
-    border-radius: 20px !important;
-  }
-
-  .menu-card img {
-    width: 70px !important;
-    height: 70px !important;
-    margin-top: 0 !important;
-    margin-right: 20px !important;
-  }
-
-  .menu-card span {
-    font-size: 18px !important;
-    text-align: left !important;
-  }
-
-  .decor-left  { width: 80px !important; }
-  .decor-right { width: 90px !important; }
+/* HP Sangat Kecil (max 320px) */
+@media (max-width: 320px) {
+  .content h1 { font-size: 22px; }
+  .menu-card { height: 100px; font-size: 16px; }
+  .menu-card img { width: 60px; height: 60px; }
+  #start-overlay img { width: 130px; }
 }
