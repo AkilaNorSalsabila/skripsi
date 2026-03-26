@@ -10,7 +10,7 @@ body {
   background-color: #EAF7FF;
   margin: 0;
   font-family: 'Mochiy Pop One', sans-serif;
-  overflow: hidden;
+  overflow: hidden; /* Mengunci layar agar tidak scroll */
   min-height: 100vh;
 }
 
@@ -138,135 +138,68 @@ body {
   box-shadow: 0 0 20px rgba(255,255,255,0.5) !important;
 }
 
-/* ========== RESPONSIVE ========== */
+/* ========== RESPONSIVE (Tablet & Mobile) ========== */
 
-/* Tablet (769px - 1024px) */
-@media (max-width: 1024px) and (min-width: 769px) {
-  .decor-left  { width: 150px; }
-  .decor-right { width: 240px; }
-  .content h1  { font-size: 34px; }
-  .menu-buttons { gap: 40px; }
-  .menu-buttons button {
-    width: 32vw;
-    height: 40vh;
-    font-size: 20px;
-    padding-top: 20px;
-  }
-  .menu-buttons button span { font-size: 24px; }
-  .back-button { left: 20px; top: 20px; }
-  .back-button img { width: 42px; }
-}
-
-/* HP Besar (481px - 768px) */
-@media (max-width: 768px) and (min-width: 481px) {
-  body { overflow-y: auto; }
-
-  .content {
-    justify-content: flex-start;
-    padding-top: 70px;
-    min-height: 100vh;
+/* Tablet & HP (Layar di bawah 1024px) */
+@media (max-width: 1024px) {
+  body {
+    overflow: hidden; /* Tetap satu layar tanpa scroll */
   }
 
-  .content h1 { font-size: 30px; margin-bottom: 24px; }
+  .content h1 {
+    font-size: 6vw; /* Judul lebih besar di layar kecil */
+    margin: -10vh 0 5vh 0; /* Mengatur ulang posisi judul */
+  }
 
   .menu-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    flex-direction: row; /* TETAP MENYAMPING (Row) */
+    gap: 4vw;
+    width: 90%;
+    justify-content: center;
   }
 
   .menu-buttons button {
+    width: 40vw; /* Ukuran tombol melebar menyesuaikan layar */
+    height: 35vh; /* Tinggi tombol proporsional */
+    padding-top: 4vw;
+  }
+
+  .menu-buttons button img {
     width: 80%;
-    max-width: 440px;
-    height: auto;
-    min-height: 130px;
-    flex-direction: row;
-    justify-content: flex-start;
-    padding: 16px 20px;
-    gap: 20px;
-    border-radius: 18px;
-    font-size: 20px;
   }
 
-  .menu-buttons button img {
-    width: 90px;
-    height: 90px;
-    margin: 0;
-    flex-shrink: 0;
+  .menu-buttons button span {
+    font-size: 4vw; /* Teks lebih besar agar terbaca */
   }
 
-  .menu-buttons button span { font-size: 22px; margin-top: 0; }
+  /* Penyesuaian Back Button agar tidak terlalu ke tengah di tablet/hp */
+  .back-button {
+    top: 5vh;
+    left: 5vw;
+  }
 
-  .back-button { left: 12px; top: 12px; }
-  .back-button img { width: 40px; }
-  .decor-left  { width: 110px; }
-  .decor-right { width: 190px; }
+  .back-button img {
+    width: 8vw;
+  }
+
+  /* Penyesuaian Dekorasi agar tidak menutupi tombol */
+  .decor-left { width: 25vw; }
+  .decor-right { width: 35vw; }
 }
 
-/* HP Sedang (max 480px) */
+/* Khusus HP Portrait yang sangat sempit (di bawah 480px) */
 @media (max-width: 480px) {
-  body { overflow-y: auto; }
-
-  .content {
-    justify-content: flex-start;
-    padding-top: 60px;
-    min-height: 100vh;
-  }
-
-  .content h1 { font-size: 26px; margin-bottom: 20px; }
-
-  .menu-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+  .content h1 {
+    font-size: 8vw;
+    margin-top: -5vh;
   }
 
   .menu-buttons button {
-    width: 88%;
-    max-width: 360px;
-    height: auto;
-    min-height: 120px;
-    flex-direction: row;
-    justify-content: flex-start;
-    padding: 14px 16px;
-    gap: 16px;
-    border-radius: 16px;
-    font-size: 18px;
+    height: 28vh; /* Sedikit lebih pendek agar pas di layar HP */
+    border-radius: 15px;
   }
 
-  .menu-buttons button img {
-    width: 80px;
-    height: 80px;
-    margin: 0;
-    flex-shrink: 0;
+  .menu-buttons button span {
+    font-size: 5vw;
   }
-
-  .menu-buttons button span { font-size: 20px; margin-top: 0; }
-
-  .back-button { left: 10px; top: 10px; }
-  .back-button img { width: 36px; }
-  .decor-left  { width: 90px; }
-  .decor-right { width: 160px; }
-}
-
-/* HP Kecil (max 380px) */
-@media (max-width: 380px) {
-  .content h1 { font-size: 22px; }
-  .menu-buttons button {
-    min-height: 105px;
-    gap: 12px;
-    padding: 12px 14px;
-  }
-  .menu-buttons button img  { width: 70px; height: 70px; }
-  .menu-buttons button span { font-size: 18px; }
-  .decor-left  { width: 75px; }
-  .decor-right { width: 130px; }
-}
-
-/* HP Sangat Kecil (max 320px) */
-@media (max-width: 320px) {
-  .content h1 { font-size: 20px; }
-  .menu-buttons button { min-height: 95px; }
-  .menu-buttons button img  { width: 60px; height: 60px; }
-  .menu-buttons button span { font-size: 16px; }
 }
