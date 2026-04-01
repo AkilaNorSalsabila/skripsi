@@ -26,7 +26,7 @@
     <img src="{{ url_for('static', filename='img/vegetables_corner_top1.png') }}" class="decor decor-right" alt="">
     <img src="{{ url_for('static', filename='img/vegetables_corner1.png') }}" class="decor decor-left" alt="">
 
-    <a href="/pilih_level" class="back-button">
+    <a href="/ayo_bermain" class="back-button">
         <img src="{{ url_for('static', filename='img/back.png') }}" alt="Kembali">
     </a>
 
@@ -201,12 +201,12 @@
         const lastLevel = localStorage.getItem("lastLevel") || "mudah";
         resetGameData(); 
         const routes = { "mudah": "/level_mudah", "menengah": "/level_menengah", "sulit": "/puzzle_sulit1" };
-        window.location.href = routes[lastLevel] || "/pilih_level";
+        window.location.href = routes[lastLevel] || "/ayo_bermain";
     });
 
     document.getElementById("btn-next").addEventListener("click", () => {
         resetGameData();
-        window.location.href = "/pilih_level";
+        window.location.href = "/ayo_bermain";
     });
 
     document.getElementById("btn-speak").addEventListener("click", playScoreVoice);

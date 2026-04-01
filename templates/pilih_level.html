@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pilihan Level Game</title>
+  <title>Ayo Bermain</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pilih_level.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -76,7 +76,7 @@
     const cardPuzzle = document.querySelectorAll('.level-card')[2];
 
     const levelVoice = {
-      easy:   { id: document.getElementById("voice-tebak-id"),  en: document.getElementById("voice-tebak-en"),  url: "/level_mudah" },
+      easy:   { id: document.getElementById("voice-tebak-id"),  en: document.getElementById("voice-tebak-en"),  url: "/tebak_nama" },
       medium: { id: document.getElementById("voice-match-id"),  en: document.getElementById("voice-match-en"),  url: "/level_menengah" },
       hard:   { id: document.getElementById("voice-puzzle-id"), en: document.getElementById("voice-puzzle-en"), url: "/puzzle_sulit1" }
     };

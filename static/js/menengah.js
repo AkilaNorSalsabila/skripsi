@@ -770,7 +770,7 @@ if (btnBack) {
     localStorage.removeItem("menengahScore");
     localStorage.removeItem("menengahStarted");
     localStorage.removeItem("lastLevel");
-    window.location.href = "/pilih_level";
+    window.location.href = "/ayo_bermain";
   });
 }
 

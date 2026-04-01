@@ -170,15 +170,15 @@ def sayuran():
 def permainan():
     return render_template("permainan.html")
 
-@app.route("/pilih_level")
+@app.route("/ayo_bermain")
 def pilih_level():
     return render_template("pilih_level.html")
 
-@app.route("/level_mudah")
+@app.route("/tebak_nama")
 def level_mudah():
     return render_template("level_mudah.html")
 
-@app.route("/mudah_notif")
+@app.route("/tebaknama_notif")
 def mudah_notif():
     return render_template("mudah_notif.html")
 

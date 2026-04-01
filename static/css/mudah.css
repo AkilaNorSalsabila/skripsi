@@ -1,7 +1,7 @@
 :root {
   --bg: #EAF7FF;
   --brand: #00B4E1;
-  --danger: #dc0000; /* Merah lebih pekat untuk overlay */
+  --danger: #dc0000;
   --timer-red: #ff5252;
   --correct-yellow: #ffeb3b;
 }
@@ -129,7 +129,7 @@ body {
   gap: 2vw;
   width: 70vw;
   margin-inline: auto;
-  margin-top: -4vw; 
+  margin-top: -4vw;
   position: relative;
   z-index: 10;
 }
@@ -145,7 +145,45 @@ body {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0,0,0,.15);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              background-color 0.2s ease,
+              box-shadow 0.2s ease,
+              color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover — kuning seperti zoom */
+.option-btn:hover {
+  background: var(--correct-yellow);
+  color: #333;
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 10px 28px rgba(255, 235, 59, 0.5);
+}
+
+/* Klik — kuning lebih gelap, efek ditekan */
+.option-btn:active {
+  background: #f9c700;
+  color: #333;
+  transform: scale(0.95) translateY(1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Efek Ripple */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transform: scale(0);
+  animation: rippleEffect 0.55s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 /* Efek Pop Up saat dibacakan */
@@ -153,16 +191,16 @@ body {
   transform: scale(1.18) !important;
   background-color: var(--correct-yellow) !important;
   color: #333 !important;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.9) !important;
   z-index: 20;
 }
 
-/* ================== WRONG OVERLAY (STYLING BARU) ================== */
+/* ================== WRONG OVERLAY ================== */
 .wrong-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(220, 0, 0, 0.95); /* Merah pekat */
+  background: rgba(220, 0, 0, 0.95);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -180,7 +218,6 @@ body {
 
 .wrong-content h1 { font-size: 8vw; margin: 0; }
 .wrong-content p  { font-size: 2vw; margin-top: 10px; }
-
 
 /* ================== PROGRESS ================== */
 .progress {

@@ -3,7 +3,6 @@ let timeLeft = 20;
 let timerInterval;
 let isAnswered = false;
 
-// 🔹 format 00:00
 function formatTime(seconds) {
   let m = Math.floor(seconds / 60);
   let s = seconds % 60;
@@ -11,7 +10,7 @@ function formatTime(seconds) {
 }
 
 function startTimer() {
-  stopTimer(); // Pastikan tidak ada timer ganda
+  stopTimer();
   timeLeft = 20;
   isAnswered = false;
 
@@ -19,11 +18,8 @@ function startTimer() {
 
   function updateTimerDisplay() {
     if (!timerEl) return;
-
     const label = (lang === "id") ? "Waktu" : "Time";
     timerEl.textContent = `${label} ${formatTime(timeLeft)}`;
-
-    // 🔥 LOGIC MERAH (KRITIS)
     if (timeLeft <= 5 && timeLeft > 0) {
       timerEl.classList.add("timer-danger");
       document.body.classList.add("screen-danger-active");
@@ -38,10 +34,9 @@ function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
     updateTimerDisplay();
-
     if (timeLeft <= 0) {
       stopTimer();
-      onTimeUp(); 
+      onTimeUp();
     }
   }, 1000);
 }
@@ -54,7 +49,7 @@ function stopTimer() {
 }
 
 const toastEl = document.getElementById("toast");
-const sfxCorrect = document.getElementById("sfx-correct"); 
+const sfxCorrect = document.getElementById("sfx-correct");
 const sfxWrong = document.getElementById("sfx-wrong");
 const idPlayer = document.getElementById("id-player");
 const optionsContainer = document.getElementById("options");
@@ -140,18 +135,18 @@ if (sessionQuestions.length === 0) {
 // --- FUNGSI LOAD SOAL ---
 function loadQuestion() {
   isAnswered = false;
-  stopTimer(); // Hentikan timer sebelumnya jika ada
+  stopTimer();
 
   const timerEl = document.getElementById("timer");
   if (timerEl) {
     timerEl.classList.remove("timer-danger");
     const label = (lang === "id") ? "Waktu" : "Time";
-    timerEl.textContent = `${label} 00:20`; // Tampilkan angka awal
+    timerEl.textContent = `${label} 00:20`;
   }
   document.body.classList.remove("screen-danger-active");
-  
+
   if (btnBack) btnBack.style.display = (currentIndex === 0) ? "block" : "none";
-  
+
   let question = sessionQuestions[currentIndex];
   vegImage.src = question.image;
   titleText.innerHTML = texts[lang];
@@ -164,7 +159,18 @@ function loadQuestion() {
     btn.className = "option-btn";
     btn.textContent = opt.toLowerCase();
 
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      // ✨ Efek Ripple — selalu jalan meski sudah dijawab
+      const ripple = document.createElement("span");
+      ripple.classList.add("ripple");
+      const rect = btn.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = size + "px";
+      ripple.style.left = (e.clientX - rect.left - size / 2) + "px";
+      ripple.style.top = (e.clientY - rect.top - size / 2) + "px";
+      btn.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+
       if (isAnswered) return;
       isAnswered = true;
 
@@ -178,28 +184,27 @@ function loadQuestion() {
         correctCount++;
         localStorage.setItem("correctCount", correctCount);
         localStorage.setItem("notifVeg", JSON.stringify({ id: question.correctAnswer.id, en: question.correctAnswer.en, img: question.image }));
-        setTimeout(() => { window.location.href = "/mudah_notif"; }, 800);
+        setTimeout(() => { window.location.href = "/tebaknama_notif"; }, 800);
       } else {
         if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }
         const gameEl = document.getElementById("game");
         if (gameEl) {
           gameEl.classList.remove("shake");
-          void gameEl.offsetWidth; 
+          void gameEl.offsetWidth;
           gameEl.classList.add("shake");
         }
         showWrongOverlay("✖", (lang === "id" ? "Salah!" : "Wrong!"));
         setTimeout(() => { hideWrongOverlay(); nextQuestion(); }, 1200);
       }
     });
+
     optionsContainer.appendChild(btn);
   });
 
   document.getElementById("progress").textContent = `Soal ${currentIndex + 1}/${totalQuestions}`;
-  
-  // 🔹 JALANKAN SUARA INSTRUKSI
+
   setTimeout(speakInstruksi, 600);
 
-  // 🔹 MULAI TIMER SETELAH 8 DETIK
   setTimeout(() => {
     if (!isAnswered) {
       startTimer();
