@@ -200,7 +200,7 @@
     document.getElementById("btn-retry").addEventListener("click", () => {
         const lastLevel = localStorage.getItem("lastLevel") || "mudah";
         resetGameData(); 
-        const routes = { "mudah": "/level_mudah", "menengah": "/level_menengah", "sulit": "/puzzle_sulit1" };
+        const routes = { "mudah": "/level_mudah", "menengah": "/mencocokkan", "sulit": "/puzzle_sulit1" };
         window.location.href = routes[lastLevel] || "/ayo_bermain";
     });
 

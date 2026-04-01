@@ -533,7 +533,7 @@ function loadQuestion() {
           stopTimer();
           currentQuestion++;
           localStorage.setItem("menengahCurrent", currentQuestion);
-          setTimeout(() => { window.location.href = "/menengah_notif"; }, 1200);
+          setTimeout(() => { window.location.href = "/mencocokkan_notif"; }, 1200);
         }
 
         } else {
@@ -688,7 +688,7 @@ function loadQuestion() {
             stopTimer();
             currentQuestion++;
             localStorage.setItem("menengahCurrent", currentQuestion);
-            setTimeout(() => { window.location.href = "/menengah_notif"; }, 1200);
+            setTimeout(() => { window.location.href = "/mencocokkan_notif"; }, 1200);
           }
         } else {
           if (sfxWrong) { sfxWrong.currentTime = 0; sfxWrong.play(); }

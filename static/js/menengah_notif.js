@@ -249,5 +249,5 @@ animateStars();
 const current = parseInt(localStorage.getItem("menengahCurrent") || "0", 10);
 const total = parseInt(localStorage.getItem("menengahTotal") || "5", 10);
 setTimeout(() => {
-    window.location.href = current >= total ? "/skor" : "/level_menengah";
+    window.location.href = current >= total ? "/skor" : "/mencocokkan";
 }, 8500);

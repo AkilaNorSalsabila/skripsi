@@ -182,11 +182,11 @@ def level_mudah():
 def mudah_notif():
     return render_template("mudah_notif.html")
 
-@app.route("/level_menengah")
+@app.route("/mencocokkan")
 def level_menengah():
     return render_template("level_menengah.html")
 
-@app.route("/menengah_notif")
+@app.route("/mencocokkan_notif")
 def menengah_notif():
     return render_template("menengah_notif.html")
 
