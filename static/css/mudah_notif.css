@@ -109,7 +109,7 @@ body {
 }
 
 #notif-text, #veg-name {
-  text-transform: lowercase;
+  text-transform: none;
 }
 
 /* ================== EFEK SUKU KATA ================== */
