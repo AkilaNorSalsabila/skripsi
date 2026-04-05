@@ -47,6 +47,7 @@ body {
   z-index: 1000;
   font-size: 1.5vw;
   text-shadow: none;
+  font-family: 'Mochiy Pop One', sans-serif;
 }
 
 #progress {
@@ -161,6 +162,44 @@ body {
   touch-action: none;
 }
 
+/* ========== WRONG OVERLAY ========== */
+.wrong-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(220, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  animation: fadeIn 0.2s ease-in;
+  pointer-events: none;
+}
+
+.wrong-content {
+  text-align: center;
+  color: #ffffff;
+  animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-shadow: none;
+}
+
+.wrong-content h1 {
+  font-size: 8vw;
+  margin: 0;
+  font-family: 'Mochiy Pop One', sans-serif;
+}
+
+.wrong-content p {
+  font-size: 2vw;
+  margin-top: 10px;
+  font-family: 'Mochiy Pop One', sans-serif;
+}
+
+/* ========== SCREEN DANGER ========== */
+.screen-danger-active {
+  animation: flashRed 1s infinite;
+}
+
 /* ========== OVERLAY & ANIMASI ========== */
 .hidden { display: none; }
 
@@ -170,70 +209,83 @@ body {
 }
 
 @keyframes pop {
-  from { transform: scale(0.7); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes flashRed {
+  0%   { background-color: #EAF7FF; }
+  50%  { background-color: rgba(255,0,0,0.15); }
+  100% { background-color: #EAF7FF; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%  { transform: translateX(-10px); }
+  75%  { transform: translateX(10px); }
+}
+
+.shake { animation: shake 0.5s ease-in-out; }
 
 /* ========== RESPONSIVE (PX BASED) ========== */
 
 /* Tablet (768px - 991px) */
 @media (max-width: 991px) and (min-width: 768px) {
-  #title-wrapper { margin-top: 80px; } /* Turunkan agar tidak nabrak UI atas */
+  #title-wrapper { margin-top: 80px; }
   #game-title { font-size: 34px; }
-  
-  /* UI Atas: Back di 20px, Timer di 70px agar jejer */
   .back-button { left: 20px; top: 20px; }
   .back-button img { width: 45px; }
-  
-  #timer { 
-    font-size: 18px; 
-    left: 75px; 
-    top: 20px; 
-    padding: 8px 15px; 
+  #timer {
+    font-size: 18px;
+    left: 75px;
+    top: 20px;
+    padding: 8px 15px;
   }
-  
   #game-container { flex-direction: column; gap: 30px; }
   #progress { font-size: 18px; right: 20px; bottom: 20px; }
+  .wrong-content h1 { font-size: 100px; }
+  .wrong-content p  { font-size: 24px; }
 }
 
 /* HP (Max 767px) */
 @media (max-width: 767px) {
   #title-wrapper { margin-top: 70px; }
   #game-title { font-size: 26px; }
-
-  /* UI Atas: Back di 15px, Timer di 65px */
   .back-button { left: 15px; top: 15px; }
   .back-button img { width: 40px; }
-
-  #timer { 
-    font-size: 16px; 
-    left: 65px; 
-    top: 15px; 
-    padding: 6px 12px; 
+  #timer {
+    font-size: 16px;
+    left: 65px;
+    top: 15px;
+    padding: 6px 12px;
   }
-
   #game-container { flex-direction: column; gap: 20px; }
   #progress { font-size: 16px; right: 15px; bottom: 15px; }
-  
   .decor-right { width: 120px; }
   .decor-left  { width: 150px; }
+  .wrong-content h1 { font-size: 80px; }
+  .wrong-content p  { font-size: 20px; }
 }
 
 /* HP Kecil (Max 420px) */
 @media (max-width: 420px) {
   #title-wrapper { margin-top: 65px; }
   #game-title { font-size: 20px; }
-
   .back-button { left: 10px; top: 10px; }
   .back-button img { width: 35px; }
-
-  #timer { 
-    font-size: 14px; 
-    left: 55px; 
-    top: 10px; 
+  #timer {
+    font-size: 14px;
+    left: 55px;
+    top: 10px;
   }
-  
   #progress { font-size: 14px; }
+  .wrong-content h1 { font-size: 60px; }
+  .wrong-content p  { font-size: 16px; }
 }
 
 /* Landscape HP */

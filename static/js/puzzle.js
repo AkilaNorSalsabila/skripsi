@@ -200,6 +200,8 @@ function onTimeUp() {
     const lang       = localStorage.getItem("gameLang") || "id";
 
     if (board) {
+        board.classList.remove("shake");
+        void board.offsetWidth;
         board.classList.add("shake");
         setTimeout(() => board.classList.remove("shake"), 500);
     }
@@ -208,12 +210,10 @@ function onTimeUp() {
     const text = lang === "en" ? "Time's up!" : "Waktu habis!";
     showTimeUpOverlay("⏰", text);
 
-    console.log("TIME UP → skor tetap:", totalScore);
-
     setTimeout(() => {
         hideTimeUpOverlay();
         nextQuestion();
-    }, 2000);
+    }, 1200);
 }
 
 function showTimeUpOverlay(icon, text) {
