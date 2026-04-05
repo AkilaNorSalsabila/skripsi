@@ -24,8 +24,8 @@ body {
   pointer-events: none;
   z-index: -1;
 }
-.decor-right { top: 0; right: 0; width: 16vw; }
-.decor-left  { bottom: 0; left: 0; width: 22vw; }
+.decor-right { top: 0; right: 0; width: 17vw; }
+.decor-left  { bottom: 0; left: 0; width: 24vw; }
 
 /* ================== HEADER ================== */
 .notif-header {
