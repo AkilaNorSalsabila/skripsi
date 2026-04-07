@@ -27,7 +27,6 @@ titleText.innerHTML = texts[getLang()];
 
 const questionBank = {
   sangatMudah: [
-    // { id: "bintang_laut", name: "Bintang Laut", nameEn: "Starfish", habitat: "air", habitatIn: "Dasar laut", habitatEn: "Ocean", img: "/static/img/hewan/data/bintang_laut.png", pieces: 12 },
     { id: "ayam", name: "Ayam", nameEn: "Chicken", habitat: "darat", habitatIn: "Lingkungan rumah dan pekarangan", habitatEn: "Around the house", img: "/static/img/hewan/data_hewan/ayam.png", pieces: 2 },
     { id: "anjing", name: "Anjing", nameEn: "Dog", habitat: "darat", habitatIn: "Lingkungan rumah dan pekarangan", habitatEn: "Around the house", img: "/static/img/hewan/data_hewan/anjing.png", pieces: 2 },
     { id: "kucing", name: "Kucing", nameEn: "Cat", habitat: "darat", habitatIn: "Lingkungan rumah dan pekarangan", habitatEn: "Around the house", img: "/static/img/hewan/data_hewan/kucing.png", pieces: 2 },
@@ -39,7 +38,7 @@ const questionBank = {
   mudah: [
     { id: "elang", name: "Elang", nameEn: "Eagle", habitat: "darat", habitatIn: "Hutan dan pegunungan", habitatEn: "Forest", img: "/static/img/hewan/data_hewan/elang.png", pieces: 4 },
     { id: "komodo", name: "Komodo", nameEn: "Komodo Dragon", habitat: "darat", habitatIn: "Pulau Komodo, Rinca dan Savana", habitatEn: "Savanna and islands", img: "/static/img/hewan/data_hewan/p.komodo.png", pieces: 4 },
-    { id: "koi", name: "Koi", nameEn: "Koi", habitat: "air", habitatIn: "Kolam dan danau", habitatEn: "Lakes", img: "/static/img/hewan/data_hewan/p.koi.png", pieces: 4 },
+    { id: "koi", name: "Koi", nameEn: "Koi Fish", habitat: "air", habitatIn: "Kolam dan danau", habitatEn: "Lakes", img: "/static/img/hewan/data_hewan/p.koi.png", pieces: 4 },
     { id: "hiu", name: "Hiu", nameEn: "Shark", habitat: "air", habitatIn: "Laut", habitatEn: "Ocean", img: "/static/img/hewan/data_hewan/p.hiu.png", pieces: 4 },
     { id: "lumba_lumba", name: "Lumba-Lumba", nameEn: "Dolphin", habitat: "air", habitatIn: "Laut", habitatEn: "Ocean", img: "/static/img/hewan/data_hewan/p.lumba_lumba.png", pieces: 4 },
     { id: "owl", name: "Burung Hantu", nameEn: "Owl", habitat: "darat", habitatIn: "Hutan", habitatEn: "Forest", img: "/static/img/hewan/data_hewan/owl.png", pieces: 4 },
@@ -51,7 +50,7 @@ const questionBank = {
     { id: "lebah", name: "Lebah", nameEn: "Bee", habitat: "darat", habitatIn: "Taman dan kebun bunga", habitatEn: "Flower Garden", img: "/static/img/hewan/data_hewan/lebah.png", pieces: 6 },
     { id: "pari", name: "Pari", nameEn: "Stingray", habitat: "air", habitatIn: "Laut", habitatEn: "Ocean", img: "/static/img/hewan/data_hewan/p.pari.png", pieces: 6 },
     { id: "kuda_laut", name: "Kuda Laut", nameEn: "Seahorse", habitat: "air", habitatIn: "Dasar laut", habitatEn: "Ocean", img: "/static/img/hewan/data_hewan/kuda_laut.png", pieces: 6 },
-    { id: "anjing_laut", name: "Anjing Laut", nameEn: "Seals", habitat: "air", habitatIn: "Perairan dingin/pantai", habitatEn: "Ocean", img: "/static/img/hewan/data_hewan/anjing_laut.png", pieces: 6 },
+    { id: "anjing_laut", name: "Anjing Laut", nameEn: "Seal", habitat: "air", habitatIn: "Perairan dingin/pantai", habitatEn: "Ocean", img: "/static/img/hewan/data_hewan/anjing_laut.png", pieces: 6 },
     { id: "capung", name: "Capung", nameEn: "Dragonfly", habitat: "darat_air", habitatIn: "Danau atau rawa", habitatEn: "Lakes or swamps", img: "/static/img/hewan/data_hewan/capung.png", pieces: 6 }
   ],
   sulit: [
@@ -710,6 +709,242 @@ const infoAnimal  = document.getElementById("info-animal");
 const infoHabitat = document.getElementById("info-habitat");
 const idPlayer = document.getElementById("id-player"); 
 
+async function loadSyllableMapOnce() {
+  try {
+    if (!window.syllableMap) {
+      const resp = await fetch('/static/js/syllable_data.json');
+      if (resp.ok) window.syllableMap = await resp.json();
+    }
+  } catch (e) {}
+}
+
+function prepareSyllableSpans(container, syllables, originalText) {
+  if (!syllables || syllables.length === 0) return;
+  container.innerHTML = '';
+
+  const words = (originalText || '').split(' ');
+  let syllableIndex = 0;
+
+  words.forEach((word, wordIdx) => {
+    const hasDash = word.includes('-');
+    const parts = word.split('-');
+
+    if (hasDash) {
+      parts.forEach((part, partIdx) => {
+        let syllablesInPart = [];
+        let reconstructed = '';
+        while (syllableIndex < syllables.length) {
+          const syl = syllables[syllableIndex];
+          syllablesInPart.push(syl);
+          reconstructed += syl.toLowerCase();
+          syllableIndex++;
+          if (reconstructed === part.toLowerCase()) break;
+        }
+        syllablesInPart.forEach((syl, sylIdx) => {
+          const span = document.createElement('span');
+          span.className = 'syllable-piece';
+          span.textContent = syl;
+          span.dataset.index = syllableIndex - syllablesInPart.length + sylIdx;
+          container.appendChild(span);
+        });
+        if (partIdx < parts.length - 1) {
+          const dash = document.createElement('span');
+          dash.className = 'syllable-dash';
+          dash.textContent = '-';
+          container.appendChild(dash);
+        }
+      });
+    } else {
+      let syllablesInWord = [];
+      let reconstructed = '';
+      while (syllableIndex < syllables.length) {
+        const syl = syllables[syllableIndex];
+        syllablesInWord.push(syl);
+        reconstructed += syl.toLowerCase();
+        syllableIndex++;
+        if (reconstructed === word.toLowerCase()) break;
+      }
+      syllablesInWord.forEach((syl, sylIdx) => {
+        const span = document.createElement('span');
+        span.className = 'syllable-piece';
+        span.textContent = syl;
+        span.dataset.index = syllableIndex - syllablesInWord.length + sylIdx;
+        container.appendChild(span);
+      });
+    }
+    if (wordIdx < words.length - 1) {
+      const space = document.createElement('span');
+      space.className = 'syllable-space';
+      space.textContent = ' ';
+      container.appendChild(space);
+    }
+  });
+}
+
+function getSyllablesFromMap(fileKey, currentLang, animalObj) {
+  try {
+    const map = window.syllableMap ? (window.syllableMap.animals || window.syllableMap) : null;
+    if (!map) return [];
+
+    // Prefer keys that match the current language first (e.g. "koi_fish" for English)
+    const keyCandidates = [];
+    if (currentLang === 'en' && animalObj && animalObj.nameEn) keyCandidates.push(normalizeFileName(animalObj.nameEn));
+    if (currentLang === 'id' && animalObj && animalObj.name) keyCandidates.push(normalizeFileName(animalObj.name));
+    if (animalObj && animalObj.id) keyCandidates.push(normalizeFileName(animalObj.id));
+    if (fileKey) keyCandidates.push(fileKey);
+    if (animalObj && animalObj.name) keyCandidates.push(normalizeFileName(animalObj.name));
+    // remove duplicates / falsy
+    const uniqCandidates = Array.from(new Set(keyCandidates.filter(Boolean)));
+
+    for (const key of uniqCandidates) {
+      if (map[key]) {
+        const entry = map[key];
+        return (currentLang === 'en')
+          ? (entry.syllables_en || entry.syllables_id || [])
+          : (entry.syllables_id || entry.syllables_en || []);
+      }
+    }
+  } catch (e) {}
+  return [];
+}
+
+function splitSingleWord(word) {
+  if (!word) return [];
+
+  const cleanWord = word.toLowerCase();
+  const vowels = 'aiueo';
+  const syllables = [];
+  let currentSyllable = '';
+
+  for (let i = 0; i < cleanWord.length; i++) {
+    const char = cleanWord[i];
+    const nextChar = cleanWord[i + 1];
+    const nextNextChar = cleanWord[i + 2];
+
+    currentSyllable += char;
+
+    if (vowels.includes(char)) {
+      if (nextChar && !vowels.includes(nextChar)) {
+        if ((nextChar === 'n' && nextNextChar === 'g') ||
+            (nextChar === 'n' && nextNextChar === 'y')) {
+          const afterSpecial = cleanWord[i + 3];
+          if (afterSpecial && vowels.includes(afterSpecial)) {
+            syllables.push(currentSyllable);
+            currentSyllable = '';
+          } else {
+            currentSyllable += nextChar + nextNextChar;
+            i += 2;
+            syllables.push(currentSyllable);
+            currentSyllable = '';
+          }
+        } else if (nextNextChar && vowels.includes(nextNextChar)) {
+          syllables.push(currentSyllable);
+          currentSyllable = '';
+        } else if (nextNextChar && !vowels.includes(nextNextChar)) {
+          currentSyllable += nextChar;
+          i++;
+          syllables.push(currentSyllable);
+          currentSyllable = '';
+        }
+      } else if (!nextChar) {
+        syllables.push(currentSyllable);
+        currentSyllable = '';
+      }
+    }
+  }
+
+  if (currentSyllable) syllables.push(currentSyllable);
+  return syllables.length > 0 ? syllables : [word];
+}
+
+function splitSyllablesFallback(label) {
+  if (!label) return [];
+  const words = label.trim().split(/\s+/);
+  let allSyllables = [];
+  words.forEach((w) => {
+    allSyllables = allSyllables.concat(splitSingleWord(w));
+  });
+  return allSyllables;
+}
+
+function animateSyllablesProgressivelyNotif(sylls) {
+  const container = infoAnimal;
+  if (!sylls || sylls.length === 0) return;
+  container.classList.add('playing');
+  container.style.pointerEvents = 'none';
+  const timeouts = [];
+  const currentLang = getLang();
+  const introDelay = (currentLang === 'en') ? 1500 : 2000;
+  const syllableGap = 1000;
+  sylls.forEach((syl, idx) => {
+    const delay = introDelay + (idx * syllableGap);
+    const timeoutId = setTimeout(() => {
+      const spans = container.querySelectorAll('.syllable-piece');
+      const targetSpan = spans[idx];
+      if (targetSpan) {
+        targetSpan.classList.add('syllable-piece-animate');
+        setTimeout(() => { targetSpan.classList.remove('syllable-piece-animate'); }, 400);
+      }
+    }, delay);
+    timeouts.push(timeoutId);
+  });
+  const cleanup = () => { timeouts.forEach(t => clearTimeout(t)); container.classList.remove('playing'); container.style.pointerEvents = ''; };
+  idPlayer.addEventListener('ended', cleanup, { once: true });
+  idPlayer.addEventListener('pause', cleanup, { once: true });
+  window._syllableCleanup = cleanup;
+}
+
+async function playCorrectAnimalSound(animalName, onDone) {
+  const currentLang = getLang();
+  try { stopTimer(); } catch (e) {}
+  const effectSrc = (currentLang === 'en') ? '/static/sounds/hewan/effect/correct.m4a' : '/static/sounds/hewan/effect/benar.m4a';
+  try { idPlayer.volume = 1.0; } catch (e) {}
+  idPlayer.src = effectSrc;
+  idPlayer.play().catch(()=>{});
+
+  idPlayer.onended = async () => {
+    idPlayer.onended = null;
+    const folderLang = currentLang === 'en' ? 'en' : 'in';
+    const fileName = normalizeFileName(animalName);
+
+    try {
+      await loadSyllableMapOnce();
+      let syls = getSyllablesFromMap(fileName, currentLang, currentAnimal);
+      if (!syls || syls.length === 0) syls = splitSyllablesFallback(animalName);
+
+      prepareSyllableSpans(infoAnimal, syls, animalName);
+      const notifPath = `/static/sounds/hewan/tebak_nama/notif/${folderLang}/${fileName}.m4a`;
+      idPlayer.src = notifPath;
+      try { idPlayer.volume = 1.0; } catch(e) {}
+      animateSyllablesProgressivelyNotif(syls);
+      idPlayer.play().catch(err => { console.log('Notif audio play error:', err); });
+
+      idPlayer.onended = () => {
+        try {
+          // show full word
+          try { infoAnimal.textContent = animalName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '); } catch(e){}
+          infoAnimal.classList.add('full-popup');
+          const animalsPath = `/static/sounds/hewan/animals/${folderLang}/${fileName}.m4a`;
+          idPlayer.src = animalsPath;
+          try { idPlayer.volume = 1.0; } catch(e) {}
+          idPlayer.play().catch(err => console.log('Error playing animals audio:', err));
+
+          setTimeout(() => infoAnimal.classList.remove('full-popup'), 600);
+
+          idPlayer.onended = () => {
+            try {
+              const habitatPath = `/static/sounds/hewan/habitat/${folderLang}/${fileName}.m4a`;
+              idPlayer.src = habitatPath;
+              idPlayer.play().catch(()=>{});
+              idPlayer.onended = () => { if (typeof onDone === 'function') onDone(); };
+            } catch (e) { if (typeof onDone === 'function') onDone(); }
+          };
+        } catch (e) { if (typeof onDone === 'function') onDone(); }
+      };
+    } catch (e) { if (typeof onDone === 'function') onDone(); }
+  };
+}
+
 function showInfoText(animal, habitat, onAudioEnd, playCorrectSound = true){
   const currentLang = getLang();
   const animalName = currentLang === "en" ? (animal.nameEn || animal.name) : (animal.name || animal.nameEn);
@@ -718,7 +953,7 @@ function showInfoText(animal, habitat, onAudioEnd, playCorrectSound = true){
   if (puzzleWrapper) puzzleWrapper.classList.add("completed");
   pilihanContainer.classList.add("hidden");
 
-  infoAnimal.textContent = animalName.toUpperCase();
+  infoAnimal.textContent = animalName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
 
   // Build habitat sentence similar to hewan_menengah
   const habitatLabelText = habitatLabel(habitat, currentLang);
@@ -745,27 +980,18 @@ function showInfoText(animal, habitat, onAudioEnd, playCorrectSound = true){
     infoHabitat.textContent = ` Habitatnya di ${habitatLabelText}.${extraId}`;
   }
 
+  infoPanel.classList.remove("show");
   infoPanel.classList.remove("hidden");
+  void infoPanel.offsetWidth;
   requestAnimationFrame(() => infoPanel.classList.add("show"));
 
-  // Audio playback: play effect then habitat (keep habitat volume at 0.8 as configured)
   if (playCorrectSound) {
-    const effectSound = currentLang === "en" ? "/static/sounds/hewan/effect/correct.m4a" : "/static/sounds/hewan/effect/benar.m4a";
-    idPlayer.src = effectSound;
-    try { idPlayer.volume = 0.9; } catch(e) {}
-    idPlayer.play().catch(err => console.log("Error playing effect audio:", err));
-
-    idPlayer.onended = () => {
-      const folderLang = currentLang === "en" ? "en" : "in";
-      const fileName = normalizeFileName(animalName);
-      idPlayer.src = `/static/sounds/hewan/habitat/${folderLang}/${fileName}.m4a`;
-      try { idPlayer.volume = 1.0; } catch(e) {}
-      idPlayer.play().catch(err => console.log("Error playing habitat info audio:", err));
-
-      idPlayer.onended = () => {
-        if (onAudioEnd) onAudioEnd();
-      };
-    };
+    try {
+      playCorrectAnimalSound(animalName, onAudioEnd);
+    } catch (e) {
+      console.log('playCorrectAnimalSound error', e);
+      if (onAudioEnd) onAudioEnd();
+    }
   } else {
     const folderLang = currentLang === "en" ? "en" : "in";
     const fileName = normalizeFileName(animalName);
@@ -791,7 +1017,8 @@ function habitatLabel(key, lang){
 function hideInfoPanel(){
   const puzzleWrapper = document.querySelector(".puzzle-wrapper");
   puzzleWrapper.classList.remove("completed");
-  
+
+  infoPanel.classList.remove("show");
   infoPanel.classList.add("hidden");
   pilihanContainer.classList.remove("hidden");
 }
@@ -905,12 +1132,10 @@ function playSound(id) {
   });
 }
 
-// Keep puzzle size in sync when user resizes the viewport across mobile/tablet breakpoint
 let __resizeTimeout = null;
 let __lastIsMobile = window.innerWidth <= 768;
 let __lastIsPhone = window.innerWidth <= 768;
 
-// store originals so we can move back when leaving phone layout
 const backBtnEl = document.querySelector('.back-button');
 const timerEl = document.getElementById('timer');
 const headerEl = document.querySelector('header.header');

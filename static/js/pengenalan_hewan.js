@@ -5,9 +5,9 @@ async function loadSyllableData() {
     const response = await fetch('/static/js/syllable_data.json');
     if (!response.ok) throw new Error(`Failed to fetch syllable_data.json: ${response.status}`);
     syllableData = await response.json();
-    console.log('✅ Syllable data loaded successfully:', Object.keys(syllableData.animals || {}).length, 'animals');
+    console.log('Syllable data loaded successfully:', Object.keys(syllableData.animals || {}).length, 'animals');
   } catch (error) {
-    console.error('❌ Failed to load syllable data:', error);
+    console.error('Failed to load syllable data:', error);
     syllableData = { animals: {} };
   }
 }
@@ -282,6 +282,34 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    function toDisplayName(name) {
+        if (!name) return "";
+        return name
+            .replace(/_/g, ' ')
+            .trim()
+            .split(/\s+/)
+            .map(word => word
+                .split('-')
+                .map(part => part ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : part)
+                .join('-')
+            )
+            .join(' ');
+    }
+
+    function getDisplayNameIn(prediction) {
+        return toDisplayName(prediction?.name_in || prediction?.hewan || "");
+    }
+    function getDisplayNameEn(prediction) {
+        return toDisplayName(prediction?.name_en || prediction?.nama_en || prediction?.audio_en || "");
+    }
+    function getAudioKeyIn(prediction) {
+        return prediction?.audio_in || prediction?.audio_id;
+    }
+
+    function getAudioKeyEn(prediction) {
+        return prediction?.audio_en;
+    }
+
     // play sound manual
     const playButtons = document.querySelectorAll('.play-btn');
 
@@ -301,14 +329,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             let fullAudioPath = "";
 
             if (lang === "in") {
-                audioPath = `/static/sounds/hewan/pengenalan/in/${lastPrediction.audio_id}.m4a`;
-                fullAudioPath = `/static/sounds/hewan/animals/in/${lastPrediction.audio_id}.m4a`;
-                animalName = lastPrediction.hewan;
+                const audioIn = getAudioKeyIn(lastPrediction);
+                audioPath = `/static/sounds/hewan/pengenalan/in/${audioIn}.m4a`;
+                fullAudioPath = `/static/sounds/hewan/animals/in/${audioIn}.m4a`;
+                animalName = getDisplayNameIn(lastPrediction);
             } 
             else if (lang === "en") {
-                audioPath = `/static/sounds/hewan/pengenalan/en/${lastPrediction.audio_en}.m4a`;
-                fullAudioPath = `/static/sounds/hewan/animals/en/${lastPrediction.audio_en}.m4a`;
-                animalName = capitalize(lastPrediction.nama_en || lastPrediction.audio_en);
+                const audioEn = getAudioKeyEn(lastPrediction);
+                audioPath = `/static/sounds/hewan/pengenalan/en/${audioEn}.m4a`;
+                fullAudioPath = `/static/sounds/hewan/animals/en/${audioEn}.m4a`;
+                animalName = getDisplayNameEn(lastPrediction);
             }
 
             stopAllAudio();
@@ -359,23 +389,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // atur audio label
-  function capitalize(word) {
-    if (!word) return "";
-    return word
-        .replace(/_/g, ' ')
-        .split(' ')
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ');
-}
-
     function updateAudioLabels() {
         if (!lastPrediction) return;
 
         const labelIn = document.querySelector('.audio-item [data-audio="in"]').nextElementSibling;
         const labelEn = document.querySelector('.audio-item [data-audio="en"]').nextElementSibling;
 
-        if (labelIn) labelIn.textContent = lastPrediction.hewan;
-        if (labelEn) labelEn.textContent = capitalize(lastPrediction.nama_en || lastPrediction.audio_en);
+        if (labelIn) labelIn.textContent = getDisplayNameIn(lastPrediction);
+        if (labelEn) labelEn.textContent = getDisplayNameEn(lastPrediction);
     }
 
     // === SYLLABLE FUNCTIONS ===
@@ -387,8 +408,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function getSyllablesFromData(fileName, animalNameId, displayName) {
-        // animalNameId = nama hewan dalam bahasa Indonesia untuk lookup key
-        // displayName = nama yang sedang ditampilkan (bisa Indonesia atau English)
         const animalKey = normalizeFileName(animalNameId);
         const langKey = fileName.includes('/en/') ? "syllables_en" : "syllables_id";
         
@@ -406,7 +425,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             return result || splitSyllablesFallback(displayName);
         }
         
-        console.log('⚠️ Using fallback syllable splitting');
+        console.log('Using fallback syllable splitting');
         return splitSyllablesFallback(displayName);
     }
 

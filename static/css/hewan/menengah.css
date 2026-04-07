@@ -10,18 +10,21 @@ body {
 }
 
 .grass {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 220px;
   background: url("/static/img/hewan/desain/rumput.png") bottom center / cover no-repeat;
   z-index: 2;
+  pointer-events: none;
 }
 
 .content {
   position: relative;
-  z-index: 5; /* Di atas rumput */
+  z-index: 5;
+  padding-top: 140px;
+  padding-bottom: 0;
 }
 
 #title-text{
@@ -33,11 +36,14 @@ body {
 }
 
 header.header {
-  position: relative;
+  position: fixed;
+  top: 40px;
+  left: 0;
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 0;
+  z-index: 1000;
 }
 
 .speak-btn {
@@ -58,7 +64,7 @@ header.header {
 }
 
 .back-button {
-  position: absolute;
+  position: fixed;
   top: 50px;
   left: 40px;
   z-index: 9999;
@@ -73,13 +79,39 @@ header.header {
   filter: brightness(0.9);
 }
 
+/* Timer  */
+.timer {
+  position: fixed;
+  top: 55px;
+  left: 220px;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px 24px;
+  border-radius: 15px;
+  font-family: 'Mochiy Pop One', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.timer.warning {
+  background: #ffcccc;
+  color: #cc0000;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
 #progress {
   position: fixed;
   right: 20px;
   bottom: 20px;
   z-index: 100;
   background: rgba(255, 255, 255, 0.7);
-  /* border: 1px solid #fa9805; */
   padding: 8px 14px;
   border-radius: 10px;
   font-weight: 700;
@@ -120,6 +152,7 @@ header.header {
   position: relative;
   overflow: hidden;
   height: 280px; 
+  margin-top: -35px;
   flex-wrap: wrap;
   column-gap: 30px;
   row-gap: 20px;
@@ -169,8 +202,8 @@ header.header {
 
 .option-img,
 .habitat-option {
-  width: 280px;
-  height: 280px;
+  width: 290px;
+  height: 290px;
   border-radius: 30px;
   cursor: grab;
   pointer-events: auto; 
@@ -179,7 +212,6 @@ header.header {
   object-fit: contain;
   touch-action: none;
 }
-
 
 
 /* drag clone used for pointer-based dragging */
@@ -210,7 +242,7 @@ header.header {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(220, 0, 0, 0.9);
+  background: rgba(255, 0, 0, 0.253);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -279,7 +311,7 @@ header.header {
   min-height: 50px; 
 }
 
-/* Position info panel absolutely so it overlays content instead of shifting layout */
+/* Position info panel  */
 .info-panel{
   position: absolute;
   left: 50%;
@@ -306,6 +338,41 @@ header.header {
   paint-order: stroke fill;
   margin-top: 10px;
 }
+.animal-name .syllable-piece{
+  display: inline;
+  margin: 0;
+  padding: 0;
+  font-size: 50px;
+  -webkit-text-stroke: 5px white;
+  paint-order: stroke fill;
+  color: #ff9040;
+  line-height: 1.0;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  font-family: 'Mochiy Pop One', sans-serif;
+  transition: all 350ms cubic-bezier(.34,1.56,.64,1);
+}
+
+.animal-name .syllable-space{ display:inline; }
+.animal-name .syllable-dash{
+  display:inline; margin:0; padding:0; font-size:50px; -webkit-text-stroke:8px white; color:#ff9040; line-height:1.0;
+}
+
+.syllable-piece-animate{
+  display: inline-block !important;
+  position: relative;
+  z-index: 10;
+  animation: syllable-pop 600ms cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes syllable-pop {
+  0% { transform: scale(1); color: #ff9040; -webkit-text-stroke: 20px white; }
+  50% { transform: scale(1.5); color: #ff9040; -webkit-text-stroke: 26px white; text-shadow: 2px 2px 12px rgba(255, 144, 64, 0.4); }
+  100% { transform: scale(1); color: #ff9040; -webkit-text-stroke: 20px white; }
+}
+
+.animal-name.playing{ transform: scale(1.02); }
+.animal-name.full-popup{ animation: full-word-pop 700ms cubic-bezier(.34,1.56,.64,1); }
+@keyframes full-word-pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 .habitat-text { font-size: 24px; font-weight: 600; font-family: 'Quicksand', sans-serif; color: #333; margin-top: 10px; margin-bottom: 10px;}
 .hidden{ opacity: 0; pointer-events: none; }
 
@@ -352,7 +419,32 @@ header.header {
 
 /* ===== RESPONSIVE HP ===== */
 @media (max-width: 768px) {
-  #title-text { font-size: 22px; -webkit-text-stroke: 10px white; }
+  .content {
+    padding-top: 110px;
+    padding-bottom: clamp(120px, 22vh, 170px);
+  }
+
+  .timer {
+    position: static;
+    font-size: 18px;
+    margin-top: 6px;
+    padding: 8px 14px;
+    transform: none;
+  }
+
+  header.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: auto 2fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas: "back title speak" "timer timer timer";
+    align-items: center;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
   #siluet-habitat-wrapper { gap: 15px; margin-top: 40px; }
   #siluet-container, #habitat-container { width: 180px; height: 180px; }
   .drop-zone, .habitat-drop { width: 180px; height: 180px; }
@@ -360,11 +452,34 @@ header.header {
   #pilihan-container { height: auto; column-gap: 10px; row-gap: 10px; }
   .option-wrapper { gap: 10px; flex-wrap: wrap; justify-content: center; }
   .speak-btn img, .back-button img { width: 50px; }
-  .speak-btn { right: 10px; }
-  .back-button { left: 10px; }
-  .info-panel { width: 85%; }
-  .animal-name { font-size: 24px; -webkit-text-stroke: 10px white; }
-  .habitat-text { font-size: 14px; }
+  header.header #title-text { grid-area: title; margin-top: 0; font-size: 22px; -webkit-text-stroke: 6px white; margin-left: 60px; text-align:center; transform: translateY(-18px);}
+  header.header .speak-btn { grid-area: speak; position: relative; left: 10px; top: auto; transform: translateY(-15px); }
+  header.header .back-button { grid-area: back; position: relative; left: 0; top: auto; transform: translateY(-6px); }
+  header.header #timer { grid-area: timer; justify-self: center; position: static; font-size: 18px; margin-top: 5px;}
+  header.header .back-button img,
+  header.header .speak-btn img { width: 50px; }
+  .info-panel {
+    width: 90%;
+    min-height: 90px;
+    padding: 8px 10px 16px;
+    border-radius: 16px;
+  }
+  .animal-name {
+    font-size: 25px;
+    -webkit-text-stroke: 2px white;
+    margin-top: 6px;
+    line-height: 1.1;
+  }
+  .animal-name .syllable-piece {
+    font-size: 25px;
+    -webkit-text-stroke: 1px white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.12);
+  }
+  .animal-name .syllable-dash {
+    font-size: 25px;
+    -webkit-text-stroke: 1px white;
+  }
+  .habitat-text { font-size: 18px; line-height: 1.35;margin-top: 15px;}
    .grass {
     height: clamp(120px, 30vh, 150px);
     background-position: 0%;
@@ -375,8 +490,14 @@ font-size: 14px;}
 }
 
 
-  /* Mobile adjustments for confirmation dialog */
+  /* Mobile  */
   @media (max-width: 480px) {
+    .info-panel { max-width: 85%; min-height: 80px; padding: 8px 10px 14px; }
+    .animal-name { font-size: 25px; -webkit-text-stroke: 2px white; }
+    .animal-name .syllable-piece { font-size: 25px; -webkit-text-stroke: 1px white; }
+    .animal-name .syllable-dash { font-size: 25px; -webkit-text-stroke: 1px white; }
+    .habitat-text { font-size: 15px; margin-top: 15px;}
+
     .confirm-box {
       padding: 16px 18px;
       border-radius: 14px;
@@ -417,12 +538,12 @@ font-size: 14px;}
 
 @media (min-width: 1200px) and (max-width: 1366px) {
   #title-text { font-size: 36px; -webkit-text-stroke: 14px white; }
-  header.header { margin-top: 40px; }
+  header.header { margin-top: 0; }
   #siluet-habitat-wrapper { gap: 40px; margin-top: 45px; }
   #siluet-container, #habitat-container { width: 200px; height: 200px; }
 
   .drop-zone, .habitat-drop { width: 200px; height: 200px; }
-  .option-img, .habitat-option { width: 180px; height: 180px; }
+  .option-img, .habitat-option { width: 200px; height: 200px; }
   .option-wrapper {
     position: relative;
     top: auto;
@@ -452,4 +573,17 @@ font-size: 14px;}
 
   .grass { height: clamp(140px, 28vh, 180px); background-position: bottom center; }
   #progress { bottom: 16px; right: 16px; }
+}
+
+@media (max-width: 1024px) {
+  .timer {
+    top: 30px;
+    left: 130px;
+    font-size: 24px;
+    padding: 8px 18px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+  .timer { top: 40px; left: 150px; font-size: 28px; padding: 10px 22px; }
 }

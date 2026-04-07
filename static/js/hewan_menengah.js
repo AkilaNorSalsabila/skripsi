@@ -12,7 +12,8 @@ function getLang() {
 
 function getAnimalName(animal) {
   const currentLang = getLang();
-  return currentLang === "en" ? animal.nameEn : animal.name;
+  const rawName = currentLang === "en" ? animal.nameEn : animal.name;
+  return toDisplayName(rawName);
 }
 
 function getAnimalOptions(animal) {
@@ -29,13 +30,14 @@ const texts = {
 
 const questionBank = {
   sangatMudah: [
+    
     { 
       name: "anjing", 
       nameEn: "dog",
       color: "/static/img/hewan/data_hewan/anjing.png", 
       habitatNumber: 10,
-      options: ["anjing", "monyet"],
-      optionsEn: ["dog", "monkey"],
+      options: ["anjing", "bintang laut"],
+      optionsEn: ["dog", "starfish"],
       habitatOptions: [8, 5, 10],
       habitatIn: "Lingkungan rumah dan pekarangan",
       habitatEn: "Around the house"
@@ -45,9 +47,9 @@ const questionBank = {
       nameEn: "cat",
       color: "/static/img/hewan/data_hewan/kucing.png", 
       habitatNumber: 10,
-      options: ["kucing", "lebah"],
-      optionsEn: ["cat", "bee"],
-      habitatOptions: [8, 5, 10],
+      options: ["kucing", "pinguin"],
+      optionsEn: ["cat", "penguin"],
+      habitatOptions: [7, 5, 10],
       habitatIn: "Lingkungan rumah dan pekarangan",
       habitatEn: "Around the house"
     },
@@ -67,9 +69,9 @@ const questionBank = {
       nameEn: "elephant",
       color: "/static/img/hewan/data_hewan/gajah.png", 
       habitatNumber: 2,
-      options: ["gajah", "jerapah"],
-      optionsEn: ["elephant", "giraffe"],
-      habitatOptions: [8, 5, 2],
+      options: ["gajah", "pinguin"],
+      optionsEn: ["elephant", "penguin"],
+      habitatOptions: [8, 7, 2],
       habitatIn: "Lingkungan hutan dan savana",
       habitatEn: "Forest and savanna"
     },
@@ -78,8 +80,8 @@ const questionBank = {
       nameEn: "monkey",
       color: "/static/img/hewan/data_hewan/monyet.png", 
       habitatNumber: 9,
-      options: ["monyet", "ayam"],
-      optionsEn: ["monkey", "chicken"],
+      options: ["monyet", "kupu-kupu"],
+      optionsEn: ["monkey", "butterfly"],
       habitatOptions: [5, 8, 9],
       habitatIn: "Hutan dan pepohonan",
       habitatEn: "Forest"
@@ -89,19 +91,19 @@ const questionBank = {
       nameEn: "frog",
       color: "/static/img/hewan/data_hewan/katak.png", 
       habitatNumber: 8,
-      options: ["katak", "monyet"],
-      optionsEn: ["frog", "monkey"],
+      options: ["katak", "ayam"],
+      optionsEn: ["frog", "chicken"],
       habitatOptions: [2, 5, 8],
       habitatIn: "rawa dan tepi sungai",
-      habitatEn: "Swamps"
+      habitatEn: "Lakes or Swamps"
     },
     { 
       name: "jerapah", 
       nameEn: "giraffe",
       color: "/static/img/hewan/data_hewan/jerapah.png", 
       habitatNumber: 1,
-      options: ["jerapah", "landak"],
-      optionsEn: ["giraffe", "hedgehog"],
+      options: ["jerapah", "katak"],
+      optionsEn: ["giraffe", "frog"],
       habitatOptions: [5, 8, 1],
       habitatIn: "Savana",
       habitatEn: "Savanna"
@@ -120,15 +122,15 @@ const questionBank = {
       habitatEn: "Savanna"
     },
     { 
-      name: "zebra", 
-      nameEn: "zebra",
-      color: "/static/img/hewan/data_hewan/zebra.png", 
-      habitatNumber: 2,
-      options: ["harimau", "zebra", "kuda laut"],
-      optionsEn: ["tiger", "zebra", "seahorse"],
-      habitatOptions: [2, 8, 5],
-      habitatIn: "Savana",
-      habitatEn: "Savanna"
+      name: "unta", 
+      nameEn: "camel",
+      color: "/static/img/hewan/data_hewan/unta.png", 
+      habitatNumber: 6,
+      options: ["kucing", "unta", "kuda laut"],
+      optionsEn: ["cat", "camel", "seahorse"],
+      habitatOptions: [6, 8, 5],
+      habitatIn: "Gurun Pasir",
+      habitatEn: "Desert"
     },
     { 
       name: "bintang laut", 
@@ -153,26 +155,26 @@ const questionBank = {
       habitatEn: "Icy shores"
     },
     { 
-      name: "hiu", 
-      nameEn: "shark",
-      color: "/static/img/hewan/data_hewan/hiu.png", 
+      name: "kuda laut", 
+      nameEn: "seahorse",
+      color: "/static/img/hewan/data_hewan/kuda_laut.png", 
       habitatNumber: 5,
-      options: ["lumba-lumba", "hiu", "pari"],
-      optionsEn: ["dolphin", "shark", "stingray"],
+      options: ["gurita", "kuda laut", "ubur-ubur"],
+      optionsEn: ["octopus", "seahorse", "jellyfish"],
       habitatOptions: [5, 2, 8],
       habitatIn: "Laut",
       habitatEn: "Ocean"
     },
     { 
-      name: "kura-kura", 
-      nameEn: "turtle",
-      color: "/static/img/hewan/data_hewan/kura.png", 
-      habitatNumber: 8,
-      options: ["katak", "kura-kura", "trenggiling"],
-      optionsEn: ["frog", "turtle", "pangolin"],
-      habitatOptions: [8, 6, 2],
-      habitatIn: "Sungai atau danau",
-      habitatEn: "Lakes"
+      name: "gurita", 
+      nameEn: "octopus",
+      color: "/static/img/hewan/data_hewan/gurita.png", 
+      habitatNumber: 5,
+      options: ["kuda laut", "gurita", "ubur-ubur"],
+      optionsEn: ["seahorse", "octopus", "jellyfish"],
+      habitatOptions: [5, 8, 2],
+      habitatIn: "Laut",
+      habitatEn: "Ocean"
     },
     { 
       name: "ubur-ubur", 
@@ -192,9 +194,9 @@ const questionBank = {
       nameEn: "rhinoceros",
       color: "/static/img/hewan/data_hewan/badak.png", 
       habitatNumber: 2,
-      options: ["gajah", "zebra", "badak"],
-      optionsEn: ["elephant", "zebra", "rhinoceros"],
-      habitatOptions: [5, 2, 8],
+      options: ["harimau", "zebra", "badak"],
+      optionsEn: ["tiger", "zebra", "rhinoceros"],
+      habitatOptions: [5, 2, 7],
       habitatIn: "Savana",
       habitatEn: "Savanna"
     },
@@ -267,15 +269,15 @@ const questionBank = {
   ],
   sulit: [
     { 
-      name: "unta", 
-      nameEn: "camel",
-      color: "/static/img/hewan/data_hewan/unta.png", 
-      habitatNumber: 6,
-      options: ["unta", "anjing", "kucing", "harimau"],
-      optionsEn: ["camel", "dog", "cat", "tiger"],
-      habitatOptions: [5, 8, 6],
-      habitatIn: "Gurun pasir",
-      habitatEn: "Desert"
+      name: "zebra", 
+      nameEn: "zebra",
+      color: "/static/img/hewan/data_hewan/zebra.png", 
+      habitatNumber: 1,
+      options: ["zebra", "harimau", "kucing", "landak"],
+      optionsEn: ["zebra", "tiger", "cat", "hedgehog"],
+      habitatOptions: [5, 7, 1],
+      habitatIn: "Savana",
+      habitatEn: "Savanna"
     },
     { 
       name: "pari", 
@@ -289,23 +291,23 @@ const questionBank = {
       habitatEn: "Ocean"
     },
     { 
-      name: "gurita", 
-      nameEn: "octopus",
-      color: "/static/img/hewan/data_hewan/gurita.png", 
-      habitatNumber: 5,
-      options: ["gurita", "ubur-ubur", "bintang laut", "kuda laut"],
-      optionsEn: ["octopus", "jellyfish", "starfish", "seahorse"],
-      habitatOptions: [8, 9, 5],
-      habitatIn: "Laut",
-      habitatEn: "Ocean"
+      name: "kura", 
+      nameEn: "turtle",
+      color: "/static/img/hewan/data_hewan/kura.png", 
+      habitatNumber: 8,
+      options: ["kura", "trenggiling", "platipus", "badak"],
+      optionsEn: ["turtle", "pangolin", "platypus", "rhinoceros"],
+      habitatOptions: [7, 6, 8],
+      habitatIn: "Sungai atau danau",
+      habitatEn: "Lakes"
     },
     { 
-      name: "kuda laut", 
-      nameEn: "seahorse",
-      color: "/static/img/hewan/data_hewan/kuda_laut.png", 
+      name: "hiu", 
+      nameEn: "shark",
+      color: "/static/img/hewan/data_hewan/hiu.png", 
       habitatNumber: 5,
-      options: ["kuda laut", "gurita", "bintang laut", "ubur-ubur"],
-      optionsEn: ["seahorse", "octopus", "starfish", "jellyfish"],
+      options: ["hiu", "lumba-lumba", "paus", "pari"],
+      optionsEn: ["shark", "dolphin", "whale", "stingray"],
       habitatOptions: [2, 8, 5],
       habitatIn: "Laut",
       habitatEn: "Ocean"
@@ -326,19 +328,19 @@ const questionBank = {
       nameEn: "seal",
       color: "/static/img/hewan/data_hewan/anjing_laut.png", 
       habitatNumber: 5,
-      options: ["anjing laut", "platipus", "komodo", "trenggiling"],
-      optionsEn: ["seal", "platypus", "komodo", "pangolin"],
+      options: ["anjing laut", "platipus", "komodo", "lumba-lumba"],
+      optionsEn: ["seal", "platypus", "komodo", "dolphin"],
       habitatOptions: [6, 8, 5],
       habitatIn: "Pulau dengan laut iklim dingin",
       habitatEn: "Ocean"
     },
     { 
       name: "koi", 
-      nameEn: "koi",
+      nameEn: "koi fish",
       color: "/static/img/hewan/data_hewan/koi.png", 
       habitatNumber: 3,
-      options: ["koi", "lumba-lumba", "hiu", "paus"],
-      optionsEn: ["koi", "dolphin", "shark", "whale"],
+      options: ["koi", "lumba-lumba", "hiu", "pari"],
+      optionsEn: ["koi", "dolphin", "shark", "stingray"],
       habitatOptions: [6, 10, 3],
       habitatIn: "Kolam dan danau",
       habitatEn: "Lakes"
@@ -353,8 +355,8 @@ const questionBank = {
       options: ["trenggiling", "platipus", "komodo", "anjing laut"],
       optionsEn: ["pangolin", "platypus", "komodo", "seal"],
       habitatOptions: [1, 5, 8],
-      habitatIn: "Pulau Komodo, Rinca dan Savana",
-      habitatEn: "Savanna and islands"
+      habitatIn: "Pulau Komodo dan Pulau Rinca",
+      habitatEn: "Savanna"
     },
     { 
       name: "harimau", 
@@ -383,7 +385,7 @@ const questionBank = {
       nameEn: "pangolin",
       color: "/static/img/hewan/data_hewan/trenggiling.png", 
       habitatNumber: 2,
-      options: ["landak", "bunglon", "trenggiling", "kura-kura"],
+      options: ["landak", "bunglon", "trenggiling", "kura"],
       optionsEn: ["hedgehog", "chameleon", "pangolin", "turtle"],
       habitatOptions: [2, 5, 8],
       habitatIn: "Hutan",
@@ -394,7 +396,7 @@ const questionBank = {
       nameEn: "hedgehog",
       color: "/static/img/hewan/data_hewan/landak.png", 
       habitatNumber: 2,
-      options: ["kura-kura", "bunglon", "landak", "trenggiling"],
+      options: ["kura", "bunglon", "landak", "trenggiling"],
       optionsEn: ["turtle", "chameleon", "hedgehog", "pangolin"],
       habitatOptions: [2, 5, 6],
       habitatIn: "Hutan",
@@ -405,18 +407,18 @@ const questionBank = {
       nameEn: "platypus",
       color: "/static/img/hewan/data_hewan/platipus.png", 
       habitatNumber: 8,
-      options: ["komodo", "kura-kura", "platipus", "trenggiling"],
+      options: ["komodo", "kura", "platipus", "trenggiling"],
       optionsEn: ["komodo", "turtle", "platypus", "pangolin"],
       habitatOptions: [8, 5, 2],
       habitatIn: "Sungai atau rawa",
-      habitatEn: "Swamps"
+      habitatEn: "Lakes or Swamps"
     },
     { 
       name: "bunglon", 
       nameEn: "chameleon",
       color: "/static/img/hewan/data_hewan/bunglon.png", 
       habitatNumber: 9,
-      options: ["landak", "kura-kura", "bunglon", "trenggiling"],
+      options: ["landak", "kura", "bunglon", "trenggiling"],
       optionsEn: ["hedgehog", "turtle", "chameleon", "pangolin"],
       habitatOptions: [9, 5, 6],
       habitatIn: "Hutan",
@@ -497,6 +499,49 @@ const habitatContainer = document.getElementById("habitat-container");
 const pilihanContainer = document.getElementById("pilihan-container");
 const progressText = document.getElementById("progress");
 
+function showWrongOverlayThen(onDone, delay = 1500) {
+  const overlay = document.getElementById("wrong-overlay");
+  if (!overlay) {
+    if (typeof onDone === "function") onDone();
+    return;
+  }
+
+  overlay.classList.remove("hidden");
+  setTimeout(() => {
+    overlay.classList.add("hidden");
+    if (typeof onDone === "function") onDone();
+  }, delay);
+}
+
+// Timer variables
+let timerInterval = null;
+let timeRemaining = 0;
+let timerElement = document.getElementById('timer');
+const timePerQuestion = Array(totalQuestions).fill(20);
+let timerStartedForQuestion = false;
+let isQuestionAudioPlaying = false;
+
+function ensureTimerStartedOnInteraction() {
+  if (!timerStartedForQuestion) {
+    timerStartedForQuestion = true;
+    startTimerForIndex(currentIndex);
+  }
+}
+
+function runAfterQuestionAudioEnds(task) {
+  if (!isQuestionAudioPlaying) {
+    task();
+    return;
+  }
+
+  const prevOnEnded = idPlayer.onended;
+  idPlayer.onended = () => {
+    isQuestionAudioPlaying = false;
+    if (typeof prevOnEnded === 'function') prevOnEnded();
+    task();
+  };
+}
+
 
 // Membuat siluet
 function createSiluet(imageUrl, maxWidth, maxHeight, callback) {
@@ -540,8 +585,10 @@ function createSiluet(imageUrl, maxWidth, maxHeight, callback) {
 //fungsi load soal
 function loadQuestion() {
   hideInfoText();
+  if (currentIndex > 0) {
+    try { localStorage.removeItem('timeRemaining_menengah_' + (currentIndex - 1)); } catch (e) {}
+  }
   
-  // Load saved step for current question
   const savedStep = localStorage.getItem("step_menengah") || "hewan";
   const savedAttempt = parseInt(localStorage.getItem("animalAttempt_menengah") || "0", 10);
   const savedHabitatAnswered = localStorage.getItem("habitatAnswered_menengah") === "true";
@@ -583,7 +630,7 @@ function loadQuestion() {
   if (backBtn) {
     backBtn.onclick = (e) => {
       e.preventDefault();
-      stopAllSounds();
+      stopAllSounds(true);
       exitOverlay.classList.remove("hidden");
     };
   }
@@ -593,7 +640,9 @@ function loadQuestion() {
   };
 
   confirmExitBtn.onclick = () => {
-    stopAllSounds();
+    stopAllSounds(true);
+    // clear timer entries and session state for menengah
+    try { clearTimeRemainingMenengah(); } catch (e) {}
     localStorage.removeItem("sessionQuestions_menengah");
     localStorage.removeItem("currentIndex_menengah");
     localStorage.removeItem("score_menengah");
@@ -609,7 +658,6 @@ function loadQuestion() {
   
   // Restore UI based on saved step
   if (step === "habitat") {
-    // User was already in habitat phase, restore that state
     const drop = siluetContainer.querySelector(".drop-zone");
     if (drop) {
       drop.innerHTML = `<img src="${q.color}">`;
@@ -617,7 +665,6 @@ function loadQuestion() {
     }
     habitatContainer.classList.add("active");
     
-    // If habitat was already answered correctly, restore that too
     if (habitatAnswered && selectedHabitat) {
       const habitatDrop = document.querySelector(".habitat-drop");
       const habitat = habitats.find(h => h.number === selectedHabitat);
@@ -629,11 +676,10 @@ function loadQuestion() {
         habitatDrop.classList.add("correct");
         hideOptions();
         
-        // Play correct sound effect and start confetti (restore full experience)
-        playSound("sfx-correct");
+        // Stop timer, start confetti, show info panel (audio handled separately)
+        try { stopTimer(); } catch(e) {}
         startConfetti();
-        
-        // Show info panel and auto-proceed to next question
+        // showInfoText with playCorrectSound=false to avoid duplicate audio
         showInfoText(q, q.habitatNumber, () => {
           setTimeout(() => {
             infoPanel.classList.remove("show");
@@ -645,7 +691,21 @@ function loadQuestion() {
             localStorage.removeItem("selectedHabitat_menengah");
             loadQuestion();
           }, 500);
-        });
+        }, false);
+        // play syllable-style then full animal then habitat audio
+        const afterAudio = () => {
+          setTimeout(() => {
+            infoPanel.classList.remove("show");
+            currentIndex++;
+            localStorage.setItem("currentIndex_menengah", currentIndex);
+            localStorage.setItem("step_menengah", "hewan");
+            localStorage.setItem("animalAttempt_menengah", "0");
+            localStorage.removeItem("habitatAnswered_menengah");
+            localStorage.removeItem("selectedHabitat_menengah");
+            loadQuestion();
+          }, 500);
+        };
+        try { playCorrectAnimalSound(getAnimalName(q), afterAudio); } catch(e) {}
       } else {
         // Show habitat options if not yet answered
         const availableHabitatNumbers = q.habitatOptions || [1, 2, 3];
@@ -673,6 +733,20 @@ function loadQuestion() {
     showOptions();
     showAnimalOptions(q);
   }
+
+  // reset timer flag and show initial timer value (do not start countdown yet)
+  timerStartedForQuestion = false;
+  try {
+    timerElement = timerElement || document.getElementById('timer');
+    const saved = localStorage.getItem('timeRemaining_menengah_' + currentIndex);
+    if (saved !== null && parseInt(saved, 10) > 0) {
+      timeRemaining = parseInt(saved, 10);
+    } else {
+      timeRemaining = timePerQuestion[currentIndex] || 20;
+    }
+    updateTimerDisplay();
+    if (timerElement) timerElement.classList.remove('warning');
+  } catch (e) {}
 }
 
 
@@ -700,41 +774,49 @@ function createAnimalDrop(animal) {
       
       if (animalAttempt < 2) {
         drop.classList.add("shake");
-        playTryAgainSound(); 
+        playTryAgainSound();
+        playSound("sfx-wrong");
+        showWrongOverlayThen();
         setTimeout(() => drop.classList.remove("shake"), 400);
       } else {
+        playTryAgainSound();
         playSound("sfx-wrong");
-        
-        drop.innerHTML = `<img src="${animal.color}">`;
-        drop.classList.add("correct");
-        step = "habitat";
-        localStorage.setItem("step_menengah", "habitat");
-        habitatContainer.classList.add("active");
-        
-        hideOptions();
-        const correctHabitat = habitats.find(h => h.number === animal.habitatNumber);
-        const habitatDrop = document.querySelector(".habitat-drop");
-        if (habitatDrop && correctHabitat) {
-          const img = document.createElement("img");
-          img.src = correctHabitat.img;
-          habitatDrop.innerHTML = "";
-          habitatDrop.appendChild(img);
-          habitatDrop.classList.add("correct");
-        }
-        
-        showInfoText(animal, animal.habitatNumber, () => {
-          // Setelah audio selesai, beri jeda sebentar lalu lanjut soal berikutnya
-          setTimeout(() => {
-            infoPanel.classList.remove("show");
-            currentIndex++;
-            localStorage.setItem("currentIndex_menengah", currentIndex);
-            localStorage.setItem("step_menengah", "hewan");
-            localStorage.setItem("animalAttempt_menengah", "0");
-            localStorage.removeItem("habitatAnswered_menengah");
-            localStorage.removeItem("selectedHabitat_menengah");
-            loadQuestion();
-          }, 500);
-        }, false);
+
+        showWrongOverlayThen(() => {
+          runAfterQuestionAudioEnds(() => {
+            drop.innerHTML = `<img src="${animal.color}">`;
+            drop.classList.add("correct");
+            step = "habitat";
+            localStorage.setItem("step_menengah", "habitat");
+            habitatContainer.classList.add("active");
+
+            hideOptions();
+            const correctHabitat = habitats.find(h => h.number === animal.habitatNumber);
+            const habitatDrop = document.querySelector(".habitat-drop");
+            if (habitatDrop && correctHabitat) {
+              const img = document.createElement("img");
+              img.src = correctHabitat.img;
+              habitatDrop.innerHTML = "";
+              habitatDrop.appendChild(img);
+              habitatDrop.classList.add("correct");
+            }
+
+            // show info panel (silent) then play spelling -> full animal -> habitat audio
+            showInfoText(animal, animal.habitatNumber, null, false);
+            playSpellingSequence(getAnimalName(animal), () => {
+              setTimeout(() => {
+                infoPanel.classList.remove("show");
+                currentIndex++;
+                localStorage.setItem("currentIndex_menengah", currentIndex);
+                localStorage.setItem("step_menengah", "hewan");
+                localStorage.setItem("animalAttempt_menengah", "0");
+                localStorage.removeItem("habitatAnswered_menengah");
+                localStorage.removeItem("selectedHabitat_menengah");
+                loadQuestion();
+              }, 500);
+            });
+          });
+        });
       }
     }
   });
@@ -772,9 +854,12 @@ function createHabitatDrop(animal) {
   localStorage.setItem("selectedHabitat_menengah", dragged);
 
   hideOptions();
-  playSound("sfx-correct"); 
+  try { stopTimer(); } catch(e) {}
   startConfetti();
-  showInfoText(animal, animal.habitatNumber, () => {
+  
+  try { console.log('habitat correct: triggering sfx-correct and playCorrectAnimalSound'); } catch(e) {}
+  try { playSound('sfx-correct'); } catch(e) { console.log('playSound error', e); }
+  const afterAudio2 = () => {
     setTimeout(() => {
       infoPanel.classList.remove("show");
       currentIndex++;
@@ -785,26 +870,34 @@ function createHabitatDrop(animal) {
       localStorage.removeItem("selectedHabitat_menengah");
       loadQuestion();
     }, 500);
-  });
+  };
+  showInfoText(animal, animal.habitatNumber, afterAudio2, false);
+  try { playCorrectAnimalSound(getAnimalName(animal), afterAudio2); } catch(e) {}
 
 } else {
   drop.classList.add("shake");
   playSound("sfx-wrong"); 
+  try { stopTimer(); } catch(e) {}
   setTimeout(() => drop.classList.remove("shake"), 400);
 
-  hideOptions();
-  showInfoText(animal, animal.habitatNumber, () => {
-    currentIndex++;
-    localStorage.setItem("currentIndex_menengah", currentIndex);
-    localStorage.setItem("step_menengah", "hewan");
-    localStorage.setItem("animalAttempt_menengah", "0");
-    localStorage.removeItem("habitatAnswered_menengah");
-    localStorage.removeItem("selectedHabitat_menengah");
-    setTimeout(() => {
-      infoPanel.classList.remove("show");
-      loadQuestion();
-    }, 500);
-  }, false); 
+  showWrongOverlayThen(() => {
+    runAfterQuestionAudioEnds(() => {
+      hideOptions();
+      showInfoText(animal, animal.habitatNumber, null, false);
+      playSpellingSequence(getAnimalName(animal), () => {
+        currentIndex++;
+        localStorage.setItem("currentIndex_menengah", currentIndex);
+        localStorage.setItem("step_menengah", "hewan");
+        localStorage.setItem("animalAttempt_menengah", "0");
+        localStorage.removeItem("habitatAnswered_menengah");
+        localStorage.removeItem("selectedHabitat_menengah");
+        setTimeout(() => {
+          infoPanel.classList.remove("show");
+          loadQuestion();
+        }, 500);
+      });
+    });
+  });
 }
 });
   habitatContainer.appendChild(drop);
@@ -835,7 +928,6 @@ function showAnimalOptions(q) {
   const currentLang = getLang();
   const optionNames = getAnimalOptions(q);
   
-  // Preserve the option order defined in questionBank (do not shuffle)
   const shuffledNames = [...optionNames];
 
   shuffledAnimalNames = [...shuffledNames];
@@ -856,7 +948,7 @@ function showAnimalOptions(q) {
 }
 
 function showOptionsWithoutAnimation(newOptions) {
-  pilihanContainer.innerHTML = ""; // Clear dulu
+  pilihanContainer.innerHTML = ""; 
   
   const wrapper = document.createElement("div");
   wrapper.className = "option-wrapper";
@@ -871,19 +963,21 @@ function showOptionsWithoutAnimation(newOptions) {
     
     if (opt.type === "habitat") {
       img.dataset.number = opt.number;
-      img.addEventListener("dragstart", e =>
-        e.dataTransfer.setData("text", opt.number)
-      );
+      img.addEventListener("dragstart", e => {
+        ensureTimerStartedOnInteraction();
+        e.dataTransfer.setData("text", opt.number);
+      });
     } else {
       img.dataset.name = opt.name;
-      img.addEventListener("dragstart", e =>
-        e.dataTransfer.setData("text", opt.name)
-      );
+      img.addEventListener("dragstart", e => {
+        ensureTimerStartedOnInteraction();
+        e.dataTransfer.setData("text", opt.name);
+      });
     }
     
-    // Pointer fallback for touch devices: lightweight clone + rAF
     img.addEventListener('pointerdown', function (ev) {
-      if (ev.pointerType === 'mouse') return; // let mouse use native drag
+      if (ev.pointerType === 'mouse') return; 
+      ensureTimerStartedOnInteraction();
       ev.preventDefault();
       const rect = img.getBoundingClientRect();
       const offsetX = ev.clientX - rect.left;
@@ -952,19 +1046,21 @@ function slideOptions(newOptions) {
     
     if (opt.type === "habitat") {
       img.dataset.number = opt.number;
-      img.addEventListener("dragstart", e =>
-        e.dataTransfer.setData("text", opt.number)
-      );
+      img.addEventListener("dragstart", e => {
+        ensureTimerStartedOnInteraction();
+        e.dataTransfer.setData("text", opt.number);
+      });
     } else {
       img.dataset.name = opt.name;
-      img.addEventListener("dragstart", e =>
-        e.dataTransfer.setData("text", opt.name)
-      );
+      img.addEventListener("dragstart", e => {
+        ensureTimerStartedOnInteraction();
+        e.dataTransfer.setData("text", opt.name);
+      });
     }
     
-    // Pointer fallback for touch devices: lightweight clone + rAF
     img.addEventListener('pointerdown', function (ev) {
-      if (ev.pointerType === 'mouse') return; // let mouse use native drag
+      if (ev.pointerType === 'mouse') return; 
+      ensureTimerStartedOnInteraction();
       ev.preventDefault();
       const rect = img.getBoundingClientRect();
       const offsetX = ev.clientX - rect.left;
@@ -1031,6 +1127,7 @@ function slideOptions(newOptions) {
 function finishGame() {
   const finalScore = Math.round((score / (totalQuestions * 20)) * 100);
   localStorage.setItem("finalScore", finalScore);
+  try { clearTimeRemainingMenengah(); } catch(e) {}
   localStorage.removeItem("sessionQuestions_menengah");
   localStorage.removeItem("currentIndex_menengah");
   localStorage.removeItem("score_menengah");
@@ -1068,10 +1165,8 @@ function getHabitatName(habitatNumber) {
 function showInfoText(animal, habitatNumber, onAudioEnd, playCorrectSound = true){
   const currentLang = getLang();
   const animalName = getAnimalName(animal);
-  // Capitalize each word (Title Case)
-  const titleCaseName = animalName.split(' ').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  ).join(' ');
+  try { stopTimer(); } catch(e) {}
+  const titleCaseName = toDisplayName(animalName);
   infoAnimal.textContent = titleCaseName;
   const habitatLabel = getHabitatName(habitatNumber);
 
@@ -1115,14 +1210,13 @@ function showInfoText(animal, habitatNumber, onAudioEnd, playCorrectSound = true
       pilihan.style.pointerEvents = 'none';
       pilihan.querySelectorAll('img').forEach(i => { i.draggable = false; i.style.pointerEvents = 'none'; });
     }
-    // remove any active drag clones
     document.querySelectorAll('.drag-clone').forEach(c => c.remove());
   } catch (e) { console.log('Error disabling interactions for info panel', e); }
 
   if (playCorrectSound) {
-    const effectSound = currentLang === "en" ? "/static/sounds/hewan/effect/correct.m4a" : "/static/sounds/hewan/effect/benar.m4a";
+    const effectSound = currentLang === "en" ? "/static/sounds/hewan/effect/excellent.m4a" : "/static/sounds/hewan/effect/hebat.m4a";
     idPlayer.src = effectSound;
-    try { idPlayer.volume = 0.8; } catch(e) {}
+    try { idPlayer.volume = 1.0; } catch(e) {}
     idPlayer.play().catch(err => console.log("Error playing effect audio:", err));
     
     idPlayer.onended = () => {
@@ -1139,17 +1233,8 @@ function showInfoText(animal, habitatNumber, onAudioEnd, playCorrectSound = true
       };
     };
   } else {
-    const folderLang = currentLang === "en" ? "en" : "in";
-    const fileName = normalizeFileName(animalName);
-    idPlayer.src = `/static/sounds/hewan/habitat/${folderLang}/${fileName}.m4a`;
-    try { idPlayer.volume = 1.0; } catch(e) {}
-    idPlayer.play().catch(err => console.log("Error playing habitat info audio:", err));
-    
-    idPlayer.onended = () => {
-      if (onAudioEnd) {
-        onAudioEnd();
-      }
-    };
+    // silent mode: caller will handle audio sequence (syllables -> animals -> habitat)
+    // do not set idPlayer.src or idPlayer.onended here
   }
 }
 
@@ -1159,7 +1244,6 @@ function hideInfoText(){
     infoPanel.classList.add("hidden");
   }, 700);
 
-  // re-enable interactions
   try {
     const siluet = document.getElementById('siluet-container');
     const habitatEl = document.getElementById('habitat-container');
@@ -1249,51 +1333,173 @@ window.addEventListener("resize", () => {
 
 // ---- Sound Effect ----
 function playSound(id) {
+  console.log('playSound()', id);
   const audio = document.getElementById(id);
+  if (id === 'sfx-correct') {
+    const effectPath = '/static/sounds/correct.mp3';
+    if (audio) {
+      try { audio.pause(); audio.currentTime = 0; audio.volume = 0.9; } catch (e) {}
+      const p = audio.play();
+      if (p && p.catch) {
+        p.catch(err => console.log('sfx-correct element play rejected', err));
+      }
+    }
+    try {
+      const fallback = new Audio(effectPath);
+      try { fallback.volume = 0.9; } catch (e) {}
+      fallback.play().catch(err => console.log('sfx-correct fallback play failed', err));
+    } catch (e) {
+      console.log('sfx-correct fallback error', e);
+    }
+    return;
+  }
+
   if (!audio) return;
 
-  audio.pause();
-  audio.currentTime = 0;
+  try { audio.pause(); audio.currentTime = 0; } catch (e) {}
   try {
-    if (id === 'sfx-correct') {
-      audio.volume = 0.8;
-    } else if (id === 'sfx-wrong') {
+    if (id === 'sfx-wrong') {
       audio.volume = 0.5;
     }
-  } catch (e) {
-    console.log('Error setting volume for', id, e);
+  } catch (e) { console.log('Error setting volume for', id, e); }
+
+  const playPromise = audio.play();
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(err => console.log('Sound play rejected for', id, err)).then(() => console.log('Sound played:', id));
   }
-  audio.play().catch(err => {
-    console.log("Sound error:", err);
-  });
 }
 
 
-// Fungsi untuk play audio "benar" dan nama hewan secara berurutan
-function playCorrectAnimalSound(animalName) {
-  // 1. Play efek benar
+function playCorrectAnimalSound(animalName, onAudioEnd) {
   const currentLang = getLang();
-  if (currentLang === "en") {
-    idPlayer.src = "/static/sounds/hewan/effect/correct.m4a";
-  } else {
-    idPlayer.src = "/static/sounds/hewan/effect/benar.m4a";
-  }
-  try { idPlayer.volume = 0.8; } catch(e) {}
-  idPlayer.play();
-  
-  // 2. play nama hewan
-  idPlayer.onended = () => {
-    const fileName = normalizeFileName(animalName);
-    const folderLang = currentLang === "en" ? "en" : "in";
-    idPlayer.src = `/static/sounds/hewan/habitat/${folderLang}/${fileName}.m4a`;
-    try { idPlayer.volume = 1.0; } catch(e) {}
-    idPlayer.play();
+  try { stopTimer(); } catch(e) {}
+
+  const effectSrc = (currentLang === "en") ? "/static/sounds/hewan/effect/excellent.m4a" : "/static/sounds/hewan/effect/hebat.m4a";
+  try { idPlayer.volume = 1.0; } catch(e) {}
+  idPlayer.src = effectSrc;
+  idPlayer.play().catch(()=>{});
+
+  idPlayer.onended = async () => {
     idPlayer.onended = null;
+    const folderLang = currentLang === "en" ? "en" : "in";
+    const fileName = normalizeFileName(animalName);
+
+    try {
+        const sylContainer = infoAnimal;
+      if (sylContainer) {
+        await loadSyllableMapOnce();
+        const activeAnimal = sessionQuestions[currentIndex] || null;
+        let syls = getSyllablesFromMap(fileName, currentLang, activeAnimal, animalName);
+        if (!syls || syls.length === 0) syls = splitSyllablesFallback(animalName);
+        prepareSyllableSpans(sylContainer, syls, animalName);
+      }
+    } catch (e) { console.log('Error rendering syllables', e); }
+
+    const notifPath = `/static/sounds/hewan/tebak_nama/notif/${folderLang}/${fileName}.m4a`;
+    let syllableTimeouts = [];
+
+    function animateSyllablesProgressivelyNotif(sylls) {
+      const container = infoAnimal;
+      if (!sylls || sylls.length === 0) return;
+      container.classList.add('playing');
+      container.style.pointerEvents = 'none';
+      const timeouts = [];
+      const introDelay = (currentLang === 'en') ? 1500 : 2000;
+      const syllableGap = 1000;
+
+      sylls.forEach((syl, idx) => {
+        const delay = introDelay + (idx * syllableGap);
+        const timeoutId = setTimeout(() => {
+          if (window._timeUp) return;
+          const spans = container.querySelectorAll('.syllable-piece');
+          const targetSpan = spans[idx];
+          if (targetSpan) {
+            targetSpan.classList.add('syllable-piece-animate');
+            setTimeout(() => { targetSpan.classList.remove('syllable-piece-animate'); }, 400);
+          }
+        }, delay);
+        timeouts.push(timeoutId);
+      });
+
+      const cleanup = () => {
+        timeouts.forEach(t => clearTimeout(t));
+        container.classList.remove('playing');
+        container.style.pointerEvents = '';
+      };
+
+      idPlayer.addEventListener('ended', cleanup, { once: true });
+      idPlayer.addEventListener('pause', cleanup, { once: true });
+
+      window._syllableCleanup = cleanup;
+    }
+
+    try {
+      const introDelayMs = 0;
+      setTimeout(() => {
+        idPlayer.src = notifPath;
+        try { idPlayer.volume = 1.0; } catch(e) {}
+
+        const activeAnimal = sessionQuestions[currentIndex] || null;
+        const syls = getSyllablesFromMap(fileName, currentLang, activeAnimal, animalName);
+        prepareSyllableSpans(infoAnimal, syls, animalName);
+        animateSyllablesProgressivelyNotif(syls);
+
+        idPlayer.play().catch(err => {
+          console.log('Notif audio play error:', err);
+        });
+
+        idPlayer.onended = () => {
+          syllableTimeouts.forEach(t => clearTimeout(t));
+          document.querySelectorAll('#info-animal .syllable-piece').forEach(s => s.classList.remove('syllable-piece-animate'));
+
+          try {
+            idPlayer.onended = null;
+            try {
+              const titleCaseName = toDisplayName(animalName);
+              infoAnimal.textContent = titleCaseName;
+            } catch (e) {}
+            infoAnimal.classList.add('full-popup');
+            const animalsPath = `/static/sounds/hewan/animals/${folderLang}/${fileName}.m4a`;
+            idPlayer.src = animalsPath;
+            try { idPlayer.volume = 1.0; } catch(e) {}
+            idPlayer.play().catch(err => console.log('Error playing animals audio:', err));
+
+            setTimeout(() => infoAnimal.classList.remove('full-popup'), 600);
+
+            idPlayer.onended = () => {
+              try {
+                const habitatPath = `/static/sounds/hewan/habitat/${folderLang}/${fileName}.m4a`;
+                idPlayer.src = habitatPath;
+                idPlayer.play().catch(()=>{});
+                idPlayer.onended = () => {
+                  if (typeof onAudioEnd === 'function') onAudioEnd();
+                };
+              } catch (e) {
+                if (typeof onAudioEnd === 'function') onAudioEnd();
+              }
+            };
+          } catch (e) {
+            if (typeof onAudioEnd === 'function') onAudioEnd();
+          }
+        };
+      }, introDelayMs);
+    } catch (e) {
+      try {
+        const animalsPath = `/static/sounds/hewan/animals/${folderLang}/${fileName}.m4a`;
+        idPlayer.src = animalsPath; idPlayer.play().catch(()=>{});
+        idPlayer.onended = () => {
+          const habitatPath = `/static/sounds/hewan/habitat/${folderLang}/${fileName}.m4a`;
+          idPlayer.src = habitatPath; idPlayer.play().catch(()=>{});
+          idPlayer.onended = () => { if (typeof onAudioEnd === 'function') onAudioEnd(); };
+        };
+      } catch(e2) { if (typeof onAudioEnd === 'function') onAudioEnd(); }
+    }
   };
 }
 
 // Fungsi untuk play audio coba lagi
 function playTryAgainSound() {
+  if (isQuestionAudioPlaying) return;
   const currentLang = getLang();
   if (currentLang === "en") {
     idPlayer.src = "/static/sounds/hewan/effect/try_again.m4a";
@@ -1303,6 +1509,70 @@ function playTryAgainSound() {
   
   idPlayer.play();
   idPlayer.onended = null;
+}
+
+// Play syllable-style notif -> full animal -> habitat (no effect sound)
+async function playSpellingSequence(animalName, onDone) {
+  const currentLang = getLang();
+  const folderLang = currentLang === 'en' ? 'en' : 'in';
+  const fileName = normalizeFileName(animalName);
+
+  await loadSyllableMapOnce();
+  try {
+    const activeAnimal = sessionQuestions[currentIndex] || null;
+    let syls = getSyllablesFromMap(fileName, currentLang, activeAnimal, animalName);
+    if (!syls || syls.length === 0) syls = splitSyllablesFallback(animalName);
+    prepareSyllableSpans(infoAnimal, syls, animalName);
+  } catch (e) { console.log('playSpellingSequence: render error', e); }
+
+  const notifPath = `/static/sounds/hewan/tebak_nama/notif/${folderLang}/${fileName}.m4a`;
+  try {
+    idPlayer.src = notifPath;
+    try { idPlayer.volume = 1.0; } catch (e) {}
+    const introDelay = (currentLang === 'en') ? 1500 : 2000;
+    const syllableGap = 1000;
+    const spans = infoAnimal.querySelectorAll('.syllable-piece');
+    const timeouts = [];
+
+    spans.forEach((sp, idx) => {
+      const t = setTimeout(() => {
+        spans.forEach(s => s.classList.remove('syllable-piece-animate'));
+        sp.classList.add('syllable-piece-animate');
+        setTimeout(() => sp.classList.remove('syllable-piece-animate'), 400);
+      }, introDelay + (idx * syllableGap));
+      timeouts.push(t);
+    });
+
+    const cleanup = () => { timeouts.forEach(t => clearTimeout(t)); spans.forEach(s => s.classList.remove('syllable-piece-animate')); };
+    idPlayer.addEventListener('ended', cleanup, { once: true });
+    idPlayer.addEventListener('pause', cleanup, { once: true });
+
+    idPlayer.play().catch(err => console.log('playSpellingSequence: notif play error', err));
+
+    idPlayer.onended = () => {
+      try {
+        try {
+          const titleCaseName = toDisplayName(animalName);
+          infoAnimal.textContent = titleCaseName;
+        } catch (e) {}
+        infoAnimal.classList.add('full-popup');
+        const animalsPath = `/static/sounds/hewan/animals/${folderLang}/${fileName}.m4a`;
+        idPlayer.src = animalsPath;
+        try { idPlayer.volume = 1.0; } catch (e) {}
+        idPlayer.play().catch(err => console.log('playSpellingSequence: animals play error', err));
+        setTimeout(() => infoAnimal.classList.remove('full-popup'), 600);
+
+        idPlayer.onended = () => {
+          try {
+            const habitatPath = `/static/sounds/hewan/habitat/${folderLang}/${fileName}.m4a`;
+            idPlayer.src = habitatPath;
+            idPlayer.play().catch(err => console.log('playSpellingSequence: habitat play error', err));
+            idPlayer.onended = () => { if (typeof onDone === 'function') onDone(); };
+          } catch (e) { if (typeof onDone === 'function') onDone(); }
+        };
+      } catch (e) { if (typeof onDone === 'function') onDone(); }
+    };
+  } catch (e) { console.log('playSpellingSequence error', e); if (typeof onDone === 'function') onDone(); }
 }
 
 const idPlayer = document.getElementById("id-player");
@@ -1316,19 +1586,226 @@ function normalizeFileName(name) {
     .replace(/-/g, '_'); 
 }
 
+function toDisplayName(name) {
+  return (name || '')
+    .trim()
+    .split(/\s+/)
+    .map(word =>
+      word
+        .split('-')
+        .map(part => part ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : part)
+        .join('-')
+    )
+    .join(' ');
+}
+
+async function loadSyllableMapOnce() {
+  try {
+    if (!window.syllableMap) {
+      const resp = await fetch('/static/js/syllable_data.json');
+      if (resp.ok) window.syllableMap = await resp.json();
+    }
+  } catch (e) { }
+}
+
+function getSyllablesFromMap(fileKey, currentLang, animalObj, fallbackLabel) {
+  try {
+    const map = window.syllableMap ? (window.syllableMap.animals || window.syllableMap) : null;
+    if (!map) return [];
+
+    const normalizeKey = (v) => normalizeFileName(String(v || ''));
+
+    const keyCandidates = [
+      animalObj && animalObj.id ? normalizeFileName(animalObj.id) : '',
+      animalObj && animalObj.name ? normalizeFileName(animalObj.name) : '',
+      fileKey || ''
+    ].filter(Boolean);
+
+    for (const key of keyCandidates) {
+      if (map[key]) {
+        const entry = map[key];
+        return (currentLang === 'en')
+          ? (entry.syllables_en || entry.syllables_id || [])
+          : (entry.syllables_id || entry.syllables_en || []);
+      }
+    }
+
+    const labelCandidates = [
+      animalObj && animalObj.name ? animalObj.name : '',
+      animalObj && animalObj.nameEn ? animalObj.nameEn : '',
+      fallbackLabel || '',
+      fileKey || ''
+    ].map(normalizeKey).filter(Boolean);
+
+    for (const mapKey of Object.keys(map)) {
+      const entry = map[mapKey] || {};
+      const entryId = normalizeKey(entry.id);
+      const entryEn = normalizeKey(entry.en);
+      if (labelCandidates.includes(entryId) || labelCandidates.includes(entryEn)) {
+        return (currentLang === 'en')
+          ? (entry.syllables_en || entry.syllables_id || [])
+          : (entry.syllables_id || entry.syllables_en || []);
+      }
+    }
+  } catch (e) { }
+
+  return splitSyllablesFallback(fallbackLabel || '');
+}
+
+function splitSingleWord(word) {
+  if (!word) return [];
+
+  const cleanWord = word.toLowerCase();
+  const vowels = 'aiueo';
+  const syllables = [];
+  let currentSyllable = '';
+
+  for (let i = 0; i < cleanWord.length; i++) {
+    const char = cleanWord[i];
+    const nextChar = cleanWord[i + 1];
+    const nextNextChar = cleanWord[i + 2];
+
+    currentSyllable += char;
+
+    if (vowels.includes(char)) {
+      if (nextChar && !vowels.includes(nextChar)) {
+        if ((nextChar === 'n' && nextNextChar === 'g') ||
+            (nextChar === 'n' && nextNextChar === 'y')) {
+          const afterSpecial = cleanWord[i + 3];
+          if (afterSpecial && vowels.includes(afterSpecial)) {
+            syllables.push(currentSyllable);
+            currentSyllable = '';
+          } else {
+            currentSyllable += nextChar + nextNextChar;
+            i += 2;
+            syllables.push(currentSyllable);
+            currentSyllable = '';
+          }
+        } else if (nextNextChar && vowels.includes(nextNextChar)) {
+          syllables.push(currentSyllable);
+          currentSyllable = '';
+        } else if (nextNextChar && !vowels.includes(nextNextChar)) {
+          currentSyllable += nextChar;
+          i++;
+          syllables.push(currentSyllable);
+          currentSyllable = '';
+        }
+      } else if (!nextChar) {
+        syllables.push(currentSyllable);
+        currentSyllable = '';
+      }
+    }
+  }
+
+  if (currentSyllable) syllables.push(currentSyllable);
+  return syllables.length > 0 ? syllables : [word];
+}
+
+function splitSyllablesFallback(label) {
+  if (!label) return [];
+  const words = label.trim().split(/\s+/);
+  let allSyllables = [];
+  words.forEach((w) => {
+    allSyllables = allSyllables.concat(splitSingleWord(w));
+  });
+  return allSyllables;
+}
+
+function prepareSyllableSpans(container, syllables, originalText) {
+  if (!syllables || syllables.length === 0) return;
+  container.innerHTML = '';
+
+  const words = (originalText || '').split(' ');
+  let syllableIndex = 0;
+
+  words.forEach((word, wordIdx) => {
+    const hasDash = word.includes('-');
+    const parts = word.split('-');
+
+    if (hasDash) {
+      parts.forEach((part, partIdx) => {
+        let syllablesInPart = [];
+        let reconstructed = '';
+
+        while (syllableIndex < syllables.length) {
+          const syl = syllables[syllableIndex];
+          syllablesInPart.push(syl);
+          reconstructed += syl.toLowerCase();
+          syllableIndex++;
+          if (reconstructed === part.toLowerCase()) break;
+        }
+
+        syllablesInPart.forEach((syl, sylIdx) => {
+          const span = document.createElement('span');
+          span.className = 'syllable-piece';
+          span.textContent = syl;
+          span.dataset.index = syllableIndex - syllablesInPart.length + sylIdx;
+          container.appendChild(span);
+        });
+
+        if (partIdx < parts.length - 1) {
+          const dash = document.createElement('span');
+          dash.className = 'syllable-dash';
+          dash.textContent = '-';
+          container.appendChild(dash);
+        }
+      });
+    } else {
+      let syllablesInWord = [];
+      let reconstructed = '';
+
+      while (syllableIndex < syllables.length) {
+        const syl = syllables[syllableIndex];
+        syllablesInWord.push(syl);
+        reconstructed += syl.toLowerCase();
+        syllableIndex++;
+        if (reconstructed === word.toLowerCase()) break;
+      }
+
+      syllablesInWord.forEach((syl, sylIdx) => {
+        const span = document.createElement('span');
+        span.className = 'syllable-piece';
+        span.textContent = syl;
+        span.dataset.index = syllableIndex - syllablesInWord.length + sylIdx;
+        container.appendChild(span);
+      });
+    }
+
+    if (wordIdx < words.length - 1) {
+      const space = document.createElement('span');
+      space.className = 'syllable-space';
+      space.textContent = ' ';
+      container.appendChild(space);
+    }
+  });
+}
+
 // Fungsi speak instruksi
 function speakInstruksi() {
   const currentLang = getLang();
+  isQuestionAudioPlaying = true;
   if (currentLang === "en") {
     idPlayer.src = "/static/sounds/hewan/tebak_bentuk/guess_shape.m4a";
-    try { idPlayer.volume = 0.8; } catch(e) {}
-    idPlayer.play();
-    idPlayer.onended = null;
+    try { idPlayer.volume = 1.0; } catch(e) {}
+    idPlayer.play().catch(() => { isQuestionAudioPlaying = false; });
+    idPlayer.onended = () => {
+      isQuestionAudioPlaying = false;
+      if (!timerStartedForQuestion) {
+        timerStartedForQuestion = true;
+        startTimerForIndex(currentIndex);
+      }
+    };
   } else {
     idPlayer.src = "/static/sounds/hewan/tebak_bentuk/tebak_bentuk.m4a";
-    try { idPlayer.volume = 0.8; } catch(e) {}
-    idPlayer.play();
-    idPlayer.onended = null; 
+    try { idPlayer.volume = 1.0; } catch(e) {}
+    idPlayer.play().catch(() => { isQuestionAudioPlaying = false; });
+    idPlayer.onended = () => {
+      isQuestionAudioPlaying = false;
+      if (!timerStartedForQuestion) {
+        timerStartedForQuestion = true;
+        startTimerForIndex(currentIndex);
+      }
+    };
   }
 }
 
@@ -1371,13 +1848,102 @@ function playOptionsSequentially(options, lng) {
   playNext();
 }
 
-function stopAllSounds() {
+// Timer functions (menengah)
+function startTimerForIndex(index) {
+  if (timerInterval) clearInterval(timerInterval);
+  if (!timerElement) timerElement = document.getElementById('timer');
+  const saved = localStorage.getItem('timeRemaining_menengah_' + index);
+  if (saved !== null && parseInt(saved, 10) > 0) {
+    timeRemaining = parseInt(saved, 10);
+  } else {
+    timeRemaining = timePerQuestion[index] || 20;
+  }
+  updateTimerDisplay();
+  if (timerElement) timerElement.classList.remove('warning');
+
+  timerInterval = setInterval(() => {
+    timeRemaining--;
+    localStorage.setItem('timeRemaining_menengah_' + index, timeRemaining);
+    updateTimerDisplay();
+    if (timeRemaining <= 5 && timerElement) timerElement.classList.add('warning');
+    if (timeRemaining === 5) {
+      try { const tick = new Audio('/static/sounds/hewan/effect/tick.mp3'); try { tick.volume = 0.3; } catch(e){}; tick.play().catch(()=>{}); } catch(e){}
+    }
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      handleTimeUp(index);
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  if (!timerElement) timerElement = document.getElementById('timer');
+  if (!timerElement) return;
+  const minutes = Math.floor(timeRemaining / 60);
+  const seconds = timeRemaining % 60;
+  timerElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+}
+
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function showTimeupOverlay() {
+  if (document.getElementById('timeup-overlay')) return;
+  const overlay = document.createElement('div');
+  overlay.id = 'timeup-overlay';
+  Object.assign(overlay.style, { position: 'fixed', inset: '0', background: 'rgba(255,0,0,0.20)', zIndex: '9999', pointerEvents: 'auto', transition: 'opacity 200ms ease' });
+  document.body.appendChild(overlay);
+}
+
+function hideTimeupOverlay() {
+  const el = document.getElementById('timeup-overlay'); if (!el) return; try { el.remove(); } catch(e){ el.style.display='none'; }
+}
+
+function handleTimeUp(index) {
+  stopTimer();
+  try {
+    const timesUpAudio = new Audio('/static/sounds/hewan/effect/timesup.mp3'); try { timesUpAudio.volume = 0.3; } catch(e){}
+    timesUpAudio.play().catch(()=>{});
+    showTimeupOverlay();
+    let processed = false;
+    const fallback = setTimeout(() => { if (processed) return; processed = true; hideTimeupOverlay(); proceedAfterTimeUp(index); }, 2500);
+    timesUpAudio.onended = () => { if (processed) return; processed = true; clearTimeout(fallback); hideTimeupOverlay(); setTimeout(()=>proceedAfterTimeUp(index),150); };
+  } catch(e) { proceedAfterTimeUp(index); }
+}
+
+function proceedAfterTimeUp(index) {
+  localStorage.removeItem('timeRemaining_menengah_' + index);
+  currentIndex++;
+  localStorage.setItem('currentIndex_menengah', currentIndex);
+  localStorage.setItem('step_menengah','hewan');
+  localStorage.setItem('animalAttempt_menengah','0');
+  localStorage.removeItem('habitatAnswered_menengah');
+  localStorage.removeItem('selectedHabitat_menengah');
+  loadQuestion();
+}
+
+function clearTimeRemainingMenengah() {
+  try {
+    for (let i = 0; i < totalQuestions; i++) {
+      localStorage.removeItem('timeRemaining_menengah_' + i);
+    }
+  } catch (e) {}
+}
+
+function stopAllSounds(force = false) {
   if (idPlayer) {
-    idPlayer.pause();
-    idPlayer.currentTime = 0;
+    if (force || !isQuestionAudioPlaying) {
+      idPlayer.pause();
+      idPlayer.currentTime = 0;
+    }
   }
   speechSynthesis.cancel();
 }
+
+window.addEventListener('beforeunload', () => {
+  try { clearTimeRemainingMenengah(); } catch (e) {}
+});
 
 if (speakBtn) {
   speakBtn.addEventListener("click", speakInstruksi);

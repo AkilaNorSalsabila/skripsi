@@ -46,7 +46,7 @@
   },
   "CENDRAWASIH": {
     "hewan": "Cendrawasih",
-    "nama_en": "Bird of Paradise",
+    "nama_en": "Bird Of Paradise",
     "habitat": "Darat",
     "habitat_spesifik": "Hutan hujan tropis",
     "audio_id": "cendrawasih",
@@ -189,7 +189,7 @@
     "habitat": "Air",
     "habitat_spesifik": "Pulau beriklim dingin",
     "audio_id": "anjing_laut",
-    "audio_en": "seals",
+    "audio_en": "seal",
     "narasi_id": "Anjing laut, dia sebagai mamalia laut yang pandai berenang. Habitat mereka di air, biasanya ada di pulau yang beriklim dingin."
   },
   "BINTANG LAUT": {
@@ -220,7 +220,7 @@
     "narasi_id": "Hiu, dia memiliki gigi tajam dan perenang yang cepat. Habitat mereka di air, biasanya di laut."
   },
   "IKAN PARI": {
-    "hewan": "Ikan Pari",
+    "hewan": "Pari",
     "nama_en": "Stingray",
     "habitat": "Air",
     "habitat_spesifik": "Laut",
@@ -234,7 +234,7 @@
     "habitat": "Air",
     "habitat_spesifik": "Kolam dan Danau",
     "audio_id": "koi",
-    "audio_en": "koi",
+    "audio_en": "koi_fish",
     "narasi_id": "Koi, ikan hias yang memiliki corak warna-warni. Habitat mereka di air, biasanya di kolam dan danau."
   },
   "KUDA LAUT": {
@@ -273,8 +273,6 @@
     "audio_en": "jellyfish",
     "narasi_id": "Ubur-ubur, tubuhnya transparan dan memiliki tentakel yang menyengat. Habitat mereka di air, biasanya ada di lautan yang luas."
   },
-
-
 
   "CAPUNG": {
     "hewan": "Capung",

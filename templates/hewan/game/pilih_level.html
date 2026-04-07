@@ -44,19 +44,19 @@
     <h1 id="title">LEVEL GAME</h1>
 
     <div class="level-buttons">
-      <div id="btn-easy" class="card-wrapper" onclick="playAndGo('/hewan_mudah')">
+      <div id="btn-easy" class="card-wrapper" onclick="playAndGo('/hewan/tebak_nama')">
         <div class="card">
           <img src="{{ url_for('static', filename='img/hewan/desain/tebak.png') }}" alt="Mengenal Hewan">
         </div>
         <div class="label" id="label-mudah">Tebak Nama</div>
       </div>
-      <div id="btn-medium" class="card-wrapper" onclick="playAndGo('/hewan_menengah')">
+      <div id="btn-medium" class="card-wrapper" onclick="playAndGo('/hewan/tebak_bentuk')">
         <div class="card">
           <img src="{{ url_for('static', filename='img/hewan/desain/mencocokkan.png') }}" alt="Cocokkan Hewan">
         </div>
         <div class="label" id="label-menengah">Tebak Bentuk</div>
       </div>
-      <div id="btn-hard" class="card-wrapper" onclick="playAndGo('/hewan_sulit')">
+      <div id="btn-hard" class="card-wrapper" onclick="playAndGo('/hewan/puzzle')">
         <div class="card">
           <img src="{{ url_for('static', filename='img/hewan/desain/puzzle.png') }}" alt="Puzzle Hewan">
         </div>

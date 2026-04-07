@@ -221,7 +221,7 @@ app.add_url_rule(
 def game_hewan():
     return render_template("hewan/game/pilih_level.html")
 
-@app.route("/hewan_mudah")
+@app.route("/hewan/tebak_nama")
 def hewan_mudah():
     return render_template("hewan/game/level_mudah.html")
 
@@ -233,10 +233,10 @@ def notif_mudah():
 def skor_hewan():
     return render_template("hewan/game/skor.html")
 
-@app.route("/hewan_menengah")
+@app.route("/hewan/tebak_bentuk")
 def hewan_menengah():
     return render_template("hewan/game/level_menengah.html")
-@app.route("/hewan_sulit")
+@app.route("/hewan/puzzle")
 def hewan_sulit():
     return render_template("hewan/game/level_sulit.html")
 @app.route("/notif_confetti")

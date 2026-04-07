@@ -92,10 +92,10 @@ function playNotifAudio() {
   // 1. play efek audio benar
   if (lang === "en") {
     player.src = `/static/sounds/hewan/effect/correct.m4a`;
-    try { player.volume = 0.5; } catch(e) {}
+    try { player.volume = 0.9; } catch(e) {}
   } else {
     player.src = `/static/sounds/hewan/effect/benar.m4a`;
-    try { player.volume = 0.5; } catch(e) {}
+    try { player.volume = 0.9; } catch(e) {}
   }
   
   player.play().catch((err) => {
@@ -144,6 +144,7 @@ function playAnimalsAudio(folderLang, fileName) {
   anmName.style.pointerEvents = '';
   
   player.src = `/static/sounds/hewan/animals/${folderLang}/${fileName}.m4a`;
+  try { player.volume = 1.0; } catch(e) {}
   player.play().catch((err) => {
     console.error('Animals audio failed:', err);
   });
@@ -152,8 +153,6 @@ function playAnimalsAudio(folderLang, fileName) {
     anmName.classList.remove('full-popup');
   }, 600);
   
-  // When animals audio finishes, continue to next question/score.
-  // Also provide a fallback in case 'ended' doesn't fire.
   if (window._notifFallback) {
     clearTimeout(window._notifFallback);
   }
@@ -163,7 +162,6 @@ function playAnimalsAudio(folderLang, fileName) {
     doAutoContinue();
   };
 
-  // 12s fallback to avoid being stuck if 'ended' isn't fired
   window._notifFallback = setTimeout(() => {
     doAutoContinue();
   }, 12000);
@@ -193,7 +191,7 @@ function doAutoContinue() {
   const currentIndex = parseInt(localStorage.getItem("currentIndex") || "0");
 
   if (currentIndex < totalQuestions) {
-    window.location.href = "/hewan_mudah";
+    window.location.href = "/hewan/tebak_nama";
   } else {
     localStorage.removeItem("sessionQuestions");
     localStorage.removeItem("currentIndex");
@@ -292,17 +290,14 @@ function prepareSyllableSpans(syllables) {
   let syllableIndex = 0;
   
   words.forEach((word, wordIdx) => {
-    // Cek apakah kata ini mengandung tanda hubung
     const hasDash = word.includes('-');
     const parts = word.split('-');
     
     if (hasDash) {
-      // Handle kata dengan tanda hubung (misal: Kura-kura)
       parts.forEach((part, partIdx) => {
         let syllablesInPart = [];
         let reconstructed = '';
         
-        // Kumpulkan syllables untuk part ini
         while (syllableIndex < syllables.length) {
           const syl = syllables[syllableIndex];
           syllablesInPart.push(syl);
@@ -314,7 +309,6 @@ function prepareSyllableSpans(syllables) {
           }
         }
         
-        // Render syllables untuk part ini
         syllablesInPart.forEach((syl, sylIdx) => {
           const span = document.createElement('span');
           span.className = 'syllable-piece';
@@ -322,8 +316,7 @@ function prepareSyllableSpans(syllables) {
           span.dataset.index = syllableIndex - syllablesInPart.length + sylIdx;
           anmName.appendChild(span);
         });
-        
-        // Tambahkan tanda hubung setelah part (kecuali part terakhir)
+  
         if (partIdx < parts.length - 1) {
           const dash = document.createElement('span');
           dash.className = 'syllable-dash';
@@ -332,7 +325,6 @@ function prepareSyllableSpans(syllables) {
         }
       });
     } else {
-      // Handle kata tanpa tanda hubung
       let syllablesInWord = [];
       let reconstructed = '';
       
@@ -347,7 +339,6 @@ function prepareSyllableSpans(syllables) {
         }
       }
       
-      // Buat span untuk setiap syllable
       syllablesInWord.forEach((syl, sylIdx) => {
         const span = document.createElement('span');
         span.className = 'syllable-piece';
@@ -422,4 +413,3 @@ document.getElementById("btn-speak").addEventListener("click", () => {
   playNotifAudio();
 });
 
-// navigation is now handled after animals audio ends (see `doAutoContinue`)

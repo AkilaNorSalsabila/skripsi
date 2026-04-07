@@ -24,13 +24,13 @@ const texts = {
 const totalQuestions = 5;
 const questionBank = {
   sangatMudah: [
+    
     {
-      
       image: "/static/img/hewan/data_hewan/anjing.png",
       correctAnswer: { id: "Anjing", en: "Dog" },
       answers: {
-        id: ["Anjing", "Paus", "Koi"],
-        en: ["Dog", "Whale", "Koi Fish"]
+        id: ["Anjing", "Paus", "Monyet"],
+        en: ["Dog", "Whale", "Monkey"]
       }
     },
     {
@@ -61,8 +61,8 @@ const questionBank = {
       image: "/static/img/hewan/data_hewan/monyet.png",
       correctAnswer: { id: "Monyet", en: "Monkey" },
       answers: {
-        id: ["Monyet", "Hiu", "Trenggiling"],
-        en: ["Monkey", "Shark", "Pangolin"]
+        id: ["Monyet", "Hiu", "Ayam"],
+        en: ["Monkey", "Shark", "Chicken"]
       }
     },
     {
@@ -73,187 +73,186 @@ const questionBank = {
         en: ["Giraffe", "Chicken", "Cat"]
       }
     },
-    
     {
-      image: "/static/img/hewan/data_hewan/katak.png",
-      correctAnswer: { id: "Katak", en: "Frog" },
+      image: "/static/img/hewan/data_hewan/kura.png",
+      correctAnswer: { id: "Kura-Kura", en: "Turtle" },
       answers: {
-        id: ["Katak", "Monyet", "Pari"],
-        en: ["Frog", "Monkey", "Stingray"]
+        id: ["Kura-Kura", "Lebah", "Katak"],
+        en: ["Turtle", "Bee", "Frog"]
       }
-    }
+    },
   ],
   mudah: [
     {
       image: "/static/img/hewan/data_hewan/harimau.png",
       correctAnswer: { id: "Harimau", en: "Tiger" },
       answers: {
-        id: ["Hiu", "Harimau", "Katak"],
-        en: ["Shark", "Tiger", "Frog"]
+        id: ["Kucing", "Harimau", "Pinguin"],
+        en: ["Cat", "Tiger", "Penguin"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/zebra.png",
       correctAnswer: { id: "Zebra", en: "Zebra" },
       answers: {
-        id: ["Jerapah", "Zebra", "Badak"],
-        en: ["Giraffe", "Zebra", "Rhinoceros"]
+        id: ["Harimau", "Zebra", "Paus"],
+        en: ["Tiger", "Zebra", "Whale"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/bintang_laut.png",
       correctAnswer: { id: "Bintang Laut", en: "Starfish" },
       answers: {
-        id: ["Badak", "Bintang Laut", "Harimau"],
-        en: ["Rhinoceros", "Starfish", "Tiger"]
+        id: ["Elang", "Bintang Laut", "Ubur-Ubur"],
+        en: ["Eagle", "Starfish", "Jellyfish"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/pinguin.png",
       correctAnswer: { id: "Pinguin", en: "Penguin" },
       answers: {
-        id: ["Paus", "Pinguin", "Kupu-Kupu"],
-        en: ["Whale", "Penguin", "Butterfly"]
+        id: ["Anjing Laut", "Pinguin", "Ayam"],
+        en: ["Seal", "Penguin", "Chicken"]
       }
     },
     {
-      image: "/static/img/hewan/data_hewan/kura.png",
-      correctAnswer: { id: "Kura-Kura", en: "Turtle" },
+      image: "/static/img/hewan/data_hewan/katak.png",
+      correctAnswer: { id: "Katak", en: "Frog" },
       answers: {
-        id: ["Kupu-Kupu", "Kura-Kura", "Paus"],
-        en: ["Butterfly", "Turtle", "Whale"]
+        id: ["Kura-Kura", "Katak", "Hiu"],
+        en: ["Turtle", "Frog", "Shark"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/hiu.png",
       correctAnswer: { id: "Hiu", en: "Shark" },
       answers: {
-        id: ["Harimau", "Hiu", "Kupu-Kupu"],
-        en: ["Tiger", "Shark", "Butterfly"]
+        id: ["Gurita", "Hiu", "Lumba-Lumba"],
+        en: ["Octopus", "Shark", "Dolphin"]
       }
     },
-    {
-      image: "/static/img/hewan/data_hewan/ubur_ubur.png",
-      correctAnswer: { id: "Ubur-Ubur", en: "Jellyfish" },
+     {
+      image: "/static/img/hewan/data_hewan/kupu.png",
+      correctAnswer: { id: "Kupu-Kupu", en: "Butterfly" },
       answers: {
-        id: ["Unta", "Ubur-Ubur", "Koi"],
-        en: ["Camel", "Jellyfish", "Koi Fish"]
+        id: ["Lebah", "Kupu-Kupu", "Ayam"],
+        en: ["Bee", "Butterfly", "Chicken"]
       }
-    }
+    },
   ],
   sedang: [
     {
-      image: "/static/img/hewan/data_hewan/badak.png",
-      correctAnswer: { id: "Badak", en: "Rhinoceros" },
+      image: "/static/img/hewan/data_hewan/unta.png",
+      correctAnswer: { id: "Unta", en: "Camel" },
       answers: {
-        id: ["Burung Hantu", "Bunglon", "Badak"],
-        en: ["Owl", "Chameleon", "Rhinoceros"]
+        id: ["Harimau", "Jerapah", "Unta"],
+        en: ["Tiger", "Giraffe", "Camel"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/elang.png",
       correctAnswer: { id: "Elang", en: "Eagle" },
       answers: {
-        id: ["Landak", "Lebah", "Elang"],
-        en: ["Hedgehog", "Bee", "Eagle"]
+        id: ["Burung Hantu", "Cendrawasih", "Elang"],
+        en: ["Owl", "Bird of Paradise", "Eagle"]
       }
     },
-    {
-      image: "/static/img/hewan/data_hewan/kupu.png",
-      correctAnswer: { id: "Kupu-Kupu", en: "Butterfly" },
+     {
+      image: "/static/img/hewan/data_hewan/ubur_ubur.png",
+      correctAnswer: { id: "Ubur-Ubur", en: "Jellyfish" },
       answers: {
-        id: ["Kura-Kura", "Kucing", "Kupu-Kupu"],
-        en: ["Turtle", "Cat", "Butterfly"]
+        id: ["Bintang Laut", "Gurita", "Ubur-Ubur"],
+        en: ["Starfish", "Octopus", "Jellyfish"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/lebah.png",
       correctAnswer: { id: "Lebah", en: "Bee" },
       answers: {
-        id: ["Landak","Lumba-Lumba", "Lebah"],
-        en: ["Hedgehog", "Dolphin", "Bee"]
+        id: ["Kupu-Kupu","Capung", "Lebah"],
+        en: ["Butterfly", "Dragonfly", "Bee"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/lumba_lumba.png",
       correctAnswer: { id: "Lumba-Lumba", en: "Dolphin" },
       answers: {
-        id: ["Lebah", "Landak", "Lumba-Lumba"],
-        en: ["Bee", "Hedgehog", "Dolphin"]
+        id: ["Paus", "Hiu", "Lumba-Lumba"],
+        en: ["Whale", "Shark", "Dolphin"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/paus.png",
       correctAnswer: { id: "Paus", en: "Whale" },
       answers: {
-        id: ["Pinguin", "Pari", "Paus"],
-        en: ["Penguin", "Stingray", "Whale"]
-      }
-    },
-    {
-      image: "/static/img/hewan/data_hewan/owl.png",
-      correctAnswer: { id: "Burung Hantu", en: "Owl" },
-      answers: {
-        id: ["Badak", "Bunglon", "Burung Hantu"],
-        en: ["Rhinoceros", "Chameleon", "Owl"]
-      }
-    }
-  ],
-  sulit: [
-    {
-      image: "/static/img/hewan/data_hewan/unta.png",
-      correctAnswer: { id: "Unta", en: "Camel" },
-      answers: {
-        id: ["Ubur-Ubur", "Unta", "Kupu-Kupu"],
-        en: ["Jellyfish", "Camel", "Butterfly"]
-      }
-    },
-    {
-      image: "/static/img/hewan/data_hewan/pari.png",
-      correctAnswer: { id: "Pari", en: "Stingray" },
-      answers: {
-        id: ["Paus", "Pari", "Pinguin"],
-        en: ["Whale", "Stingray", "Penguin"]
-      }
-    },
-    {
-      image: "/static/img/hewan/data_hewan/gurita.png",
-      correctAnswer: { id: "Gurita", en: "Octopus" },
-      answers: {
-        id: ["Gajah", "Gurita", "Unta"],
-        en: ["Elephant", "Octopus", "Camel"]
-      }
-    },
-    {
-      image: "/static/img/hewan/data_hewan/kuda_laut.png",
-      correctAnswer: { id: "Kuda Laut", en: "Seahorse" },
-      answers: {
-        id: ["Kura-Kura", "Kuda Laut", "Kupu-Kupu"],
-        en: ["Turtle", "Seahorse", "Butterfly"]
+        id: ["Lumba-Lumba", "Hiu", "Paus"],
+        en: ["Dolphin", "Shark", "Whale"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/capung.png",
       correctAnswer: { id: "Capung", en: "Dragonfly" },
       answers: {
-        id: ["Cendrawasih", "Capung", "Kupu-Kupu"],
-        en: ["Bird of Paradise", "Dragonfly", "Butterfly"]
+        id: ["Lebah", "Capung", "Kupu-Kupu"],
+        en: ["Bee", "Dragonfly", "Butterfly"]
+      }
+    }
+  ],
+  sulit: [
+    {
+      image: "/static/img/hewan/data_hewan/badak.png",
+      correctAnswer: { id: "Badak", en: "Rhinoceros" },
+      answers: {
+        id: ["Gajah", "Badak", "Unta"],
+        en: ["Elephant", "Rhinoceros", "Camel"]
+      }
+    },
+    {
+      image: "/static/img/hewan/data_hewan/pari.png",
+      correctAnswer: { id: "Pari", en: "Stingray" },
+      answers: {
+        id: ["Paus", "Pari", "Ubur-Ubur"],
+        en: ["Whale", "Stingray", "Jellyfish"]
+      }
+    },
+    {
+      image: "/static/img/hewan/data_hewan/gurita.png",
+      correctAnswer: { id: "Gurita", en: "Octopus" },
+      answers: {
+        id: ["Bintang Laut", "Gurita", "Ubur-Ubur"],
+        en: ["Starfish", "Octopus", "Jellyfish"]
+      }
+    },
+    {
+      image: "/static/img/hewan/data_hewan/kuda_laut.png",
+      correctAnswer: { id: "Kuda Laut", en: "Seahorse" },
+      answers: {
+        id: ["Gurita", "Kuda Laut", "Anjing Laut"],
+        en: ["Octopus", "Seahorse", "Seal"]
+      }
+    },
+    {
+      image: "/static/img/hewan/data_hewan/owl.png",
+      correctAnswer: { id: "Burung Hantu", en: "Owl" },
+      answers: {
+        id: ["Elang", "Cendrawasih", "Burung Hantu"],
+        en: ["Eagle", "Bird of Paradise", "Owl"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/anjing_laut.png",
-      correctAnswer: { id: "Anjing Laut", en: "Seals" },
+      correctAnswer: { id: "Anjing Laut", en: "Seal" },
       answers: {
-        id: ["Anjing", "Anjing Laut", "Ayam"],
-        en: ["Dog", "Seals", "Chicken"]
+        id: ["Lumba-Lumba", "Anjing Laut", "Pinguin"],
+        en: ["Dolphin", "Seal", "Penguin"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/koi.png",
       correctAnswer: { id: "Koi", en: "Koi Fish" },
       answers: {
-        id: ["Kura-Kura", "Koi", "Kucing"],
-        en: ["Turtle", "Koi Fish", "Cat"]
+        id: ["Hiu", "Koi", "Lumba-Lumba"],
+        en: ["Shark", "Koi Fish", "Dolphin"]
       }
     }
   ],
@@ -262,56 +261,56 @@ const questionBank = {
       image: "/static/img/hewan/data_hewan/komodo.png",
       correctAnswer: { id: "Komodo", en: "Komodo Dragon" },
       answers: {
-        id: ["Komodo", "Koi", "Kucing"],
-        en: ["Komodo Dragon", "Koi Fish", "Cat"]
+        id: ["Komodo", "Trenggiling", "Platipus"],
+        en: ["Komodo Dragon", "Pangolin", "Platypus"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/merak.png",
       correctAnswer: { id: "Merak", en: "Peacock" },
       answers: {
-        id: ["Merak", "Monyet", "Katak"],
-        en: ["Peacock", "Monkey", "Frog"]
+        id: ["Merak", "Elang", "Cendrawasih"],
+        en: ["Peacock", "Eagle", "Bird of Paradise"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/cendrawasih.png",
       correctAnswer: { id: "Cendrawasih", en: "Bird of Paradise" },
       answers: {
-        id: ["Cendrawasih", "Capung", "Kucing"],
-        en: ["Bird of Paradise", "Dragonfly", "Cat"]
+        id: ["Cendrawasih", "Elang", "Burung Hantu"],
+        en: ["Bird of Paradise", "Eagle", "Owl"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/landak.png",
       correctAnswer: { id: "Landak", en: "Hedgehog" },
       answers: {
-        id: ["Landak", "Badak", "Katak"],
-        en: ["Hedgehog", "Rhinoceros", "Frog"]
+        id: ["Landak", "Trenggiling", "Bunglon"],
+        en: ["Hedgehog", "Pangolin", "Chameleon"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/trenggiling.png",
       correctAnswer: { id: "Trenggiling", en: "Pangolin" },
       answers: {
-        id: ["Trenggiling", "Anjing", "Kucing"],
-        en: ["Pangolin", "Dog", "Cat"]
+        id: ["Trenggiling", "Landak", "Bunglon"],
+        en: ["Pangolin", "Hedgehog", "Chameleon"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/bunglon.png",
       correctAnswer: { id: "Bunglon", en: "Chameleon" },
       answers: {
-        id: ["Bunglon", "Burung Hantu", "Badak"],
-        en: ["Chameleon", "Owl", "Rhinoceros"]
+        id: ["Bunglon", "Landak", "Trenggiling"],
+        en: ["Chameleon", "Hedgehog", "Pangolin"]
       }
     },
     {
       image: "/static/img/hewan/data_hewan/platipus.png",
       correctAnswer: { id: "Platipus", en: "Platypus" },
       answers: {
-        id: ["Platipus", "Paus", "Pinguin"],
-        en: ["Platypus", "Whale", "Penguin"]
+        id: ["Platipus", "Komodo", "Trenggiling"],
+        en: ["Platypus", "Komodo Dragon", "Pangolin"]
       }
     }
   ]
@@ -349,8 +348,13 @@ let correctCount =
   parseInt(localStorage.getItem("correctCount_hewan_mudah") || "0", 10);
 localStorage.setItem("totalQuestions", totalQuestions);
 
-// Initialize a fresh session for the "hewan_mudah" page to avoid reusing
-// leftover session/score data_hewan from other games.
+// Timer variables
+let timerInterval = null;
+let timeRemaining = 0;
+let timerElement = document.getElementById("timer");
+const timePerQuestion = Array(totalQuestions).fill(15);
+let timerStartedForQuestion = false;
+
 if (sessionQuestions.length === 0) {
   sessionQuestions = generateSessionQuestions();
   localStorage.setItem(
@@ -406,10 +410,11 @@ function loadQuestion() {
     stopAllSounds();
     localStorage.removeItem("sessionQuestions_hewan_mudah");
     localStorage.removeItem("currentIndex_hewan_mudah");
+    for (let i = 0; i < totalQuestions; i++) {
+      localStorage.removeItem('timeRemaining_mudah_' + i);
+    }
     window.location.href = "/game_hewan";
   };
-
-  // shuffledOpts = [...opts].sort(() => 0.5 - Math.random());
   shuffledOpts = [...opts];
 
   shuffledOpts.forEach((opt) => {
@@ -420,9 +425,18 @@ function loadQuestion() {
       (opt === question.correctAnswer[lang]).toString();
 
     btn.addEventListener("click", () => {
+      const allOptionButtons = optionsContainer.querySelectorAll(".option-btn");
+      allOptionButtons.forEach((optionBtn) => {
+        optionBtn.disabled = true;
+        optionBtn.classList.remove("is-selected");
+      });
+      btn.classList.add("is-selected");
+
       stopAllSounds();
+      localStorage.removeItem("timeRemaining_mudah_" + currentIndex);
 
       if (btn.dataset.correct === "true") {
+        try { stopTimer(); } catch(e) {}
         localStorage.setItem(
           "notifAnm",
           JSON.stringify({
@@ -462,7 +476,8 @@ function loadQuestion() {
               "currentIndex_hewan_mudah",
               currentIndex + 1
             );
-            window.location.href = "/hewan_mudah";
+            localStorage.removeItem("timeRemaining_mudah_" + currentIndex);
+            window.location.href = "/hewan/tebak_nama";
           } else {
             finishGame();
           }
@@ -478,6 +493,17 @@ function loadQuestion() {
   ).textContent = `Soal ${currentIndex + 1}/${totalQuestions}`;
 
   setTimeout(speakInstruksi, 500);
+  timerStartedForQuestion = false;
+  try {
+    const saved = localStorage.getItem('timeRemaining_mudah_' + currentIndex);
+    if (saved !== null && parseInt(saved, 10) > 0) {
+      timeRemaining = parseInt(saved, 10);
+    } else {
+      timeRemaining = timePerQuestion[currentIndex] || 15;
+    }
+    updateTimerDisplay();
+  } catch (e) {
+  }
 }
 
 window.addEventListener("load", () => {
@@ -496,10 +522,12 @@ function finishGame() {
   localStorage.removeItem("sessionQuestions_hewan_mudah");
   localStorage.removeItem("currentIndex_hewan_mudah");
   localStorage.removeItem("correctCount_hewan_mudah");
+  // clear per-question timers
+  for (let i = 0; i < totalQuestions; i++) {
+    localStorage.removeItem('timeRemaining_mudah_' + i);
+  }
 
-  setTimeout(() => {
-    window.location.href = "/skor_hewan";
-  }, 800);
+  window.location.href = "/skor_hewan";
 }
 
 // atur nama file audio
@@ -514,7 +542,7 @@ function normalizeFileName(name) {
 function speakInstruksi() {
   if (lang === "en") {
     idPlayer.src = "/static/sounds/hewan/tebak_nama/guess_name.m4a";
-    try { idPlayer.volume = 0.6; } catch(e) {}
+    try { idPlayer.volume = 1.0; } catch(e) {}
     idPlayer.play();
 
     idPlayer.onended = () => {
@@ -522,7 +550,7 @@ function speakInstruksi() {
     };
   } else {
     idPlayer.src = "/static/sounds/hewan/tebak_nama/tebak_nama.m4a";
-    try { idPlayer.volume = 0.6; } catch(e) {}
+    try { idPlayer.volume = 1.0; } catch(e) {}
 
     idPlayer.play();
 
@@ -535,7 +563,6 @@ function speakInstruksi() {
 function playOptionsSequentially(options, lng) {
   let index = 0;
   const optionButtons = Array.from(document.querySelectorAll(".option-btn"));
-
   function playNext() {
     if (index < options.length) {
       const opt = options[index];
@@ -555,6 +582,11 @@ function playOptionsSequentially(options, lng) {
       console.log(`Playing: ${audioPath} (Original: ${opt})`);
       
       idPlayer.src = audioPath;
+      // start timer when the first option audio begins playing
+      if (index === 0 && !timerStartedForQuestion) {
+        timerStartedForQuestion = true;
+        startTimerForIndex(currentIndex);
+      }
       idPlayer.onerror = () => {
         console.error(`Audio gagal dimuat: ${audioPath}`);
         index++;
@@ -575,10 +607,173 @@ function playOptionsSequentially(options, lng) {
   playNext();
 }
 
+// Timer functions
+function startTimerForIndex(index) {
+  if (timerInterval) clearInterval(timerInterval);
+
+  if (!timerElement) timerElement = document.getElementById('timer');
+
+  const saved = localStorage.getItem('timeRemaining_mudah_' + index);
+  if (saved !== null && parseInt(saved, 10) > 0) {
+    timeRemaining = parseInt(saved, 10);
+  } else {
+    timeRemaining = timePerQuestion[index] || 15;
+  }
+
+  updateTimerDisplay();
+  if (timerElement) timerElement.classList.remove('warning');
+
+  timerInterval = setInterval(() => {
+    timeRemaining--;
+    localStorage.setItem('timeRemaining_mudah_' + index, timeRemaining);
+    updateTimerDisplay();
+
+    if (timeRemaining <= 5 && timerElement) timerElement.classList.add('warning');
+    if (timeRemaining === 5) {
+      try {
+        const tickAudio = new Audio('/static/sounds/hewan/effect/tick.mp3');
+        try { tickAudio.volume = 0.3; } catch(e) {}
+        tickAudio.play().catch(() => {});
+      } catch (e) {}
+    }
+
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      handleTimeUp(index);
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  if (!timerElement) timerElement = document.getElementById('timer');
+  if (!timerElement) return;
+  const minutes = Math.floor(timeRemaining / 60);
+  const seconds = timeRemaining % 60;
+  timerElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+}
+
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function handleTimeUp(index) {
+  stopTimer();
+  try {
+    const timesUpAudio = new Audio('/static/sounds/hewan/effect/timesup.mp3');
+    try { timesUpAudio.volume = 0.3; } catch(e) {}
+    timesUpAudio.play().catch(() => {});
+    showTimeupOverlay();
+
+    let processed = false;
+    const fallback = setTimeout(() => {
+      if (processed) return;
+      processed = true;
+      hideTimeupOverlay();
+      proceedAfterTimeUp(index);
+    }, 2500);
+
+    timesUpAudio.onended = () => {
+      if (processed) return;
+      processed = true;
+      clearTimeout(fallback);
+      hideTimeupOverlay();
+      setTimeout(() => proceedAfterTimeUp(index), 150);
+    };
+  } catch (e) {
+    proceedAfterTimeUp(index);
+  }
+}
+
+function showTimeupOverlay() {
+  if (document.getElementById('timeup-overlay')) return;
+  const overlay = document.createElement('div');
+  overlay.id = 'timeup-overlay';
+  Object.assign(overlay.style, {
+    position: 'fixed',
+    inset: '0',
+    background: 'rgba(255,0,0,0.20)',
+    zIndex: '9999',
+    pointerEvents: 'auto',
+    transition: 'opacity 200ms ease'
+  });
+  document.body.appendChild(overlay);
+}
+
+function hideTimeupOverlay() {
+  const el = document.getElementById('timeup-overlay');
+  if (!el) return;
+  try { el.remove(); } catch (e) { el.style.display = 'none'; }
+}
+
+function proceedAfterTimeUp(index) {
+  localStorage.removeItem('timeRemaining_mudah_' + index);
+  if (index + 1 < totalQuestions) {
+    localStorage.setItem('currentIndex_hewan_mudah', index + 1);
+    window.location.href = '/hewan/tebak_nama';
+  } else {
+    finishGame();
+  }
+}
+
 function stopAllSounds() {
   speechSynthesis.cancel();
   idPlayer.pause();
   idPlayer.currentTime = 0;
 }
+
+const backBtnEl = document.querySelector('.back-button');
+let headerEl = document.querySelector('header.header');
+let timerDomEl = timerElement || document.getElementById('timer');
+const backOriginal = backBtnEl ? { parent: backBtnEl.parentNode, nextSibling: backBtnEl.nextSibling } : null;
+const timerOriginal = timerDomEl ? { parent: timerDomEl.parentNode, nextSibling: timerDomEl.nextSibling } : null;
+
+function moveControlsIntoHeader() {
+  if (!headerEl) headerEl = document.querySelector('header.header');
+  if (!headerEl) return;
+  if (backBtnEl && backBtnEl.parentNode !== headerEl) headerEl.insertBefore(backBtnEl, headerEl.firstChild);
+  timerDomEl = timerElement || document.getElementById('timer');
+  if (timerDomEl && timerDomEl.parentNode !== headerEl) headerEl.appendChild(timerDomEl);
+  headerEl.classList.add('header--inlined');
+}
+
+function restoreControlsFromHeader() {
+  if (!headerEl) headerEl = document.querySelector('header.header');
+  if (!headerEl) return;
+  if (backOriginal && backBtnEl && backBtnEl.parentNode === headerEl) {
+    backOriginal.parent.insertBefore(backBtnEl, backOriginal.nextSibling);
+  }
+  timerDomEl = timerElement || document.getElementById('timer');
+  if (timerOriginal && timerDomEl && timerDomEl.parentNode === headerEl) {
+    timerOriginal.parent.insertBefore(timerDomEl, timerOriginal.nextSibling);
+  }
+  headerEl.classList.remove('header--inlined');
+}
+
+let __resizeTimeout = null;
+let __lastIsMobile = window.innerWidth <= 768;
+
+window.addEventListener('resize', () => {
+  clearTimeout(__resizeTimeout);
+  __resizeTimeout = setTimeout(() => {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      moveControlsIntoHeader();
+    } else {
+      restoreControlsFromHeader();
+    }
+
+    if (isMobile !== __lastIsMobile) {
+      __lastIsMobile = isMobile;
+    }
+  }, 120);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.innerWidth <= 768) moveControlsIntoHeader();
+});
 
 

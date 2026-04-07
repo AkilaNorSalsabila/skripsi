@@ -26,9 +26,12 @@ def predict_hewan_api():
     if confidence < 70:
         return jsonify({
             "hewan": "Tidak dikenali",
+            "name_in": "Tidak dikenali",
+            "name_en": None,
             "habitat": "-",
             "habitat_spesifik": "-",
             "audio_id": None,
+            "audio_in": None,
             "audio_en": None,
             "narasi_id": "Model tidak yakin dengan hasil prediksi. Coba lagi dengan gambar yang lebih jelas.",
             "confidence": confidence
@@ -41,9 +44,12 @@ def predict_hewan_api():
     if not detail:
         return jsonify({
             "hewan": nama_hewan,
+            "name_in": nama_hewan,
+            "name_en": None,
             "habitat": "Tidak diketahui",
             "habitat_spesifik": "Tidak diketahui",
             "audio_id": None,
+            "audio_in": None,
             "audio_en": None,
             "narasi_id": "Tidak tersedia",
             "confidence": confidence
@@ -51,9 +57,12 @@ def predict_hewan_api():
 
     return jsonify({
         "hewan": detail["hewan"],
+        "name_in": detail["hewan"],
+        "name_en": detail.get("nama_en"),
         "habitat": detail["habitat"],
         "habitat_spesifik": detail["habitat_spesifik"],
         "audio_id": detail["audio_id"],
+        "audio_in": detail["audio_id"],
         "audio_en": detail["audio_en"],
         "narasi_id": detail["narasi_id"],
         "confidence": confidence
