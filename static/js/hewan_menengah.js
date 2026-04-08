@@ -459,16 +459,16 @@ const animals = allAnimals;
 
 //pilihan habitat
 const habitats = [
-  { number: 1, img: "/static/img/hewan/habitat/1.png" },
-  { number: 2, img: "/static/img/hewan/habitat/2.png" },
-  { number: 3, img: "/static/img/hewan/habitat/3.png" },
-  { number: 4, img: "/static/img/hewan/habitat/4.png" },
-  { number: 5, img: "/static/img/hewan/habitat/5.png" },
-  { number: 6, img: "/static/img/hewan/habitat/6.png" },
-  { number: 7, img: "/static/img/hewan/habitat/7.png" },
-  { number: 8, img: "/static/img/hewan/habitat/8.png" },
-  { number: 9, img: "/static/img/hewan/habitat/9.png" },
-  { number: 10, img: "/static/img/hewan/habitat/10.png" }
+  { number: 1, img: "/static/img/hewan/habitat/1.jpeg" },
+  { number: 2, img: "/static/img/hewan/habitat/2.jpeg" },
+  { number: 3, img: "/static/img/hewan/habitat/3.jpeg" },
+  { number: 4, img: "/static/img/hewan/habitat/4.jpeg" },
+  { number: 5, img: "/static/img/hewan/habitat/5.jpeg" },
+  { number: 6, img: "/static/img/hewan/habitat/6.jpeg" },
+  { number: 7, img: "/static/img/hewan/habitat/7.jpeg" },
+  { number: 8, img: "/static/img/hewan/habitat/8.jpeg" },
+  { number: 9, img: "/static/img/hewan/habitat/9.jpeg" },
+  { number: 10, img: "/static/img/hewan/habitat/10.jpeg" }
 ];
 
 const totalQuestions = 5;
